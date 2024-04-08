@@ -1,8 +1,8 @@
 site_name: HyperCoast
 site_description: A Python package for processing hyperspetral data in coastal regions
 site_author: giswqs
-site_url: https://giswqs.github.io/HyperCoast
-repo_url: https://github.com/giswqs/HyperCoast
+site_url: https://hypercoast.org
+repo_url: https://github.com/opengeos/HyperCoast
 
 copyright: "Copyright &copy; 2024 - 2024 Qiusheng Wu"
 
@@ -78,9 +78,9 @@ nav:
     - Contributing: contributing.md
     - FAQ: faq.md
     - Changelog: changelog.md
-    - Report Issues: https://github.com/giswqs/HyperCoast/issues
+    - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
-        - examples/intro.ipynb
+          - examples/intro.ipynb
     - API Reference:
           - hypercoast module: hypercoast.md
           - common module: common.md

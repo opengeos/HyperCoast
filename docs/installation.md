@@ -17,5 +17,5 @@ If you don't have [pip](https://pip.pypa.io) installed, this [Python installatio
 To install HyperCoast from sources, run this command in your terminal:
 
 ```
-pip install git+https://github.com/giswqs/HyperCoast
+pip install git+https://github.com/opengeos/HyperCoast
 ```
