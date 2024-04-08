@@ -1,0 +1,82 @@
+[project]
+name = "HyperCoast"
+version = "0.0.1"
+dynamic = [
+    "dependencies",
+]
+description = "A Python package for processing hyperspetral data in coastal regions"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = [
+    "HyperCoast",
+]
+license = {text = "MIT License"}
+authors = [
+  {name = "Qiusheng Wu", email = "giswqs@gmail.com"},
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.entry-points."console_scripts"]
+hypercoast = "hypercoast.cli:main"
+
+[project.optional-dependencies]
+all = [
+    "HyperCoast[extra]",
+]
+
+extra = [
+    "pandas",
+]
+
+
+[tool]
+[tool.setuptools.packages.find]
+include = ["hypercoast*"]
+exclude = ["docs*"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+
+[tool.bumpversion]
+current_version = "0.0.1"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "hypercoast/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+
+[tool.flake8]
+exclude = [
+    "docs",
+]
+max-line-length = 88
+
+
+[project.urls]
+Homepage = "https://github.com/giswqs/HyperCoast"
+
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
