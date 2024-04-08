@@ -10,7 +10,7 @@
 
 -   Free software: MIT License
 -   Documentation: https://giswqs.github.io/HyperCoast
-    
+
 
 ## Features
 
