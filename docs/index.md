@@ -9,5 +9,5 @@
 
 ## Features
 
--   Visualize hyperspectral data 
+-   Visualize hyperspectral data
 -   Analyze hypersepctral data
