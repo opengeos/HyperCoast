@@ -9,4 +9,5 @@
 
 ## Features
 
--   TODO
+-   Visualize hyperspectral data
+-   Analyze hypersepctral data
