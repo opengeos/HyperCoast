@@ -1,10 +1,10 @@
 site_name: HyperCoast
-site_description: A Python package for processing hyperspetral data in coastal regions
+site_description: A Python package for processing hyperspectral data in coastal regions
 site_author: giswqs
 site_url: https://hypercoast.org
 repo_url: https://github.com/opengeos/HyperCoast
 
-copyright: "Copyright &copy; 2024 - 2024 Qiusheng Wu"
+copyright: "Copyright &copy; 2024 - 2024 Bingqing Liu & Qiusheng Wu"
 
 theme:
     palette:
