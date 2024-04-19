@@ -4,7 +4,7 @@ version = "0.0.2"
 dynamic = [
     "dependencies",
 ]
-description = "A Python package for processing hyperspetral data in coastal regions"
+description = "A Python package for processing hyperspectral data in coastal regions"
 readme = "README.md"
 requires-python = ">=3.8"
 keywords = [
