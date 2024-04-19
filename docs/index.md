@@ -1,6 +1,10 @@
 # Welcome to hypercoast
 
-[![image](https://img.shields.io/pypi/v/hypercoast.svg)](https://pypi.python.org/pypi/hypercoast)
+[![image](https://img.shields.io/pypi/v/HyperCoast.svg)](https://pypi.python.org/pypi/HyperCoast)
+[![image](https://static.pepy.tech/badge/hypercoast)](https://pepy.tech/project/hypercoast)
+[![image](https://img.shields.io/conda/vn/conda-forge/hypercoast.svg)](https://anaconda.org/conda-forge/hypercoast)
+[![Conda Recipe](https://img.shields.io/badge/recipe-hypercoast-green.svg)](https://github.com/conda-forge/hypercoast-feedstock)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/hypercoast.svg)](https://anaconda.org/conda-forge/hypercoast)
 
 **A Python package for visualizing and analyzing hyperspectral data in coastal regions**
 
