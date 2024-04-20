@@ -1,2 +1,7 @@
+geopandas
+hvplot
 leafmap
+localtileserver
+netcdf4
 numpy
+xarray
