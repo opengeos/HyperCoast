@@ -82,5 +82,6 @@ nav:
     - Examples:
           - examples/intro.ipynb
     - API Reference:
-          - hypercoast module: hypercoast.md
           - common module: common.md
+          - emit module: emit.md
+          - hypercoast module: hypercoast.md
