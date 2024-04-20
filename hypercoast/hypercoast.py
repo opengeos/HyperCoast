@@ -2,6 +2,8 @@
 
 import leafmap
 
+from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
+
 
 class Map(leafmap.Map):
     def __init__(self, **kwargs):
