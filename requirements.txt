@@ -1,3 +1,4 @@
+geopandas
 hvplot
 leafmap
 localtileserver
