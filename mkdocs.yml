@@ -85,3 +85,4 @@ nav:
           - common module: common.md
           - emit module: emit.md
           - hypercoast module: hypercoast.md
+          - ui module: ui.md
