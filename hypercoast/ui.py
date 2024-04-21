@@ -56,6 +56,9 @@ class SpectralWidget(widgets.HBox):
         self._output_control = output_control
         self._host_map.add(output_control)
 
+        if not hasattr(self._host_map, "_spectral_data"):
+            self._host_map._spectral_data = {}
+
         def handle_interaction(**kwargs):
 
             latlon = kwargs.get("coordinates")
@@ -81,6 +84,14 @@ class SpectralWidget(widgets.HBox):
                     da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
                         "reflectance"
                     ]
+
+                    if "wavelengths" not in self._host_map._spectral_data:
+                        self._host_map._spectral_data["wavelengths"] = ds[
+                            "wavelengths"
+                        ].values
+
+                    self._host_map._spectral_data[f"({lat:.4f},{lon:.4f})"] = da.values
+
                     da[da < 0] = np.nan
                     fig, ax = plt.subplots()
                     da.plot.line(ax=ax)

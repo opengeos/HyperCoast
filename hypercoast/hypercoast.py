@@ -222,3 +222,14 @@ class Map(leafmap.Map):
 
         if add_marker_cluster and (self._plot_marker_cluster not in self.layers):
             self.add(self._plot_marker_cluster)
+
+    def spectral_to_df(self, **kwargs):
+        """Converts the spectral data to a pandas DataFrame.
+
+        Returns:
+            pd.DataFrame: The spectral data as a pandas DataFrame.
+        """
+        import pandas as pd
+
+        df = pd.DataFrame(self._spectral_data)
+        return df
