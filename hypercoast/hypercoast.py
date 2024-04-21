@@ -3,6 +3,7 @@
 import leafmap
 
 from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
+from .ui import SpectralWidget
 
 
 class Map(leafmap.Map):
