@@ -3,6 +3,8 @@
 
 import ipyleaflet
 import ipywidgets as widgets
+from IPython.core.display import display
+import matplotlib.pyplot as plt
 
 
 class SpectralWidget(widgets.HBox):
@@ -56,10 +58,19 @@ class SpectralWidget(widgets.HBox):
         def handle_interaction(**kwargs):
 
             latlon = kwargs.get("coordinates")
+            lat = latlon[0]
+            lon = latlon[1]
             if kwargs.get("type") == "click":
+                layer_name = layers_widget.value
                 with self._output_widget:
                     self._output_widget.clear_output()
-                    print(latlon)
+
+                    da = self._host_map.cog_layer_dict[layer_name]["xds"].sel(
+                        latitude=lat, longitude=lon, method="nearest"
+                    )["reflectance"]
+                    fig, ax = plt.subplots()
+                    da.plot.line(ax=ax)
+                    display(fig)
 
                 self._host_map.default_style = {"cursor": "crosshair"}
 

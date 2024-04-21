@@ -26,6 +26,20 @@ class Map(leafmap.Map):
         """
         super().__init__(**kwargs)
 
+    def add(self, obj, position="topright", **kwargs):
+        """Add a layer to the map.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments that are passed to the parent class's add_layer method.
+        """
+
+        if isinstance(obj, str):
+            if obj == "spectral":
+                SpectralWidget(self, position=position)
+
+        else:
+            super().add(obj, **kwargs)
+
     def search_emit(self, default_datset="EMITL2ARFL"):
         """
         Adds a NASA Earth Data search tool to the map with a default dataset for EMIT.
@@ -110,7 +124,7 @@ class Map(leafmap.Map):
         vmax=None,
         nodata=None,
         attribution=None,
-        layer_name="Raster",
+        layer_name="EMIT",
         zoom_to_layer=True,
         visible=True,
         array_args={},
@@ -132,16 +146,17 @@ class Map(leafmap.Map):
             vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.
             nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.
             attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.
-            layer_name (str, optional): The layer name to use. Defaults to 'Raster'.
+            layer_name (str, optional): The layer name to use. Defaults to 'EMIT'.
             zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.
             visible (bool, optional): Whether the layer is visible. Defaults to True.
             array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.
         """
 
+        xds = None
         if isinstance(source, str):
 
-            ds = read_emit(source, wavelengths=wavelengths)
-            source = emit_to_image(ds, wavelengths=wavelengths)
+            xds = read_emit(source)
+            source = emit_to_image(xds, wavelengths=wavelengths)
 
         self.add_raster(
             source,
@@ -157,3 +172,5 @@ class Map(leafmap.Map):
             array_args=array_args,
             **kwargs,
         )
+
+        self.cog_layer_dict[layer_name]["xds"] = xds
