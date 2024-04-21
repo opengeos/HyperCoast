@@ -4,7 +4,6 @@ import ipyleaflet
 import leafmap
 
 from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
-from .ui import SpectralWidget
 
 
 class Map(leafmap.Map):
@@ -36,6 +35,8 @@ class Map(leafmap.Map):
 
         if isinstance(obj, str):
             if obj == "spectral":
+                from .ui import SpectralWidget
+
                 SpectralWidget(self, position=position)
 
         else:
@@ -231,5 +232,5 @@ class Map(leafmap.Map):
         """
         import pandas as pd
 
-        df = pd.DataFrame(self._spectral_data)
+        df = pd.DataFrame(self._spectral_data, **kwargs)
         return df

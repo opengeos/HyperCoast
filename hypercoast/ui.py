@@ -78,9 +78,6 @@ class SpectralWidget(widgets.HBox):
                     self._host_map._plot_marker_cluster = marker_cluster
 
                     ds = self._host_map.cog_layer_dict[layer_name]["xds"]
-                    # ds["reflectance"].data[
-                    #     :, :, ds["good_wavelengths"].data == 0
-                    # ] = np.nan
                     da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
                         "reflectance"
                     ]
