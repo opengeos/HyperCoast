@@ -3,8 +3,8 @@
 
 import ipyleaflet
 import ipywidgets as widgets
-import matplotlib.pyplot as plt
 import numpy as np
+from bqplot import pyplot as plt
 from IPython.core.display import display
 
 
@@ -87,12 +87,22 @@ class SpectralWidget(widgets.HBox):
                             "wavelengths"
                         ].values
 
-                    self._host_map._spectral_data[f"({lat:.4f},{lon:.4f})"] = da.values
+                    self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 
                     da[da < 0] = np.nan
-                    fig, ax = plt.subplots()
-                    da.plot.line(ax=ax)
-                    display(fig)
+                    # fig, ax = plt.subplots()
+                    # da.plot.line(ax=ax)
+                    # display(fig)
+                    fig_margin = {"top": 20, "bottom": 35, "left": 50, "right": 20}
+                    fig = plt.figure(
+                        # title=None,
+                        fig_margin=fig_margin,
+                        layout={"width": "500px", "height": "300px"},
+                    )
+                    plt.plot(da.coords[da.dims[0]].values, da.values)
+                    plt.xlabel("Wavelength (nm)")
+                    plt.ylabel("Reflectance")
+                    plt.show()
 
                 self._host_map.default_style = {"cursor": "crosshair"}
 

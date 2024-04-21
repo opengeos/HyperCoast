@@ -234,3 +234,14 @@ class Map(leafmap.Map):
 
         df = pd.DataFrame(self._spectral_data, **kwargs)
         return df
+
+    def spectral_to_csv(self, filename, index=True, **kwargs):
+        """Saves the spectral data to a CSV file.
+
+        Args:
+            filename (str): The output CSV file.
+            index (bool, optional): Whether to write the index. Defaults to True.
+        """
+        df = self.spectral_to_df()
+        df = df.rename_axis("band")
+        df.to_csv(filename, index=index, **kwargs)
