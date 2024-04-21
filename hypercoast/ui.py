@@ -3,8 +3,9 @@
 
 import ipyleaflet
 import ipywidgets as widgets
-from IPython.core.display import display
 import matplotlib.pyplot as plt
+import numpy as np
+from IPython.core.display import display
 
 
 class SpectralWidget(widgets.HBox):
@@ -65,9 +66,22 @@ class SpectralWidget(widgets.HBox):
                 with self._output_widget:
                     self._output_widget.clear_output()
 
-                    da = self._host_map.cog_layer_dict[layer_name]["xds"].sel(
-                        latitude=lat, longitude=lon, method="nearest"
-                    )["reflectance"]
+                    if not hasattr(self._host_map, "_plot_markers"):
+                        self._host_map._plot_markers = []
+                    markers = self._host_map._plot_markers
+                    marker_cluster = self._host_map._plot_marker_cluster
+                    markers.append(ipyleaflet.Marker(location=latlon))
+                    marker_cluster.markers = markers
+                    self._host_map._plot_marker_cluster = marker_cluster
+
+                    ds = self._host_map.cog_layer_dict[layer_name]["xds"]
+                    # ds["reflectance"].data[
+                    #     :, :, ds["good_wavelengths"].data == 0
+                    # ] = np.nan
+                    da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
+                        "reflectance"
+                    ]
+                    da[da < 0] = np.nan
                     fig, ax = plt.subplots()
                     da.plot.line(ax=ax)
                     display(fig)

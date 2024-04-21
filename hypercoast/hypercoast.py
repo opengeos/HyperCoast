@@ -1,5 +1,6 @@
 """Main module."""
 
+import ipyleaflet
 import leafmap
 
 from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
@@ -174,3 +175,50 @@ class Map(leafmap.Map):
         )
 
         self.cog_layer_dict[layer_name]["xds"] = xds
+
+    def set_plot_options(
+        self,
+        add_marker_cluster=False,
+        plot_type=None,
+        overlay=False,
+        position="bottomright",
+        min_width=None,
+        max_width=None,
+        min_height=None,
+        max_height=None,
+        **kwargs,
+    ):
+        """Sets plotting options.
+
+        Args:
+            add_marker_cluster (bool, optional): Whether to add a marker cluster. Defaults to False.
+            sample_scale (float, optional):  A nominal scale in meters of the projection to sample in . Defaults to None.
+            plot_type (str, optional): The plot type can be one of "None", "bar", "scatter" or "hist". Defaults to None.
+            overlay (bool, optional): Whether to overlay plotted lines on the figure. Defaults to False.
+            position (str, optional): Position of the control, can be ‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults to 'bottomright'.
+            min_width (int, optional): Min width of the widget (in pixels), if None it will respect the content size. Defaults to None.
+            max_width (int, optional): Max width of the widget (in pixels), if None it will respect the content size. Defaults to None.
+            min_height (int, optional): Min height of the widget (in pixels), if None it will respect the content size. Defaults to None.
+            max_height (int, optional): Max height of the widget (in pixels), if None it will respect the content size. Defaults to None.
+
+        """
+        plot_options_dict = {}
+        plot_options_dict["add_marker_cluster"] = add_marker_cluster
+        plot_options_dict["plot_type"] = plot_type
+        plot_options_dict["overlay"] = overlay
+        plot_options_dict["position"] = position
+        plot_options_dict["min_width"] = min_width
+        plot_options_dict["max_width"] = max_width
+        plot_options_dict["min_height"] = min_height
+        plot_options_dict["max_height"] = max_height
+
+        for key in kwargs:
+            plot_options_dict[key] = kwargs[key]
+
+        self._plot_options = plot_options_dict
+
+        if not hasattr(self, "_plot_marker_cluster"):
+            self._plot_marker_cluster = ipyleaflet.MarkerCluster(name="Marker Cluster")
+
+        if add_marker_cluster and (self._plot_marker_cluster not in self.layers):
+            self.add(self._plot_marker_cluster)
