@@ -1,11 +1,13 @@
 """This module contains the user interface for the hypercoast package.
 """
 
+import os
 import ipyleaflet
 import ipywidgets as widgets
 import numpy as np
 from bqplot import pyplot as plt
 from IPython.core.display import display
+from ipyfilechooser import FileChooser
 
 
 class SpectralWidget(widgets.HBox):
@@ -40,6 +42,47 @@ class SpectralWidget(widgets.HBox):
             layout=widgets.Layout(width="32px"),
         )
 
+        save_btn = widgets.Button(
+            icon="floppy-o",
+            tooltip="Save the data to a CSV",
+            button_style="primary",
+            layout=widgets.Layout(width="32px"),
+        )
+
+        def chooser_callback(chooser):
+            if chooser.selected:
+                file_path = chooser.selected
+                self._host_map.spectral_to_csv(file_path)
+                if (
+                    hasattr(self._host_map, "_file_chooser_control")
+                    and self._host_map._file_chooser_control in self._host_map.controls
+                ):
+                    self._host_map.remove_control(self._host_map._file_chooser_control)
+                    self._host_map._file_chooser.close()
+
+        def save_btn_click(_):
+            if not hasattr(self._host_map, "_spectral_data"):
+                return
+
+            self._output_widget.clear_output()
+            file_chooser = FileChooser(
+                os.getcwd(), layout=widgets.Layout(width="454px")
+            )
+            file_chooser.filter_pattern = "*.csv"
+            file_chooser.use_dir_icons = True
+            file_chooser.title = "Save spectral data to a CSV file"
+            file_chooser.default_filename = "spectral_data.csv"
+            file_chooser.show_hidden = False
+            file_chooser.register_callback(chooser_callback)
+            file_chooser_control = ipyleaflet.WidgetControl(
+                widget=file_chooser, position="topright"
+            )
+            self._host_map.add(file_chooser_control)
+            setattr(self._host_map, "_file_chooser", file_chooser)
+            setattr(self._host_map, "_file_chooser_control", file_chooser_control)
+
+        save_btn.on_click(save_btn_click)
+
         def close_widget(_):
             self.cleanup()
 
@@ -48,7 +91,7 @@ class SpectralWidget(widgets.HBox):
         layer_names = list(host_map.cog_layer_dict.keys())
         layers_widget = widgets.Dropdown(options=layer_names)
         layers_widget.layout.width = "18ex"
-        super().__init__([layers_widget, close_btn])
+        super().__init__([layers_widget, save_btn, close_btn])
 
         output = widgets.Output()
         output_control = ipyleaflet.WidgetControl(widget=output, position="bottomright")
