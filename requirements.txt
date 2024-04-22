@@ -4,4 +4,5 @@ leafmap
 localtileserver
 netcdf4
 numpy
+s3fs
 xarray
