@@ -2,7 +2,7 @@
 
 import ipyleaflet
 import leafmap
-
+import xarray as xr
 from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
 
 
@@ -38,6 +38,7 @@ class Map(leafmap.Map):
                 from .ui import SpectralWidget
 
                 SpectralWidget(self, position=position)
+                self.set_plot_options(add_marker_cluster=True)
 
         else:
             super().add(obj, **kwargs)
@@ -158,6 +159,9 @@ class Map(leafmap.Map):
         if isinstance(source, str):
 
             xds = read_emit(source)
+            source = emit_to_image(xds, wavelengths=wavelengths)
+        elif isinstance(source, xr.Dataset):
+            xds = source
             source = emit_to_image(xds, wavelengths=wavelengths)
 
         self.add_raster(

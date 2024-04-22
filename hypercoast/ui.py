@@ -205,7 +205,8 @@ class SpectralWidget(widgets.HBox):
             if hasattr(self._host_map, "_spectral_data"):
                 self._host_map._spectral_data = {}
 
-            self._output_widget.clear_output()
+            if hasattr(self, "_output_widget") and self._output_widget is not None:
+                self._output_widget.clear_output()
 
         if self.on_close is not None:
             self.on_close()
