@@ -16,3 +16,9 @@
 
 -   Visualize hyperspectral data
 -   Analyze hyperspectral data
+-   
+## Demo
+
+-   Visualizing spectral signature interactively
+
+![](https://i.imgur.com/zeyABMq.gif)
