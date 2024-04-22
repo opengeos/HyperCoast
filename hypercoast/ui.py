@@ -42,6 +42,25 @@ class SpectralWidget(widgets.HBox):
             layout=widgets.Layout(width="32px"),
         )
 
+        reset_btn = widgets.Button(
+            icon="trash",
+            tooltip="Remove all markers",
+            button_style="primary",
+            layout=widgets.Layout(width="32px"),
+        )
+
+        def reset_btn_click(_):
+            if hasattr(self._host_map, "_plot_marker_cluster"):
+                self._host_map._plot_marker_cluster.markers = []
+                self._host_map._plot_markers = []
+
+            if hasattr(self._host_map, "_spectral_data"):
+                self._host_map._spectral_data = {}
+
+            self._output_widget.clear_output()
+
+        reset_btn.on_click(reset_btn_click)
+
         save_btn = widgets.Button(
             icon="floppy-o",
             tooltip="Save the data to a CSV",
@@ -91,7 +110,7 @@ class SpectralWidget(widgets.HBox):
         layer_names = list(host_map.cog_layer_dict.keys())
         layers_widget = widgets.Dropdown(options=layer_names)
         layers_widget.layout.width = "18ex"
-        super().__init__([layers_widget, save_btn, close_btn])
+        super().__init__([layers_widget, reset_btn, save_btn, close_btn])
 
         output = widgets.Output()
         output_control = ipyleaflet.WidgetControl(widget=output, position="bottomright")
@@ -178,6 +197,15 @@ class SpectralWidget(widgets.HBox):
                 if self._spectral_widget:
                     self._spectral_widget.close()
                     self._spectral_widget = None
+
+            if hasattr(self._host_map, "_plot_marker_cluster"):
+                self._host_map._plot_marker_cluster.markers = []
+                self._host_map._plot_markers = []
+
+            if hasattr(self._host_map, "_spectral_data"):
+                self._host_map._spectral_data = {}
+
+            self._output_widget.clear_output()
 
         if self.on_close is not None:
             self.on_close()
