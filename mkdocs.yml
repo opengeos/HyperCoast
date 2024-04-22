@@ -80,7 +80,7 @@ nav:
     - Changelog: changelog.md
     - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
-          - examples/intro.ipynb
+          - examples/emit.ipynb
     - API Reference:
           - common module: common.md
           - emit module: emit.md
