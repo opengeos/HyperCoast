@@ -1,7 +1,9 @@
 """Main module."""
 
+import ipyleaflet
 import leafmap
-
+import xarray as xr
+from .common import download_file
 from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
 
 
@@ -24,6 +26,23 @@ class Map(leafmap.Map):
             **kwargs: Arbitrary keyword arguments that are passed to the parent class's constructor.
         """
         super().__init__(**kwargs)
+
+    def add(self, obj, position="topright", **kwargs):
+        """Add a layer to the map.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments that are passed to the parent class's add_layer method.
+        """
+
+        if isinstance(obj, str):
+            if obj == "spectral":
+                from .ui import SpectralWidget
+
+                SpectralWidget(self, position=position)
+                self.set_plot_options(add_marker_cluster=True)
+
+        else:
+            super().add(obj, **kwargs)
 
     def search_emit(self, default_datset="EMITL2ARFL"):
         """
@@ -109,7 +128,7 @@ class Map(leafmap.Map):
         vmax=None,
         nodata=None,
         attribution=None,
-        layer_name="Raster",
+        layer_name="EMIT",
         zoom_to_layer=True,
         visible=True,
         array_args={},
@@ -131,16 +150,20 @@ class Map(leafmap.Map):
             vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.
             nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.
             attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.
-            layer_name (str, optional): The layer name to use. Defaults to 'Raster'.
+            layer_name (str, optional): The layer name to use. Defaults to 'EMIT'.
             zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.
             visible (bool, optional): Whether the layer is visible. Defaults to True.
             array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.
         """
 
+        xds = None
         if isinstance(source, str):
 
-            ds = read_emit(source, wavelengths=wavelengths)
-            source = emit_to_image(ds, wavelengths=wavelengths)
+            xds = read_emit(source)
+            source = emit_to_image(xds, wavelengths=wavelengths)
+        elif isinstance(source, xr.Dataset):
+            xds = source
+            source = emit_to_image(xds, wavelengths=wavelengths)
 
         self.add_raster(
             source,
@@ -156,3 +179,74 @@ class Map(leafmap.Map):
             array_args=array_args,
             **kwargs,
         )
+
+        self.cog_layer_dict[layer_name]["xds"] = xds
+
+    def set_plot_options(
+        self,
+        add_marker_cluster=False,
+        plot_type=None,
+        overlay=False,
+        position="bottomright",
+        min_width=None,
+        max_width=None,
+        min_height=None,
+        max_height=None,
+        **kwargs,
+    ):
+        """Sets plotting options.
+
+        Args:
+            add_marker_cluster (bool, optional): Whether to add a marker cluster. Defaults to False.
+            sample_scale (float, optional):  A nominal scale in meters of the projection to sample in . Defaults to None.
+            plot_type (str, optional): The plot type can be one of "None", "bar", "scatter" or "hist". Defaults to None.
+            overlay (bool, optional): Whether to overlay plotted lines on the figure. Defaults to False.
+            position (str, optional): Position of the control, can be ‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults to 'bottomright'.
+            min_width (int, optional): Min width of the widget (in pixels), if None it will respect the content size. Defaults to None.
+            max_width (int, optional): Max width of the widget (in pixels), if None it will respect the content size. Defaults to None.
+            min_height (int, optional): Min height of the widget (in pixels), if None it will respect the content size. Defaults to None.
+            max_height (int, optional): Max height of the widget (in pixels), if None it will respect the content size. Defaults to None.
+
+        """
+        plot_options_dict = {}
+        plot_options_dict["add_marker_cluster"] = add_marker_cluster
+        plot_options_dict["plot_type"] = plot_type
+        plot_options_dict["overlay"] = overlay
+        plot_options_dict["position"] = position
+        plot_options_dict["min_width"] = min_width
+        plot_options_dict["max_width"] = max_width
+        plot_options_dict["min_height"] = min_height
+        plot_options_dict["max_height"] = max_height
+
+        for key in kwargs:
+            plot_options_dict[key] = kwargs[key]
+
+        self._plot_options = plot_options_dict
+
+        if not hasattr(self, "_plot_marker_cluster"):
+            self._plot_marker_cluster = ipyleaflet.MarkerCluster(name="Marker Cluster")
+
+        if add_marker_cluster and (self._plot_marker_cluster not in self.layers):
+            self.add(self._plot_marker_cluster)
+
+    def spectral_to_df(self, **kwargs):
+        """Converts the spectral data to a pandas DataFrame.
+
+        Returns:
+            pd.DataFrame: The spectral data as a pandas DataFrame.
+        """
+        import pandas as pd
+
+        df = pd.DataFrame(self._spectral_data, **kwargs)
+        return df
+
+    def spectral_to_csv(self, filename, index=True, **kwargs):
+        """Saves the spectral data to a CSV file.
+
+        Args:
+            filename (str): The output CSV file.
+            index (bool, optional): Whether to write the index. Defaults to True.
+        """
+        df = self.spectral_to_df()
+        df = df.rename_axis("band")
+        df.to_csv(filename, index=index, **kwargs)
