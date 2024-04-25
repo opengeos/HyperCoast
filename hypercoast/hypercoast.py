@@ -40,27 +40,29 @@ class Map(leafmap.Map):
 
                 SpectralWidget(self, position=position)
                 self.set_plot_options(add_marker_cluster=True)
+            else:
+                super().add(obj, **kwargs)
 
         else:
             super().add(obj, **kwargs)
 
-    def search_emit(self, default_datset="EMITL2ARFL"):
+    def search_emit(self, default_dataset="EMITL2ARFL"):
         """
         Adds a NASA Earth Data search tool to the map with a default dataset for EMIT.
 
         Args:
             default_dataset (str, optional): The default dataset to search for. Defaults to "EMITL2ARFL".
         """
-        self.add("nasa_earth_data", default_dataset=default_datset)
+        self.add("nasa_earth_data", default_dataset=default_dataset)
 
-    def search_pace(self, default_datset="PACE_OCI_L2_AOP_NRT"):
+    def search_pace(self, default_dataset="PACE_OCI_L2_AOP_NRT"):
         """
         Adds a NASA Earth Data search tool to the map with a default dataset for PACE.
 
         Args:
             default_dataset (str, optional): The default dataset to search for. Defaults to "PACE_OCI_L2_AOP_NRT".
         """
-        self.add("nasa_earth_data", default_dataset=default_datset)
+        self.add("nasa_earth_data", default_dataset=default_dataset)
 
     def add_raster(
         self,
