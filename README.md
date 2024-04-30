@@ -14,11 +14,16 @@
 
 ## Features
 
--   Visualize hyperspectral data
--   Analyze hyperspectral data
--
+-   Interactive visualization and analysis of hyperspectral data (e.g., [EMIT](https://earth.jpl.nasa.gov/emit/), [PACE](https://pace.gsfc.nasa.gov/))
+-   Interactive extraction and visualization of spectral signatures
+-   Saving spectral signatures as CSV files
+
 ## Demo
 
 -   Visualizing spectral signature interactively
 
 ![](https://i.imgur.com/zeyABMq.gif)
+
+## Acknowledgement
+
+This projects draws inspiration and adapts source code from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository. Credit goes to the original authors.
