@@ -1,0 +1,3 @@
+# pace module
+
+::: hypercoast.pace
