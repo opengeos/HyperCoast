@@ -10,7 +10,6 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.
 
 import os
 import xarray as xr
-import hvplot.xarray
 import numpy as np
 import geopandas as gpd
 
@@ -100,6 +99,8 @@ def plot_emit(
         hvplot.Plot: The line plot of the reflectance data.
     """
 
+    import hvplot.xarray
+
     if ortho == True:
         if longitude is None or latitude is None:
             raise ValueError(
@@ -182,6 +183,8 @@ def viz_emit(
     Returns:
         hvplot.Plot: The image plot of the reflectance data at the specified wavelengths.
     """
+    import hvplot.xarray
+
     if isinstance(ds, str):
         ds = read_emit(ds, ortho=ortho)
     example = ds.sel(wavelengths=wavelengths, method=method)
