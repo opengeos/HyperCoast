@@ -81,6 +81,7 @@ nav:
     - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
           - examples/emit.ipynb
+          - examples/pace.ipynb
     - API Reference:
           - common module: common.md
           - emit module: emit.md
