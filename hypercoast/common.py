@@ -2,6 +2,7 @@
 """
 
 import os
+from typing import List
 
 
 def github_raw_url(url):
@@ -116,3 +117,24 @@ def download_file(
                     tar_ref.extractall(os.path.dirname(output))
 
     return os.path.abspath(output)
+
+
+def netcdf_groups(filepath: str) -> List[str]:
+    """
+    Get the list of groups in a NetCDF file.
+
+    Args:
+        filepath (str): The path to the NetCDF file.
+
+    Returns:
+        list: A list of group names in the NetCDF file.
+
+    Example:
+        >>> netcdf_groups('path/to/netcdf/file')
+        ['group1', 'group2', 'group3']
+    """
+    import h5netcdf
+
+    with h5netcdf.File(filepath) as file:
+        groups = list(file)
+    return groups

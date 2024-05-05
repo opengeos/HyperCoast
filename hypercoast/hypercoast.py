@@ -3,7 +3,7 @@
 import ipyleaflet
 import leafmap
 import xarray as xr
-from .common import download_file
+from .common import download_file, netcdf_groups
 from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
 from .pace import *
 
