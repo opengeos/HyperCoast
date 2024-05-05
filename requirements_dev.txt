@@ -2,6 +2,8 @@ black
 black[jupyter]
 build
 bump-my-version
+
+cartopy
 click
 codespell
 flake8
