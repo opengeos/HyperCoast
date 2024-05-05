@@ -39,7 +39,7 @@ def read_pace(filepath, wavelengths=None, method="nearest", **kwargs):
     return dataset
 
 
-def plot_pace(
+def viz_pace(
     dataset,
     wavelengths=None,
     method="nearest",
