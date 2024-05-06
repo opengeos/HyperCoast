@@ -176,3 +176,44 @@ def viz_pace(
 
         plt.tight_layout()
         plt.show()
+
+
+def filter_pace(dataset, latitude, longitude, drop=True, return_plot=False, **kwargs):
+    """
+    Filters a PACE dataset based on latitude and longitude.
+
+    Args:
+        dataset (xr.Dataset): The PACE dataset to filter.
+        latitude (float or tuple): The latitude to filter by. If a tuple or list, it represents a range.
+        longitude (float or tuple): The longitude to filter by. If a tuple or list, it represents a range.
+        drop (bool, optional): Whether to drop the filtered out data. Defaults to True.
+
+    Returns:
+        xr.DataArray: The filtered PACE data.
+    """
+    if isinstance(latitude, list) or isinstance(latitude, tuple):
+        lat_con = (dataset["latitude"] > latitude[0]) & (
+            dataset["latitude"] < latitude[1]
+        )
+    else:
+        lat_con = dataset["latitude"] == latitude
+
+    if isinstance(longitude, list) or isinstance(longitude, tuple):
+        lon_con = (dataset["longitude"] > longitude[0]) & (
+            dataset["longitude"] < longitude[1]
+        )
+    else:
+        lon_con = dataset["longitude"] == longitude
+
+    da = dataset["Rrs"].where(lat_con & lon_con, drop=drop, **kwargs)
+    da_filtered = da.dropna(dim="latitude", how="all")
+    da_filtered = da_filtered.dropna(dim="longitude", how="all")
+
+    if return_plot:
+        rrs_stack = da_filtered.stack(
+            {"pixel": ["latitude", "longitude"]},
+            create_index=False,
+        )
+        rrs_stack.plot.line(hue="pixel")
+    else:
+        return da_filtered
