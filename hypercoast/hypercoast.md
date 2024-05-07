@@ -1,0 +1,4 @@
+
+# hypercoast module
+
+::: hypercoast.hypercoast

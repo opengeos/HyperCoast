@@ -1,0 +1,3 @@
+# emit module
+
+::: hypercoast.emit
