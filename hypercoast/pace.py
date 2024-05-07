@@ -1,7 +1,9 @@
 """This module contains functions to read and process PACE data.
 """
 
+import numpy as np
 import xarray as xr
+import matplotlib.pyplot as plt
 from typing import List, Tuple, Union, Optional
 
 
@@ -217,3 +219,49 @@ def filter_pace(dataset, latitude, longitude, drop=True, return_plot=False, **kw
         rrs_stack.plot.line(hue="pixel")
     else:
         return da_filtered
+
+
+def grid_pace(dataset, wavelengths, method="nearest", **kwargs):
+    """
+    Grids a PACE dataset based on latitude and longitude.
+
+    Args:
+        dataset (xr.Dataset): The PACE dataset to grid.
+        wavelengths (float or int): The wavelength to select.
+        method (str, optional): The method to use for griddata interpolation.
+            Defaults to "nearest".
+        **kwargs: Additional keyword arguments to pass to the xr.Dataset constructor.
+
+    Returns:
+        xr.DataArray: The gridded PACE data.
+    """
+    from scipy.interpolate import griddata
+
+    lat = dataset.latitude
+    lon = dataset.longitude
+
+    grid_lat = np.linspace(lat.min(), lat.max(), lat.shape[0])
+    grid_lon = np.linspace(lon.min(), lon.max(), lon.shape[1])
+    grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
+
+    data = dataset.sel(wavelength=wavelengths)["Rrs"]
+    gridded_data = griddata(
+        (lat.data.flatten(), lon.data.flatten()),
+        data.data.flatten(),
+        (grid_lat_2d, grid_lon_2d),
+        method=method,
+    )
+
+    dataset2 = xr.Dataset(
+        {"Rrs": (("latitude", "longitude"), gridded_data)},
+        coords={
+            "latitude": ("latitude", grid_lat),
+            "longitude": ("longitude", grid_lon),
+        },
+        **kwargs,
+    )
+
+    data = dataset2["Rrs"]
+    data.rio.write_crs("EPSG:4326", inplace=True)
+
+    return data
