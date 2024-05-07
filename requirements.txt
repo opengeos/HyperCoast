@@ -7,4 +7,5 @@ netcdf4
 numpy
 rioxarray
 s3fs
+scipy
 xarray
