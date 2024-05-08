@@ -5,9 +5,11 @@ import os
 import ipyleaflet
 import ipywidgets as widgets
 import numpy as np
+import xarray as xr
 from bqplot import pyplot as plt
 from IPython.core.display import display
 from ipyfilechooser import FileChooser
+from .pace import extract_pace
 
 
 class SpectralWidget(widgets.HBox):
@@ -140,14 +142,28 @@ class SpectralWidget(widgets.HBox):
                     self._host_map._plot_marker_cluster = marker_cluster
 
                     ds = self._host_map.cog_layer_dict[layer_name]["xds"]
-                    da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
-                        "reflectance"
-                    ]
+                    if self._host_map.cog_layer_dict[layer_name]["type"] == "EMIT":
+                        da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
+                            "reflectance"
+                        ]
 
-                    if "wavelengths" not in self._host_map._spectral_data:
-                        self._host_map._spectral_data["wavelengths"] = ds[
-                            "wavelengths"
-                        ].values
+                        if "wavelengths" not in self._host_map._spectral_data:
+                            self._host_map._spectral_data["wavelengths"] = ds[
+                                "wavelengths"
+                            ].values
+                    elif self._host_map.cog_layer_dict[layer_name]["type"] == "PACE":
+                        try:
+                            da = extract_pace(ds, lat, lon)
+                        except:
+                            da = xr.DataArray(
+                                np.full(len(ds["wavelength"]), np.nan),
+                                dims=["wavelength"],
+                                coords={"wavelength": ds["wavelength"]},
+                            )
+                        if "wavelengths" not in self._host_map._spectral_data:
+                            self._host_map._spectral_data["wavelengths"] = ds[
+                                "wavelength"
+                            ].values
 
                     self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 

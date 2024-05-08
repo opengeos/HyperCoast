@@ -185,6 +185,7 @@ class Map(leafmap.Map):
         )
 
         self.cog_layer_dict[layer_name]["xds"] = xds
+        self.cog_layer_dict[layer_name]["type"] = "EMIT"
 
     def add_pace(
         self,
@@ -253,6 +254,7 @@ class Map(leafmap.Map):
         )
 
         self.cog_layer_dict[layer_name]["xds"] = source
+        self.cog_layer_dict[layer_name]["type"] = "PACE"
 
     def set_plot_options(
         self,
