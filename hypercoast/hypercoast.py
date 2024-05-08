@@ -192,14 +192,15 @@ class Map(leafmap.Map):
         wavelengths=None,
         indexes=None,
         colormap="jet",
-        vmin=0,
-        vmax=0.02,
+        vmin=None,
+        vmax=None,
         nodata=np.nan,
         attribution=None,
         layer_name="PACE",
         zoom_to_layer=True,
         visible=True,
         method="nearest",
+        gridded=False,
         array_args={},
         **kwargs,
     ):
@@ -229,10 +230,15 @@ class Map(leafmap.Map):
 
             source = read_pace(source)
 
-        source = grid_pace(source, wavelengths, method=method)
+        image = pace_to_image(
+            source, wavelengths=wavelengths, method=method, gridded=gridded
+        )
+
+        if isinstance(wavelengths, list) and len(wavelengths) > 1:
+            colormap = None
 
         self.add_raster(
-            source,
+            image,
             indexes=indexes,
             colormap=colormap,
             vmin=vmin,

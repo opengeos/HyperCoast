@@ -226,15 +226,15 @@ def emit_to_netcdf(data, output, **kwargs):
     ds_geo.to_netcdf(output, **kwargs)
 
 
-def emit_to_image(data, output=None, wavelengths=None, method="nearest", **kwargs):
+def emit_to_image(data, wavelengths=None, method="nearest", output=None, **kwargs):
     """
     Converts an EMIT dataset to an image.
 
     Args:
         data (xarray.Dataset or str): The dataset containing the EMIT data or the file path to the dataset.
-        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.
         wavelengths (array-like, optional): The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.
         method (str, optional): The method to use for data selection. Defaults to "nearest".
+        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.
         **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.
 
     Returns:
