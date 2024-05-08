@@ -663,6 +663,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.pace.pace_to_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      pace_to_image()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.pace.read_pace" class="md-nav__link">
     <span class="md-ellipsis">
       read_pace()
@@ -765,6 +774,15 @@
   <a href="#hypercoast.pace.grid_pace" class="md-nav__link">
     <span class="md-ellipsis">
       grid_pace()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.pace.pace_to_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      pace_to_image()
     </span>
   </a>
   
@@ -950,7 +968,7 @@
 
 
 <h2 id="hypercoast.pace.grid_pace" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">grid_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">grid_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.pace.grid_pace" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -980,7 +998,7 @@
         <td><code>wavelengths</code></td>
         <td><code>float or int</code></td>
         <td><p>The wavelength to select.</p></td>
-        <td><em>required</em></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>method</code></td>
@@ -1014,7 +1032,7 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/pace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Grids a PACE dataset based on latitude and longitude.</span>
 
@@ -1030,6 +1048,13 @@ Defaults to "nearest".</p></td>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">griddata</span>
 
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Ensure wavelengths is a list</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">wavelengths</span><span class="p">]</span>
+
     <span class="n">lat</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">latitude</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">longitude</span>
 
@@ -1037,27 +1062,154 @@ Defaults to "nearest".</p></td>
     <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">grid_lon_2d</span><span class="p">,</span> <span class="n">grid_lat_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">)</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span>
-    <span class="n">gridded_data</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
-        <span class="p">(</span><span class="n">grid_lat_2d</span><span class="p">,</span> <span class="n">grid_lon_2d</span><span class="p">),</span>
-        <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">gridded_data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span>
+        <span class="n">gridded_data</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="p">(</span><span class="n">grid_lat_2d</span><span class="p">,</span> <span class="n">grid_lon_2d</span><span class="p">),</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">gridded_data_dict</span><span class="p">[</span><span class="n">wavelength</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridded_data</span>
+
+    <span class="c1"># Create a 3D array with dimensions latitude, longitude, and wavelength</span>
+    <span class="n">gridded_data_3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">gridded_data_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
 
     <span class="n">dataset2</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="p">{</span><span class="s2">&quot;Rrs&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">),</span> <span class="n">gridded_data</span><span class="p">)},</span>
+        <span class="p">{</span><span class="s2">&quot;Rrs&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">),</span> <span class="n">gridded_data_3d</span><span class="p">)},</span>
         <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">),</span>
             <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">grid_lon</span><span class="p">),</span>
+            <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">gridded_data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())),</span>
         <span class="p">},</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">dataset2</span><span class="p">[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span>
+    <span class="n">dataset2</span><span class="p">[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset2</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.pace.pace_to_image" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pace_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.pace.pace_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Converts an PACE dataset to an image.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dataset</code></td>
+        <td><code>xarray.Dataset or str</code></td>
+        <td><p>The dataset containing the EMIT data or the file path to the dataset.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>array-like</code></td>
+        <td><p>The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>method</code></td>
+        <td><code>str</code></td>
+        <td><p>The method to use for data interpolation. Defaults to "nearest".</p></td>
+        <td><code>&#39;nearest&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>gridded</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether the dataset is a gridded dataset. Defaults to False,</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments to be passed to <code>leafmap.array_to_image</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>rasterio.Dataset or None</code></td>
+      <td><p>The image converted from the dataset. If <code>output</code> is provided, the image will be saved to the specified file and the function will return None.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/pace.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pace_to_image</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an PACE dataset to an image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataset (xarray.Dataset or str): The dataset containing the EMIT data or the file path to the dataset.</span>
+<span class="sd">        wavelengths (array-like, optional): The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.</span>
+<span class="sd">        method (str, optional): The method to use for data interpolation. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        gridded (bool, optional): Whether the dataset is a gridded dataset. Defaults to False,</span>
+<span class="sd">        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</span>
+<span class="sd">        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        rasterio.Dataset or None: The image converted from the dataset. If `output` is provided, the image will be saved to the specified file and the function will return None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">leafmap</span> <span class="kn">import</span> <span class="n">array_to_image</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">gridded</span><span class="p">:</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">grid_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">dataset</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span>
     <span class="n">data</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="n">array_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

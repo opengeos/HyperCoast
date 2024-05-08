@@ -1311,7 +1311,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 
 <h2 id="hypercoast.emit.emit_to_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">emit_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">emit_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.emit.emit_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1338,12 +1338,6 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>output</code></td>
-        <td><code>str</code></td>
-        <td><p>The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
         <td><code>wavelengths</code></td>
         <td><code>array-like</code></td>
         <td><p>The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.</p></td>
@@ -1354,6 +1348,12 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <td><code>str</code></td>
         <td><p>The method to use for data selection. Defaults to "nearest".</p></td>
         <td><code>&#39;nearest&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>**kwargs</code></td>
@@ -1380,15 +1380,15 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emit_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emit_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an EMIT dataset to an image.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data (xarray.Dataset or str): The dataset containing the EMIT data or the file path to the dataset.</span>
-<span class="sd">        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</span>
 <span class="sd">        wavelengths (array-like, optional): The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for data selection. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.</span>
 
 <span class="sd">    Returns:</span>

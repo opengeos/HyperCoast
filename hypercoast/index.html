@@ -1173,14 +1173,15 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
-        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
         <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;PACE&quot;</span><span class="p">,</span>
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
@@ -1210,10 +1211,15 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
             <span class="n">source</span> <span class="o">=</span> <span class="n">read_pace</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-        <span class="n">source</span> <span class="o">=</span> <span class="n">grid_pace</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">pace_to_image</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="n">gridded</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
-            <span class="n">source</span><span class="p">,</span>
+            <span class="n">image</span><span class="p">,</span>
             <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
             <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
             <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
@@ -1605,7 +1611,7 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 
 
 <h3 id="hypercoast.hypercoast.Map.add_pace" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;PACE&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;PACE&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_pace" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -1654,13 +1660,13 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
         <td><code>vmin</code></td>
         <td><code>float</code></td>
         <td><p>The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
-        <td><code>0</code></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmax</code></td>
         <td><code>float</code></td>
         <td><p>The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
-        <td><code>0.02</code></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>nodata</code></td>
@@ -1708,14 +1714,15 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
-    <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
     <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;PACE&quot;</span><span class="p">,</span>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
@@ -1745,10 +1752,15 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 
         <span class="n">source</span> <span class="o">=</span> <span class="n">read_pace</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-    <span class="n">source</span> <span class="o">=</span> <span class="n">grid_pace</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">pace_to_image</span><span class="p">(</span>
+        <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="n">gridded</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
-        <span class="n">source</span><span class="p">,</span>
+        <span class="n">image</span><span class="p">,</span>
         <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
         <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
         <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
