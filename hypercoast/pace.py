@@ -221,6 +221,51 @@ def filter_pace(dataset, latitude, longitude, drop=True, return_plot=False, **kw
         return da_filtered
 
 
+def extract_pace(
+    dataset: Union[xr.Dataset, str],
+    latitude: Union[float, Tuple[float, float]],
+    longitude: Union[float, Tuple[float, float]],
+    delta: float = 0.01,
+    return_plot: bool = False,
+    **kwargs,
+) -> Union[xr.DataArray, plt.Figure]:
+    """
+    Extracts data from a PACE dataset for a given latitude and longitude range
+        and calculates the mean over these dimensions.
+
+    Args:
+        dataset (Union[xr.Dataset, str]): The PACE dataset or path to the dataset file.
+        latitude (Union[float, Tuple[float, float]]): The latitude or range of
+            latitudes to extract data for.
+        longitude (Union[float, Tuple[float, float]]): The longitude or range of
+            longitudes to extract data for.
+        delta (float, optional): The range to add/subtract to the latitude and
+            longitude if they are not ranges. Defaults to 0.01.
+        return_plot (bool, optional): Whether to return a plot of the data. Defaults to False.
+        **kwargs: Additional keyword arguments to pass to the plot function.
+
+    Returns:
+        Union[xr.DataArray, plt.figure.Figure]: The mean data over the latitude
+            and longitude dimensions, or a plot of this data if return_plot is True.
+    """
+    if isinstance(latitude, list) or isinstance(latitude, tuple):
+        pass
+    else:
+        latitude = (latitude - delta, latitude + delta)
+
+    if isinstance(longitude, list) or isinstance(longitude, tuple):
+        pass
+    else:
+        longitude = (longitude - delta, longitude + delta)
+
+    ds = filter_pace(dataset, latitude, longitude, return_plot=False)
+    data = ds.mean(dim=["latitude", "longitude"])
+    if return_plot:
+        return data.plot.line(**kwargs)
+    else:
+        return data
+
+
 def grid_pace(dataset, wavelengths=None, method="nearest", **kwargs):
     """
     Grids a PACE dataset based on latitude and longitude.
