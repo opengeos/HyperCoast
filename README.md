@@ -14,7 +14,7 @@
 
 ## Features
 
--   Interactive visualization and analysis of hyperspectral data (e.g., [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa))
+-   Interactive visualization and analysis of hyperspectral data (e.g., [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov))
 -   Interactive extraction and visualization of spectral signatures
 -   Saving spectral signatures as CSV files
 
@@ -24,7 +24,7 @@
 
 ![](https://i.imgur.com/zeyABMq.gif)
 
--   Visualizing NASA [PACE](https://pace.gsfc.nasa) data interactively
+-   Visualizing NASA [PACE](https://pace.gsfc.nasa.gov) data interactively
 
 ![](https://i.imgur.com/HBMjW6o.gif)
 
