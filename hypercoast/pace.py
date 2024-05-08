@@ -221,7 +221,7 @@ def filter_pace(dataset, latitude, longitude, drop=True, return_plot=False, **kw
         return da_filtered
 
 
-def grid_pace(dataset, wavelengths, method="nearest", **kwargs):
+def grid_pace(dataset, wavelengths=None, method="nearest", **kwargs):
     """
     Grids a PACE dataset based on latitude and longitude.
 
@@ -237,6 +237,13 @@ def grid_pace(dataset, wavelengths, method="nearest", **kwargs):
     """
     from scipy.interpolate import griddata
 
+    if wavelengths is None:
+        wavelengths = dataset.coords["wavelength"].values[0]
+
+    # Ensure wavelengths is a list
+    if not isinstance(wavelengths, list):
+        wavelengths = [wavelengths]
+
     lat = dataset.latitude
     lon = dataset.longitude
 
@@ -244,24 +251,65 @@ def grid_pace(dataset, wavelengths, method="nearest", **kwargs):
     grid_lon = np.linspace(lon.min(), lon.max(), lon.shape[1])
     grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
 
-    data = dataset.sel(wavelength=wavelengths)["Rrs"]
-    gridded_data = griddata(
-        (lat.data.flatten(), lon.data.flatten()),
-        data.data.flatten(),
-        (grid_lat_2d, grid_lon_2d),
-        method=method,
-    )
+    gridded_data_dict = {}
+    for wavelength in wavelengths:
+        data = dataset.sel(wavelength=wavelength)["Rrs"]
+        gridded_data = griddata(
+            (lat.data.flatten(), lon.data.flatten()),
+            data.data.flatten(),
+            (grid_lat_2d, grid_lon_2d),
+            method=method,
+        )
+        gridded_data_dict[wavelength] = gridded_data
+
+    # Create a 3D array with dimensions latitude, longitude, and wavelength
+    gridded_data_3d = np.dstack(list(gridded_data_dict.values()))
 
     dataset2 = xr.Dataset(
-        {"Rrs": (("latitude", "longitude"), gridded_data)},
+        {"Rrs": (("latitude", "longitude", "wavelength"), gridded_data_3d)},
         coords={
             "latitude": ("latitude", grid_lat),
             "longitude": ("longitude", grid_lon),
+            "wavelength": ("wavelength", list(gridded_data_dict.keys())),
         },
         **kwargs,
     )
 
-    data = dataset2["Rrs"]
+    dataset2["Rrs"].rio.write_crs("EPSG:4326", inplace=True)
+
+    return dataset2
+
+
+def pace_to_image(
+    dataset, wavelengths=None, method="nearest", gridded=False, output=None, **kwargs
+):
+    """
+    Converts an PACE dataset to an image.
+
+    Args:
+        dataset (xarray.Dataset or str): The dataset containing the EMIT data or the file path to the dataset.
+        wavelengths (array-like, optional): The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.
+        method (str, optional): The method to use for data interpolation. Defaults to "nearest".
+        gridded (bool, optional): Whether the dataset is a gridded dataset. Defaults to False,
+        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.
+        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.
+
+    Returns:
+        rasterio.Dataset or None: The image converted from the dataset. If `output` is provided, the image will be saved to the specified file and the function will return None.
+    """
+    from leafmap import array_to_image
+
+    if isinstance(dataset, str):
+        dataset = read_pace(dataset, wavelengths=wavelengths, method="nearest")
+
+    if wavelengths is not None:
+        dataset = dataset.sel(wavelength=wavelengths, method="nearest")
+
+    if not gridded:
+        grid = grid_pace(dataset, wavelengths=wavelengths, method=method)
+    else:
+        grid = dataset
+    data = grid["Rrs"]
     data.rio.write_crs("EPSG:4326", inplace=True)
 
-    return data
+    return array_to_image(data, transpose=False, output=output, **kwargs)
