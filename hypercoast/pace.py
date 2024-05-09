@@ -298,7 +298,7 @@ def grid_pace(dataset, wavelengths=None, method="nearest", **kwargs):
 
     gridded_data_dict = {}
     for wavelength in wavelengths:
-        data = dataset.sel(wavelength=wavelength)["Rrs"]
+        data = dataset.sel(wavelength=wavelength, method=method)["Rrs"]
         gridded_data = griddata(
             (lat.data.flatten(), lon.data.flatten()),
             data.data.flatten(),
