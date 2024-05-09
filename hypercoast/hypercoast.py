@@ -7,6 +7,7 @@ import numpy as np
 from .common import download_file, netcdf_groups
 from .emit import read_emit, plot_emit, viz_emit, emit_to_netcdf, emit_to_image
 from .pace import *
+from .ui import SpectralWidget
 
 
 class Map(leafmap.Map):
@@ -38,7 +39,6 @@ class Map(leafmap.Map):
 
         if isinstance(obj, str):
             if obj == "spectral":
-                from .ui import SpectralWidget
 
                 SpectralWidget(self, position=position)
                 self.set_plot_options(add_marker_cluster=True)
