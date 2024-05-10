@@ -8,4 +8,4 @@ numpy
 rioxarray
 s3fs
 scipy
-xarray>=2024.3.0
+xarray
