@@ -2,7 +2,8 @@
 """
 
 import os
-from typing import List
+import leafmap
+from typing import List, Union, Dict, Optional, Tuple
 
 
 def github_raw_url(url):
@@ -138,3 +139,181 @@ def netcdf_groups(filepath: str) -> List[str]:
     with h5netcdf.File(filepath) as file:
         groups = list(file)
     return groups
+
+
+def search_nasa_data(
+    count: int = -1,
+    short_name: Optional[str] = None,
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[str] = None,
+    version: Optional[str] = None,
+    doi: Optional[str] = None,
+    daac: Optional[str] = None,
+    provider: Optional[str] = None,
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    return_gdf: bool = False,
+    **kwargs,
+) -> Union[List[dict], tuple]:
+    """Searches for NASA Earthdata granules.
+
+    Args:
+        count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).
+        short_name (str, optional): The short name of the dataset.
+        bbox (List[float], optional): The bounding box coordinates [xmin, ymin, xmax, ymax].
+        temporal (str, optional): The temporal extent of the data.
+        version (str, optional): The version of the dataset.
+        doi (str, optional): The Digital Object Identifier (DOI) of the dataset.
+        daac (str, optional): The Distributed Active Archive Center (DAAC) of the dataset.
+        provider (str, optional): The provider of the dataset.
+        output (str, optional): The output file path to save the GeoDataFrame as a file.
+        crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".
+        return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.
+        **kwargs: Additional keyword arguments for the earthaccess.search_data() function.
+
+    Returns:
+        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.
+    """
+
+    return leafmap.nasa_data_search(
+        count=count,
+        short_name=short_name,
+        bbox=bbox,
+        temporal=temporal,
+        version=version,
+        doi=doi,
+        daac=daac,
+        provider=provider,
+        output=output,
+        crs=crs,
+        return_gdf=return_gdf,
+        **kwargs,
+    )
+
+
+def download_nasa_data(
+    granules: List[dict],
+    out_dir: Optional[str] = None,
+    provider: Optional[str] = None,
+    threads: int = 8,
+) -> None:
+    """Downloads NASA Earthdata granules.
+
+    Args:
+        granules (List[dict]): The granules to download.
+        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
+        provider (str, optional): The provider of the granules.
+        threads (int, optional): The number of threads to use for downloading. Defaults to 8.
+    """
+
+    leafmap.nasa_data_download(
+        granules=granules, out_dir=out_dir, provider=provider, threads=threads
+    )
+
+
+def search_pace(
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[str] = None,
+    count: int = -1,
+    short_name: Optional[str] = "PACE_OCI_L2_AOP_NRT",
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    return_gdf: bool = False,
+    **kwargs,
+) -> Union[List[dict], tuple]:
+    """Searches for NASA PACE granules.
+
+    Args:
+        bbox (List[float], optional): The bounding box coordinates [xmin, ymin, xmax, ymax].
+        temporal (str, optional): The temporal extent of the data.
+        count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).
+        short_name (str, optional): The short name of the dataset. Defaults to "PACE_OCI_L2_AOP_NRT".
+        output (str, optional): The output file path to save the GeoDataFrame as a file.
+        crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".
+        return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.
+        **kwargs: Additional keyword arguments for the earthaccess.search_data() function.
+
+    Returns:
+        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.
+    """
+
+    return search_nasa_data(
+        count=count,
+        short_name=short_name,
+        bbox=bbox,
+        temporal=temporal,
+        output=output,
+        crs=crs,
+        return_gdf=return_gdf,
+        **kwargs,
+    )
+
+
+def search_emit(
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[str] = None,
+    count: int = -1,
+    short_name: Optional[str] = "EMITL2ARFL",
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    return_gdf: bool = False,
+    **kwargs,
+) -> Union[List[dict], tuple]:
+    """Searches for NASA EMIT granules.
+
+    Args:
+        bbox (List[float], optional): The bounding box coordinates [xmin, ymin, xmax, ymax].
+        temporal (str, optional): The temporal extent of the data.
+        count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).
+        short_name (str, optional): The short name of the dataset. Defaults to "EMITL2ARFL".
+        output (str, optional): The output file path to save the GeoDataFrame as a file.
+        crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".
+        return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.
+        **kwargs: Additional keyword arguments for the earthaccess.search_data() function.
+
+    Returns:
+        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.
+    """
+
+    return search_nasa_data(
+        count=count,
+        short_name=short_name,
+        bbox=bbox,
+        temporal=temporal,
+        output=output,
+        crs=crs,
+        return_gdf=return_gdf,
+        **kwargs,
+    )
+
+
+def download_pace(
+    granules: List[dict],
+    out_dir: Optional[str] = None,
+    threads: int = 8,
+) -> None:
+    """Downloads NASA PACE granules.
+
+    Args:
+        granules (List[dict]): The granules to download.
+        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
+        threads (int, optional): The number of threads to use for downloading. Defaults to 8.
+    """
+
+    download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
+
+
+def download_emit(
+    granules: List[dict],
+    out_dir: Optional[str] = None,
+    threads: int = 8,
+) -> None:
+    """Downloads NASA EMIT granules.
+
+    Args:
+        granules (List[dict]): The granules to download.
+        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
+        threads (int, optional): The number of threads to use for downloading. Defaults to 8.
+    """
+
+    download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)

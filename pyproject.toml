@@ -35,6 +35,8 @@ all = [
 
 extra = [
     "cartopy",
+    "earthaccess",
+    "mapclassify",
 ]
 
 
