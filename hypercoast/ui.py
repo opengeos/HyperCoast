@@ -3,6 +3,7 @@
 
 import os
 import ipyleaflet
+import bqplot
 import ipywidgets as widgets
 import numpy as np
 import xarray as xr
@@ -26,7 +27,7 @@ class SpectralWidget(widgets.HBox):
         _spectral_control (ipyleaflet.WidgetControl): The control for the spectral widget.
     """
 
-    def __init__(self, host_map, position="topright"):
+    def __init__(self, host_map, stack=True, position="topright"):
         """
         Initializes a new instance of the SpectralWidget class.
 
@@ -36,6 +37,18 @@ class SpectralWidget(widgets.HBox):
         """
         self._host_map = host_map
         self.on_close = None
+        self._stack = stack
+        self._show_plot = False
+
+        fig_margin = {"top": 20, "bottom": 35, "left": 50, "right": 20}
+        fig = plt.figure(
+            # title=None,
+            fig_margin=fig_margin,
+            layout={"width": "500px", "height": "300px"},
+        )
+
+        self._fig = fig
+        self._host_map._fig = fig
 
         close_btn = widgets.Button(
             icon="times",
@@ -51,6 +64,13 @@ class SpectralWidget(widgets.HBox):
             layout=widgets.Layout(width="32px"),
         )
 
+        stack_btn = widgets.ToggleButton(
+            value=stack,
+            icon="area-chart",
+            button_style="primary",
+            layout=widgets.Layout(width="32px"),
+        )
+
         def reset_btn_click(_):
             if hasattr(self._host_map, "_plot_marker_cluster"):
                 self._host_map._plot_marker_cluster.markers = []
@@ -60,6 +80,8 @@ class SpectralWidget(widgets.HBox):
                 self._host_map._spectral_data = {}
 
             self._output_widget.clear_output()
+            self._show_plot = False
+            plt.clear()
 
         reset_btn.on_click(reset_btn_click)
 
@@ -112,7 +134,7 @@ class SpectralWidget(widgets.HBox):
         layer_names = list(host_map.cog_layer_dict.keys())
         layers_widget = widgets.Dropdown(options=layer_names)
         layers_widget.layout.width = "18ex"
-        super().__init__([layers_widget, reset_btn, save_btn, close_btn])
+        super().__init__([layers_widget, stack_btn, reset_btn, save_btn, close_btn])
 
         output = widgets.Output()
         output_control = ipyleaflet.WidgetControl(widget=output, position="bottomright")
@@ -130,57 +152,64 @@ class SpectralWidget(widgets.HBox):
             lon = latlon[1]
             if kwargs.get("type") == "click":
                 layer_name = layers_widget.value
-                with self._output_widget:
-                    self._output_widget.clear_output()
 
-                    if not hasattr(self._host_map, "_plot_markers"):
-                        self._host_map._plot_markers = []
-                    markers = self._host_map._plot_markers
-                    marker_cluster = self._host_map._plot_marker_cluster
-                    markers.append(ipyleaflet.Marker(location=latlon))
-                    marker_cluster.markers = markers
-                    self._host_map._plot_marker_cluster = marker_cluster
+                if not hasattr(self._host_map, "_plot_markers"):
+                    self._host_map._plot_markers = []
+                markers = self._host_map._plot_markers
+                marker_cluster = self._host_map._plot_marker_cluster
+                markers.append(ipyleaflet.Marker(location=latlon))
+                marker_cluster.markers = markers
+                self._host_map._plot_marker_cluster = marker_cluster
 
-                    ds = self._host_map.cog_layer_dict[layer_name]["xds"]
-                    if self._host_map.cog_layer_dict[layer_name]["type"] == "EMIT":
-                        da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
-                            "reflectance"
-                        ]
+                ds = self._host_map.cog_layer_dict[layer_name]["xds"]
+                if self._host_map.cog_layer_dict[layer_name]["type"] == "EMIT":
+                    da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
+                        "reflectance"
+                    ]
 
-                        if "wavelengths" not in self._host_map._spectral_data:
-                            self._host_map._spectral_data["wavelengths"] = ds[
-                                "wavelengths"
-                            ].values
-                    elif self._host_map.cog_layer_dict[layer_name]["type"] == "PACE":
-                        try:
-                            da = extract_pace(ds, lat, lon)
-                        except:
-                            da = xr.DataArray(
-                                np.full(len(ds["wavelength"]), np.nan),
-                                dims=["wavelength"],
-                                coords={"wavelength": ds["wavelength"]},
-                            )
-                        if "wavelengths" not in self._host_map._spectral_data:
-                            self._host_map._spectral_data["wavelengths"] = ds[
-                                "wavelength"
-                            ].values
+                    if "wavelengths" not in self._host_map._spectral_data:
+                        self._host_map._spectral_data["wavelengths"] = ds[
+                            "wavelengths"
+                        ].values
+                elif self._host_map.cog_layer_dict[layer_name]["type"] == "PACE":
+                    try:
+                        da = extract_pace(ds, lat, lon)
+                    except:
+                        da = xr.DataArray(
+                            np.full(len(ds["wavelength"]), np.nan),
+                            dims=["wavelength"],
+                            coords={"wavelength": ds["wavelength"]},
+                        )
+                    if "wavelengths" not in self._host_map._spectral_data:
+                        self._host_map._spectral_data["wavelengths"] = ds[
+                            "wavelength"
+                        ].values
 
-                    self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
+                self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 
-                    da[da < 0] = np.nan
-                    # fig, ax = plt.subplots()
-                    # da.plot.line(ax=ax)
-                    # display(fig)
-                    fig_margin = {"top": 20, "bottom": 35, "left": 50, "right": 20}
-                    fig = plt.figure(
-                        # title=None,
-                        fig_margin=fig_margin,
-                        layout={"width": "500px", "height": "300px"},
-                    )
+                da[da < 0] = np.nan
+                if not stack_btn.value:
+                    plt.clear()
                     plt.plot(da.coords[da.dims[0]].values, da.values)
-                    plt.xlabel("Wavelength (nm)")
-                    plt.ylabel("Reflectance")
-                    plt.show()
+                else:
+                    color = np.random.rand(
+                        3,
+                    )
+                    plt.plot(da.coords[da.dims[0]].values, da.values, color=color)
+                    try:
+                        if isinstance(self._fig.axes[0], bqplot.ColorAxis):
+                            self._fig.axes = self._fig.axes[1:]
+                        elif isinstance(self._fig.axes[-1], bqplot.ColorAxis):
+                            self._fig.axes = self._fig.axes[:-1]
+                    except:
+                        pass
+                plt.xlabel("Wavelength (nm)")
+                plt.ylabel("Reflectance")
+
+                if not self._show_plot:
+                    with self._output_widget:
+                        plt.show()
+                        self._show_plot = True
 
                 self._host_map.default_style = {"cursor": "crosshair"}
 
