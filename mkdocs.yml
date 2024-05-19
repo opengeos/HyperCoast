@@ -50,7 +50,7 @@ plugins:
           execute: True
           allow_errors: false
           ignore: ["conf.py"]
-          execute_ignore: ["ignore.ipynb"]
+          execute_ignore: ["search_data.ipynb"]
 
 markdown_extensions:
     - admonition
@@ -80,6 +80,7 @@ nav:
     - Changelog: changelog.md
     - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
+          - examples/search_data.ipynb
           - examples/emit.ipynb
           - examples/pace.ipynb
     - API Reference:
