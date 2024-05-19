@@ -40,7 +40,7 @@ class Map(leafmap.Map):
         if isinstance(obj, str):
             if obj == "spectral":
 
-                SpectralWidget(self, position=position)
+                SpectralWidget(self, position=position, **kwargs)
                 self.set_plot_options(add_marker_cluster=True)
             else:
                 super().add(obj, **kwargs)
