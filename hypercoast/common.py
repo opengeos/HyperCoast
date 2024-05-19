@@ -317,3 +317,14 @@ def download_emit(
     """
 
     download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
+
+
+def nasa_earth_login(strategy: str = "all", persist: bool = True, **kwargs) -> None:
+    """Logs in to NASA Earthdata.
+
+    Args:
+        strategy (str, optional): The login strategy. Defaults to "all".
+        persist (bool, optional): Whether to persist the login. Defaults to True.
+    """
+
+    leafmap.nasa_data_login(strategy=strategy, persist=persist, **kwargs)
