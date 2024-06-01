@@ -287,6 +287,44 @@ def search_emit(
     )
 
 
+def search_ecostress(
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[str] = None,
+    count: int = -1,
+    short_name: Optional[str] = "ECO_L2T_LSTE",
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    return_gdf: bool = False,
+    **kwargs,
+) -> Union[List[dict], tuple]:
+    """Searches for NASA ECOSTRESS granules.
+
+    Args:
+        bbox (List[float], optional): The bounding box coordinates [xmin, ymin, xmax, ymax].
+        temporal (str, optional): The temporal extent of the data.
+        count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).
+        short_name (str, optional): The short name of the dataset. Defaults to "ECO_L2T_LSTE".
+        output (str, optional): The output file path to save the GeoDataFrame as a file.
+        crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".
+        return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.
+        **kwargs: Additional keyword arguments for the earthaccess.search_data() function.
+
+    Returns:
+        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.
+    """
+
+    return search_nasa_data(
+        count=count,
+        short_name=short_name,
+        bbox=bbox,
+        temporal=temporal,
+        output=output,
+        crs=crs,
+        return_gdf=return_gdf,
+        **kwargs,
+    )
+
+
 def download_pace(
     granules: List[dict],
     out_dir: Optional[str] = None,
@@ -309,6 +347,22 @@ def download_emit(
     threads: int = 8,
 ) -> None:
     """Downloads NASA EMIT granules.
+
+    Args:
+        granules (List[dict]): The granules to download.
+        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
+        threads (int, optional): The number of threads to use for downloading. Defaults to 8.
+    """
+
+    download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
+
+
+def download_ecostress(
+    granules: List[dict],
+    out_dir: Optional[str] = None,
+    threads: int = 8,
+) -> None:
+    """Downloads NASA ECOSTRESS granules.
 
     Args:
         granules (List[dict]): The granules to download.

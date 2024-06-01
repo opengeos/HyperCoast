@@ -66,6 +66,15 @@ class Map(leafmap.Map):
         """
         self.add("nasa_earth_data", default_dataset=default_dataset)
 
+    def search_ecostress(self, default_dataset="ECO_L2T_LSTE"):
+        """
+        Adds a NASA Earth Data search tool to the map with a default dataset for ECOSTRESS.
+
+        Args:
+            default_dataset (str, optional): The default dataset to search for. Defaults to "ECO_L2T_LSTE".
+        """
+        self.add("nasa_earth_data", default_dataset=default_dataset)
+
     def add_raster(
         self,
         source,
