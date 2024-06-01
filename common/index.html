@@ -15,14 +15,14 @@
         <link rel="canonical" href="https://hypercoast.org/common/">
       
       
-        <link rel="prev" href="../examples/pace/">
+        <link rel="prev" href="../examples/ecostress/">
       
       
         <link rel="next" href="../emit/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -497,6 +497,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/ecostress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ecostress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -603,6 +624,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.download_ecostress" class="md-nav__link">
+    <span class="md-ellipsis">
+      download_ecostress()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.download_emit" class="md-nav__link">
     <span class="md-ellipsis">
       download_emit()
@@ -660,6 +690,15 @@
   <a href="#hypercoast.common.netcdf_groups" class="md-nav__link">
     <span class="md-ellipsis">
       netcdf_groups()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.search_ecostress" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_ecostress()
     </span>
   </a>
   
@@ -828,6 +867,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.download_ecostress" class="md-nav__link">
+    <span class="md-ellipsis">
+      download_ecostress()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.download_emit" class="md-nav__link">
     <span class="md-ellipsis">
       download_emit()
@@ -885,6 +933,15 @@
   <a href="#hypercoast.common.netcdf_groups" class="md-nav__link">
     <span class="md-ellipsis">
       netcdf_groups()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.search_ecostress" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_ecostress()
     </span>
   </a>
   
@@ -956,6 +1013,75 @@
 
 
 
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.common.download_ecostress" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">download_ecostress</span><span class="p">(</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.download_ecostress" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Downloads NASA ECOSTRESS granules.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>granules</code></td>
+        <td><code>List[dict]</code></td>
+        <td><p>The granules to download.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>out_dir</code></td>
+        <td><code>str</code></td>
+        <td><p>The output directory where the granules will be downloaded. Defaults to None (current directory).</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>threads</code></td>
+        <td><code>int</code></td>
+        <td><p>The number of threads to use for downloading. Defaults to 8.</p></td>
+        <td><code>8</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_ecostress</span><span class="p">(</span>
+    <span class="n">granules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Downloads NASA ECOSTRESS granules.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        granules (List[dict]): The granules to download.</span>
+<span class="sd">        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).</span>
+<span class="sd">        threads (int, optional): The number of threads to use for downloading. Defaults to 8.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
 
 
 
@@ -1619,6 +1745,142 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
 
 
 
+<h2 id="hypercoast.common.search_ecostress" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_ecostress</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;ECO_L2T_LSTE&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">return_gdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.search_ecostress" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Searches for NASA ECOSTRESS granules.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>bbox</code></td>
+        <td><code>List[float]</code></td>
+        <td><p>The bounding box coordinates [xmin, ymin, xmax, ymax].</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>temporal</code></td>
+        <td><code>str</code></td>
+        <td><p>The temporal extent of the data.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>int</code></td>
+        <td><p>The number of granules to retrieve. Defaults to -1 (retrieve all).</p></td>
+        <td><code>-1</code></td>
+      </tr>
+      <tr>
+        <td><code>short_name</code></td>
+        <td><code>str</code></td>
+        <td><p>The short name of the dataset. Defaults to "ECO_L2T_LSTE".</p></td>
+        <td><code>&#39;ECO_L2T_LSTE&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>The output file path to save the GeoDataFrame as a file.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>crs</code></td>
+        <td><code>str</code></td>
+        <td><p>The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".</p></td>
+        <td><code>&#39;EPSG:4326&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>return_gdf</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to return the GeoDataFrame in addition to the granules. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments for the earthaccess.search_data() function.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Union[List[dict], tuple]</code></td>
+      <td><p>The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">short_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+    <span class="n">return_gdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Searches for NASA ECOSTRESS granules.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bbox (List[float], optional): The bounding box coordinates [xmin, ymin, xmax, ymax].</span>
+<span class="sd">        temporal (str, optional): The temporal extent of the data.</span>
+<span class="sd">        count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).</span>
+<span class="sd">        short_name (str, optional): The short name of the dataset. Defaults to &quot;ECO_L2T_LSTE&quot;.</span>
+<span class="sd">        output (str, optional): The output file path to save the GeoDataFrame as a file.</span>
+<span class="sd">        crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to &quot;EPSG:4326&quot;.</span>
+<span class="sd">        return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.</span>
+<span class="sd">        **kwargs: Additional keyword arguments for the earthaccess.search_data() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">search_nasa_data</span><span class="p">(</span>
+        <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="n">short_name</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+        <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+        <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+        <span class="n">return_gdf</span><span class="o">=</span><span class="n">return_gdf</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="hypercoast.common.search_emit" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">search_emit</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;EMITL2ARFL&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">return_gdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
@@ -2159,7 +2421,7 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       

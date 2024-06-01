@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -497,6 +497,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/ecostress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ecostress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -694,6 +715,15 @@
   <a href="#hypercoast.hypercoast.Map.add_raster" class="md-nav__link">
     <span class="md-ellipsis">
       add_raster()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.search_ecostress" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_ecostress()
     </span>
   </a>
   
@@ -898,6 +928,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.search_ecostress" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_ecostress()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.search_emit" class="md-nav__link">
     <span class="md-ellipsis">
       search_emit()
@@ -1064,6 +1103,15 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
 <span class="sd">        Args:</span>
 <span class="sd">            default_dataset (str, optional): The default dataset to search for. Defaults to &quot;PACE_OCI_L2_AOP_NRT&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for ECOSTRESS.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            default_dataset (str, optional): The default dataset to search for. Defaults to &quot;ECO_L2T_LSTE&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
@@ -1975,6 +2023,57 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 
 
 
+<h3 id="hypercoast.hypercoast.Map.search_ecostress" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s1">&#39;ECO_L2T_LSTE&#39;</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.search_ecostress" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Adds a NASA Earth Data search tool to the map with a default dataset for ECOSTRESS.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>default_dataset</code></td>
+        <td><code>str</code></td>
+        <td><p>The default dataset to search for. Defaults to "ECO_L2T_LSTE".</p></td>
+        <td><code>&#39;ECO_L2T_LSTE&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for ECOSTRESS.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        default_dataset (str, optional): The default dataset to search for. Defaults to &quot;ECO_L2T_LSTE&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
 <h3 id="hypercoast.hypercoast.Map.search_emit" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">search_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s1">&#39;EMITL2ARFL&#39;</span><span class="p">)</span></code>
 
@@ -2429,7 +2528,7 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
