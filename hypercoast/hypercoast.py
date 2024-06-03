@@ -367,7 +367,7 @@ class Map(leafmap.Map):
         )
 
         self.cog_layer_dict[layer_name]["xds"] = source
-        # self.cog_layer_dict[layer_name]["type"] = "DESIS"
+        self.cog_layer_dict[layer_name]["hyper"] = "DESIS"
 
     def set_plot_options(
         self,

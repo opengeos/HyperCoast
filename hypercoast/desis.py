@@ -1,6 +1,11 @@
+"""
+This Module has the functions related to working with a DISES dataset.
+"""
+
 import rioxarray
 import numpy as np
 import xarray as xr
+import pandas as pd
 
 
 def read_desis(filepath, bands=None, method="nearest", **kwargs):
@@ -26,6 +31,10 @@ def read_desis(filepath, bands=None, method="nearest", **kwargs):
         dataset = dataset.sel(band=bands, method=method, **kwargs)
 
     dataset = dataset.rename({"band_data": "reflectance"})
+    url = "https://github.com/opengeos/datasets/releases/download/hypercoast/desis_wavelengths.csv"
+    df = pd.read_csv(url)
+    wavelengths = df["wavelength"].tolist()
+    dataset.attrs["wavelengths"] = wavelengths
 
     return dataset
 
