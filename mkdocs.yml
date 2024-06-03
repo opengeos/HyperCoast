@@ -86,6 +86,7 @@ nav:
           - examples/ecostress.ipynb
     - API Reference:
           - common module: common.md
+          - desis module: desis.md
           - emit module: emit.md
           - hypercoast module: hypercoast.md
           - pace module: pace.md
