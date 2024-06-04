@@ -13,19 +13,23 @@
 
 ## Features
 
--   Interactive visualization and analysis of hyperspectral data (e.g., [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov))
+-   Interactive visualization and analysis of hyperspectral data (e.g., [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf))
 -   Interactive extraction and visualization of spectral signatures
 -   Saving spectral signatures as CSV files
 
 ## Demos
 
--   Visualizing NASA [EMIT](https://earth.jpl.nasa.gov/emit) data interactively
+-   Visualizing NASA [EMIT](https://earth.jpl.nasa.gov/emit) hyperspectral data interactively
 
 ![](https://i.imgur.com/zeyABMq.gif)
 
--   Visualizing NASA [PACE](https://pace.gsfc.nasa.gov) data interactively
+-   Visualizing NASA [PACE](https://pace.gsfc.nasa.gov) hyperspectral data interactively
 
 ![](https://i.imgur.com/HBMjW6o.gif)
+
+-   Visualizing [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf) hyperspectral data interactively
+
+![](https://i.imgur.com/PkwOPN5.gif)
 
 ## Acknowledgement
 
