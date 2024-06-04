@@ -11,6 +11,7 @@ from bqplot import pyplot as plt
 from IPython.core.display import display
 from ipyfilechooser import FileChooser
 from .pace import extract_pace
+from .desis import extract_desis
 
 
 class SpectralWidget(widgets.HBox):
@@ -162,7 +163,7 @@ class SpectralWidget(widgets.HBox):
                 self._host_map._plot_marker_cluster = marker_cluster
 
                 ds = self._host_map.cog_layer_dict[layer_name]["xds"]
-                if self._host_map.cog_layer_dict[layer_name]["type"] == "EMIT":
+                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "EMIT":
                     da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
                         "reflectance"
                     ]
@@ -171,7 +172,7 @@ class SpectralWidget(widgets.HBox):
                         self._host_map._spectral_data["wavelengths"] = ds[
                             "wavelengths"
                         ].values
-                elif self._host_map.cog_layer_dict[layer_name]["type"] == "PACE":
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "PACE":
                     try:
                         da = extract_pace(ds, lat, lon)
                     except:
@@ -184,6 +185,9 @@ class SpectralWidget(widgets.HBox):
                         self._host_map._spectral_data["wavelengths"] = ds[
                             "wavelength"
                         ].values
+
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "DESIS":
+                    da = extract_desis(ds, lat, lon)
 
                 self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 

@@ -195,7 +195,7 @@ class Map(leafmap.Map):
         )
 
         self.cog_layer_dict[layer_name]["xds"] = xds
-        self.cog_layer_dict[layer_name]["type"] = "EMIT"
+        self.cog_layer_dict[layer_name]["hyper"] = "EMIT"
 
     def add_pace(
         self,
@@ -278,7 +278,7 @@ class Map(leafmap.Map):
         )
 
         self.cog_layer_dict[layer_name]["xds"] = source
-        self.cog_layer_dict[layer_name]["type"] = "PACE"
+        self.cog_layer_dict[layer_name]["hyper"] = "PACE"
 
     def add_desis(
         self,

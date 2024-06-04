@@ -1,11 +1,12 @@
 """
-This Module has the functions related to working with a DISES dataset.
+This Module has the functions related to working with a DESIS dataset.
 """
 
 import rioxarray
 import numpy as np
 import xarray as xr
 import pandas as pd
+from .common import convert_coords
 
 
 def read_desis(filepath, bands=None, method="nearest", **kwargs):
@@ -35,6 +36,7 @@ def read_desis(filepath, bands=None, method="nearest", **kwargs):
     df = pd.read_csv(url)
     wavelengths = df["wavelength"].tolist()
     dataset.attrs["wavelengths"] = wavelengths
+    dataset.attrs["crs"] = dataset.rio.crs.to_string()
 
     return dataset
 
@@ -69,3 +71,29 @@ def desis_to_image(dataset, bands=None, method="nearest", output=None, **kwargs)
         dataset = dataset.sel(band=bands, method=method)
 
     return array_to_image(dataset["reflectance"], output=output, **kwargs)
+
+
+def extract_desis(ds, lat, lon):
+    """
+    Extracts DESIS data from a given xarray Dataset.
+
+    Args:
+        ds (xarray.Dataset): The dataset containing the DESIS data.
+        lat (float): The latitude of the point to extract.
+        lon (float): The longitude of the point to extract.
+
+    Returns:
+        xarray.DataArray: The extracted data.
+    """
+
+    crs = ds.attrs["crs"]
+
+    x, y = convert_coords([[lat, lon]], "epsg:4326", crs)[0]
+
+    values = ds.sel(x=x, y=y, method="nearest")["reflectance"].values
+
+    da = xr.DataArray(
+        values, dims=["wavelength"], coords={"wavelength": ds.attrs["wavelengths"]}
+    )
+
+    return da
