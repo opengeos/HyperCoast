@@ -11,6 +11,7 @@ from bqplot import pyplot as plt
 from IPython.core.display import display
 from ipyfilechooser import FileChooser
 from .pace import extract_pace
+from .desis import extract_desis
 
 
 class SpectralWidget(widgets.HBox):
@@ -157,12 +158,12 @@ class SpectralWidget(widgets.HBox):
                     self._host_map._plot_markers = []
                 markers = self._host_map._plot_markers
                 marker_cluster = self._host_map._plot_marker_cluster
-                markers.append(ipyleaflet.Marker(location=latlon))
+                markers.append(ipyleaflet.Marker(location=latlon, draggable=False))
                 marker_cluster.markers = markers
                 self._host_map._plot_marker_cluster = marker_cluster
 
                 ds = self._host_map.cog_layer_dict[layer_name]["xds"]
-                if self._host_map.cog_layer_dict[layer_name]["type"] == "EMIT":
+                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "EMIT":
                     da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
                         "reflectance"
                     ]
@@ -171,7 +172,7 @@ class SpectralWidget(widgets.HBox):
                         self._host_map._spectral_data["wavelengths"] = ds[
                             "wavelengths"
                         ].values
-                elif self._host_map.cog_layer_dict[layer_name]["type"] == "PACE":
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "PACE":
                     try:
                         da = extract_pace(ds, lat, lon)
                     except:
@@ -185,17 +186,34 @@ class SpectralWidget(widgets.HBox):
                             "wavelength"
                         ].values
 
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "DESIS":
+                    da = extract_desis(ds, lat, lon)
+
                 self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 
                 da[da < 0] = np.nan
+                axes_options = {
+                    "x": {"label_offset": "30px"},
+                    "y": {"label_offset": "35px"},
+                }
+
                 if not stack_btn.value:
                     plt.clear()
-                    plt.plot(da.coords[da.dims[0]].values, da.values)
+                    plt.plot(
+                        da.coords[da.dims[0]].values,
+                        da.values,
+                        axes_options=axes_options,
+                    )
                 else:
                     color = np.random.rand(
                         3,
                     )
-                    plt.plot(da.coords[da.dims[0]].values, da.values, color=color)
+                    plt.plot(
+                        da.coords[da.dims[0]].values,
+                        da.values,
+                        color=color,
+                        axes_options=axes_options,
+                    )
                     try:
                         if isinstance(self._fig.axes[0], bqplot.ColorAxis):
                             self._fig.axes = self._fig.axes[1:]

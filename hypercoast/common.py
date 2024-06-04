@@ -334,8 +334,10 @@ def download_pace(
 
     Args:
         granules (List[dict]): The granules to download.
-        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
-        threads (int, optional): The number of threads to use for downloading. Defaults to 8.
+        out_dir (str, optional): The output directory where the granules will be
+            downloaded. Defaults to None (current directory).
+        threads (int, optional): The number of threads to use for downloading.
+            Defaults to 8.
     """
 
     download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
@@ -350,8 +352,10 @@ def download_emit(
 
     Args:
         granules (List[dict]): The granules to download.
-        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
-        threads (int, optional): The number of threads to use for downloading. Defaults to 8.
+        out_dir (str, optional): The output directory where the granules will be
+            downloaded. Defaults to None (current directory).
+        threads (int, optional): The number of threads to use for downloading.
+            Defaults to 8.
     """
 
     download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
@@ -366,8 +370,10 @@ def download_ecostress(
 
     Args:
         granules (List[dict]): The granules to download.
-        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
-        threads (int, optional): The number of threads to use for downloading. Defaults to 8.
+        out_dir (str, optional): The output directory where the granules will be
+            downloaded. Defaults to None (current directory).
+        threads (int, optional): The number of threads to use for downloading.
+            Defaults to 8.
     """
 
     download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
@@ -382,3 +388,28 @@ def nasa_earth_login(strategy: str = "all", persist: bool = True, **kwargs) -> N
     """
 
     leafmap.nasa_data_login(strategy=strategy, persist=persist, **kwargs)
+
+
+def convert_coords(
+    coords: List[Tuple[float, float]], from_epsg: str, to_epsg: str
+) -> List[Tuple[float, float]]:
+    """
+    Convert a list of coordinates from one EPSG to another.
+
+    Args:
+        coords: List of tuples containing coordinates in the format (latitude, longitude).
+        from_epsg: Source EPSG code (default is "epsg:4326").
+        to_epsg: Target EPSG code (default is "epsg:32615").
+
+    Returns:
+        List of tuples containing converted coordinates in the format (x, y).
+    """
+    import pyproj
+
+    # Define the coordinate transformation
+    transformer = pyproj.Transformer.from_crs(from_epsg, to_epsg, always_xy=True)
+
+    # Convert each coordinate
+    converted_coords = [transformer.transform(lon, lat) for lat, lon in coords]
+
+    return converted_coords

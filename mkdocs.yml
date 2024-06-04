@@ -81,11 +81,13 @@ nav:
     - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
           - examples/search_data.ipynb
+          - examples/desis.ipynb
           - examples/emit.ipynb
           - examples/pace.ipynb
           - examples/ecostress.ipynb
     - API Reference:
           - common module: common.md
+          - desis module: desis.md
           - emit module: emit.md
           - hypercoast module: hypercoast.md
           - pace module: pace.md
