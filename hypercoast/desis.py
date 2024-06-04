@@ -90,10 +90,66 @@ def extract_desis(ds, lat, lon):
 
     x, y = convert_coords([[lat, lon]], "epsg:4326", crs)[0]
 
-    values = ds.sel(x=x, y=y, method="nearest")["reflectance"].values
+    values = ds.sel(x=x, y=y, method="nearest")["reflectance"].values / 10000
 
     da = xr.DataArray(
         values, dims=["wavelength"], coords={"wavelength": ds.attrs["wavelengths"]}
     )
 
     return da
+
+
+def filter_desis(dataset, lat, lon, return_plot=False, **kwargs):
+    """
+    Filters a DESIS dataset based on latitude and longitude.
+
+    Args:
+        dataset (xr.Dataset): The DESIS dataset to filter.
+        lat (float or tuple): The latitude to filter by. If a tuple or list,
+            it represents a range.
+        lon (float or tuple): The longitude to filter by. If a tuple or
+            list, it represents a range.
+
+    Returns:
+        xr.DataArray: The filtered DESIS data.
+    """
+
+    if isinstance(lat, list) or isinstance(lat, tuple):
+        min_lat = min(lat)
+        max_lat = max(lat)
+    else:
+        min_lat = lat
+        max_lat = lat
+
+    if isinstance(lon, list) or isinstance(lon, tuple):
+        min_lon = min(lon)
+        max_lon = max(lon)
+    else:
+        min_lon = lon
+        max_lon = lon
+
+    if min_lat == max_lat and min_lon == max_lon:
+        coords = [[min_lat, min_lon]]
+    else:
+        coords = [[min_lat, min_lon], [max_lat, max_lon]]
+    coords = convert_coords(coords, "epsg:4326", dataset.rio.crs.to_string())
+
+    if len(coords) == 1:
+        x, y = coords[0]
+        da = dataset.sel(x=x, y=y, method="nearest")["reflectance"]
+    else:
+        x_min, y_min = coords[0]
+        x_max, y_max = coords[1]
+        print(x_min, y_min, x_max, y_max)
+        da = dataset.sel(x=slice(x_min, x_max), y=slice(y_min, y_max))["reflectance"]
+
+    wavelengths = dataset.attrs["wavelengths"]
+
+    if return_plot:
+        rrs_stack = da.stack(
+            {"pixel": ["latitude", "longitude"]},
+            create_index=False,
+        )
+        rrs_stack.plot.line(hue="pixel", **kwargs)
+    else:
+        return da

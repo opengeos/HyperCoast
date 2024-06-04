@@ -347,7 +347,7 @@ class Map(leafmap.Map):
 
         if indexes is None:
             if isinstance(bands, list) and len(bands) == 1:
-                indexes = 1
+                indexes = [1]
             else:
                 indexes = [3, 2, 1]
 
