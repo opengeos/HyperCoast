@@ -462,6 +462,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/desis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Desis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/emit/" class="md-nav__link">
         
   
@@ -590,6 +611,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../desis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    desis module
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../emit/" class="md-nav__link">
         
   
@@ -688,6 +730,15 @@
   <a href="#hypercoast.hypercoast.Map.add" class="md-nav__link">
     <span class="md-ellipsis">
       add()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_desis" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_desis()
     </span>
   </a>
   
@@ -895,6 +946,15 @@
   <a href="#hypercoast.hypercoast.Map.add" class="md-nav__link">
     <span class="md-ellipsis">
       add()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_desis" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_desis()
     </span>
   </a>
   
@@ -1234,7 +1294,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
 
     <span class="k">def</span> <span class="nf">add_pace</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1255,25 +1315,39 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a PACE dataset to the map.</span>
-<span class="sd">            If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and</span>
-<span class="sd">            if the raster does not render properly, try installing jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
-<span class="sd">            then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</span>
+<span class="sd">            If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">                (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">            if the raster does not render properly, try installing</span>
+<span class="sd">                jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">            then running the following code before calling this function. For</span>
+<span class="sd">                more info, see https://bit.ly/3JbmF93.</span>
 
 <span class="sd">            import os</span>
 <span class="sd">            os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</span>
-<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts at 1. Defaults to None.</span>
-<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib` to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</span>
-<span class="sd">            vmin (float, optional): The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">            vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">            nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.</span>
-<span class="sd">            attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">                Optimized GeoTIFF.</span>
+<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">                at 1. Defaults to None.</span>
+<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">                to use when plotting a single band. See</span>
+<span class="sd">                    https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                    Default is greyscale.</span>
+<span class="sd">            vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            nodata (float, optional): The value from the band to use to interpret</span>
+<span class="sd">                as not valid data. Defaults to None.</span>
+<span class="sd">            attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">                defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">            layer_name (str, optional): The layer name to use. Defaults to &#39;EMIT&#39;.</span>
-<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.</span>
+<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">                layer. Defaults to True.</span>
 <span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
-<span class="sd">            array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1303,7 +1377,96 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PACE&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PACE&quot;</span>
+
+    <span class="k">def</span> <span class="nf">add_desis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">,</span>
+        <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;DESIS&quot;</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a DESIS dataset to the map.</span>
+<span class="sd">            If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">                (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">            if the raster does not render properly, try installing</span>
+<span class="sd">                jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">            then running the following code before calling this function. For</span>
+<span class="sd">                more info, see https://bit.ly/3JbmF93.</span>
+
+<span class="sd">            import os</span>
+<span class="sd">            os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">                Optimized GeoTIFF.</span>
+<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">                at 1. Defaults to None.</span>
+<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">                to use when plotting a single band. See</span>
+<span class="sd">                https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                Default is &#39;jet&#39;.</span>
+<span class="sd">            vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            nodata (float, optional): The value from the band to use to interpret</span>
+<span class="sd">                as not valid data. Defaults to None.</span>
+<span class="sd">            attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">                defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">            layer_name (str, optional): The layer name to use. Defaults to &#39;EMIT&#39;.</span>
+<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">                layer. Defaults to True.</span>
+<span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
+<span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+            <span class="n">source</span> <span class="o">=</span> <span class="n">read_desis</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+        <span class="n">image</span> <span class="o">=</span> <span class="n">desis_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+            <span class="n">image</span><span class="p">,</span>
+            <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+            <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+            <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+            <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+            <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+            <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DESIS&quot;</span>
 
     <span class="k">def</span> <span class="nf">set_plot_options</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1320,15 +1483,25 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets plotting options.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            add_marker_cluster (bool, optional): Whether to add a marker cluster. Defaults to False.</span>
-<span class="sd">            sample_scale (float, optional):  A nominal scale in meters of the projection to sample in . Defaults to None.</span>
-<span class="sd">            plot_type (str, optional): The plot type can be one of &quot;None&quot;, &quot;bar&quot;, &quot;scatter&quot; or &quot;hist&quot;. Defaults to None.</span>
-<span class="sd">            overlay (bool, optional): Whether to overlay plotted lines on the figure. Defaults to False.</span>
-<span class="sd">            position (str, optional): Position of the control, can be ‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults to &#39;bottomright&#39;.</span>
-<span class="sd">            min_width (int, optional): Min width of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
-<span class="sd">            max_width (int, optional): Max width of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
-<span class="sd">            min_height (int, optional): Min height of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
-<span class="sd">            max_height (int, optional): Max height of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
+<span class="sd">            add_marker_cluster (bool, optional): Whether to add a marker cluster.</span>
+<span class="sd">                Defaults to False.</span>
+<span class="sd">            sample_scale (float, optional):  A nominal scale in meters of the</span>
+<span class="sd">                projection to sample in . Defaults to None.</span>
+<span class="sd">            plot_type (str, optional): The plot type can be one of &quot;None&quot;, &quot;bar&quot;,</span>
+<span class="sd">                &quot;scatter&quot; or &quot;hist&quot;. Defaults to None.</span>
+<span class="sd">            overlay (bool, optional): Whether to overlay plotted lines on the</span>
+<span class="sd">                figure. Defaults to False.</span>
+<span class="sd">            position (str, optional): Position of the control, can be</span>
+<span class="sd">                ‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults</span>
+<span class="sd">                to &#39;bottomright&#39;.</span>
+<span class="sd">            min_width (int, optional): Min width of the widget (in pixels), if</span>
+<span class="sd">                None it will respect the content size. Defaults to None.</span>
+<span class="sd">            max_width (int, optional): Max width of the widget (in pixels), if</span>
+<span class="sd">                None it will respect the content size. Defaults to None.</span>
+<span class="sd">            min_height (int, optional): Min height of the widget (in pixels), if</span>
+<span class="sd">                None it will respect the content size. Defaults to None.</span>
+<span class="sd">            max_height (int, optional): Max height of the widget (in pixels), if</span>
+<span class="sd">                None it will respect the content size. Defaults to None.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plot_options_dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1506,6 +1679,218 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
 
 
+<h3 id="hypercoast.hypercoast.Map.add_desis" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_desis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;DESIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.add_desis" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Add a DESIS dataset to the map.
+    If you are using this function in JupyterHub on a remote server
+        (e.g., Binder, Microsoft Planetary Computer) and
+    if the raster does not render properly, try installing
+        jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
+    then running the following code before calling this function. For
+        more info, see https://bit.ly/3JbmF93.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>import os
+os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
+</code></pre></div></td></tr></table></div>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>source</code></td>
+        <td><code>str</code></td>
+        <td><p>The path to the GeoTIFF file or the URL of the Cloud
+Optimized GeoTIFF.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>indexes</code></td>
+        <td><code>int</code></td>
+        <td><p>The band(s) to use. Band indexing starts
+at 1. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>colormap</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the colormap from <code>matplotlib</code>
+to use when plotting a single band. See
+https://matplotlib.org/stable/gallery/color/colormap_reference.html.
+Default is 'jet'.</p></td>
+        <td><code>&#39;jet&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>vmin</code></td>
+        <td><code>float</code></td>
+        <td><p>The minimum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>vmax</code></td>
+        <td><code>float</code></td>
+        <td><p>The maximum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>nodata</code></td>
+        <td><code>float</code></td>
+        <td><p>The value from the band to use to interpret
+as not valid data. Defaults to None.</p></td>
+        <td><code>nan</code></td>
+      </tr>
+      <tr>
+        <td><code>attribution</code></td>
+        <td><code>str</code></td>
+        <td><p>Attribution for the source raster. This
+defaults to a message about it being a local file.. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>layer_name</code></td>
+        <td><code>str</code></td>
+        <td><p>The layer name to use. Defaults to 'EMIT'.</p></td>
+        <td><code>&#39;DESIS&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>zoom_to_layer</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to zoom to the extent of the
+layer. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>visible</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether the layer is visible. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>array_args</code></td>
+        <td><code>dict</code></td>
+        <td><p>Additional arguments to pass to
+<code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_desis</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">source</span><span class="p">,</span>
+    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+    <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;DESIS&quot;</span><span class="p">,</span>
+    <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a DESIS dataset to the map.</span>
+<span class="sd">        If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">            (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">        if the raster does not render properly, try installing</span>
+<span class="sd">            jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">        then running the following code before calling this function. For</span>
+<span class="sd">            more info, see https://bit.ly/3JbmF93.</span>
+
+<span class="sd">        import os</span>
+<span class="sd">        os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">            Optimized GeoTIFF.</span>
+<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">            at 1. Defaults to None.</span>
+<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">            to use when plotting a single band. See</span>
+<span class="sd">            https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">            Default is &#39;jet&#39;.</span>
+<span class="sd">        vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        nodata (float, optional): The value from the band to use to interpret</span>
+<span class="sd">            as not valid data. Defaults to None.</span>
+<span class="sd">        attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">            defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">        layer_name (str, optional): The layer name to use. Defaults to &#39;EMIT&#39;.</span>
+<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">            layer. Defaults to True.</span>
+<span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
+<span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">read_desis</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">desis_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+        <span class="n">image</span><span class="p">,</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+        <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+        <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DESIS&quot;</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
 <h3 id="hypercoast.hypercoast.Map.add_emit" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">add_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;EMIT&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
@@ -1667,7 +2052,7 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -1689,9 +2074,12 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <div class="doc doc-contents ">
 
       <p>Add a PACE dataset to the map.
-    If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and
-    if the raster does not render properly, try installing jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
-    then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</p>
+    If you are using this function in JupyterHub on a remote server
+        (e.g., Binder, Microsoft Planetary Computer) and
+    if the raster does not render properly, try installing
+        jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
+    then running the following code before calling this function. For
+        more info, see https://bit.ly/3JbmF93.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>import os
 os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
@@ -1711,43 +2099,52 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>source</code></td>
         <td><code>str</code></td>
-        <td><p>The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</p></td>
+        <td><p>The path to the GeoTIFF file or the URL of the Cloud
+Optimized GeoTIFF.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>indexes</code></td>
         <td><code>int</code></td>
-        <td><p>The band(s) to use. Band indexing starts at 1. Defaults to None.</p></td>
+        <td><p>The band(s) to use. Band indexing starts
+at 1. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>colormap</code></td>
         <td><code>str</code></td>
-        <td><p>The name of the colormap from <code>matplotlib</code> to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</p></td>
+        <td><p>The name of the colormap from <code>matplotlib</code>
+to use when plotting a single band. See
+    https://matplotlib.org/stable/gallery/color/colormap_reference.html.
+    Default is greyscale.</p></td>
         <td><code>&#39;jet&#39;</code></td>
       </tr>
       <tr>
         <td><code>vmin</code></td>
         <td><code>float</code></td>
-        <td><p>The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
+        <td><p>The minimum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmax</code></td>
         <td><code>float</code></td>
-        <td><p>The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
+        <td><p>The maximum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>nodata</code></td>
         <td><code>float</code></td>
-        <td><p>The value from the band to use to interpret as not valid data. Defaults to None.</p></td>
+        <td><p>The value from the band to use to interpret
+as not valid data. Defaults to None.</p></td>
         <td><code>nan</code></td>
       </tr>
       <tr>
         <td><code>attribution</code></td>
         <td><code>str</code></td>
-        <td><p>Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</p></td>
+        <td><p>Attribution for the source raster. This
+defaults to a message about it being a local file.. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
@@ -1759,7 +2156,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>zoom_to_layer</code></td>
         <td><code>bool</code></td>
-        <td><p>Whether to zoom to the extent of the layer. Defaults to True.</p></td>
+        <td><p>Whether to zoom to the extent of the
+layer. Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
@@ -1771,7 +2169,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>array_args</code></td>
         <td><code>dict</code></td>
-        <td><p>Additional arguments to pass to <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
+        <td><p>Additional arguments to pass to
+<code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
         <td><code>{}</code></td>
       </tr>
   </tbody>
@@ -1797,25 +2196,39 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a PACE dataset to the map.</span>
-<span class="sd">        If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and</span>
-<span class="sd">        if the raster does not render properly, try installing jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
-<span class="sd">        then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</span>
+<span class="sd">        If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">            (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">        if the raster does not render properly, try installing</span>
+<span class="sd">            jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">        then running the following code before calling this function. For</span>
+<span class="sd">            more info, see https://bit.ly/3JbmF93.</span>
 
 <span class="sd">        import os</span>
 <span class="sd">        os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</span>
-<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts at 1. Defaults to None.</span>
-<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib` to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</span>
-<span class="sd">        vmin (float, optional): The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">        vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">        nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.</span>
-<span class="sd">        attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">            Optimized GeoTIFF.</span>
+<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">            at 1. Defaults to None.</span>
+<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">            to use when plotting a single band. See</span>
+<span class="sd">                https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                Default is greyscale.</span>
+<span class="sd">        vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        nodata (float, optional): The value from the band to use to interpret</span>
+<span class="sd">            as not valid data. Defaults to None.</span>
+<span class="sd">        attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">            defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">        layer_name (str, optional): The layer name to use. Defaults to &#39;EMIT&#39;.</span>
-<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.</span>
+<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">            layer. Defaults to True.</span>
 <span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
-<span class="sd">        array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1845,7 +2258,7 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PACE&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PACE&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2200,55 +2613,65 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>add_marker_cluster</code></td>
         <td><code>bool</code></td>
-        <td><p>Whether to add a marker cluster. Defaults to False.</p></td>
+        <td><p>Whether to add a marker cluster.
+Defaults to False.</p></td>
         <td><code>False</code></td>
       </tr>
       <tr>
         <td><code>sample_scale</code></td>
         <td><code>float</code></td>
-        <td><p>A nominal scale in meters of the projection to sample in . Defaults to None.</p></td>
+        <td><p>A nominal scale in meters of the
+projection to sample in . Defaults to None.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>plot_type</code></td>
         <td><code>str</code></td>
-        <td><p>The plot type can be one of "None", "bar", "scatter" or "hist". Defaults to None.</p></td>
+        <td><p>The plot type can be one of "None", "bar",
+"scatter" or "hist". Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>overlay</code></td>
         <td><code>bool</code></td>
-        <td><p>Whether to overlay plotted lines on the figure. Defaults to False.</p></td>
+        <td><p>Whether to overlay plotted lines on the
+figure. Defaults to False.</p></td>
         <td><code>False</code></td>
       </tr>
       <tr>
         <td><code>position</code></td>
         <td><code>str</code></td>
-        <td><p>Position of the control, can be ‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults to 'bottomright'.</p></td>
+        <td><p>Position of the control, can be
+‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults
+to 'bottomright'.</p></td>
         <td><code>&#39;bottomright&#39;</code></td>
       </tr>
       <tr>
         <td><code>min_width</code></td>
         <td><code>int</code></td>
-        <td><p>Min width of the widget (in pixels), if None it will respect the content size. Defaults to None.</p></td>
+        <td><p>Min width of the widget (in pixels), if
+None it will respect the content size. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>max_width</code></td>
         <td><code>int</code></td>
-        <td><p>Max width of the widget (in pixels), if None it will respect the content size. Defaults to None.</p></td>
+        <td><p>Max width of the widget (in pixels), if
+None it will respect the content size. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>min_height</code></td>
         <td><code>int</code></td>
-        <td><p>Min height of the widget (in pixels), if None it will respect the content size. Defaults to None.</p></td>
+        <td><p>Min height of the widget (in pixels), if
+None it will respect the content size. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>max_height</code></td>
         <td><code>int</code></td>
-        <td><p>Max height of the widget (in pixels), if None it will respect the content size. Defaults to None.</p></td>
+        <td><p>Max height of the widget (in pixels), if
+None it will respect the content size. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
   </tbody>
@@ -2270,15 +2693,25 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets plotting options.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        add_marker_cluster (bool, optional): Whether to add a marker cluster. Defaults to False.</span>
-<span class="sd">        sample_scale (float, optional):  A nominal scale in meters of the projection to sample in . Defaults to None.</span>
-<span class="sd">        plot_type (str, optional): The plot type can be one of &quot;None&quot;, &quot;bar&quot;, &quot;scatter&quot; or &quot;hist&quot;. Defaults to None.</span>
-<span class="sd">        overlay (bool, optional): Whether to overlay plotted lines on the figure. Defaults to False.</span>
-<span class="sd">        position (str, optional): Position of the control, can be ‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults to &#39;bottomright&#39;.</span>
-<span class="sd">        min_width (int, optional): Min width of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
-<span class="sd">        max_width (int, optional): Max width of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
-<span class="sd">        min_height (int, optional): Min height of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
-<span class="sd">        max_height (int, optional): Max height of the widget (in pixels), if None it will respect the content size. Defaults to None.</span>
+<span class="sd">        add_marker_cluster (bool, optional): Whether to add a marker cluster.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">        sample_scale (float, optional):  A nominal scale in meters of the</span>
+<span class="sd">            projection to sample in . Defaults to None.</span>
+<span class="sd">        plot_type (str, optional): The plot type can be one of &quot;None&quot;, &quot;bar&quot;,</span>
+<span class="sd">            &quot;scatter&quot; or &quot;hist&quot;. Defaults to None.</span>
+<span class="sd">        overlay (bool, optional): Whether to overlay plotted lines on the</span>
+<span class="sd">            figure. Defaults to False.</span>
+<span class="sd">        position (str, optional): Position of the control, can be</span>
+<span class="sd">            ‘bottomleft’, ‘bottomright’, ‘topleft’, or ‘topright’. Defaults</span>
+<span class="sd">            to &#39;bottomright&#39;.</span>
+<span class="sd">        min_width (int, optional): Min width of the widget (in pixels), if</span>
+<span class="sd">            None it will respect the content size. Defaults to None.</span>
+<span class="sd">        max_width (int, optional): Max width of the widget (in pixels), if</span>
+<span class="sd">            None it will respect the content size. Defaults to None.</span>
+<span class="sd">        min_height (int, optional): Min height of the widget (in pixels), if</span>
+<span class="sd">            None it will respect the content size. Defaults to None.</span>
+<span class="sd">        max_height (int, optional): Max height of the widget (in pixels), if</span>
+<span class="sd">            None it will respect the content size. Defaults to None.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plot_options_dict</span> <span class="o">=</span> <span class="p">{}</span>

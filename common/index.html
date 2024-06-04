@@ -18,7 +18,7 @@
         <link rel="prev" href="../examples/ecostress/">
       
       
-        <link rel="next" href="../emit/">
+        <link rel="next" href="../desis/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -462,6 +462,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/desis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Desis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/emit/" class="md-nav__link">
         
   
@@ -624,6 +645,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.convert_coords" class="md-nav__link">
+    <span class="md-ellipsis">
+      convert_coords()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.download_ecostress" class="md-nav__link">
     <span class="md-ellipsis">
       download_ecostress()
@@ -735,6 +765,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    desis module
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -861,6 +912,15 @@
   <a href="#hypercoast.common" class="md-nav__link">
     <span class="md-ellipsis">
       hypercoast.common
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.convert_coords" class="md-nav__link">
+    <span class="md-ellipsis">
+      convert_coords()
     </span>
   </a>
   
@@ -1020,6 +1080,99 @@
 
 
 
+<h2 id="hypercoast.common.convert_coords" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">convert_coords</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">from_epsg</span><span class="p">,</span> <span class="n">to_epsg</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.convert_coords" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert a list of coordinates from one EPSG to another.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>coords</code></td>
+        <td><code>List[Tuple[float, float]]</code></td>
+        <td><p>List of tuples containing coordinates in the format (latitude, longitude).</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>from_epsg</code></td>
+        <td><code>str</code></td>
+        <td><p>Source EPSG code (default is "epsg:4326").</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>to_epsg</code></td>
+        <td><code>str</code></td>
+        <td><p>Target EPSG code (default is "epsg:32615").</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Tuple[float, float]]</code></td>
+      <td><p>List of tuples containing converted coordinates in the format (x, y).</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">convert_coords</span><span class="p">(</span>
+    <span class="n">coords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">from_epsg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_epsg</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a list of coordinates from one EPSG to another.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coords: List of tuples containing coordinates in the format (latitude, longitude).</span>
+<span class="sd">        from_epsg: Source EPSG code (default is &quot;epsg:4326&quot;).</span>
+<span class="sd">        to_epsg: Target EPSG code (default is &quot;epsg:32615&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of tuples containing converted coordinates in the format (x, y).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">pyproj</span>
+
+    <span class="c1"># Define the coordinate transformation</span>
+    <span class="n">transformer</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="n">from_epsg</span><span class="p">,</span> <span class="n">to_epsg</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Convert each coordinate</span>
+    <span class="n">converted_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span> <span class="k">for</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">converted_coords</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="hypercoast.common.download_ecostress" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">download_ecostress</span><span class="p">(</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span></code>
 
@@ -1050,13 +1203,15 @@
       <tr>
         <td><code>out_dir</code></td>
         <td><code>str</code></td>
-        <td><p>The output directory where the granules will be downloaded. Defaults to None (current directory).</p></td>
+        <td><p>The output directory where the granules will be
+downloaded. Defaults to None (current directory).</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>threads</code></td>
         <td><code>int</code></td>
-        <td><p>The number of threads to use for downloading. Defaults to 8.</p></td>
+        <td><p>The number of threads to use for downloading.
+Defaults to 8.</p></td>
         <td><code>8</code></td>
       </tr>
   </tbody>
@@ -1072,8 +1227,10 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        granules (List[dict]): The granules to download.</span>
-<span class="sd">        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).</span>
-<span class="sd">        threads (int, optional): The number of threads to use for downloading. Defaults to 8.</span>
+<span class="sd">        out_dir (str, optional): The output directory where the granules will be</span>
+<span class="sd">            downloaded. Defaults to None (current directory).</span>
+<span class="sd">        threads (int, optional): The number of threads to use for downloading.</span>
+<span class="sd">            Defaults to 8.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
@@ -1119,13 +1276,15 @@
       <tr>
         <td><code>out_dir</code></td>
         <td><code>str</code></td>
-        <td><p>The output directory where the granules will be downloaded. Defaults to None (current directory).</p></td>
+        <td><p>The output directory where the granules will be
+downloaded. Defaults to None (current directory).</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>threads</code></td>
         <td><code>int</code></td>
-        <td><p>The number of threads to use for downloading. Defaults to 8.</p></td>
+        <td><p>The number of threads to use for downloading.
+Defaults to 8.</p></td>
         <td><code>8</code></td>
       </tr>
   </tbody>
@@ -1141,8 +1300,10 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        granules (List[dict]): The granules to download.</span>
-<span class="sd">        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).</span>
-<span class="sd">        threads (int, optional): The number of threads to use for downloading. Defaults to 8.</span>
+<span class="sd">        out_dir (str, optional): The output directory where the granules will be</span>
+<span class="sd">            downloaded. Defaults to None (current directory).</span>
+<span class="sd">        threads (int, optional): The number of threads to use for downloading.</span>
+<span class="sd">            Defaults to 8.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
@@ -1495,13 +1656,15 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
       <tr>
         <td><code>out_dir</code></td>
         <td><code>str</code></td>
-        <td><p>The output directory where the granules will be downloaded. Defaults to None (current directory).</p></td>
+        <td><p>The output directory where the granules will be
+downloaded. Defaults to None (current directory).</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>threads</code></td>
         <td><code>int</code></td>
-        <td><p>The number of threads to use for downloading. Defaults to 8.</p></td>
+        <td><p>The number of threads to use for downloading.
+Defaults to 8.</p></td>
         <td><code>8</code></td>
       </tr>
   </tbody>
@@ -1517,8 +1680,10 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
 
 <span class="sd">    Args:</span>
 <span class="sd">        granules (List[dict]): The granules to download.</span>
-<span class="sd">        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).</span>
-<span class="sd">        threads (int, optional): The number of threads to use for downloading. Defaults to 8.</span>
+<span class="sd">        out_dir (str, optional): The output directory where the granules will be</span>
+<span class="sd">            downloaded. Defaults to None (current directory).</span>
+<span class="sd">        threads (int, optional): The number of threads to use for downloading.</span>
+<span class="sd">            Defaults to 8.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
