@@ -14,7 +14,7 @@
 
 ## Features
 
--   Interactive visualization and analysis of hyperspectral data (e.g., [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf))
+-   Interactive visualization and analysis of hyperspectral data, such as [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf), [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001)
 -   Interactive visualization of NASA [ECOSTRESS](https://ecostress.jpl.nasa.gov) data
 -   Interactive extraction and visualization of spectral signatures
 -   Saving spectral signatures as CSV files
