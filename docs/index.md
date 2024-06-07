@@ -22,15 +22,19 @@
 
 -   Visualizing NASA [EMIT](https://earth.jpl.nasa.gov/emit) hyperspectral data interactively
 
-![](https://i.imgur.com/zeyABMq.gif)
+![EMIT](https://i.imgur.com/zeyABMq.gif)
 
 -   Visualizing NASA [PACE](https://pace.gsfc.nasa.gov) hyperspectral data interactively
 
-![](https://i.imgur.com/HBMjW6o.gif)
+![PACE](https://i.imgur.com/HBMjW6o.gif)
 
 -   Visualizing [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf) hyperspectral data interactively
 
-![](https://i.imgur.com/PkwOPN5.gif)
+![DESIS](https://i.imgur.com/PkwOPN5.gif)
+
+-   Visualizing [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001) hyperspectral data interactively
+
+![NEON](https://i.imgur.com/CNP8E3y.gif)
 
 ## Acknowledgement
 
