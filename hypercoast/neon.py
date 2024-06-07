@@ -9,6 +9,7 @@ import rioxarray
 import numpy as np
 import xarray as xr
 from typing import List, Union, Dict, Optional, Tuple, Any
+from .common import convert_coords
 
 
 def list_neon_datasets(filepath: str, print_node: bool = False) -> None:
@@ -96,6 +97,8 @@ def read_neon(
 
     da = serc_reflArray[:, :, :].astype(float)
     da[da == int(noDataValue)] = np.nan
+    da[da < 0] = np.nan
+    da[da > 10000] = np.nan
     da = da / scaleFactor
 
     coords = {
@@ -120,6 +123,7 @@ def read_neon(
         xda = xda.sel(wavelength=wavelengths, method=method, **kwargs)
 
     dataset = xda.to_dataset(name="reflectance")
+    dataset.attrs = dataset["reflectance"].attrs
 
     return dataset
 
@@ -166,3 +170,29 @@ def neon_to_image(
         dtype=np.float32,
         **kwargs,
     )
+
+
+def extract_neon(ds, lat, lon):
+    """
+    Extracts NEON AOP data from a given xarray Dataset.
+
+    Args:
+        ds (xarray.Dataset): The dataset containing the NEON AOP data.
+        lat (float): The latitude of the point to extract.
+        lon (float): The longitude of the point to extract.
+
+    Returns:
+        xarray.DataArray: The extracted data.
+    """
+
+    crs = ds.attrs["crs"]
+
+    x, y = convert_coords([[lat, lon]], "epsg:4326", crs)[0]
+
+    values = ds.sel(x=x, y=y, method="nearest")["reflectance"].values
+
+    da = xr.DataArray(
+        values, dims=["wavelength"], coords={"wavelength": ds.coords["wavelength"]}
+    )
+
+    return da
