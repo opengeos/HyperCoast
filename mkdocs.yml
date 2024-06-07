@@ -83,6 +83,7 @@ nav:
           - examples/search_data.ipynb
           - examples/desis.ipynb
           - examples/emit.ipynb
+          - examples/neon.ipynb
           - examples/pace.ipynb
           - examples/ecostress.ipynb
     - API Reference:
@@ -90,5 +91,6 @@ nav:
           - desis module: desis.md
           - emit module: emit.md
           - hypercoast module: hypercoast.md
+          - neon module: neon.md
           - pace module: pace.md
           - ui module: ui.md
