@@ -87,6 +87,7 @@ nav:
           - examples/pace.ipynb
           - examples/ecostress.ipynb
     - API Reference:
+          - aviris module: aviris.md
           - common module: common.md
           - desis module: desis.md
           - emit module: emit.md
