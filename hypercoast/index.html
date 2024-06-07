@@ -18,11 +18,11 @@
         <link rel="prev" href="../emit/">
       
       
-        <link rel="next" href="../pace/">
+        <link rel="next" href="../neon/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.26">
     
     
       
@@ -186,7 +186,7 @@
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -504,6 +504,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/neon/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Neon
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/pace/" class="md-nav__link">
         
   
@@ -754,6 +775,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_neon" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_neon()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.add_pace" class="md-nav__link">
     <span class="md-ellipsis">
       add_pace()
@@ -834,6 +864,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neon/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    neon module
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -964,6 +1015,15 @@
   <a href="#hypercoast.hypercoast.Map.add_emit" class="md-nav__link">
     <span class="md-ellipsis">
       add_emit()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_neon" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_neon()
     </span>
   </a>
   
@@ -1102,7 +1162,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
     <div class="doc doc-contents ">
 
-      <p>A class that extends leafmap.Map to provide additional functionality for hypercoast.</p>
+      <p>A class that extends leafmap.Map to provide additional functionality for
+    hypercoast.</p>
       <div class="admonition methods">
 <p class="admonition-title">Methods</p>
 <p>Any methods inherited from leafmap.Map.</p>
@@ -1112,7 +1173,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Map</span><span class="p">(</span><span class="n">leafmap</span><span class="o">.</span><span class="n">Map</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class that extends leafmap.Map to provide additional functionality for hypercoast.</span>
+<span class="sd">    A class that extends leafmap.Map to provide additional functionality for</span>
+<span class="sd">        hypercoast.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        Any attributes inherited from leafmap.Map.</span>
@@ -1126,7 +1188,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        Initializes a new instance of the Map class.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            **kwargs: Arbitrary keyword arguments that are passed to the parent class&#39;s constructor.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments that are passed to the parent</span>
+<span class="sd">                class&#39;s constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -1134,7 +1197,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a layer to the map.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            **kwargs: Arbitrary keyword arguments that are passed to the parent class&#39;s add_layer method.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments that are passed to the parent</span>
+<span class="sd">                class&#39;s add_layer method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1150,28 +1214,34 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
     <span class="k">def</span> <span class="nf">search_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;EMITL2ARFL&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for EMIT.</span>
+<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">            EMIT.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            default_dataset (str, optional): The default dataset to search for. Defaults to &quot;EMITL2ARFL&quot;.</span>
+<span class="sd">            default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">                Defaults to &quot;EMITL2ARFL&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">search_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_AOP_NRT&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for PACE.</span>
+<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">            PACE.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            default_dataset (str, optional): The default dataset to search for. Defaults to &quot;PACE_OCI_L2_AOP_NRT&quot;.</span>
+<span class="sd">            default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">                Defaults to &quot;PACE_OCI_L2_AOP_NRT&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for ECOSTRESS.</span>
+<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">            ECOSTRESS.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            default_dataset (str, optional): The default dataset to search for. Defaults to &quot;ECO_L2T_LSTE&quot;.</span>
+<span class="sd">            default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">                Defaults to &quot;ECO_L2T_LSTE&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
@@ -1191,25 +1261,40 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a local raster dataset to the map.</span>
-<span class="sd">            If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and</span>
-<span class="sd">            if the raster does not render properly, try installing jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
-<span class="sd">            then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</span>
+<span class="sd">            If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">                (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">            if the raster does not render properly, try installing</span>
+<span class="sd">                jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">            then running the following code before calling this function. For</span>
+<span class="sd">                more info, see https://bit.ly/3JbmF93.</span>
 
 <span class="sd">            import os</span>
 <span class="sd">            os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</span>
-<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts at 1. Defaults to None.</span>
-<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib` to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</span>
-<span class="sd">            vmin (float, optional): The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">            vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">            nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.</span>
-<span class="sd">            attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">                Optimized GeoTIFF.</span>
+<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">                at 1. Defaults to None.</span>
+<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">                to use when plotting a single band. See</span>
+<span class="sd">                https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                Default is greyscale.</span>
+<span class="sd">            vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            nodata (float, optional): The value from the band to use to interpret</span>
+<span class="sd">                as not valid data. Defaults to None.</span>
+<span class="sd">            attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">                defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">            layer_name (str, optional): The layer name to use. Defaults to &#39;Raster&#39;.</span>
-<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.</span>
-<span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
-<span class="sd">            array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">                layer. Defaults to True.</span>
+<span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to</span>
+<span class="sd">                True.</span>
+<span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1247,26 +1332,41 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a local raster dataset to the map.</span>
-<span class="sd">            If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and</span>
-<span class="sd">            if the raster does not render properly, try installing jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
-<span class="sd">            then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an EMIT dataset to the map.</span>
+<span class="sd">            If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">                (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">            if the raster does not render properly, try installing</span>
+<span class="sd">                jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">            then running the following code before calling this function. For</span>
+<span class="sd">                more info, see https://bit.ly/3JbmF93.</span>
 
 <span class="sd">            import os</span>
 <span class="sd">            os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</span>
-<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts at 1. Defaults to None.</span>
-<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib` to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</span>
-<span class="sd">            vmin (float, optional): The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">            vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">            nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.</span>
-<span class="sd">            attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">                Optimized GeoTIFF.</span>
+<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">                at 1. Defaults to None.</span>
+<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">                to use when plotting a single band.</span>
+<span class="sd">                    See https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                    Default is greyscale.</span>
+<span class="sd">            vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">            nodata (float, optional): The value from the band to use to</span>
+<span class="sd">                interpret as not valid data. Defaults to None.</span>
+<span class="sd">            attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">                defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">            layer_name (str, optional): The layer name to use. Defaults to &#39;EMIT&#39;.</span>
-<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.</span>
-<span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
-<span class="sd">            array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">                layer. Defaults to True.</span>
+<span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to</span>
+<span class="sd">                True.</span>
+<span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1468,6 +1568,88 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DESIS&quot;</span>
 
+    <span class="k">def</span> <span class="nf">add_neon</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">,</span>
+        <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;NEON&quot;</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an NEON AOP dataset to the map.</span>
+<span class="sd">            If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">                (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">            if the raster does not render properly, try installing</span>
+<span class="sd">                jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">            then running the following code before calling this function. For</span>
+<span class="sd">                more info, see https://bit.ly/3JbmF93.</span>
+
+<span class="sd">            import os</span>
+<span class="sd">            os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source (str): The path to the NEON AOP HDF5 file.</span>
+<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">                at 1. Defaults to None.</span>
+<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">                to use when plotting a single band. See</span>
+<span class="sd">                    https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                    Default is greyscale.</span>
+<span class="sd">            vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to 0.</span>
+<span class="sd">            vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">                the palette when plotting a single band. Defaults to 0.5.</span>
+<span class="sd">            nodata (float, optional): The value from the band to use to</span>
+<span class="sd">                interpret as not valid data. Defaults to np.nan.</span>
+<span class="sd">            attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">                defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">            layer_name (str, optional): The layer name to use. Defaults to &#39;NEON&#39;.</span>
+<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">                layer. Defaults to True.</span>
+<span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults</span>
+<span class="sd">                to True.</span>
+<span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">            method (str, optional): The method to use for data interpolation.</span>
+<span class="sd">                Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+            <span class="n">xds</span> <span class="o">=</span> <span class="n">read_neon</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">neon_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="n">xds</span> <span class="o">=</span> <span class="n">source</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">neon_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span>
+            <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+            <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+            <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+            <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+            <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+            <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NEON&quot;</span>
+
     <span class="k">def</span> <span class="nf">set_plot_options</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">add_marker_cluster</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1592,7 +1774,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
       <tr>
         <td><code>**kwargs</code></td>
         <td></td>
-        <td><p>Arbitrary keyword arguments that are passed to the parent class's constructor.</p></td>
+        <td><p>Arbitrary keyword arguments that are passed to the parent
+class's constructor.</p></td>
         <td><code>{}</code></td>
       </tr>
   </tbody>
@@ -1604,7 +1787,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">    Initializes a new instance of the Map class.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        **kwargs: Arbitrary keyword arguments that are passed to the parent class&#39;s constructor.</span>
+<span class="sd">        **kwargs: Arbitrary keyword arguments that are passed to the parent</span>
+<span class="sd">            class&#39;s constructor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
@@ -1643,7 +1827,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
       <tr>
         <td><code>**kwargs</code></td>
         <td></td>
-        <td><p>Arbitrary keyword arguments that are passed to the parent class's add_layer method.</p></td>
+        <td><p>Arbitrary keyword arguments that are passed to the parent
+class's add_layer method.</p></td>
         <td><code>{}</code></td>
       </tr>
   </tbody>
@@ -1654,7 +1839,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a layer to the map.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        **kwargs: Arbitrary keyword arguments that are passed to the parent class&#39;s add_layer method.</span>
+<span class="sd">        **kwargs: Arbitrary keyword arguments that are passed to the parent</span>
+<span class="sd">            class&#39;s add_layer method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1899,10 +2085,13 @@ layer. Defaults to True.</p></td>
 
     <div class="doc doc-contents ">
 
-      <p>Add a local raster dataset to the map.
-    If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and
-    if the raster does not render properly, try installing jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
-    then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</p>
+      <p>Add an EMIT dataset to the map.
+    If you are using this function in JupyterHub on a remote server
+        (e.g., Binder, Microsoft Planetary Computer) and
+    if the raster does not render properly, try installing
+        jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
+    then running the following code before calling this function. For
+        more info, see https://bit.ly/3JbmF93.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>import os
 os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
@@ -1922,43 +2111,52 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>source</code></td>
         <td><code>str</code></td>
-        <td><p>The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</p></td>
+        <td><p>The path to the GeoTIFF file or the URL of the Cloud
+Optimized GeoTIFF.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>indexes</code></td>
         <td><code>int</code></td>
-        <td><p>The band(s) to use. Band indexing starts at 1. Defaults to None.</p></td>
+        <td><p>The band(s) to use. Band indexing starts
+at 1. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>colormap</code></td>
         <td><code>str</code></td>
-        <td><p>The name of the colormap from <code>matplotlib</code> to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</p></td>
+        <td><p>The name of the colormap from <code>matplotlib</code>
+to use when plotting a single band.
+    See https://matplotlib.org/stable/gallery/color/colormap_reference.html.
+    Default is greyscale.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmin</code></td>
         <td><code>float</code></td>
-        <td><p>The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
+        <td><p>The minimum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmax</code></td>
         <td><code>float</code></td>
-        <td><p>The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
+        <td><p>The maximum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>nodata</code></td>
         <td><code>float</code></td>
-        <td><p>The value from the band to use to interpret as not valid data. Defaults to None.</p></td>
+        <td><p>The value from the band to use to
+interpret as not valid data. Defaults to None.</p></td>
         <td><code>nan</code></td>
       </tr>
       <tr>
         <td><code>attribution</code></td>
         <td><code>str</code></td>
-        <td><p>Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</p></td>
+        <td><p>Attribution for the source raster. This
+defaults to a message about it being a local file.. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
@@ -1970,19 +2168,22 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>zoom_to_layer</code></td>
         <td><code>bool</code></td>
-        <td><p>Whether to zoom to the extent of the layer. Defaults to True.</p></td>
+        <td><p>Whether to zoom to the extent of the
+layer. Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>visible</code></td>
         <td><code>bool</code></td>
-        <td><p>Whether the layer is visible. Defaults to True.</p></td>
+        <td><p>Whether the layer is visible. Defaults to
+True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>array_args</code></td>
         <td><code>dict</code></td>
-        <td><p>Additional arguments to pass to <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
+        <td><p>Additional arguments to pass to
+<code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
         <td><code>{}</code></td>
       </tr>
   </tbody>
@@ -2005,26 +2206,41 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a local raster dataset to the map.</span>
-<span class="sd">        If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and</span>
-<span class="sd">        if the raster does not render properly, try installing jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
-<span class="sd">        then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add an EMIT dataset to the map.</span>
+<span class="sd">        If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">            (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">        if the raster does not render properly, try installing</span>
+<span class="sd">            jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">        then running the following code before calling this function. For</span>
+<span class="sd">            more info, see https://bit.ly/3JbmF93.</span>
 
 <span class="sd">        import os</span>
 <span class="sd">        os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</span>
-<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts at 1. Defaults to None.</span>
-<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib` to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</span>
-<span class="sd">        vmin (float, optional): The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">        vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">        nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.</span>
-<span class="sd">        attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">            Optimized GeoTIFF.</span>
+<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">            at 1. Defaults to None.</span>
+<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">            to use when plotting a single band.</span>
+<span class="sd">                See https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                Default is greyscale.</span>
+<span class="sd">        vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        nodata (float, optional): The value from the band to use to</span>
+<span class="sd">            interpret as not valid data. Defaults to None.</span>
+<span class="sd">        attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">            defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">        layer_name (str, optional): The layer name to use. Defaults to &#39;EMIT&#39;.</span>
-<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.</span>
-<span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
-<span class="sd">        array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">            layer. Defaults to True.</span>
+<span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to</span>
+<span class="sd">            True.</span>
+<span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2053,6 +2269,218 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="hypercoast.hypercoast.Map.add_neon" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_neon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;NEON&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.add_neon" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Add an NEON AOP dataset to the map.
+    If you are using this function in JupyterHub on a remote server
+        (e.g., Binder, Microsoft Planetary Computer) and
+    if the raster does not render properly, try installing
+        jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
+    then running the following code before calling this function. For
+        more info, see https://bit.ly/3JbmF93.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>import os
+os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
+</code></pre></div></td></tr></table></div>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>source</code></td>
+        <td><code>str</code></td>
+        <td><p>The path to the NEON AOP HDF5 file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>indexes</code></td>
+        <td><code>int</code></td>
+        <td><p>The band(s) to use. Band indexing starts
+at 1. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>colormap</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the colormap from <code>matplotlib</code>
+to use when plotting a single band. See
+    https://matplotlib.org/stable/gallery/color/colormap_reference.html.
+    Default is greyscale.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>vmin</code></td>
+        <td><code>float</code></td>
+        <td><p>The minimum value to use when colormapping
+the palette when plotting a single band. Defaults to 0.</p></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>vmax</code></td>
+        <td><code>float</code></td>
+        <td><p>The maximum value to use when colormapping
+the palette when plotting a single band. Defaults to 0.5.</p></td>
+        <td><code>0.5</code></td>
+      </tr>
+      <tr>
+        <td><code>nodata</code></td>
+        <td><code>float</code></td>
+        <td><p>The value from the band to use to
+interpret as not valid data. Defaults to np.nan.</p></td>
+        <td><code>nan</code></td>
+      </tr>
+      <tr>
+        <td><code>attribution</code></td>
+        <td><code>str</code></td>
+        <td><p>Attribution for the source raster. This
+defaults to a message about it being a local file.. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>layer_name</code></td>
+        <td><code>str</code></td>
+        <td><p>The layer name to use. Defaults to 'NEON'.</p></td>
+        <td><code>&#39;NEON&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>zoom_to_layer</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to zoom to the extent of the
+layer. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>visible</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether the layer is visible. Defaults
+to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>array_args</code></td>
+        <td><code>dict</code></td>
+        <td><p>Additional arguments to pass to
+<code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+      <tr>
+        <td><code>method</code></td>
+        <td><code>str</code></td>
+        <td><p>The method to use for data interpolation.
+Defaults to "nearest".</p></td>
+        <td><code>&#39;nearest&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_neon</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">source</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;NEON&quot;</span><span class="p">,</span>
+    <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add an NEON AOP dataset to the map.</span>
+<span class="sd">        If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">            (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">        if the raster does not render properly, try installing</span>
+<span class="sd">            jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">        then running the following code before calling this function. For</span>
+<span class="sd">            more info, see https://bit.ly/3JbmF93.</span>
+
+<span class="sd">        import os</span>
+<span class="sd">        os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source (str): The path to the NEON AOP HDF5 file.</span>
+<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">            at 1. Defaults to None.</span>
+<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">            to use when plotting a single band. See</span>
+<span class="sd">                https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">                Default is greyscale.</span>
+<span class="sd">        vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to 0.</span>
+<span class="sd">        vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to 0.5.</span>
+<span class="sd">        nodata (float, optional): The value from the band to use to</span>
+<span class="sd">            interpret as not valid data. Defaults to np.nan.</span>
+<span class="sd">        attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">            defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">        layer_name (str, optional): The layer name to use. Defaults to &#39;NEON&#39;.</span>
+<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">            layer. Defaults to True.</span>
+<span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults</span>
+<span class="sd">            to True.</span>
+<span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">        method (str, optional): The method to use for data interpolation.</span>
+<span class="sd">            Defaults to &quot;nearest&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="n">xds</span> <span class="o">=</span> <span class="n">read_neon</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">neon_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="n">xds</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">neon_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+        <span class="n">source</span><span class="p">,</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+        <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+        <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NEON&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2280,9 +2708,12 @@ layer. Defaults to True.</p></td>
     <div class="doc doc-contents ">
 
       <p>Add a local raster dataset to the map.
-    If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and
-    if the raster does not render properly, try installing jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
-    then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</p>
+    If you are using this function in JupyterHub on a remote server
+        (e.g., Binder, Microsoft Planetary Computer) and
+    if the raster does not render properly, try installing
+        jupyter-server-proxy using <code>pip install jupyter-server-proxy</code>,
+    then running the following code before calling this function. For
+        more info, see https://bit.ly/3JbmF93.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>import os
 os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
@@ -2302,43 +2733,52 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>source</code></td>
         <td><code>str</code></td>
-        <td><p>The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</p></td>
+        <td><p>The path to the GeoTIFF file or the URL of the Cloud
+Optimized GeoTIFF.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>indexes</code></td>
         <td><code>int</code></td>
-        <td><p>The band(s) to use. Band indexing starts at 1. Defaults to None.</p></td>
+        <td><p>The band(s) to use. Band indexing starts
+at 1. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>colormap</code></td>
         <td><code>str</code></td>
-        <td><p>The name of the colormap from <code>matplotlib</code> to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</p></td>
+        <td><p>The name of the colormap from <code>matplotlib</code>
+to use when plotting a single band. See
+https://matplotlib.org/stable/gallery/color/colormap_reference.html.
+Default is greyscale.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmin</code></td>
         <td><code>float</code></td>
-        <td><p>The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
+        <td><p>The minimum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmax</code></td>
         <td><code>float</code></td>
-        <td><p>The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</p></td>
+        <td><p>The maximum value to use when colormapping
+the palette when plotting a single band. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>nodata</code></td>
         <td><code>float</code></td>
-        <td><p>The value from the band to use to interpret as not valid data. Defaults to None.</p></td>
+        <td><p>The value from the band to use to interpret
+as not valid data. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>attribution</code></td>
         <td><code>str</code></td>
-        <td><p>Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</p></td>
+        <td><p>Attribution for the source raster. This
+defaults to a message about it being a local file.. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
@@ -2350,19 +2790,22 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>zoom_to_layer</code></td>
         <td><code>bool</code></td>
-        <td><p>Whether to zoom to the extent of the layer. Defaults to True.</p></td>
+        <td><p>Whether to zoom to the extent of the
+layer. Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>visible</code></td>
         <td><code>bool</code></td>
-        <td><p>Whether the layer is visible. Defaults to True.</p></td>
+        <td><p>Whether the layer is visible. Defaults to
+True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>array_args</code></td>
         <td><code>dict</code></td>
-        <td><p>Additional arguments to pass to <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
+        <td><p>Additional arguments to pass to
+<code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
         <td><code>{}</code></td>
       </tr>
   </tbody>
@@ -2385,25 +2828,40 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a local raster dataset to the map.</span>
-<span class="sd">        If you are using this function in JupyterHub on a remote server (e.g., Binder, Microsoft Planetary Computer) and</span>
-<span class="sd">        if the raster does not render properly, try installing jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
-<span class="sd">        then running the following code before calling this function. For more info, see https://bit.ly/3JbmF93.</span>
+<span class="sd">        If you are using this function in JupyterHub on a remote server</span>
+<span class="sd">            (e.g., Binder, Microsoft Planetary Computer) and</span>
+<span class="sd">        if the raster does not render properly, try installing</span>
+<span class="sd">            jupyter-server-proxy using `pip install jupyter-server-proxy`,</span>
+<span class="sd">        then running the following code before calling this function. For</span>
+<span class="sd">            more info, see https://bit.ly/3JbmF93.</span>
 
 <span class="sd">        import os</span>
 <span class="sd">        os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud Optimized GeoTIFF.</span>
-<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts at 1. Defaults to None.</span>
-<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib` to use when plotting a single band. See https://matplotlib.org/stable/gallery/color/colormap_reference.html. Default is greyscale.</span>
-<span class="sd">        vmin (float, optional): The minimum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">        vmax (float, optional): The maximum value to use when colormapping the palette when plotting a single band. Defaults to None.</span>
-<span class="sd">        nodata (float, optional): The value from the band to use to interpret as not valid data. Defaults to None.</span>
-<span class="sd">        attribution (str, optional): Attribution for the source raster. This defaults to a message about it being a local file.. Defaults to None.</span>
+<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
+<span class="sd">            Optimized GeoTIFF.</span>
+<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts</span>
+<span class="sd">            at 1. Defaults to None.</span>
+<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">            to use when plotting a single band. See</span>
+<span class="sd">            https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
+<span class="sd">            Default is greyscale.</span>
+<span class="sd">        vmin (float, optional): The minimum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        vmax (float, optional): The maximum value to use when colormapping</span>
+<span class="sd">            the palette when plotting a single band. Defaults to None.</span>
+<span class="sd">        nodata (float, optional): The value from the band to use to interpret</span>
+<span class="sd">            as not valid data. Defaults to None.</span>
+<span class="sd">        attribution (str, optional): Attribution for the source raster. This</span>
+<span class="sd">            defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">        layer_name (str, optional): The layer name to use. Defaults to &#39;Raster&#39;.</span>
-<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the layer. Defaults to True.</span>
-<span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
-<span class="sd">        array_args (dict, optional): Additional arguments to pass to `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
+<span class="sd">            layer. Defaults to True.</span>
+<span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to</span>
+<span class="sd">            True.</span>
+<span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -2444,7 +2902,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 
     <div class="doc doc-contents ">
 
-      <p>Adds a NASA Earth Data search tool to the map with a default dataset for ECOSTRESS.</p>
+      <p>Adds a NASA Earth Data search tool to the map with a default dataset for
+    ECOSTRESS.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2460,7 +2919,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>default_dataset</code></td>
         <td><code>str</code></td>
-        <td><p>The default dataset to search for. Defaults to "ECO_L2T_LSTE".</p></td>
+        <td><p>The default dataset to search for.
+Defaults to "ECO_L2T_LSTE".</p></td>
         <td><code>&#39;ECO_L2T_LSTE&#39;</code></td>
       </tr>
   </tbody>
@@ -2469,10 +2929,12 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for ECOSTRESS.</span>
+<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">        ECOSTRESS.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        default_dataset (str, optional): The default dataset to search for. Defaults to &quot;ECO_L2T_LSTE&quot;.</span>
+<span class="sd">        default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">            Defaults to &quot;ECO_L2T_LSTE&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 </code></pre></div>
@@ -2495,7 +2957,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 
     <div class="doc doc-contents ">
 
-      <p>Adds a NASA Earth Data search tool to the map with a default dataset for EMIT.</p>
+      <p>Adds a NASA Earth Data search tool to the map with a default dataset for
+    EMIT.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2511,7 +2974,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>default_dataset</code></td>
         <td><code>str</code></td>
-        <td><p>The default dataset to search for. Defaults to "EMITL2ARFL".</p></td>
+        <td><p>The default dataset to search for.
+Defaults to "EMITL2ARFL".</p></td>
         <td><code>&#39;EMITL2ARFL&#39;</code></td>
       </tr>
   </tbody>
@@ -2520,10 +2984,12 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;EMITL2ARFL&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for EMIT.</span>
+<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">        EMIT.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        default_dataset (str, optional): The default dataset to search for. Defaults to &quot;EMITL2ARFL&quot;.</span>
+<span class="sd">        default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">            Defaults to &quot;EMITL2ARFL&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 </code></pre></div>
@@ -2546,7 +3012,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
 
     <div class="doc doc-contents ">
 
-      <p>Adds a NASA Earth Data search tool to the map with a default dataset for PACE.</p>
+      <p>Adds a NASA Earth Data search tool to the map with a default dataset for
+    PACE.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2562,7 +3029,8 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
       <tr>
         <td><code>default_dataset</code></td>
         <td><code>str</code></td>
-        <td><p>The default dataset to search for. Defaults to "PACE_OCI_L2_AOP_NRT".</p></td>
+        <td><p>The default dataset to search for.
+Defaults to "PACE_OCI_L2_AOP_NRT".</p></td>
         <td><code>&#39;PACE_OCI_L2_AOP_NRT&#39;</code></td>
       </tr>
   </tbody>
@@ -2571,10 +3039,12 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_AOP_NRT&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for PACE.</span>
+<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">        PACE.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        default_dataset (str, optional): The default dataset to search for. Defaults to &quot;PACE_OCI_L2_AOP_NRT&quot;.</span>
+<span class="sd">        default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">            Defaults to &quot;PACE_OCI_L2_AOP_NRT&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 </code></pre></div>
@@ -2961,7 +3431,7 @@ None it will respect the content size. Defaults to None.</p></td>
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      <script src="../assets/javascripts/bundle.ad660dcc.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
