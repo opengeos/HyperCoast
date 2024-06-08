@@ -571,6 +571,7 @@ class Map(leafmap.Map):
             **kwargs,
         )
 
+        xds.attrs["bounds"] = self.cog_layer_dict[layer_name]["bounds"]
         self.cog_layer_dict[layer_name]["xds"] = xds
         self.cog_layer_dict[layer_name]["hyper"] = "AVIRIS"
 

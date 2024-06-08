@@ -43,8 +43,8 @@ def read_aviris(
     cols = ds.x.size
     rows = ds.y.size
 
-    geo_transform = ds.rio.transform()
-    geo_transform = list(geo_transform)[:6]
+    rio_transform = ds.rio.transform()
+    geo_transform = list(rio_transform)[:6]
 
     # get the raster geotransform as its component parts
     xres, xrot, xmin, yrot, yres, ymax = geo_transform
@@ -87,10 +87,11 @@ def read_aviris(
     ds.attrs.update(global_atts)
 
     ds = ds.transpose("y", "x", "band")
-    ds = ds.drop_vars(["wavelength", "xc", "yc"])
+    ds = ds.drop_vars(["wavelength"])
     ds = ds.rename({"band": "wavelength", "band_data": "reflectance"})
     ds.coords["wavelength"] = wavelength
     ds.attrs["crs"] = ds.rio.crs.to_string()
+    ds.rio.write_transform(rio_transform)
 
     if wavelengths is not None:
         ds = ds.sel(wavelength=wavelengths, method=method, **kwargs)
@@ -141,27 +142,39 @@ def aviris_to_image(
     )
 
 
-def extract_aviris(ds, lat, lon):
+def extract_aviris(
+    dataset: xr.Dataset, lat: float, lon: float, offset: float = 2.0
+) -> xr.DataArray:
     """
-    Extracts NEON AOP data from a given xarray Dataset.
+    Extracts AVIRIS data from a given xarray Dataset.
 
     Args:
-        ds (xarray.Dataset): The dataset containing the NEON AOP data.
+        dataset (xarray.Dataset): The dataset containing the AVIRIS data.
         lat (float): The latitude of the point to extract.
         lon (float): The longitude of the point to extract.
+        offset (float, optional): The offset from the point to extract. Defaults to 2.0.
 
     Returns:
         xarray.DataArray: The extracted data.
     """
 
-    crs = ds.attrs["crs"]
+    crs = dataset.attrs["crs"]
 
     x, y = convert_coords([[lat, lon]], "epsg:4326", crs)[0]
 
-    values = ds.sel(x=x, y=y, method="nearest")["reflectance"].values
+    da = dataset["reflectance"]
+
+    x_con = (da["xc"] > x - offset) & (da["xc"] < x + offset)
+    y_con = (da["yc"] > y - offset) & (da["yc"] < y + offset)
+
+    try:
+        data = da.where(x_con & y_con, drop=True)
+        data = data.mean(dim=["x", "y"])
+    except ValueError:
+        data = np.nan * np.ones(da.sizes["wavelength"])
 
     da = xr.DataArray(
-        values, dims=["wavelength"], coords={"wavelength": ds.coords["wavelength"]}
+        data, dims=["wavelength"], coords={"wavelength": dataset.coords["wavelength"]}
     )
 
     return da
