@@ -13,6 +13,7 @@ from ipyfilechooser import FileChooser
 from .pace import extract_pace
 from .desis import extract_desis
 from .neon import extract_neon
+from .aviris import extract_aviris
 
 
 class SpectralWidget(widgets.HBox):
@@ -192,6 +193,9 @@ class SpectralWidget(widgets.HBox):
 
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "NEON":
                     da = extract_neon(ds, lat, lon)
+
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "AVIRIS":
+                    da = extract_aviris(ds, lat, lon)
 
                 self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 
