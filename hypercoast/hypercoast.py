@@ -4,6 +4,7 @@ import ipyleaflet
 import leafmap
 import xarray as xr
 import numpy as np
+from .aviris import *
 from .common import *
 from .desis import *
 from .emit import *
@@ -490,6 +491,89 @@ class Map(leafmap.Map):
 
         self.cog_layer_dict[layer_name]["xds"] = xds
         self.cog_layer_dict[layer_name]["hyper"] = "NEON"
+
+    def add_aviris(
+        self,
+        source,
+        wavelengths=None,
+        indexes=None,
+        colormap=None,
+        vmin=0,
+        vmax=0.5,
+        nodata=np.nan,
+        attribution=None,
+        layer_name="AVIRIS",
+        zoom_to_layer=True,
+        visible=True,
+        array_args={},
+        method="nearest",
+        **kwargs,
+    ):
+        """Add an AVIRIS dataset to the map.
+            If you are using this function in JupyterHub on a remote server
+                (e.g., Binder, Microsoft Planetary Computer) and
+            if the raster does not render properly, try installing
+                jupyter-server-proxy using `pip install jupyter-server-proxy`,
+            then running the following code before calling this function. For
+                more info, see https://bit.ly/3JbmF93.
+
+            import os
+            os.environ['LOCALTILESERVER_CLIENT_PREFIX'] = 'proxy/{port}'
+
+        Args:
+            source (str): The path to the AVIRIS file.
+            indexes (int, optional): The band(s) to use. Band indexing starts
+                at 1. Defaults to None.
+            colormap (str, optional): The name of the colormap from `matplotlib`
+                to use when plotting a single band. See
+                    https://matplotlib.org/stable/gallery/color/colormap_reference.html.
+                    Default is greyscale.
+            vmin (float, optional): The minimum value to use when colormapping
+                the palette when plotting a single band. Defaults to 0.
+            vmax (float, optional): The maximum value to use when colormapping
+                the palette when plotting a single band. Defaults to 0.5.
+            nodata (float, optional): The value from the band to use to
+                interpret as not valid data. Defaults to np.nan.
+            attribution (str, optional): Attribution for the source raster. This
+                defaults to a message about it being a local file.. Defaults to None.
+            layer_name (str, optional): The layer name to use. Defaults to 'NEON'.
+            zoom_to_layer (bool, optional): Whether to zoom to the extent of the
+                layer. Defaults to True.
+            visible (bool, optional): Whether the layer is visible. Defaults
+                to True.
+            array_args (dict, optional): Additional arguments to pass to
+                `array_to_memory_file` when reading the raster. Defaults to {}.
+            method (str, optional): The method to use for data interpolation.
+                Defaults to "nearest".
+        """
+
+        xds = None
+        if isinstance(source, str):
+
+            xds = read_aviris(source)
+            source = neon_to_image(xds, wavelengths=wavelengths, method=method)
+        elif isinstance(source, xr.Dataset):
+            xds = source
+            source = aviris_to_image(xds, wavelengths=wavelengths, method=method)
+
+        self.add_raster(
+            source,
+            indexes=indexes,
+            colormap=colormap,
+            vmin=vmin,
+            vmax=vmax,
+            nodata=nodata,
+            attribution=attribution,
+            layer_name=layer_name,
+            zoom_to_layer=zoom_to_layer,
+            visible=visible,
+            array_args=array_args,
+            **kwargs,
+        )
+
+        xds.attrs["bounds"] = self.cog_layer_dict[layer_name]["bounds"]
+        self.cog_layer_dict[layer_name]["xds"] = xds
+        self.cog_layer_dict[layer_name]["hyper"] = "AVIRIS"
 
     def set_plot_options(
         self,
