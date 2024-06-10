@@ -71,7 +71,9 @@ def desis_to_image(dataset, wavelengths=None, method="nearest", output=None, **k
     if wavelengths is not None:
         dataset = dataset.sel(wavelength=wavelengths, method=method)
 
-    return array_to_image(dataset["reflectance"], output=output, **kwargs)
+    return array_to_image(
+        dataset["reflectance"], output=output, transpose=False, **kwargs
+    )
 
 
 def extract_desis(ds, lat, lon):
