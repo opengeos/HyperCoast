@@ -53,6 +53,10 @@ class SpectralWidget(widgets.HBox):
         self._fig = fig
         self._host_map._fig = fig
 
+        layer_names = list(host_map.cog_layer_dict.keys())
+        layers_widget = widgets.Dropdown(options=layer_names)
+        layers_widget.layout.width = "18ex"
+
         close_btn = widgets.Button(
             icon="times",
             tooltip="Close the widget",
@@ -67,12 +71,27 @@ class SpectralWidget(widgets.HBox):
             layout=widgets.Layout(width="32px"),
         )
 
+        settings_btn = widgets.Button(
+            icon="gear",
+            tooltip="Change layer settings",
+            button_style="primary",
+            layout=widgets.Layout(width="32px"),
+        )
+
         stack_btn = widgets.ToggleButton(
             value=stack,
             icon="area-chart",
             button_style="primary",
             layout=widgets.Layout(width="32px"),
         )
+
+        def settings_btn_click(_):
+            self._host_map._add_layer_editor(
+                position="topright",
+                layer_dict=self._host_map.cog_layer_dict[layers_widget.value],
+            )
+
+        settings_btn.on_click(settings_btn_click)
 
         def reset_btn_click(_):
             if hasattr(self._host_map, "_plot_marker_cluster"):
@@ -134,10 +153,9 @@ class SpectralWidget(widgets.HBox):
 
         close_btn.on_click(close_widget)
 
-        layer_names = list(host_map.cog_layer_dict.keys())
-        layers_widget = widgets.Dropdown(options=layer_names)
-        layers_widget.layout.width = "18ex"
-        super().__init__([layers_widget, stack_btn, reset_btn, save_btn, close_btn])
+        super().__init__(
+            [layers_widget, settings_btn, stack_btn, reset_btn, save_btn, close_btn]
+        )
 
         output = widgets.Output()
         output_control = ipyleaflet.WidgetControl(widget=output, position="bottomright")
@@ -153,7 +171,7 @@ class SpectralWidget(widgets.HBox):
             latlon = kwargs.get("coordinates")
             lat = latlon[0]
             lon = latlon[1]
-            if kwargs.get("type") == "click":
+            if kwargs.get("type") == "click" and self._host_map._layer_editor is None:
                 layer_name = layers_widget.value
 
                 if not hasattr(self._host_map, "_plot_markers"):
@@ -170,9 +188,9 @@ class SpectralWidget(widgets.HBox):
                         "reflectance"
                     ]
 
-                    if "wavelengths" not in self._host_map._spectral_data:
-                        self._host_map._spectral_data["wavelengths"] = ds[
-                            "wavelengths"
+                    if "wavelength" not in self._host_map._spectral_data:
+                        self._host_map._spectral_data["wavelength"] = ds[
+                            "wavelength"
                         ].values
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "PACE":
                     try:

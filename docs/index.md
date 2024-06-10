@@ -16,9 +16,14 @@
 -   Interactive visualization and analysis of hyperspectral data, such as [AVIRIS](https://aviris.jpl.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf), [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001)
 -   Interactive visualization of NASA [ECOSTRESS](https://ecostress.jpl.nasa.gov) data
 -   Interactive extraction and visualization of spectral signatures
+-   Changing band combinations and colormaps interactively
 -   Saving spectral signatures as CSV files
 
 ## Demos
+
+-   Changing band combinations and colormaps interactively
+
+![colormap](https://i.imgur.com/jYItN4D.gif)
 
 -   Visualizing NASA [AVIRIS](https://aviris.jpl.nasa.gov) hyperspectral data interactively
 

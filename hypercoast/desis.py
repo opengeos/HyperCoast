@@ -9,15 +9,15 @@ import pandas as pd
 from .common import convert_coords
 
 
-def read_desis(filepath, bands=None, method="nearest", **kwargs):
+def read_desis(filepath, wavelengths=None, method="nearest", **kwargs):
     """
     Reads DESIS data from a given file and returns an xarray Dataset.
 
     Args:
         filepath (str): Path to the file to read.
-        bands (array-like, optional): Specific bands to select. If None, all
-            bands are selected.
-        method (str, optional): Method to use for selection when bands is not
+        wavelengths (array-like, optional): Specific wavelengths to select. If
+            None, all wavelengths are selected.
+        method (str, optional): Method to use for selection when wavelengths is not
             None. Defaults to "nearest".
         **kwargs: Additional keyword arguments to pass to the `sel` method when
             bands is not None.
@@ -26,30 +26,31 @@ def read_desis(filepath, bands=None, method="nearest", **kwargs):
         xr.Dataset: An xarray Dataset containing the DESIS data.
     """
 
-    dataset = xr.open_dataset(filepath)
-
-    if bands is not None:
-        dataset = dataset.sel(band=bands, method=method, **kwargs)
-
-    dataset = dataset.rename({"band_data": "reflectance"})
     url = "https://github.com/opengeos/datasets/releases/download/hypercoast/desis_wavelengths.csv"
     df = pd.read_csv(url)
-    wavelengths = df["wavelength"].tolist()
-    dataset.attrs["wavelengths"] = wavelengths
+    dataset = xr.open_dataset(filepath)
+    dataset = dataset.rename(
+        {"band": "wavelength", "band_data": "reflectance"}
+    ).transpose("y", "x", "wavelength")
+    dataset["wavelength"] = df["wavelength"].tolist()
+
+    if wavelengths is not None:
+        dataset = dataset.sel(wavelength=wavelengths, method=method, **kwargs)
+
     dataset.attrs["crs"] = dataset.rio.crs.to_string()
 
     return dataset
 
 
-def desis_to_image(dataset, bands=None, method="nearest", output=None, **kwargs):
+def desis_to_image(dataset, wavelengths=None, method="nearest", output=None, **kwargs):
     """
     Converts an DESIS dataset to an image.
 
     Args:
         dataset (xarray.Dataset or str): The dataset containing the DESIS data
             or the file path to the dataset.
-        bands (array-like, optional): The specific bands to select. If None, all
-            bands are selected. Defaults to None.
+        wavelengths (array-like, optional): The specific wavelengths to select.
+            If None, all wavelengths are selected. Defaults to None.
         method (str, optional): The method to use for data interpolation.
             Defaults to "nearest".
         output (str, optional): The file path where the image will be saved. If
@@ -67,10 +68,12 @@ def desis_to_image(dataset, bands=None, method="nearest", output=None, **kwargs)
     if isinstance(dataset, str):
         dataset = read_desis(dataset, method=method)
 
-    if bands is not None:
-        dataset = dataset.sel(band=bands, method=method)
+    if wavelengths is not None:
+        dataset = dataset.sel(wavelength=wavelengths, method=method)
 
-    return array_to_image(dataset["reflectance"], output=output, **kwargs)
+    return array_to_image(
+        dataset["reflectance"], output=output, transpose=False, **kwargs
+    )
 
 
 def extract_desis(ds, lat, lon):
@@ -93,7 +96,7 @@ def extract_desis(ds, lat, lon):
     values = ds.sel(x=x, y=y, method="nearest")["reflectance"].values / 10000
 
     da = xr.DataArray(
-        values, dims=["wavelength"], coords={"wavelength": ds.attrs["wavelengths"]}
+        values, dims=["wavelength"], coords={"wavelength": ds.coords["wavelength"]}
     )
 
     return da
@@ -142,8 +145,6 @@ def filter_desis(dataset, lat, lon, return_plot=False, **kwargs):
         x_max, y_max = coords[1]
         print(x_min, y_min, x_max, y_max)
         da = dataset.sel(x=slice(x_min, x_max), y=slice(y_min, y_max))["reflectance"]
-
-    wavelengths = dataset.attrs["wavelengths"]
 
     if return_plot:
         rrs_stack = da.stack(

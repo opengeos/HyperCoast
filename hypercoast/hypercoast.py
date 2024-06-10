@@ -237,6 +237,7 @@ class Map(leafmap.Map):
 
         self.cog_layer_dict[layer_name]["xds"] = xds
         self.cog_layer_dict[layer_name]["hyper"] = "EMIT"
+        self._update_band_names(layer_name, wavelengths)
 
     def add_pace(
         self,
@@ -320,11 +321,12 @@ class Map(leafmap.Map):
 
         self.cog_layer_dict[layer_name]["xds"] = source
         self.cog_layer_dict[layer_name]["hyper"] = "PACE"
+        self._update_band_names(layer_name, wavelengths)
 
     def add_desis(
         self,
         source,
-        bands=[50, 100, 200],
+        wavelengths=[900, 650, 525],
         indexes=None,
         colormap="jet",
         vmin=None,
@@ -378,19 +380,19 @@ class Map(leafmap.Map):
 
             source = read_desis(source)
 
-        image = desis_to_image(source, bands=bands, method=method)
+        image = desis_to_image(source, wavelengths=wavelengths, method=method)
 
-        if isinstance(bands, list) and len(bands) > 1:
+        if isinstance(wavelengths, list) and len(wavelengths) > 1:
             colormap = None
 
-        if isinstance(bands, int):
-            bands = [bands]
+        if isinstance(wavelengths, int):
+            wavelengths = [wavelengths]
 
         if indexes is None:
-            if isinstance(bands, list) and len(bands) == 1:
+            if isinstance(wavelengths, list) and len(wavelengths) == 1:
                 indexes = [1]
             else:
-                indexes = [3, 2, 1]
+                indexes = [1, 2, 3]
 
         self.add_raster(
             image,
@@ -409,6 +411,7 @@ class Map(leafmap.Map):
 
         self.cog_layer_dict[layer_name]["xds"] = source
         self.cog_layer_dict[layer_name]["hyper"] = "DESIS"
+        self._update_band_names(layer_name, wavelengths)
 
     def add_neon(
         self,
@@ -491,6 +494,7 @@ class Map(leafmap.Map):
 
         self.cog_layer_dict[layer_name]["xds"] = xds
         self.cog_layer_dict[layer_name]["hyper"] = "NEON"
+        self._update_band_names(layer_name, wavelengths)
 
     def add_aviris(
         self,
@@ -574,6 +578,34 @@ class Map(leafmap.Map):
         xds.attrs["bounds"] = self.cog_layer_dict[layer_name]["bounds"]
         self.cog_layer_dict[layer_name]["xds"] = xds
         self.cog_layer_dict[layer_name]["hyper"] = "AVIRIS"
+        self._update_band_names(layer_name, wavelengths)
+
+    def add_hyper(self, xds, type, wvl_indexes=None, **kwargs):
+        """Add a hyperspectral dataset to the map.
+
+        Args:
+            xds (str): The Xarray dataset containing the hyperspectral data.
+            type (str): The type of the hyperspectral dataset. Can be one of
+                "EMIT", "PACE", "DESIS", "NEON", "AVIRIS".
+            **kwargs: Additional keyword arguments to pass to the corresponding
+                add function.
+        """
+
+        if wvl_indexes is not None:
+            kwargs["wavelengths"] = (
+                xds.isel(wavelength=wvl_indexes).coords["wavelength"].values.tolist()
+            )
+
+        if type == "EMIT":
+            self.add_emit(xds, **kwargs)
+        elif type == "PACE":
+            self.add_pace(xds, **kwargs)
+        elif type == "DESIS":
+            self.add_desis(xds, **kwargs)
+        elif type == "NEON":
+            self.add_neon(xds, **kwargs)
+        elif type == "AVIRIS":
+            self.add_aviris(xds, **kwargs)
 
     def set_plot_options(
         self,
@@ -653,3 +685,45 @@ class Map(leafmap.Map):
         df = self.spectral_to_df()
         df = df.rename_axis("band")
         df.to_csv(filename, index=index, **kwargs)
+
+    def _update_band_names(self, layer_name, wavelengths):
+
+        # Function to find the nearest indices
+        def find_nearest_indices(
+            dataarray, selected_wavelengths, dim_name="wavelength"
+        ):
+            indices = []
+            for wavelength in selected_wavelengths:
+                if dim_name == "band":
+                    nearest_wavelength = dataarray.sel(
+                        band=wavelength, method="nearest"
+                    )
+                else:
+                    nearest_wavelength = dataarray.sel(
+                        wavelength=wavelength, method="nearest"
+                    )
+                nearest_wavelength_index = nearest_wavelength[dim_name].item()
+                nearest_index = (
+                    dataarray[dim_name].values.tolist().index(nearest_wavelength_index)
+                )
+                indices.append(nearest_index + 1)
+            return indices
+
+        if "xds" in self.cog_layer_dict[layer_name]:
+            xds = self.cog_layer_dict[layer_name]["xds"]
+            dim_name = "wavelength"
+
+            if "band" in xds:
+                dim_name = "band"
+
+            band_count = xds.dims[dim_name]
+            band_names = ["b" + str(band) for band in range(1, band_count + 1)]
+            self.cog_layer_dict[layer_name]["band_names"] = band_names
+
+            try:
+                indexes = find_nearest_indices(xds, wavelengths, dim_name=dim_name)
+                vis_bands = ["b" + str(index) for index in indexes]
+                self.cog_layer_dict[layer_name]["indexes"] = indexes
+                self.cog_layer_dict[layer_name]["vis_bands"] = vis_bands
+            except Exception as e:
+                print(e)

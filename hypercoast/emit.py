@@ -53,6 +53,7 @@ def read_emit(filepath, ortho=True, wavelengths=None, method="nearest", **kwargs
         if wavelengths is not None:
             ds = ds.sel(wavelengths=wavelengths, method=method)
 
+        ds = ds.rename({"wavelengths": "wavelength"})
         return ds
 
 
@@ -187,7 +188,7 @@ def viz_emit(
 
     if isinstance(ds, str):
         ds = read_emit(ds, ortho=ortho)
-    example = ds.sel(wavelengths=wavelengths, method=method)
+    example = ds.sel(wavelength=wavelengths, method=method)
 
     if title is None:
         title = f"Reflectance at {example.wavelengths.values:.3f} {example.wavelengths.units}"
@@ -248,7 +249,7 @@ def emit_to_image(data, wavelengths=None, method="nearest", output=None, **kwarg
     ds = data["reflectance"]
 
     if wavelengths is not None:
-        ds = ds.sel(wavelengths=wavelengths, method=method)
+        ds = ds.sel(wavelength=wavelengths, method=method)
     return array_to_image(ds, transpose=False, output=output, **kwargs)
 
 
@@ -354,6 +355,8 @@ def emit_xarray(
 
     if wavelengths is not None:
         out_xr = out_xr.sel(wavelengths=wavelengths, method=method)
+
+    out_xr = out_xr.rename({"wavelengths": "wavelength"})
     return out_xr
 
 
