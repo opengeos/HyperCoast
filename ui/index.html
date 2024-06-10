@@ -1092,6 +1092,10 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
 
+        <span class="n">layer_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">layers_widget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">layer_names</span><span class="p">)</span>
+        <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;18ex&quot;</span>
+
         <span class="n">close_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
             <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;times&quot;</span><span class="p">,</span>
             <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Close the widget&quot;</span><span class="p">,</span>
@@ -1106,12 +1110,27 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
             <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
+        <span class="n">settings_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;gear&quot;</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Change layer settings&quot;</span><span class="p">,</span>
+            <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
+            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+
         <span class="n">stack_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">ToggleButton</span><span class="p">(</span>
             <span class="n">value</span><span class="o">=</span><span class="n">stack</span><span class="p">,</span>
             <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;area-chart&quot;</span><span class="p">,</span>
             <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
             <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
         <span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_add_layer_editor</span><span class="p">(</span>
+                <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span>
+                <span class="n">layer_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span><span class="p">],</span>
+            <span class="p">)</span>
+
+        <span class="n">settings_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">settings_btn_click</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
@@ -1173,10 +1192,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
         <span class="n">close_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">close_widget</span><span class="p">)</span>
 
-        <span class="n">layer_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">layers_widget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">layer_names</span><span class="p">)</span>
-        <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;18ex&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">layers_widget</span><span class="p">,</span> <span class="n">stack_btn</span><span class="p">,</span> <span class="n">reset_btn</span><span class="p">,</span> <span class="n">save_btn</span><span class="p">,</span> <span class="n">close_btn</span><span class="p">])</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">layers_widget</span><span class="p">,</span> <span class="n">settings_btn</span><span class="p">,</span> <span class="n">stack_btn</span><span class="p">,</span> <span class="n">reset_btn</span><span class="p">,</span> <span class="n">save_btn</span><span class="p">,</span> <span class="n">close_btn</span><span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="n">output</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
         <span class="n">output_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;bottomright&quot;</span><span class="p">)</span>
@@ -1192,7 +1210,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
             <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinates&quot;</span><span class="p">)</span>
             <span class="n">lat</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">lon</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;click&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;click&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_layer_editor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">layer_name</span> <span class="o">=</span> <span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_markers&quot;</span><span class="p">):</span>
@@ -1209,9 +1227,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                         <span class="s2">&quot;reflectance&quot;</span>
                     <span class="p">]</span>
 
-                    <span class="k">if</span> <span class="s2">&quot;wavelengths&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                            <span class="s2">&quot;wavelengths&quot;</span>
+                    <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                            <span class="s2">&quot;wavelength&quot;</span>
                         <span class="p">]</span><span class="o">.</span><span class="n">values</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -1402,6 +1420,10 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
     <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
 
+    <span class="n">layer_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">layers_widget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">layer_names</span><span class="p">)</span>
+    <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;18ex&quot;</span>
+
     <span class="n">close_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
         <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;times&quot;</span><span class="p">,</span>
         <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Close the widget&quot;</span><span class="p">,</span>
@@ -1416,12 +1438,27 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 
+    <span class="n">settings_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;gear&quot;</span><span class="p">,</span>
+        <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Change layer settings&quot;</span><span class="p">,</span>
+        <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
     <span class="n">stack_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">ToggleButton</span><span class="p">(</span>
         <span class="n">value</span><span class="o">=</span><span class="n">stack</span><span class="p">,</span>
         <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;area-chart&quot;</span><span class="p">,</span>
         <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
         <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
     <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_add_layer_editor</span><span class="p">(</span>
+            <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span>
+            <span class="n">layer_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="n">settings_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">settings_btn_click</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
@@ -1483,10 +1520,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
     <span class="n">close_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">close_widget</span><span class="p">)</span>
 
-    <span class="n">layer_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="n">layers_widget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">layer_names</span><span class="p">)</span>
-    <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;18ex&quot;</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span><span class="n">layers_widget</span><span class="p">,</span> <span class="n">stack_btn</span><span class="p">,</span> <span class="n">reset_btn</span><span class="p">,</span> <span class="n">save_btn</span><span class="p">,</span> <span class="n">close_btn</span><span class="p">])</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">layers_widget</span><span class="p">,</span> <span class="n">settings_btn</span><span class="p">,</span> <span class="n">stack_btn</span><span class="p">,</span> <span class="n">reset_btn</span><span class="p">,</span> <span class="n">save_btn</span><span class="p">,</span> <span class="n">close_btn</span><span class="p">]</span>
+    <span class="p">)</span>
 
     <span class="n">output</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
     <span class="n">output_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;bottomright&quot;</span><span class="p">)</span>
@@ -1502,7 +1538,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinates&quot;</span><span class="p">)</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">lon</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;click&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;click&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_layer_editor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">layer_name</span> <span class="o">=</span> <span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_markers&quot;</span><span class="p">):</span>
@@ -1519,9 +1555,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                     <span class="s2">&quot;reflectance&quot;</span>
                 <span class="p">]</span>
 
-                <span class="k">if</span> <span class="s2">&quot;wavelengths&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                        <span class="s2">&quot;wavelengths&quot;</span>
+                <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                        <span class="s2">&quot;wavelength&quot;</span>
                     <span class="p">]</span><span class="o">.</span><span class="n">values</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>

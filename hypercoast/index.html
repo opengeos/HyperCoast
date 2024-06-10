@@ -826,6 +826,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_hyper" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_hyper()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.add_neon" class="md-nav__link">
     <span class="md-ellipsis">
       add_neon()
@@ -1075,6 +1084,15 @@
   <a href="#hypercoast.hypercoast.Map.add_emit" class="md-nav__link">
     <span class="md-ellipsis">
       add_emit()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_hyper" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_hyper()
     </span>
   </a>
   
@@ -1455,6 +1473,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">add_pace</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1538,11 +1557,12 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PACE&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">add_desis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
-        <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+        <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">525</span><span class="p">],</span>
         <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
         <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1596,19 +1616,19 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
             <span class="n">source</span> <span class="o">=</span> <span class="n">read_desis</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-        <span class="n">image</span> <span class="o">=</span> <span class="n">desis_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">desis_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">wavelengths</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
             <span class="n">image</span><span class="p">,</span>
@@ -1627,6 +1647,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DESIS&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">add_neon</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1709,6 +1730,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NEON&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">add_aviris</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1792,6 +1814,34 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">xds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;AVIRIS&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a hyperspectral dataset to the map.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xds (str): The Xarray dataset containing the hyperspectral data.</span>
+<span class="sd">            type (str): The type of the hyperspectral dataset. Can be one of</span>
+<span class="sd">                &quot;EMIT&quot;, &quot;PACE&quot;, &quot;DESIS&quot;, &quot;NEON&quot;, &quot;AVIRIS&quot;.</span>
+<span class="sd">            **kwargs: Additional keyword arguments to pass to the corresponding</span>
+<span class="sd">                add function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">wvl_indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">xds</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wvl_indexes</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_emit</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_pace</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_desis</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_neon</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_aviris</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_plot_options</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1871,6 +1921,48 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectral_to_df</span><span class="p">()</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
         <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_band_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">):</span>
+
+        <span class="c1"># Function to find the nearest indices</span>
+        <span class="k">def</span> <span class="nf">find_nearest_indices</span><span class="p">(</span>
+            <span class="n">dataarray</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">dim_name</span><span class="o">=</span><span class="s2">&quot;wavelength&quot;</span>
+        <span class="p">):</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dim_name</span> <span class="o">==</span> <span class="s2">&quot;band&quot;</span><span class="p">:</span>
+                    <span class="n">nearest_wavelength</span> <span class="o">=</span> <span class="n">dataarray</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+                        <span class="n">band</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">nearest_wavelength</span> <span class="o">=</span> <span class="n">dataarray</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+                        <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">nearest_wavelength_index</span> <span class="o">=</span> <span class="n">nearest_wavelength</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">nearest_index</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">dataarray</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">nearest_wavelength_index</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nearest_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">indices</span>
+
+        <span class="k">if</span> <span class="s2">&quot;xds&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">]:</span>
+            <span class="n">xds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span>
+            <span class="n">dim_name</span> <span class="o">=</span> <span class="s2">&quot;wavelength&quot;</span>
+
+            <span class="k">if</span> <span class="s2">&quot;band&quot;</span> <span class="ow">in</span> <span class="n">xds</span><span class="p">:</span>
+                <span class="n">dim_name</span> <span class="o">=</span> <span class="s2">&quot;band&quot;</span>
+
+            <span class="n">band_count</span> <span class="o">=</span> <span class="n">xds</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span>
+            <span class="n">band_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">band</span><span class="p">)</span> <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">band_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;band_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">band_names</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">indexes</span> <span class="o">=</span> <span class="n">find_nearest_indices</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">dim_name</span><span class="o">=</span><span class="n">dim_name</span><span class="p">)</span>
+                <span class="n">vis_bands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;indexes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">indexes</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vis_bands&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vis_bands</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -2209,6 +2301,7 @@ Defaults to "nearest".</p></td>
     <span class="n">xds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;AVIRIS&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2222,7 +2315,7 @@ Defaults to "nearest".</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_desis" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_desis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;DESIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_desis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">525</span><span class="p">],</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;DESIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_desis" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -2336,7 +2429,7 @@ layer. Defaults to True.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_desis</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
-    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">525</span><span class="p">],</span>
     <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2390,19 +2483,19 @@ layer. Defaults to True.</p></td>
 
         <span class="n">source</span> <span class="o">=</span> <span class="n">read_desis</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-    <span class="n">image</span> <span class="o">=</span> <span class="n">desis_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">desis_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">wavelengths</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
         <span class="n">image</span><span class="p">,</span>
@@ -2421,6 +2514,7 @@ layer. Defaults to True.</p></td>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DESIS&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2625,6 +2719,90 @@ True.</p></td>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="hypercoast.hypercoast.Map.add_hyper" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.add_hyper" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Add a hyperspectral dataset to the map.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>xds</code></td>
+        <td><code>str</code></td>
+        <td><p>The Xarray dataset containing the hyperspectral data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>type</code></td>
+        <td><code>str</code></td>
+        <td><p>The type of the hyperspectral dataset. Can be one of
+"EMIT", "PACE", "DESIS", "NEON", "AVIRIS".</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments to pass to the corresponding
+add function.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a hyperspectral dataset to the map.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xds (str): The Xarray dataset containing the hyperspectral data.</span>
+<span class="sd">        type (str): The type of the hyperspectral dataset. Can be one of</span>
+<span class="sd">            &quot;EMIT&quot;, &quot;PACE&quot;, &quot;DESIS&quot;, &quot;NEON&quot;, &quot;AVIRIS&quot;.</span>
+<span class="sd">        **kwargs: Additional keyword arguments to pass to the corresponding</span>
+<span class="sd">            add function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">wvl_indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">xds</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wvl_indexes</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_emit</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_pace</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_desis</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_neon</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_aviris</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2837,6 +3015,7 @@ Defaults to "nearest".</p></td>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NEON&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -3043,6 +3222,7 @@ layer. Defaults to True.</p></td>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PACE&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

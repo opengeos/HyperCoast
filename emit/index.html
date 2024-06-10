@@ -1570,7 +1570,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="n">ds</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">array_to_image</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -1832,6 +1832,8 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+    <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">out_xr</span>
 </code></pre></div>
         </details>
@@ -3049,6 +3051,7 @@ used to orthorectify the data at a later point in a workflow.</p>
         <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">ds</span>
 </code></pre></div>
         </details>
@@ -3212,7 +3215,7 @@ used to orthorectify the data at a later point in a workflow.</p>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">read_emit</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="n">ortho</span><span class="p">)</span>
-    <span class="n">example</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">example</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Reflectance at </span><span class="si">{</span><span class="n">example</span><span class="o">.</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">values</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">example</span><span class="o">.</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">&quot;</span>

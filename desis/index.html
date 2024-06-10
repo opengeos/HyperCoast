@@ -1003,7 +1003,7 @@
 
 
 <h2 id="hypercoast.desis.desis_to_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">desis_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">desis_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.desis.desis_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1031,10 +1031,10 @@ or the file path to the dataset.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>bands</code></td>
+        <td><code>wavelengths</code></td>
         <td><code>array-like</code></td>
-        <td><p>The specific bands to select. If None, all
-bands are selected. Defaults to None.</p></td>
+        <td><p>The specific wavelengths to select.
+If None, all wavelengths are selected. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
@@ -1079,15 +1079,15 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/desis.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">desis_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">desis_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an DESIS dataset to an image.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dataset (xarray.Dataset or str): The dataset containing the DESIS data</span>
 <span class="sd">            or the file path to the dataset.</span>
-<span class="sd">        bands (array-like, optional): The specific bands to select. If None, all</span>
-<span class="sd">            bands are selected. Defaults to None.</span>
+<span class="sd">        wavelengths (array-like, optional): The specific wavelengths to select.</span>
+<span class="sd">            If None, all wavelengths are selected. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for data interpolation.</span>
 <span class="sd">            Defaults to &quot;nearest&quot;.</span>
 <span class="sd">        output (str, optional): The file path where the image will be saved. If</span>
@@ -1105,10 +1105,12 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_desis</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">array_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">array_to_image</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -1199,7 +1201,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
     <span class="n">values</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="mi">10000</span>
 
     <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-        <span class="n">values</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]}</span>
+        <span class="n">values</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]}</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">da</span>
@@ -1319,8 +1321,6 @@ list, it represents a range.</p></td>
         <span class="nb">print</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
         <span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">))[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span>
 
-    <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span>
-
     <span class="k">if</span> <span class="n">return_plot</span><span class="p">:</span>
         <span class="n">rrs_stack</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;pixel&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">]},</span>
@@ -1342,7 +1342,7 @@ list, it represents a range.</p></td>
 
 
 <h2 id="hypercoast.desis.read_desis" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_desis</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_desis</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.desis.read_desis" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1369,16 +1369,16 @@ list, it represents a range.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>bands</code></td>
+        <td><code>wavelengths</code></td>
         <td><code>array-like</code></td>
-        <td><p>Specific bands to select. If None, all
-bands are selected.</p></td>
+        <td><p>Specific wavelengths to select. If
+None, all wavelengths are selected.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>method</code></td>
         <td><code>str</code></td>
-        <td><p>Method to use for selection when bands is not
+        <td><p>Method to use for selection when wavelengths is not
 None. Defaults to "nearest".</p></td>
         <td><code>&#39;nearest&#39;</code></td>
       </tr>
@@ -1408,15 +1408,15 @@ bands is not None.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/desis.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_desis</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_desis</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads DESIS data from a given file and returns an xarray Dataset.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filepath (str): Path to the file to read.</span>
-<span class="sd">        bands (array-like, optional): Specific bands to select. If None, all</span>
-<span class="sd">            bands are selected.</span>
-<span class="sd">        method (str, optional): Method to use for selection when bands is not</span>
+<span class="sd">        wavelengths (array-like, optional): Specific wavelengths to select. If</span>
+<span class="sd">            None, all wavelengths are selected.</span>
+<span class="sd">        method (str, optional): Method to use for selection when wavelengths is not</span>
 <span class="sd">            None. Defaults to &quot;nearest&quot;.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to pass to the `sel` method when</span>
 <span class="sd">            bands is not None.</span>
@@ -1425,16 +1425,17 @@ bands is not None.</p></td>
 <span class="sd">        xr.Dataset: An xarray Dataset containing the DESIS data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;band_data&quot;</span><span class="p">:</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">})</span>
     <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/opengeos/datasets/releases/download/hypercoast/desis_wavelengths.csv&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wavelengths</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;band_data&quot;</span><span class="p">:</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">}</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
     <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">dataset</span>
