@@ -3,7 +3,7 @@
 
 import os
 import leafmap
-from typing import List, Union, Dict, Optional, Tuple
+from typing import List, Union, Dict, Optional, Tuple, Any
 
 
 def github_raw_url(url):
@@ -413,3 +413,110 @@ def convert_coords(
     converted_coords = [transformer.transform(lon, lat) for lat, lon in coords]
 
     return converted_coords
+
+
+def image_cube(
+    dataset,
+    variable: str = "reflectance",
+    cmap: str = "jet",
+    clim: Tuple[float, float] = (0, 0.5),
+    rgb_bands: Optional[List[int]] = None,
+    rgb_wavelengths: Optional[List[float]] = None,
+    rgb_gamma: float = 1.0,
+    rgb_cmap: Optional[str] = None,
+    rgb_clim: Optional[Tuple[float, float]] = None,
+    title: str = "Reflectance",
+    mesh_args: Dict[str, Any] = {},
+    **kwargs: Any,
+):
+    """
+    Creates an image cube from a dataset and plots it using PyVista.
+
+    Args:
+        dataset (Union[str, xr.Dataset]): The dataset to plot. Can be a path to a NetCDF file or an xarray Dataset.
+        variable (str, optional): The variable to plot. Defaults to "reflectance".
+        cmap (str, optional): The colormap to use. Defaults to "jet".
+        clim (Tuple[float, float], optional): The color limits. Defaults to (0, 0.5).
+        rgb_bands (Optional[List[int]], optional): The bands to use for the RGB image. Defaults to None.
+        rgb_wavelengths (Optional[List[float]], optional): The wavelengths to use for the RGB image. Defaults to None.
+        rgb_gamma (float, optional): The gamma correction for the RGB image. Defaults to 1.
+        rgb_cmap (Optional[str], optional): The colormap to use for the RGB image. Defaults to None.
+        rgb_clim (Optional[Tuple[float, float]], optional): The color limits for the RGB image. Defaults to None.
+        title (str, optional): The title for the scalar bar. Defaults to "Reflectance".
+        mesh_args (Dict[str, Any], optional): Additional arguments for the `add_mesh` method. Defaults to {}.
+        **kwargs: Additional arguments for the `pv.Plotter` constructor.
+
+    Returns:
+        pv.Plotter: The PyVista Plotter with the image cube added.
+    """
+
+    import pyvista as pv
+    import xarray as xr
+
+    if isinstance(dataset, str):
+        dataset = xr.open_dataset(dataset)
+
+    da = dataset[variable]  # xarray DataArray
+    values = da.to_numpy()
+
+    # Create the spatial reference for the image cube
+    grid = pv.ImageData()
+
+    # Set the grid dimensions: shape because we want to inject our values on the POINT data
+    grid.dimensions = values.shape
+
+    # Edit the spatial reference
+    grid.origin = (0, 0, 0)  # The bottom left corner of the data set
+    grid.spacing = (1, 1, 1)  # These are the cell sizes along each axis
+
+    # Add the data values to the cell data
+    grid.point_data["values"] = values.flatten(order="F")  # Flatten the array
+
+    # Plot the image cube with the RGB image overlay
+    p = pv.Plotter(**kwargs)
+
+    if "scalar_bar_args" not in mesh_args:
+        mesh_args["scalar_bar_args"] = {"title": title}
+    else:
+        mesh_args["scalar_bar_args"]["title"] = title
+
+    p.add_mesh(grid, cmap=cmap, show_edges=False, clim=clim, **mesh_args)
+
+    if rgb_bands is not None or rgb_wavelengths is not None:
+
+        if rgb_bands is not None:
+            rgb_image = dataset.isel(wavelength=rgb_bands, method="nearest")[
+                variable
+            ].to_numpy()
+        elif rgb_wavelengths is not None:
+            rgb_image = dataset.sel(wavelength=rgb_wavelengths, method="nearest")[
+                variable
+            ].to_numpy()
+
+        x_dim, y_dim = rgb_image.shape[0], rgb_image.shape[1]
+        z_dim = 1
+        im = pv.ImageData(dimensions=(x_dim, y_dim, z_dim))
+
+        # Add scalar data, you may also need to flatten this
+        im.point_data["rgb_image"] = (
+            rgb_image.reshape(-1, rgb_image.shape[2]) * rgb_gamma
+        )
+
+        grid_z_max = grid.bounds[5]
+        im.origin = (0, 0, grid_z_max)
+
+        rgb_args = {}
+
+        if rgb_image.shape[2] < 3:
+            if rgb_cmap is None:
+                rgb_cmap = cmap
+            if rgb_clim is None:
+                rgb_clim = clim
+            rgb_args["cmap"] = rgb_cmap
+            rgb_args["clim"] = rgb_clim
+        else:
+            rgb_args["rgb"] = True
+
+        p.add_mesh(im, show_edges=False, show_scalar_bar=False, **rgb_args)
+
+    return p

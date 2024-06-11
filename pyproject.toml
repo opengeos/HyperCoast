@@ -37,6 +37,7 @@ extra = [
     "cartopy",
     "earthaccess",
     "mapclassify",
+    "pyvista",
 ]
 
 

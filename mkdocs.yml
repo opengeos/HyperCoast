@@ -51,7 +51,12 @@ plugins:
           allow_errors: false
           ignore: ["conf.py"]
           execute_ignore:
-              ["search_data.ipynb", "ecostress.ipynb", "aviris.ipynb"]
+              [
+                  "search_data.ipynb",
+                  "ecostress.ipynb",
+                  "aviris.ipynb",
+                  "image_cube.ipynb",
+              ]
 
 markdown_extensions:
     - admonition
@@ -82,6 +87,7 @@ nav:
     - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
           - examples/search_data.ipynb
+          - examples/image_cube.ipynb
           - examples/aviris.ipynb
           - examples/desis.ipynb
           - examples/emit.ipynb
