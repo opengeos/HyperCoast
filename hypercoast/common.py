@@ -499,7 +499,7 @@ def image_cube(
 
         # Add scalar data, you may also need to flatten this
         im.point_data["rgb_image"] = (
-            rgb_image.reshape(-1, rgb_image.shape[2]) * rgb_gamma
+            rgb_image.reshape(-1, rgb_image.shape[2], order="F") * rgb_gamma
         )
 
         grid_z_max = grid.bounds[5]
