@@ -2089,7 +2089,7 @@ Defaults to 8.</p></td>
 
         <span class="c1"># Add scalar data, you may also need to flatten this</span>
         <span class="n">im</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;rgb_image&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">rgb_image</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rgb_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">rgb_gamma</span>
+            <span class="n">rgb_image</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rgb_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">rgb_gamma</span>
         <span class="p">)</span>
 
         <span class="n">grid_z_max</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
