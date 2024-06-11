@@ -462,6 +462,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/image_cube/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image cube
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/aviris/" class="md-nav__link">
         
   
@@ -771,6 +792,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.image_cube" class="md-nav__link">
+    <span class="md-ellipsis">
+      image_cube()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.nasa_earth_login" class="md-nav__link">
     <span class="md-ellipsis">
       nasa_earth_login()
@@ -1059,6 +1089,15 @@
   <a href="#hypercoast.common.github_raw_url" class="md-nav__link">
     <span class="md-ellipsis">
       github_raw_url()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.image_cube" class="md-nav__link">
+    <span class="md-ellipsis">
+      image_cube()
     </span>
   </a>
   
@@ -1842,6 +1881,235 @@ Defaults to 8.</p></td>
             <span class="s2">&quot;blob/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">url</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.common.image_cube" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_cube</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">rgb_bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rgb_cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_clim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">mesh_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.image_cube" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Creates an image cube from a dataset and plots it using PyVista.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dataset</code></td>
+        <td><code>Union[str, xr.Dataset]</code></td>
+        <td><p>The dataset to plot. Can be a path to a NetCDF file or an xarray Dataset.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>variable</code></td>
+        <td><code>str</code></td>
+        <td><p>The variable to plot. Defaults to "reflectance".</p></td>
+        <td><code>&#39;reflectance&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>cmap</code></td>
+        <td><code>str</code></td>
+        <td><p>The colormap to use. Defaults to "jet".</p></td>
+        <td><code>&#39;jet&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>clim</code></td>
+        <td><code>Tuple[float, float]</code></td>
+        <td><p>The color limits. Defaults to (0, 0.5).</p></td>
+        <td><code>(0, 0.5)</code></td>
+      </tr>
+      <tr>
+        <td><code>rgb_bands</code></td>
+        <td><code>Optional[List[int]]</code></td>
+        <td><p>The bands to use for the RGB image. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>rgb_wavelengths</code></td>
+        <td><code>Optional[List[float]]</code></td>
+        <td><p>The wavelengths to use for the RGB image. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>rgb_gamma</code></td>
+        <td><code>float</code></td>
+        <td><p>The gamma correction for the RGB image. Defaults to 1.</p></td>
+        <td><code>1.0</code></td>
+      </tr>
+      <tr>
+        <td><code>rgb_cmap</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>The colormap to use for the RGB image. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>rgb_clim</code></td>
+        <td><code>Optional[Tuple[float, float]]</code></td>
+        <td><p>The color limits for the RGB image. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>str</code></td>
+        <td><p>The title for the scalar bar. Defaults to "Reflectance".</p></td>
+        <td><code>&#39;Reflectance&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>mesh_args</code></td>
+        <td><code>Dict[str, Any]</code></td>
+        <td><p>Additional arguments for the <code>add_mesh</code> method. Defaults to {}.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional arguments for the <code>pv.Plotter</code> constructor.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>pv.Plotter</code></td>
+      <td><p>The PyVista Plotter with the image cube added.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">image_cube</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">clim</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">rgb_bands</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rgb_wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rgb_gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">rgb_cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rgb_clim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Reflectance&quot;</span><span class="p">,</span>
+    <span class="n">mesh_args</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates an image cube from a dataset and plots it using PyVista.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataset (Union[str, xr.Dataset]): The dataset to plot. Can be a path to a NetCDF file or an xarray Dataset.</span>
+<span class="sd">        variable (str, optional): The variable to plot. Defaults to &quot;reflectance&quot;.</span>
+<span class="sd">        cmap (str, optional): The colormap to use. Defaults to &quot;jet&quot;.</span>
+<span class="sd">        clim (Tuple[float, float], optional): The color limits. Defaults to (0, 0.5).</span>
+<span class="sd">        rgb_bands (Optional[List[int]], optional): The bands to use for the RGB image. Defaults to None.</span>
+<span class="sd">        rgb_wavelengths (Optional[List[float]], optional): The wavelengths to use for the RGB image. Defaults to None.</span>
+<span class="sd">        rgb_gamma (float, optional): The gamma correction for the RGB image. Defaults to 1.</span>
+<span class="sd">        rgb_cmap (Optional[str], optional): The colormap to use for the RGB image. Defaults to None.</span>
+<span class="sd">        rgb_clim (Optional[Tuple[float, float]], optional): The color limits for the RGB image. Defaults to None.</span>
+<span class="sd">        title (str, optional): The title for the scalar bar. Defaults to &quot;Reflectance&quot;.</span>
+<span class="sd">        mesh_args (Dict[str, Any], optional): Additional arguments for the `add_mesh` method. Defaults to {}.</span>
+<span class="sd">        **kwargs: Additional arguments for the `pv.Plotter` constructor.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pv.Plotter: The PyVista Plotter with the image cube added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>  <span class="c1"># xarray DataArray</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+    <span class="c1"># Create the spatial reference for the image cube</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">ImageData</span><span class="p">()</span>
+
+    <span class="c1"># Set the grid dimensions: shape because we want to inject our values on the POINT data</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Edit the spatial reference</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># The bottom left corner of the data set</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># These are the cell sizes along each axis</span>
+
+    <span class="c1"># Add the data values to the cell data</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>  <span class="c1"># Flatten the array</span>
+
+    <span class="c1"># Plot the image cube with the RGB image overlay</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;scalar_bar_args&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mesh_args</span><span class="p">:</span>
+        <span class="n">mesh_args</span><span class="p">[</span><span class="s2">&quot;scalar_bar_args&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mesh_args</span><span class="p">[</span><span class="s2">&quot;scalar_bar_args&quot;</span><span class="p">][</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="n">clim</span><span class="p">,</span> <span class="o">**</span><span class="n">mesh_args</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">rgb_bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">rgb_wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">rgb_bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rgb_image</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">rgb_bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span>
+                <span class="n">variable</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">rgb_wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rgb_image</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">rgb_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span>
+                <span class="n">variable</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+        <span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span> <span class="o">=</span> <span class="n">rgb_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rgb_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">z_dim</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">ImageData</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="p">,</span> <span class="n">z_dim</span><span class="p">))</span>
+
+        <span class="c1"># Add scalar data, you may also need to flatten this</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;rgb_image&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">rgb_image</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rgb_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">rgb_gamma</span>
+        <span class="p">)</span>
+
+        <span class="n">grid_z_max</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">grid_z_max</span><span class="p">)</span>
+
+        <span class="n">rgb_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">rgb_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rgb_cmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rgb_cmap</span> <span class="o">=</span> <span class="n">cmap</span>
+            <span class="k">if</span> <span class="n">rgb_clim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rgb_clim</span> <span class="o">=</span> <span class="n">clim</span>
+            <span class="n">rgb_args</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb_cmap</span>
+            <span class="n">rgb_args</span><span class="p">[</span><span class="s2">&quot;clim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb_clim</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rgb_args</span><span class="p">[</span><span class="s2">&quot;rgb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">rgb_args</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">p</span>
 </code></pre></div>
         </details>
     </div>
