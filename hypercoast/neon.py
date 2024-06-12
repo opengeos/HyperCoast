@@ -60,15 +60,17 @@ def read_neon(
         xr.Dataset: The dataset containing the reflectance data.
     """
     with h5py.File(filepath, "r") as f:
-        # Extract site code dynamically from NEON HDF file metadata 
+        # Extract site code dynamically from NEON HDF file metadata
         # At the root of `keys` NEON stores the site code, which is the `root` folder at the [0] index of object `keys`
-        site_code = list(f.keys())[0] 
-        
+        site_code = list(f.keys())[0]
+
         # Access the reflectance data using the site code
         site_refl = f[site_code]["Reflectance"]
-        
+
         # Extract wavelengths
-        wavelengths_list = site_refl["Metadata"]["Spectral_Data"]["Wavelength"][()].tolist()
+        wavelengths_list = site_refl["Metadata"]["Spectral_Data"]["Wavelength"][
+            ()
+        ].tolist()
         wavelengths_list = [round(num, 2) for num in wavelengths_list]
 
         # Extract EPSG code
@@ -76,9 +78,11 @@ def read_neon(
         epsg_code_number = int(epsg_code.decode("utf-8"))
 
         # Extract map info
-        mapInfo_string = site_refl["Metadata"]["Coordinate_System"]["Map_Info"][()].decode("utf-8")
+        mapInfo_string = site_refl["Metadata"]["Coordinate_System"]["Map_Info"][
+            ()
+        ].decode("utf-8")
         mapInfo_split = mapInfo_string.split(",")
-        
+
         res = float(mapInfo_split[5]), float(mapInfo_split[6])
 
         # Extract reflectance array and shape
@@ -127,6 +131,7 @@ def read_neon(
         dataset.attrs = dataset["reflectance"].attrs
 
     return dataset
+
 
 def neon_to_image(
     dataset: Union[xr.Dataset, str],
