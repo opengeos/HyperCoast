@@ -1412,71 +1412,76 @@ all wavelengths are selected. Defaults to None.</p></td>
 <span class="sd">    Returns:</span>
 <span class="sd">        xr.Dataset: The dataset containing the reflectance data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c1"># Extract site code dynamically from NEON HDF file metadata</span>
+        <span class="c1"># At the root of `keys` NEON stores the site code, which is the `root` folder at the [0] index of object `keys`</span>
+        <span class="n">site_code</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">serc_refl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;SERC&quot;</span><span class="p">][</span><span class="s2">&quot;Reflectance&quot;</span><span class="p">]</span>
-    <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">serc_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Spectral_Data&quot;</span><span class="p">][</span><span class="s2">&quot;Wavelength&quot;</span><span class="p">][()]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">]</span>
+        <span class="c1"># Access the reflectance data using the site code</span>
+        <span class="n">site_refl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">site_code</span><span class="p">][</span><span class="s2">&quot;Reflectance&quot;</span><span class="p">]</span>
 
-    <span class="n">epsg_code</span> <span class="o">=</span> <span class="n">serc_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Coordinate_System&quot;</span><span class="p">][</span><span class="s2">&quot;EPSG Code&quot;</span><span class="p">][()]</span>
-    <span class="n">epsg_code_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epsg_code</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="c1"># Extract wavelengths</span>
+        <span class="n">wavelengths_list</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Spectral_Data&quot;</span><span class="p">][</span><span class="s2">&quot;Wavelength&quot;</span><span class="p">][</span>
+            <span class="p">()</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">wavelengths_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">wavelengths_list</span><span class="p">]</span>
 
-    <span class="n">serc_mapInfo</span> <span class="o">=</span> <span class="n">serc_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Coordinate_System&quot;</span><span class="p">][</span><span class="s2">&quot;Map_Info&quot;</span><span class="p">]</span>
-    <span class="n">mapInfo_string</span> <span class="o">=</span> <span class="n">serc_mapInfo</span><span class="p">[()]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>  <span class="c1"># read in as string</span>
-    <span class="n">mapInfo_split</span> <span class="o">=</span> <span class="n">mapInfo_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="c1"># Extract EPSG code</span>
+        <span class="n">epsg_code</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Coordinate_System&quot;</span><span class="p">][</span><span class="s2">&quot;EPSG Code&quot;</span><span class="p">][()]</span>
+        <span class="n">epsg_code_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epsg_code</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
 
-    <span class="n">res</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+        <span class="c1"># Extract map info</span>
+        <span class="n">mapInfo_string</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Coordinate_System&quot;</span><span class="p">][</span><span class="s2">&quot;Map_Info&quot;</span><span class="p">][</span>
+            <span class="p">()</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">mapInfo_split</span> <span class="o">=</span> <span class="n">mapInfo_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
 
-    <span class="n">serc_reflArray</span> <span class="o">=</span> <span class="n">serc_refl</span><span class="p">[</span><span class="s2">&quot;Reflectance_Data&quot;</span><span class="p">]</span>
-    <span class="n">refl_shape</span> <span class="o">=</span> <span class="n">serc_reflArray</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
 
-    <span class="c1"># Extract the upper left-hand corner coordinates from mapInfo</span>
-    <span class="n">xMin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-    <span class="n">yMax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="c1"># Extract reflectance array and shape</span>
+        <span class="n">site_reflArray</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Reflectance_Data&quot;</span><span class="p">]</span>
+        <span class="n">refl_shape</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="c1"># Calculate the xMax and yMin values from the dimensions</span>
-    <span class="n">xMax</span> <span class="o">=</span> <span class="n">xMin</span> <span class="o">+</span> <span class="p">(</span>
-        <span class="n">refl_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="p">)</span>  <span class="c1"># xMax = left edge + (# of columns * x pixel resolution)</span>
-    <span class="n">yMin</span> <span class="o">=</span> <span class="n">yMax</span> <span class="o">-</span> <span class="p">(</span>
-        <span class="n">refl_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="p">)</span>  <span class="c1"># yMin = top edge - (# of rows * y pixel resolution)</span>
+        <span class="c1"># Calculate coordinates</span>
+        <span class="n">xMin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">yMax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
 
-    <span class="c1"># serc_ext = (xMin, xMax, yMin, yMax)</span>
+        <span class="n">xMax</span> <span class="o">=</span> <span class="n">xMin</span> <span class="o">+</span> <span class="p">(</span><span class="n">refl_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">yMin</span> <span class="o">=</span> <span class="n">yMax</span> <span class="o">-</span> <span class="p">(</span><span class="n">refl_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="c1"># View and apply scale factor and data ignore value</span>
-    <span class="n">scaleFactor</span> <span class="o">=</span> <span class="n">serc_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Scale_Factor&quot;</span><span class="p">]</span>
-    <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">serc_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Data_Ignore_Value&quot;</span><span class="p">]</span>
+        <span class="c1"># Handle scale factor and no-data value</span>
+        <span class="n">scaleFactor</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Scale_Factor&quot;</span><span class="p">]</span>
+        <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Data_Ignore_Value&quot;</span><span class="p">]</span>
 
-    <span class="n">da</span> <span class="o">=</span> <span class="n">serc_reflArray</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">noDataValue</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="n">scaleFactor</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">noDataValue</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="n">scaleFactor</span>
 
-    <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">yMax</span><span class="p">,</span> <span class="n">yMin</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xMin</span><span class="p">,</span> <span class="n">xMax</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">wavelengths</span><span class="p">,</span>
-    <span class="p">}</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">yMax</span><span class="p">,</span> <span class="n">yMin</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xMin</span><span class="p">,</span> <span class="n">xMax</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">wavelengths_list</span><span class="p">,</span>
+        <span class="p">}</span>
 
-    <span class="n">xda</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-        <span class="n">da</span><span class="p">,</span>
-        <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span>
-        <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">],</span>
-        <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
-            <span class="s2">&quot;scale_factor&quot;</span><span class="p">:</span> <span class="n">scaleFactor</span><span class="p">,</span>
-            <span class="s2">&quot;no_data_value&quot;</span><span class="p">:</span> <span class="n">noDataValue</span><span class="p">,</span>
-            <span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;EPSG:</span><span class="si">{</span><span class="n">epsg_code_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">xMin</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">yMax</span><span class="p">),</span>
-        <span class="p">},</span>
-    <span class="p">)</span>
+        <span class="n">xda</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+            <span class="n">da</span><span class="p">,</span>
+            <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span>
+            <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">],</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;scale_factor&quot;</span><span class="p">:</span> <span class="n">scaleFactor</span><span class="p">,</span>
+                <span class="s2">&quot;no_data_value&quot;</span><span class="p">:</span> <span class="n">noDataValue</span><span class="p">,</span>
+                <span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;EPSG:</span><span class="si">{</span><span class="n">epsg_code_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">xMin</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">yMax</span><span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">xda</span> <span class="o">=</span> <span class="n">xda</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xda</span> <span class="o">=</span> <span class="n">xda</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xda</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">)</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">xda</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">)</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
 
     <span class="k">return</span> <span class="n">dataset</span>
 </code></pre></div>
