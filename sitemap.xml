@@ -96,6 +96,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://hypercoast.org/examples/image_slicing/</loc>
+         <lastmod>2024-06-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://hypercoast.org/examples/neon/</loc>
          <lastmod>2024-06-14</lastmod>
          <changefreq>daily</changefreq>
