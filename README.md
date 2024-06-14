@@ -20,6 +20,7 @@
 -   Interactive extraction and visualization of spectral signatures
 -   Changing band combinations and colormaps interactively
 -   Visualizing hyperspectral data in 3D
+-   Interactive slicing and thresholding of hyperspectral data in 3D
 -   Saving spectral signatures as CSV files
 
 ## Demos
@@ -27,6 +28,14 @@
 -   Visualizing hyperspectral data in 3D ([notebook](https://hypercoast.org/examples/image_cube))
 
 ![Cube](https://i.imgur.com/NNId1Zz.gif)
+
+-   Interactive slicing of hyperspectral data in 3D ([notebook](https://hypercoast.org/examples/image_slicing))
+
+![Slicing](https://i.imgur.com/msK1liO.gif)
+
+-   Interactive thresholding of hyperspectral data in 3D ([notebook](https://hypercoast.org/examples/image_slicing))
+
+![Slicing](https://i.imgur.com/TPd20Tn.gif)
 
 -   Changing band combinations and colormaps interactively ([notebook](https://hypercoast.org/examples/neon))
 
