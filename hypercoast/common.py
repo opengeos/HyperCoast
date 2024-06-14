@@ -420,31 +420,48 @@ def image_cube(
     variable: str = "reflectance",
     cmap: str = "jet",
     clim: Tuple[float, float] = (0, 0.5),
+    title: str = "Reflectance",
     rgb_bands: Optional[List[int]] = None,
     rgb_wavelengths: Optional[List[float]] = None,
     rgb_gamma: float = 1.0,
     rgb_cmap: Optional[str] = None,
     rgb_clim: Optional[Tuple[float, float]] = None,
-    title: str = "Reflectance",
-    mesh_args: Dict[str, Any] = {},
+    rgb_args: Dict[str, Any] = {},
+    widget=None,
+    plotter_args: Dict[str, Any] = {},
+    show_axes: bool = True,
     **kwargs: Any,
 ):
     """
     Creates an image cube from a dataset and plots it using PyVista.
 
     Args:
-        dataset (Union[str, xr.Dataset]): The dataset to plot. Can be a path to a NetCDF file or an xarray Dataset.
+        dataset (Union[str, xr.Dataset]): The dataset to plot. Can be a path to
+            a NetCDF file or an xarray Dataset.
         variable (str, optional): The variable to plot. Defaults to "reflectance".
         cmap (str, optional): The colormap to use. Defaults to "jet".
         clim (Tuple[float, float], optional): The color limits. Defaults to (0, 0.5).
-        rgb_bands (Optional[List[int]], optional): The bands to use for the RGB image. Defaults to None.
-        rgb_wavelengths (Optional[List[float]], optional): The wavelengths to use for the RGB image. Defaults to None.
-        rgb_gamma (float, optional): The gamma correction for the RGB image. Defaults to 1.
-        rgb_cmap (Optional[str], optional): The colormap to use for the RGB image. Defaults to None.
-        rgb_clim (Optional[Tuple[float, float]], optional): The color limits for the RGB image. Defaults to None.
         title (str, optional): The title for the scalar bar. Defaults to "Reflectance".
-        mesh_args (Dict[str, Any], optional): Additional arguments for the `add_mesh` method. Defaults to {}.
-        **kwargs: Additional arguments for the `pv.Plotter` constructor.
+        rgb_bands (Optional[List[int]], optional): The bands to use for the RGB
+            image. Defaults to None.
+        rgb_wavelengths (Optional[List[float]], optional): The wavelengths to
+            use for the RGB image. Defaults to None.
+        rgb_gamma (float, optional): The gamma correction for the RGB image.
+            Defaults to 1.
+        rgb_cmap (Optional[str], optional): The colormap to use for the RGB image.
+            Defaults to None.
+        rgb_clim (Optional[Tuple[float, float]], optional): The color limits for
+            the RGB image. Defaults to None.
+        rgb_args (Dict[str, Any], optional): Additional arguments for the
+            `add_mesh` method for the RGB image. Defaults to {}.
+        widget (Optional[str], optional): The widget to use for the image cube.
+            Can be one of the following: "box", "plane", "slice", "orthogonal",
+            and "threshold". Defaults to None.
+        plotter_args (Dict[str, Any], optional): Additional arguments for the
+            `pv.Plotter` constructor. Defaults to {}.
+        show_axes (bool, optional): Whether to show the axes. Defaults to True.
+        **kwargs (Dict[str, Any], optional): Additional arguments for the
+            `add_mesh` method. Defaults to {}.
 
     Returns:
         pv.Plotter: The PyVista Plotter with the image cube added.
@@ -452,6 +469,12 @@ def image_cube(
 
     import pyvista as pv
     import xarray as xr
+
+    allowed_widgets = ["box", "plane", "slice", "orthogonal", "threshold"]
+
+    if widget is not None:
+        if widget not in allowed_widgets:
+            raise ValueError(f"widget must be one of the following: {allowed_widgets}")
 
     if isinstance(dataset, str):
         dataset = xr.open_dataset(dataset)
@@ -473,14 +496,38 @@ def image_cube(
     grid.point_data["values"] = values.flatten(order="F")  # Flatten the array
 
     # Plot the image cube with the RGB image overlay
-    p = pv.Plotter(**kwargs)
+    p = pv.Plotter(**plotter_args)
 
-    if "scalar_bar_args" not in mesh_args:
-        mesh_args["scalar_bar_args"] = {"title": title}
+    if "scalar_bar_args" not in kwargs:
+        kwargs["scalar_bar_args"] = {"title": title}
     else:
-        mesh_args["scalar_bar_args"]["title"] = title
+        kwargs["scalar_bar_args"]["title"] = title
 
-    p.add_mesh(grid, cmap=cmap, show_edges=False, clim=clim, **mesh_args)
+    if "show_edges" not in kwargs:
+        kwargs["show_edges"] = False
+
+    if widget == "box":
+        p.add_mesh_clip_box(grid, cmap=cmap, clim=clim, **kwargs)
+    elif widget == "plane":
+        if "normal" not in kwargs:
+            kwargs["normal"] = (0, 0, 1)
+        if "invert" not in kwargs:
+            kwargs["invert"] = True
+        if "normal_rotation" not in kwargs:
+            kwargs["normal_rotation"] = False
+        p.add_mesh_clip_plane(grid, cmap=cmap, clim=clim, **kwargs)
+    elif widget == "slice":
+        if "normal" not in kwargs:
+            kwargs["normal"] = (0, 0, 1)
+        if "normal_rotation" not in kwargs:
+            kwargs["normal_rotation"] = False
+        p.add_mesh_slice(grid, cmap=cmap, clim=clim, **kwargs)
+    elif widget == "orthogonal":
+        p.add_mesh_slice_orthogonal(grid, cmap=cmap, clim=clim, **kwargs)
+    elif widget == "threshold":
+        p.add_mesh_threshold(grid, cmap=cmap, clim=clim, **kwargs)
+    else:
+        p.add_mesh(grid, cmap=cmap, clim=clim, **kwargs)
 
     if rgb_bands is not None or rgb_wavelengths is not None:
 
@@ -505,18 +552,28 @@ def image_cube(
         grid_z_max = grid.bounds[5]
         im.origin = (0, 0, grid_z_max)
 
-        rgb_args = {}
-
         if rgb_image.shape[2] < 3:
             if rgb_cmap is None:
                 rgb_cmap = cmap
             if rgb_clim is None:
                 rgb_clim = clim
-            rgb_args["cmap"] = rgb_cmap
-            rgb_args["clim"] = rgb_clim
-        else:
-            rgb_args["rgb"] = True
 
-        p.add_mesh(im, show_edges=False, show_scalar_bar=False, **rgb_args)
+            if "cmap" not in rgb_args:
+                rgb_args["cmap"] = rgb_cmap
+            if "clim" not in rgb_args:
+                rgb_args["clim"] = rgb_clim
+        else:
+            if "rgb" not in rgb_args:
+                rgb_args["rgb"] = True
+
+        if "show_scalar_bar" not in rgb_args:
+            rgb_args["show_scalar_bar"] = False
+        if "show_edges" not in rgb_args:
+            rgb_args["show_edges"] = False
+
+        p.add_mesh(im, **rgb_args)
+
+    if show_axes:
+        p.show_axes()
 
     return p
