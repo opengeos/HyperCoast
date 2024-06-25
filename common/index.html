@@ -623,6 +623,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/temperature/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Temperature
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -834,6 +855,15 @@
   <a href="#hypercoast.common.netcdf_groups" class="md-nav__link">
     <span class="md-ellipsis">
       netcdf_groups()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.open_dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      open_dataset()
     </span>
   </a>
   
@@ -1137,6 +1167,15 @@
   <a href="#hypercoast.common.netcdf_groups" class="md-nav__link">
     <span class="md-ellipsis">
       netcdf_groups()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.open_dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      open_dataset()
     </span>
   </a>
   
@@ -1915,7 +1954,7 @@ Defaults to 8.</p></td>
 
 
 <h2 id="hypercoast.common.image_cube" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">image_cube</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">rgb_bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rgb_cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_clim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotter_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">show_axes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">image_cube</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">rgb_bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rgb_cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_clim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotter_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">show_axes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.common.image_cube" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2030,6 +2069,19 @@ and "threshold". Defaults to None.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
+        <td><code>grid_origin</code></td>
+        <td><code>Tuple[float, float, float]</code></td>
+        <td><p>The origin of the grid.
+Defaults to (0, 0, 0).</p></td>
+        <td><code>(0, 0, 0)</code></td>
+      </tr>
+      <tr>
+        <td><code>grid_spacing</code></td>
+        <td><code>Tuple[float, float, float]</code></td>
+        <td><p>The spacing of the grid.</p></td>
+        <td><code>(1, 1, 1)</code></td>
+      </tr>
+      <tr>
         <td><code>**kwargs</code></td>
         <td><code>Dict[str, Any]</code></td>
         <td><p>Additional arguments for the
@@ -2070,6 +2122,8 @@ and "threshold". Defaults to None.</p></td>
     <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">plotter_args</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="n">show_axes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2100,6 +2154,9 @@ and "threshold". Defaults to None.</p></td>
 <span class="sd">        plotter_args (Dict[str, Any], optional): Additional arguments for the</span>
 <span class="sd">            `pv.Plotter` constructor. Defaults to {}.</span>
 <span class="sd">        show_axes (bool, optional): Whether to show the axes. Defaults to True.</span>
+<span class="sd">        grid_origin (Tuple[float, float, float], optional): The origin of the grid.</span>
+<span class="sd">            Defaults to (0, 0, 0).</span>
+<span class="sd">        grid_spacing (Tuple[float, float, float], optional): The spacing of the grid.</span>
 <span class="sd">        **kwargs (Dict[str, Any], optional): Additional arguments for the</span>
 <span class="sd">            `add_mesh` method. Defaults to {}.</span>
 
@@ -2129,8 +2186,8 @@ and "threshold". Defaults to None.</p></td>
     <span class="n">grid</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="c1"># Edit the spatial reference</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># The bottom left corner of the data set</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># These are the cell sizes along each axis</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">grid_origin</span>  <span class="c1"># The bottom left corner of the data set</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">grid_spacing</span>  <span class="c1"># These are the cell sizes along each axis</span>
 
     <span class="c1"># Add the data values to the cell data</span>
     <span class="n">grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>  <span class="c1"># Flatten the array</span>
@@ -2357,6 +2414,133 @@ and "threshold". Defaults to None.</p></td>
     <span class="k">with</span> <span class="n">h5netcdf</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">groups</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.common.open_dataset" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">open_dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.open_dataset" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Opens and returns an xarray Dataset from a file.</p>
+<p>This function is a wrapper around <code>xarray.open_dataset</code> that allows for additional
+customization through keyword arguments.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>filename</code></td>
+        <td><code>str</code></td>
+        <td><p>Path to the file to open.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>engine</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>Name of the engine to use for reading the file. If None, xarray's
+default engine is used. Examples include 'netcdf4', 'h5netcdf', 'zarr', etc.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>chunks</code></td>
+        <td><code>Optional[Dict[str, int]]</code></td>
+        <td><p>Dictionary specifying how to chunk the dataset along each dimension.
+For example, <code>{'time': 1}</code> would load the dataset in single-time-step chunks. If None,
+the dataset is not chunked.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional keyword arguments passed to <code>xarray.open_dataset</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xr.Dataset</code></td>
+      <td><p>The opened dataset.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <p>Open a NetCDF file without chunking:</p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;path/to/file.nc&#39;</span><span class="p">)</span>
+</code></pre></div>
+    <p>Open a Zarr dataset, chunking along the 'time' dimension:</p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;path/to/dataset.zarr&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;zarr&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">open_dataset</span><span class="p">(</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">chunks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Opens and returns an xarray Dataset from a file.</span>
+
+<span class="sd">    This function is a wrapper around `xarray.open_dataset` that allows for additional</span>
+<span class="sd">    customization through keyword arguments.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): Path to the file to open.</span>
+<span class="sd">        engine (Optional[str]): Name of the engine to use for reading the file. If None, xarray&#39;s</span>
+<span class="sd">            default engine is used. Examples include &#39;netcdf4&#39;, &#39;h5netcdf&#39;, &#39;zarr&#39;, etc.</span>
+<span class="sd">        chunks (Optional[Dict[str, int]]): Dictionary specifying how to chunk the dataset along each dimension.</span>
+<span class="sd">            For example, `{&#39;time&#39;: 1}` would load the dataset in single-time-step chunks. If None,</span>
+<span class="sd">            the dataset is not chunked.</span>
+<span class="sd">        **kwargs: Additional keyword arguments passed to `xarray.open_dataset`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xr.Dataset: The opened dataset.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        Open a NetCDF file without chunking:</span>
+<span class="sd">        &gt;&gt;&gt; dataset = open_dataset(&#39;path/to/file.nc&#39;)</span>
+
+<span class="sd">        Open a Zarr dataset, chunking along the &#39;time&#39; dimension:</span>
+<span class="sd">        &gt;&gt;&gt; dataset = open_dataset(&#39;path/to/dataset.zarr&#39;, engine=&#39;zarr&#39;, chunks={&#39;time&#39;: 10})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">chunks</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;h5netcdf&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">chunks</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset</span>
 </code></pre></div>
         </details>
     </div>

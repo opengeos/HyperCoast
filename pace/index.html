@@ -623,6 +623,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/temperature/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Temperature
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1587,7 +1608,7 @@ Defaults to "nearest".</p></td>
 
 
 <h2 id="hypercoast.pace.read_pace" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_pace</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_pace</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;h5netcdf&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.pace.read_pace" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1650,7 +1671,9 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/pace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_pace</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_pace</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;h5netcdf&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads PACE data from a given file and returns an xarray Dataset.</span>
 
@@ -1664,9 +1687,9 @@ Defaults to "nearest".</p></td>
 <span class="sd">        xr.Dataset: An xarray Dataset containing the PACE data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">rrs</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;geophysical_data&quot;</span><span class="p">)[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span>
-    <span class="n">wvl</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;sensor_band_parameters&quot;</span><span class="p">)</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;navigation_data&quot;</span><span class="p">)</span>
+    <span class="n">rrs</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;geophysical_data&quot;</span><span class="p">)[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span>
+    <span class="n">wvl</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;sensor_band_parameters&quot;</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;navigation_data&quot;</span><span class="p">)</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">set_coords</span><span class="p">((</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">))</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;pixel_control_points&quot;</span><span class="p">:</span> <span class="s2">&quot;pixels_per_line&quot;</span><span class="p">})</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">rrs</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">()])</span>
