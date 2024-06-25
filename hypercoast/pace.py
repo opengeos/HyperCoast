@@ -7,7 +7,9 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple, Union, Optional
 
 
-def read_pace(filepath, wavelengths=None, method="nearest", **kwargs):
+def read_pace(
+    filepath, wavelengths=None, method="nearest", engine="h5netcdf", **kwargs
+):
     """
     Reads PACE data from a given file and returns an xarray Dataset.
 
@@ -21,9 +23,9 @@ def read_pace(filepath, wavelengths=None, method="nearest", **kwargs):
         xr.Dataset: An xarray Dataset containing the PACE data.
     """
 
-    rrs = xr.open_dataset(filepath, group="geophysical_data")["Rrs"]
-    wvl = xr.open_dataset(filepath, group="sensor_band_parameters")
-    dataset = xr.open_dataset(filepath, group="navigation_data")
+    rrs = xr.open_dataset(filepath, engine=engine, group="geophysical_data")["Rrs"]
+    wvl = xr.open_dataset(filepath, engine=engine, group="sensor_band_parameters")
+    dataset = xr.open_dataset(filepath, engine=engine, group="navigation_data")
     dataset = dataset.set_coords(("longitude", "latitude"))
     dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
     dataset = xr.merge([rrs, dataset.coords.to_dataset()])

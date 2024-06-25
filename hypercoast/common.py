@@ -617,4 +617,9 @@ def open_dataset(
         >>> dataset = open_dataset('path/to/dataset.zarr', engine='zarr', chunks={'time': 10})
     """
 
-    return xr.open_dataset(filename, engine=engine, chunks=chunks, **kwargs)
+    try:
+        dataset = xr.open_dataset(filename, engine=engine, chunks=chunks, **kwargs)
+    except Exception as e:
+        dataset = xr.open_dataset(filename, engine="h5netcdf", chunks=chunks, **kwargs)
+
+    return dataset
