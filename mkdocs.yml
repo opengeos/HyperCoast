@@ -97,6 +97,7 @@ nav:
           - examples/neon.ipynb
           - examples/pace.ipynb
           - examples/ecostress.ipynb
+          - examples/temperature.ipynb
     - API Reference:
           - aviris module: aviris.md
           - common module: common.md
