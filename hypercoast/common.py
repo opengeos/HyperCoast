@@ -3,6 +3,7 @@
 
 import os
 import leafmap
+import xarray as xr
 from typing import List, Union, Dict, Optional, Tuple, Any
 
 
@@ -430,6 +431,8 @@ def image_cube(
     widget=None,
     plotter_args: Dict[str, Any] = {},
     show_axes: bool = True,
+    grid_origin=(0, 0, 0),
+    grid_spacing=(1, 1, 1),
     **kwargs: Any,
 ):
     """
@@ -460,6 +463,9 @@ def image_cube(
         plotter_args (Dict[str, Any], optional): Additional arguments for the
             `pv.Plotter` constructor. Defaults to {}.
         show_axes (bool, optional): Whether to show the axes. Defaults to True.
+        grid_origin (Tuple[float, float, float], optional): The origin of the grid.
+            Defaults to (0, 0, 0).
+        grid_spacing (Tuple[float, float, float], optional): The spacing of the grid.
         **kwargs (Dict[str, Any], optional): Additional arguments for the
             `add_mesh` method. Defaults to {}.
 
@@ -489,8 +495,8 @@ def image_cube(
     grid.dimensions = values.shape
 
     # Edit the spatial reference
-    grid.origin = (0, 0, 0)  # The bottom left corner of the data set
-    grid.spacing = (1, 1, 1)  # These are the cell sizes along each axis
+    grid.origin = grid_origin  # The bottom left corner of the data set
+    grid.spacing = grid_spacing  # These are the cell sizes along each axis
 
     # Add the data values to the cell data
     grid.point_data["values"] = values.flatten(order="F")  # Flatten the array
@@ -577,3 +583,38 @@ def image_cube(
         p.show_axes()
 
     return p
+
+
+def open_dataset(
+    filename: str,
+    engine: Optional[str] = None,
+    chunks: Optional[Dict[str, int]] = None,
+    **kwargs: Any,
+) -> xr.Dataset:
+    """
+    Opens and returns an xarray Dataset from a file.
+
+    This function is a wrapper around `xarray.open_dataset` that allows for additional
+    customization through keyword arguments.
+
+    Args:
+        filename (str): Path to the file to open.
+        engine (Optional[str]): Name of the engine to use for reading the file. If None, xarray's
+            default engine is used. Examples include 'netcdf4', 'h5netcdf', 'zarr', etc.
+        chunks (Optional[Dict[str, int]]): Dictionary specifying how to chunk the dataset along each dimension.
+            For example, `{'time': 1}` would load the dataset in single-time-step chunks. If None,
+            the dataset is not chunked.
+        **kwargs: Additional keyword arguments passed to `xarray.open_dataset`.
+
+    Returns:
+        xr.Dataset: The opened dataset.
+
+    Examples:
+        Open a NetCDF file without chunking:
+        >>> dataset = open_dataset('path/to/file.nc')
+
+        Open a Zarr dataset, chunking along the 'time' dimension:
+        >>> dataset = open_dataset('path/to/dataset.zarr', engine='zarr', chunks={'time': 10})
+    """
+
+    return xr.open_dataset(filename, engine=engine, chunks=chunks, **kwargs)
