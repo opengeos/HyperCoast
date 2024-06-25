@@ -57,6 +57,7 @@ plugins:
                   "aviris.ipynb",
                   "image_cube.ipynb",
                   "image_slicing.ipynb",
+                  "temperature.ipynb",
               ]
 
 markdown_extensions:
