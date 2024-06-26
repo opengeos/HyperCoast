@@ -5,6 +5,7 @@ import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
 from typing import List, Tuple, Union, Optional
+from .common import extract_date_from_filename
 
 
 def read_pace(
@@ -42,6 +43,69 @@ def read_pace(
         dataset = dataset.sel(wavelength=wavelengths, method=method, **kwargs)
 
     return dataset
+
+
+def read_pace_chla(
+    filepaths: Union[str, List[str]], engine: str = "h5netcdf", **kwargs
+) -> xr.DataArray:
+    """
+    Reads chlorophyll-a data from PACE files and applies a logarithmic transformation.
+
+    This function supports reading from a single file or multiple files. For multiple files,
+    it combines them into a single dataset. It then extracts the chlorophyll-a variable,
+    applies a logarithmic transformation, and sets the coordinate reference system to EPSG:4326.
+
+    Args:
+        filepaths: A string or a list of strings containing the file path(s) to the PACE chlorophyll-a data files.
+        engine: The backend engine to use for reading files. Defaults to "h5netcdf".
+        **kwargs: Additional keyword arguments to pass to `xr.open_dataset` or `xr.open_mfdataset`.
+
+    Returns:
+        An xarray DataArray containing the logarithmically transformed chlorophyll-a data with updated attributes.
+
+    Examples:
+        Read chlorophyll-a data from a single file:
+        >>> chla_data = read_pace_chla('path/to/single/file.nc')
+
+        Read and combine chlorophyll-a data from multiple files:
+        >>> chla_data = read_pace_chla(['path/to/file1.nc', 'path/to/file2.nc'], combine='by_coords')
+    """
+
+    import os
+    import glob
+    import rioxarray
+
+    date = None
+    if os.path.isfile(filepaths):
+        dataset = xr.open_dataset(filepaths, engine=engine, **kwargs)
+        date = extract_date_from_filename(filepaths)
+        dataset.attrs["date"] = date
+    else:
+        if "combine" not in kwargs:
+            kwargs["combine"] = "nested"
+        if "concat_dim" not in kwargs:
+            kwargs["concat_dim"] = "date"
+        dataset = xr.open_mfdataset(filepaths, engine=engine, **kwargs)
+        if not isinstance(filepaths, list):
+            filepaths = glob.glob(filepaths)
+
+        dates = [extract_date_from_filename(f) for f in filepaths]
+        date = [timestamp.strftime("%Y-%m-%d") for timestamp in dates]
+        dataset = dataset.assign_coords(date=("date", date))
+
+    chla = np.log10(dataset["chlor_a"])
+    chla.attrs.update(
+        {
+            "units": f'lg({dataset["chlor_a"].attrs["units"]})',
+        }
+    )
+
+    if date is not None:
+        chla.attrs["date"] = date
+
+    chla.rio.write_crs("EPSG:4326", inplace=True)
+
+    return chla
 
 
 def viz_pace(

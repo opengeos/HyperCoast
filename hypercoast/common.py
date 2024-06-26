@@ -250,6 +250,46 @@ def search_pace(
     )
 
 
+def search_pace_chla(
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[str] = None,
+    count: int = -1,
+    short_name: Optional[str] = "PACE_OCI_L3M_CHL_NRT",
+    granule_name: Optional[str] = "*.DAY.*.0p1deg.*",
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    return_gdf: bool = False,
+    **kwargs,
+) -> Union[List[dict], tuple]:
+    """Searches for NASA PACE Chlorophyll granules.
+
+    Args:
+        bbox (List[float], optional): The bounding box coordinates [xmin, ymin, xmax, ymax].
+        temporal (str, optional): The temporal extent of the data.
+        count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).
+        short_name (str, optional): The short name of the dataset. Defaults to "PACE_OCI_L3M_CHL_NRT".
+        output (str, optional): The output file path to save the GeoDataFrame as a file.
+        crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".
+        return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.
+        **kwargs: Additional keyword arguments for the earthaccess.search_data() function.
+
+    Returns:
+        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.
+    """
+
+    return search_nasa_data(
+        count=count,
+        short_name=short_name,
+        bbox=bbox,
+        temporal=temporal,
+        granule_name=granule_name,
+        output=output,
+        crs=crs,
+        return_gdf=return_gdf,
+        **kwargs,
+    )
+
+
 def search_emit(
     bbox: Optional[List[float]] = None,
     temporal: Optional[str] = None,
@@ -623,3 +663,36 @@ def open_dataset(
         dataset = xr.open_dataset(filename, engine="h5netcdf", chunks=chunks, **kwargs)
 
     return dataset
+
+
+def extract_date_from_filename(filename: str):
+    """
+    Extracts a date from a filename assuming the date is in 'YYYYMMDD' format.
+
+    This function searches the filename for a sequence of 8 digits that represent a date in
+    'YYYYMMDD' format. If such a sequence is found, it converts the sequence into a pandas
+    Timestamp object. If no such sequence is found, the function returns None.
+
+    Args:
+        filename (str): The filename from which to extract the date.
+
+    Returns:
+        Optional[pd.Timestamp]: A pandas Timestamp object representing the date found in the filename,
+        or None if no date in 'YYYYMMDD' format is found.
+
+    Examples:
+        >>> extract_date_from_filename("example_20230101.txt")
+        Timestamp('2023-01-01 00:00:00')
+
+        >>> extract_date_from_filename("no_date_in_this_filename.txt")
+        None
+    """
+    import re
+    import pandas as pd
+
+    # Assuming the date format in filename is 'YYYYMMDD'
+    date_match = re.search(r"\d{8}", filename)
+    if date_match:
+        return pd.to_datetime(date_match.group(), format="%Y%m%d")
+    else:
+        return None
