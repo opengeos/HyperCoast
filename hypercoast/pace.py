@@ -4,7 +4,8 @@
 import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
-from typing import List, Tuple, Union, Optional
+from typing import List, Tuple, Union, Optional, Any
+from .common import extract_date_from_filename
 
 
 def read_pace(
@@ -42,6 +43,69 @@ def read_pace(
         dataset = dataset.sel(wavelength=wavelengths, method=method, **kwargs)
 
     return dataset
+
+
+def read_pace_chla(
+    filepaths: Union[str, List[str]], engine: str = "h5netcdf", **kwargs
+) -> xr.DataArray:
+    """
+    Reads chlorophyll-a data from PACE files and applies a logarithmic transformation.
+
+    This function supports reading from a single file or multiple files. For multiple files,
+    it combines them into a single dataset. It then extracts the chlorophyll-a variable,
+    applies a logarithmic transformation, and sets the coordinate reference system to EPSG:4326.
+
+    Args:
+        filepaths: A string or a list of strings containing the file path(s) to the PACE chlorophyll-a data files.
+        engine: The backend engine to use for reading files. Defaults to "h5netcdf".
+        **kwargs: Additional keyword arguments to pass to `xr.open_dataset` or `xr.open_mfdataset`.
+
+    Returns:
+        An xarray DataArray containing the logarithmically transformed chlorophyll-a data with updated attributes.
+
+    Examples:
+        Read chlorophyll-a data from a single file:
+        >>> chla_data = read_pace_chla('path/to/single/file.nc')
+
+        Read and combine chlorophyll-a data from multiple files:
+        >>> chla_data = read_pace_chla(['path/to/file1.nc', 'path/to/file2.nc'], combine='by_coords')
+    """
+
+    import os
+    import glob
+    import rioxarray
+
+    date = None
+    if os.path.isfile(filepaths):
+        filepaths = [filepaths]
+    if "combine" not in kwargs:
+        kwargs["combine"] = "nested"
+    if "concat_dim" not in kwargs:
+        kwargs["concat_dim"] = "date"
+    dataset = xr.open_mfdataset(filepaths, engine=engine, **kwargs)
+    if not isinstance(filepaths, list):
+        filepaths = glob.glob(filepaths)
+        filepaths.sort()
+
+    dates = [extract_date_from_filename(f) for f in filepaths]
+    date = [timestamp.strftime("%Y-%m-%d") for timestamp in dates]
+    dataset = dataset.assign_coords(date=("date", date))
+
+    chla = np.log10(dataset["chlor_a"])
+    chla.attrs.update(
+        {
+            "units": f'lg({dataset["chlor_a"].attrs["units"]})',
+        }
+    )
+
+    if date is not None:
+        chla.attrs["date"] = date
+
+    chla = chla.transpose("lat", "lon", "date")
+
+    chla.rio.write_crs("EPSG:4326", inplace=True)
+
+    return chla
 
 
 def viz_pace(
@@ -180,6 +244,48 @@ def viz_pace(
 
         plt.tight_layout()
         plt.show()
+
+
+def viz_pace_chla(
+    data: Union[str, xr.DataArray],
+    date: Optional[str] = None,
+    aspect: float = 2,
+    cmap: str = "jet",
+    size: int = 6,
+    **kwargs: Any,
+) -> xr.plot.facetgrid.FacetGrid:
+    """
+    Visualizes PACE chlorophyll-a data using an xarray DataArray.
+
+    This function supports loading data from a file path (str) or directly using an xarray DataArray.
+    It allows for selection of a specific date for visualization or averages over all dates if none is specified.
+
+    Args:
+        data (Union[str, xr.DataArray]): The chlorophyll-a data to visualize. Can be a file path or an xarray DataArray.
+        date (Optional[str], optional): Specific date to visualize. If None, averages over all dates. Defaults to None.
+        aspect (float, optional): Aspect ratio of the plot. Defaults to 2.
+        cmap (str, optional): Colormap for the plot. Defaults to "jet".
+        size (int, optional): Size of the plot. Defaults to 6.
+        **kwargs (Any): Additional keyword arguments to pass to `xarray.plot`.
+
+    Returns:
+        xr.plot.facetgrid.FacetGrid: The plot generated from the chlorophyll-a data.
+
+    Raises:
+        ValueError: If `data` is not a file path (str) or an xarray DataArray.
+    """
+    if isinstance(data, str):
+        data = read_pace_chla(data)
+    elif not isinstance(data, xr.DataArray):
+        raise ValueError("data must be an xarray DataArray")
+
+    if date is not None:
+        data = data.sel(date=date)
+    else:
+        if "date" in data.coords:
+            data = data.mean(dim="date")
+
+    return data.plot(aspect=aspect, cmap=cmap, size=size, **kwargs)
 
 
 def filter_pace(dataset, latitude, longitude, drop=True, return_plot=False, **kwargs):
@@ -358,5 +464,27 @@ def pace_to_image(
         grid = dataset
     data = grid["Rrs"]
     data.rio.write_crs("EPSG:4326", inplace=True)
+
+    return array_to_image(data, transpose=False, output=output, **kwargs)
+
+
+def pace_chla_to_image(data, output=None, **kwargs):
+    """
+    Converts PACE chlorophyll-a data to an image.
+
+    Args:
+        data (xr.DataArray or str): The chlorophyll-a data or the file path to the data.
+        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.
+        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.
+
+    Returns:
+        rasterio.Dataset or None: The image converted from the data. If `output` is provided, the image will be saved to the specified file and the function will return None.
+    """
+    from leafmap import array_to_image
+
+    if isinstance(data, str):
+        data = read_pace_chla(data)
+    elif not isinstance(data, xr.DataArray):
+        raise ValueError("data must be an xarray DataArray")
 
     return array_to_image(data, transpose=False, output=output, **kwargs)
