@@ -9,6 +9,7 @@ private/
 *.so
 
 # Distribution / packaging
+docs/examples/*.zip
 .Python
 env/
 build/
