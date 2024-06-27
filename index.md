@@ -16,9 +16,11 @@
 -   Searching for NASA hyperspectral data interactively
 -   Interactive visualization and analysis of hyperspectral data, such as [AVIRIS](https://aviris.jpl.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf), [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001)
 -   Interactive visualization of NASA [ECOSTRESS](https://ecostress.jpl.nasa.gov) data
+-   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chorophyll a data
 -   Interactive extraction and visualization of spectral signatures
 -   Changing band combinations and colormaps interactively
 -   Visualizing hyperspectral data in 3D
+-   Visualizing ERA5 temperature data in 3D
 -   Interactive slicing and thresholding of hyperspectral data in 3D
 -   Saving spectral signatures as CSV files
 
@@ -35,6 +37,10 @@
 -   Interactive thresholding of hyperspectral data in 3D ([notebook](https://hypercoast.org/examples/image_slicing))
 
 ![Slicing](https://i.imgur.com/TPd20Tn.gif)
+
+-   Visualizing ERA5 temperature data in 3D ([notebook](https://hypercoast.org/examples/temperature))
+
+![ERA5](https://i.imgur.com/qaKkmKX.gif)
 
 -   Changing band combinations and colormaps interactively ([notebook](https://hypercoast.org/examples/neon))
 
@@ -59,6 +65,10 @@
 -   Visualizing [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001) hyperspectral data interactively ([notebook](https://hypercoast.org/examples/neon))
 
 ![NEON](https://i.imgur.com/CNP8E3y.gif)
+
+-   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chorophyll a data ([notebook](https://hypercoast.org/examples/chorophyll_a))
+
+![Chla](https://i.imgur.com/6hP6OFD.png)
 
 ## Acknowledgement
 
