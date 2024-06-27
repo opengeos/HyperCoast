@@ -17,7 +17,7 @@
 -   Searching for NASA hyperspectral data interactively
 -   Interactive visualization and analysis of hyperspectral data, such as [AVIRIS](https://aviris.jpl.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf), [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001)
 -   Interactive visualization of NASA [ECOSTRESS](https://ecostress.jpl.nasa.gov) data
--   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chorophyll a data
+-   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chlorophyll-a data
 -   Interactive extraction and visualization of spectral signatures
 -   Changing band combinations and colormaps interactively
 -   Visualizing hyperspectral data in 3D
@@ -67,7 +67,7 @@
 
 ![NEON](https://i.imgur.com/CNP8E3y.gif)
 
--   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chorophyll a data ([notebook](https://hypercoast.org/examples/chorophyll_a))
+-   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chlorophyll-a data ([notebook](https://hypercoast.org/examples/chlorophyll_a))
 
 ![Chla](https://i.imgur.com/6hP6OFD.png)
 
