@@ -97,7 +97,7 @@ nav:
           - examples/neon.ipynb
           - examples/pace.ipynb
           - examples/ecostress.ipynb
-          - examples/chorophyll_a.ipynb
+          - examples/chlorophyll_a.ipynb
           - examples/temperature.ipynb
     - API Reference:
           - aviris module: aviris.md
