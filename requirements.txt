@@ -1,3 +1,4 @@
+dask
 geopandas
 h5netcdf
 hvplot
