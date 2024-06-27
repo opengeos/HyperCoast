@@ -630,6 +630,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/chorophyll_a/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chorophyll a
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/temperature/" class="md-nav__link">
         
   
@@ -903,6 +924,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.pace.pace_chla_to_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      pace_chla_to_image()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.pace.pace_to_image" class="md-nav__link">
     <span class="md-ellipsis">
       pace_to_image()
@@ -921,9 +951,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.pace.read_pace_chla" class="md-nav__link">
+    <span class="md-ellipsis">
+      read_pace_chla()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.pace.viz_pace" class="md-nav__link">
     <span class="md-ellipsis">
       viz_pace()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.pace.viz_pace_chla" class="md-nav__link">
+    <span class="md-ellipsis">
+      viz_pace_chla()
     </span>
   </a>
   
@@ -1029,6 +1077,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.pace.pace_chla_to_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      pace_chla_to_image()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.pace.pace_to_image" class="md-nav__link">
     <span class="md-ellipsis">
       pace_to_image()
@@ -1047,9 +1104,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.pace.read_pace_chla" class="md-nav__link">
+    <span class="md-ellipsis">
+      read_pace_chla()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.pace.viz_pace" class="md-nav__link">
     <span class="md-ellipsis">
       viz_pace()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.pace.viz_pace_chla" class="md-nav__link">
+    <span class="md-ellipsis">
+      viz_pace_chla()
     </span>
   </a>
   
@@ -1486,6 +1561,96 @@ Defaults to "nearest".</p></td>
 
 
 
+<h2 id="hypercoast.pace.pace_chla_to_image" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pace_chla_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.pace.pace_chla_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Converts PACE chlorophyll-a data to an image.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>xr.DataArray or str</code></td>
+        <td><p>The chlorophyll-a data or the file path to the data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments to be passed to <code>leafmap.array_to_image</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>rasterio.Dataset or None</code></td>
+      <td><p>The image converted from the data. If <code>output</code> is provided, the image will be saved to the specified file and the function will return None.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/pace.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pace_chla_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts PACE chlorophyll-a data to an image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (xr.DataArray or str): The chlorophyll-a data or the file path to the data.</span>
+<span class="sd">        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</span>
+<span class="sd">        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        rasterio.Dataset or None: The image converted from the data. If `output` is provided, the image will be saved to the specified file and the function will return None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">leafmap</span> <span class="kn">import</span> <span class="n">array_to_image</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">read_pace_chla</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;data must be an xarray DataArray&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">array_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="hypercoast.pace.pace_to_image" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">pace_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
@@ -1706,6 +1871,148 @@ Defaults to "nearest".</p></td>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dataset</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.pace.read_pace_chla" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_pace_chla</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;h5netcdf&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.pace.read_pace_chla" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Reads chlorophyll-a data from PACE files and applies a logarithmic transformation.</p>
+<p>This function supports reading from a single file or multiple files. For multiple files,
+it combines them into a single dataset. It then extracts the chlorophyll-a variable,
+applies a logarithmic transformation, and sets the coordinate reference system to EPSG:4326.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>filepaths</code></td>
+        <td><code>Union[str, List[str]]</code></td>
+        <td><p>A string or a list of strings containing the file path(s) to the PACE chlorophyll-a data files.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>engine</code></td>
+        <td><code>str</code></td>
+        <td><p>The backend engine to use for reading files. Defaults to "h5netcdf".</p></td>
+        <td><code>&#39;h5netcdf&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments to pass to <code>xr.open_dataset</code> or <code>xr.open_mfdataset</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DataArray</code></td>
+      <td><p>An xarray DataArray containing the logarithmically transformed chlorophyll-a data with updated attributes.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <p>Read chlorophyll-a data from a single file:</p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">chla_data</span> <span class="o">=</span> <span class="n">read_pace_chla</span><span class="p">(</span><span class="s1">&#39;path/to/single/file.nc&#39;</span><span class="p">)</span>
+</code></pre></div>
+    <p>Read and combine chlorophyll-a data from multiple files:</p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">chla_data</span> <span class="o">=</span> <span class="n">read_pace_chla</span><span class="p">([</span><span class="s1">&#39;path/to/file1.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;path/to/file2.nc&#39;</span><span class="p">],</span> <span class="n">combine</span><span class="o">=</span><span class="s1">&#39;by_coords&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/pace.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_pace_chla</span><span class="p">(</span>
+    <span class="n">filepaths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">engine</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;h5netcdf&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads chlorophyll-a data from PACE files and applies a logarithmic transformation.</span>
+
+<span class="sd">    This function supports reading from a single file or multiple files. For multiple files,</span>
+<span class="sd">    it combines them into a single dataset. It then extracts the chlorophyll-a variable,</span>
+<span class="sd">    applies a logarithmic transformation, and sets the coordinate reference system to EPSG:4326.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filepaths: A string or a list of strings containing the file path(s) to the PACE chlorophyll-a data files.</span>
+<span class="sd">        engine: The backend engine to use for reading files. Defaults to &quot;h5netcdf&quot;.</span>
+<span class="sd">        **kwargs: Additional keyword arguments to pass to `xr.open_dataset` or `xr.open_mfdataset`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An xarray DataArray containing the logarithmically transformed chlorophyll-a data with updated attributes.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        Read chlorophyll-a data from a single file:</span>
+<span class="sd">        &gt;&gt;&gt; chla_data = read_pace_chla(&#39;path/to/single/file.nc&#39;)</span>
+
+<span class="sd">        Read and combine chlorophyll-a data from multiple files:</span>
+<span class="sd">        &gt;&gt;&gt; chla_data = read_pace_chla([&#39;path/to/file1.nc&#39;, &#39;path/to/file2.nc&#39;], combine=&#39;by_coords&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">glob</span>
+    <span class="kn">import</span> <span class="nn">rioxarray</span>
+
+    <span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filepaths</span><span class="p">):</span>
+        <span class="n">filepaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">filepaths</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;combine&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;combine&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nested&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;concat_dim&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;concat_dim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">filepaths</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span>
+        <span class="n">filepaths</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+    <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">extract_date_from_filename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">]</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">timestamp</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">]</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">date</span><span class="p">))</span>
+
+    <span class="n">chla</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;chlor_a&quot;</span><span class="p">])</span>
+    <span class="n">chla</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;lg(</span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;chlor_a&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">chla</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span>
+
+    <span class="n">chla</span> <span class="o">=</span> <span class="n">chla</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">)</span>
+
+    <span class="n">chla</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">chla</span>
 </code></pre></div>
         </details>
     </div>
@@ -1952,6 +2259,151 @@ See https://scitools.org.uk/cartopy/docs/latest/reference/projections.html</p></
 
         <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.pace.viz_pace_chla" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">viz_pace_chla</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.pace.viz_pace_chla" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Visualizes PACE chlorophyll-a data using an xarray DataArray.</p>
+<p>This function supports loading data from a file path (str) or directly using an xarray DataArray.
+It allows for selection of a specific date for visualization or averages over all dates if none is specified.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Union[str, xr.DataArray]</code></td>
+        <td><p>The chlorophyll-a data to visualize. Can be a file path or an xarray DataArray.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>Specific date to visualize. If None, averages over all dates. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>aspect</code></td>
+        <td><code>float</code></td>
+        <td><p>Aspect ratio of the plot. Defaults to 2.</p></td>
+        <td><code>2</code></td>
+      </tr>
+      <tr>
+        <td><code>cmap</code></td>
+        <td><code>str</code></td>
+        <td><p>Colormap for the plot. Defaults to "jet".</p></td>
+        <td><code>&#39;jet&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>int</code></td>
+        <td><p>Size of the plot. Defaults to 6.</p></td>
+        <td><code>6</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional keyword arguments to pass to <code>xarray.plot</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xr.plot.facetgrid.FacetGrid</code></td>
+      <td><p>The plot generated from the chlorophyll-a data.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ValueError</code></td>
+        <td><p>If <code>data</code> is not a file path (str) or an xarray DataArray.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/pace.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">viz_pace_chla</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">],</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aspect</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">facetgrid</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualizes PACE chlorophyll-a data using an xarray DataArray.</span>
+
+<span class="sd">    This function supports loading data from a file path (str) or directly using an xarray DataArray.</span>
+<span class="sd">    It allows for selection of a specific date for visualization or averages over all dates if none is specified.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (Union[str, xr.DataArray]): The chlorophyll-a data to visualize. Can be a file path or an xarray DataArray.</span>
+<span class="sd">        date (Optional[str], optional): Specific date to visualize. If None, averages over all dates. Defaults to None.</span>
+<span class="sd">        aspect (float, optional): Aspect ratio of the plot. Defaults to 2.</span>
+<span class="sd">        cmap (str, optional): Colormap for the plot. Defaults to &quot;jet&quot;.</span>
+<span class="sd">        size (int, optional): Size of the plot. Defaults to 6.</span>
+<span class="sd">        **kwargs (Any): Additional keyword arguments to pass to `xarray.plot`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xr.plot.facetgrid.FacetGrid: The plot generated from the chlorophyll-a data.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If `data` is not a file path (str) or an xarray DataArray.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">read_pace_chla</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;data must be an xarray DataArray&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;date&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="n">aspect</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

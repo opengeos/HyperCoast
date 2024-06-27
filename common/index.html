@@ -630,6 +630,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/chorophyll_a/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chorophyll a
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/temperature/" class="md-nav__link">
         
   
@@ -825,6 +846,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.extract_date_from_filename" class="md-nav__link">
+    <span class="md-ellipsis">
+      extract_date_from_filename()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.github_raw_url" class="md-nav__link">
     <span class="md-ellipsis">
       github_raw_url()
@@ -900,6 +930,15 @@
   <a href="#hypercoast.common.search_pace" class="md-nav__link">
     <span class="md-ellipsis">
       search_pace()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.search_pace_chla" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_pace_chla()
     </span>
   </a>
   
@@ -1137,6 +1176,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.extract_date_from_filename" class="md-nav__link">
+    <span class="md-ellipsis">
+      extract_date_from_filename()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.github_raw_url" class="md-nav__link">
     <span class="md-ellipsis">
       github_raw_url()
@@ -1212,6 +1260,15 @@
   <a href="#hypercoast.common.search_pace" class="md-nav__link">
     <span class="md-ellipsis">
       search_pace()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.search_pace_chla" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_pace_chla()
     </span>
   </a>
   
@@ -1870,6 +1927,107 @@ Defaults to 8.</p></td>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.common.extract_date_from_filename" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extract_date_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.extract_date_from_filename" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Extracts a date from a filename assuming the date is in 'YYYYMMDD' format.</p>
+<p>This function searches the filename for a sequence of 8 digits that represent a date in
+'YYYYMMDD' format. If such a sequence is found, it converts the sequence into a pandas
+Timestamp object. If no such sequence is found, the function returns None.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>filename</code></td>
+        <td><code>str</code></td>
+        <td><p>The filename from which to extract the date.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Optional[pd.Timestamp]</code></td>
+      <td><p>A pandas Timestamp object representing the date found in the filename,
+or None if no date in 'YYYYMMDD' format is found.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">extract_date_from_filename</span><span class="p">(</span><span class="s2">&quot;example_20230101.txt&quot;</span><span class="p">)</span>
+<span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2023-01-01 00:00:00&#39;</span><span class="p">)</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">extract_date_from_filename</span><span class="p">(</span><span class="s2">&quot;no_date_in_this_filename.txt&quot;</span><span class="p">)</span>
+<span class="kc">None</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_date_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts a date from a filename assuming the date is in &#39;YYYYMMDD&#39; format.</span>
+
+<span class="sd">    This function searches the filename for a sequence of 8 digits that represent a date in</span>
+<span class="sd">    &#39;YYYYMMDD&#39; format. If such a sequence is found, it converts the sequence into a pandas</span>
+<span class="sd">    Timestamp object. If no such sequence is found, the function returns None.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): The filename from which to extract the date.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[pd.Timestamp]: A pandas Timestamp object representing the date found in the filename,</span>
+<span class="sd">        or None if no date in &#39;YYYYMMDD&#39; format is found.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; extract_date_from_filename(&quot;example_20230101.txt&quot;)</span>
+<span class="sd">        Timestamp(&#39;2023-01-01 00:00:00&#39;)</span>
+
+<span class="sd">        &gt;&gt;&gt; extract_date_from_filename(&quot;no_date_in_this_filename.txt&quot;)</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+    <span class="c1"># Assuming the date format in filename is &#39;YYYYMMDD&#39;</span>
+    <span class="n">date_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d</span><span class="si">{8}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date_match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">date_match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div>
         </details>
     </div>
@@ -3116,6 +3274,144 @@ the dataset is not chunked.</p></td>
         <span class="n">short_name</span><span class="o">=</span><span class="n">short_name</span><span class="p">,</span>
         <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
         <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+        <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+        <span class="n">return_gdf</span><span class="o">=</span><span class="n">return_gdf</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.common.search_pace_chla" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_pace_chla</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;PACE_OCI_L3M_CHL_NRT&#39;</span><span class="p">,</span> <span class="n">granule_name</span><span class="o">=</span><span class="s1">&#39;*.DAY.*.0p1deg.*&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">return_gdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.search_pace_chla" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Searches for NASA PACE Chlorophyll granules.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>bbox</code></td>
+        <td><code>List[float]</code></td>
+        <td><p>The bounding box coordinates [xmin, ymin, xmax, ymax].</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>temporal</code></td>
+        <td><code>str</code></td>
+        <td><p>The temporal extent of the data.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>int</code></td>
+        <td><p>The number of granules to retrieve. Defaults to -1 (retrieve all).</p></td>
+        <td><code>-1</code></td>
+      </tr>
+      <tr>
+        <td><code>short_name</code></td>
+        <td><code>str</code></td>
+        <td><p>The short name of the dataset. Defaults to "PACE_OCI_L3M_CHL_NRT".</p></td>
+        <td><code>&#39;PACE_OCI_L3M_CHL_NRT&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>The output file path to save the GeoDataFrame as a file.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>crs</code></td>
+        <td><code>str</code></td>
+        <td><p>The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".</p></td>
+        <td><code>&#39;EPSG:4326&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>return_gdf</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to return the GeoDataFrame in addition to the granules. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments for the earthaccess.search_data() function.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Union[List[dict], tuple]</code></td>
+      <td><p>The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_pace_chla</span><span class="p">(</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">short_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PACE_OCI_L3M_CHL_NRT&quot;</span><span class="p">,</span>
+    <span class="n">granule_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;*.DAY.*.0p1deg.*&quot;</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+    <span class="n">return_gdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Searches for NASA PACE Chlorophyll granules.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bbox (List[float], optional): The bounding box coordinates [xmin, ymin, xmax, ymax].</span>
+<span class="sd">        temporal (str, optional): The temporal extent of the data.</span>
+<span class="sd">        count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).</span>
+<span class="sd">        short_name (str, optional): The short name of the dataset. Defaults to &quot;PACE_OCI_L3M_CHL_NRT&quot;.</span>
+<span class="sd">        output (str, optional): The output file path to save the GeoDataFrame as a file.</span>
+<span class="sd">        crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to &quot;EPSG:4326&quot;.</span>
+<span class="sd">        return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.</span>
+<span class="sd">        **kwargs: Additional keyword arguments for the earthaccess.search_data() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">search_nasa_data</span><span class="p">(</span>
+        <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+        <span class="n">short_name</span><span class="o">=</span><span class="n">short_name</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+        <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+        <span class="n">granule_name</span><span class="o">=</span><span class="n">granule_name</span><span class="p">,</span>
         <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
         <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
         <span class="n">return_gdf</span><span class="o">=</span><span class="n">return_gdf</span><span class="p">,</span>
