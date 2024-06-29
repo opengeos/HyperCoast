@@ -99,6 +99,7 @@ nav:
           - examples/ecostress.ipynb
           - examples/chlorophyll_a.ipynb
           - examples/temperature.ipynb
+          - examples/pace_oci_l2.ipynb
     - API Reference:
           - aviris module: aviris.md
           - common module: common.md
