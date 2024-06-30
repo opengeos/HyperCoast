@@ -58,6 +58,7 @@ plugins:
                   "image_cube.ipynb",
                   "image_slicing.ipynb",
                   "temperature.ipynb",
+                  "pace_oci_l1.ipynb",
               ]
 
 markdown_extensions:
@@ -99,6 +100,7 @@ nav:
           - examples/ecostress.ipynb
           - examples/chlorophyll_a.ipynb
           - examples/temperature.ipynb
+          - examples/pace_oci_l1.ipynb
           - examples/pace_oci_l2.ipynb
     - API Reference:
           - aviris module: aviris.md
