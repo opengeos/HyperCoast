@@ -45,6 +45,37 @@ def read_pace(
     return dataset
 
 
+def read_pace_aop(filepath, engine="h5netcdf", **kwargs):
+    """
+    Reads PACE data from a given file and returns an xarray Dataset.
+
+    Args:
+        filepath (str): Path to the file to read.
+        wavelengths (array-like, optional): Specific wavelengths to select. If None, all wavelengths are selected.
+        method (str, optional): Method to use for selection when wavelengths is not None. Defaults to "nearest".
+        **kwargs: Additional keyword arguments to pass to the `sel` method when wavelengths is not None.
+
+    Returns:
+        xr.Dataset: An xarray Dataset containing the PACE data.
+    """
+
+    rrs = xr.open_dataset(filepath, engine=engine, group="geophysical_data", **kwargs)[
+        "Rrs"
+    ]
+    wvl = xr.open_dataset(
+        filepath, engine=engine, group="sensor_band_parameters", **kwargs
+    )
+    dataset = xr.open_dataset(
+        filepath, engine=engine, group="navigation_data", **kwargs
+    )
+    dataset = dataset.set_coords(("longitude", "latitude"))
+    dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
+    dataset = xr.merge([rrs, dataset.coords.to_dataset()])
+    dataset.coords["wavelength_3d"] = wvl.coords["wavelength_3d"]
+
+    return dataset
+
+
 def read_pace_bgc(
     filepath: str,
     variable: Optional[str] = None,
@@ -156,6 +187,61 @@ def read_pace_chla(
     chla.rio.write_crs("EPSG:4326", inplace=True)
 
     return chla
+
+
+def view_pace_pixel_locations(
+    filepath: str, step: int = 20, figsize: Tuple[float, float] = (8, 6), **kwargs: Any
+) -> plt.Figure:
+    """
+    Visualizes a subset of PACE pixel locations on a scatter plot.
+
+    This function reads PACE AOP data from a specified file, subsamples the data according to a step size,
+    and plots the longitude and latitude of the selected pixels using a scatter plot.
+
+    Args:
+        filepath (str): The path to the file containing the PACE AOP data.
+        step (int, optional): The step size for subsampling the data. A smaller step size results in more
+            data points being plotted. Defaults to 20.
+        **kwargs (Any): Additional keyword arguments to pass to the `plot.scatter` method.
+
+    Returns:
+        plt.Figure: A matplotlib figure object containing the scatter plot.
+
+    Example:
+        >>> plot = view_pace_pixel_locations("path/to/your/datafile.h5", step=10)
+        >>> plt.show()
+    """
+
+    # Create a new figure
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Create the plot
+    dataset = read_pace_aop(filepath)
+    number_of_lines = dataset.dims["number_of_lines"]
+    pixels_per_line = dataset.dims["pixels_per_line"]
+
+    ax.scatter(
+        dataset.sel(
+            {
+                "number_of_lines": slice(None, None, number_of_lines // step),
+                "pixels_per_line": slice(None, None, pixels_per_line // step),
+            }
+        ).longitude,
+        dataset.sel(
+            {
+                "number_of_lines": slice(None, None, number_of_lines // step),
+                "pixels_per_line": slice(None, None, pixels_per_line // step),
+            }
+        ).latitude,
+        **kwargs,
+    )
+
+    # Set labels and title
+    ax.set_xlabel("Longitude")
+    ax.set_ylabel("Latitude")
+    ax.set_title("PACE Pixel Locations")
+
+    return fig
 
 
 def viz_pace(
