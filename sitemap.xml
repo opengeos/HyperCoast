@@ -116,6 +116,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://hypercoast.org/examples/pace_oci_l1/</loc>
+         <lastmod>2024-06-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://hypercoast.org/examples/pace_oci_l2/</loc>
          <lastmod>2024-06-30</lastmod>
          <changefreq>daily</changefreq>
