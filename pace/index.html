@@ -665,6 +665,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/pace_oci_l2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pace oci l2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -924,6 +945,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.pace.grid_pace_bgc" class="md-nav__link">
+    <span class="md-ellipsis">
+      grid_pace_bgc()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.pace.pace_chla_to_image" class="md-nav__link">
     <span class="md-ellipsis">
       pace_chla_to_image()
@@ -945,6 +975,15 @@
   <a href="#hypercoast.pace.read_pace" class="md-nav__link">
     <span class="md-ellipsis">
       read_pace()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.pace.read_pace_bgc" class="md-nav__link">
+    <span class="md-ellipsis">
+      read_pace_bgc()
     </span>
   </a>
   
@@ -1077,6 +1116,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.pace.grid_pace_bgc" class="md-nav__link">
+    <span class="md-ellipsis">
+      grid_pace_bgc()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.pace.pace_chla_to_image" class="md-nav__link">
     <span class="md-ellipsis">
       pace_chla_to_image()
@@ -1098,6 +1146,15 @@
   <a href="#hypercoast.pace.read_pace" class="md-nav__link">
     <span class="md-ellipsis">
       read_pace()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.pace.read_pace_bgc" class="md-nav__link">
+    <span class="md-ellipsis">
+      read_pace_bgc()
     </span>
   </a>
   
@@ -1561,6 +1618,154 @@ Defaults to "nearest".</p></td>
 
 
 
+<h2 id="hypercoast.pace.grid_pace_bgc" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">grid_pace_bgc</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;chlor_a&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.pace.grid_pace_bgc" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Grids PACE BGC data using specified interpolation method.</p>
+<p>This function takes an xarray Dataset containing PACE BGC data, interpolates it onto a regular grid
+using the specified method, and returns the gridded data as an xarray DataArray with the specified
+variable.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dataset</code></td>
+        <td><code>xr.Dataset</code></td>
+        <td><p>The input dataset containing PACE BGC data with latitude and longitude coordinates.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>variable</code></td>
+        <td><code>str</code></td>
+        <td><p>The variable within the dataset to grid. Can be
+one of chlor_a, carbon_phyto, poc, chlor_a_unc, carbon_phyto_unc, and l2_flags.
+Defaults to "chlor_a".</p></td>
+        <td><code>&#39;chlor_a&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>method</code></td>
+        <td><code>str</code></td>
+        <td><p>The interpolation method to use. Options include "nearest", "linear", and "cubic".
+Defaults to "nearest".</p></td>
+        <td><code>&#39;nearest&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional keyword arguments to pass to the xr.Dataset creation.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xr.DataArray</code></td>
+      <td><p>The gridded data as an xarray DataArray, with the specified variable and EPSG:4326 CRS.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_pace_bgc</span><span class="p">(</span><span class="s2">&quot;path_to_your_dataset.nc&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gridded_data</span> <span class="o">=</span> <span class="n">grid_pace_bgc</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s2">&quot;chlor_a&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">gridded_data</span><span class="p">)</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/pace.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_pace_bgc</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;chlor_a&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Grids PACE BGC data using specified interpolation method.</span>
+
+<span class="sd">    This function takes an xarray Dataset containing PACE BGC data, interpolates it onto a regular grid</span>
+<span class="sd">    using the specified method, and returns the gridded data as an xarray DataArray with the specified</span>
+<span class="sd">    variable.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataset (xr.Dataset): The input dataset containing PACE BGC data with latitude and longitude coordinates.</span>
+<span class="sd">        variable (str, optional): The variable within the dataset to grid. Can be</span>
+<span class="sd">           one of chlor_a, carbon_phyto, poc, chlor_a_unc, carbon_phyto_unc, and l2_flags.</span>
+<span class="sd">           Defaults to &quot;chlor_a&quot;.</span>
+<span class="sd">        method (str, optional): The interpolation method to use. Options include &quot;nearest&quot;, &quot;linear&quot;, and &quot;cubic&quot;.</span>
+<span class="sd">            Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        **kwargs (Any): Additional keyword arguments to pass to the xr.Dataset creation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xr.DataArray: The gridded data as an xarray DataArray, with the specified variable and EPSG:4326 CRS.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; dataset = hypercoast.read_pace_bgc(&quot;path_to_your_dataset.nc&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; gridded_data = grid_pace_bgc(dataset, variable=&quot;chlor_a&quot;, method=&quot;nearest&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(gridded_data)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">rioxarray</span>
+    <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">griddata</span>
+
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">latitude</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">longitude</span>
+
+    <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">grid_lon_2d</span><span class="p">,</span> <span class="n">grid_lat_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+    <span class="n">gridded_data</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+        <span class="p">(</span><span class="n">grid_lat_2d</span><span class="p">,</span> <span class="n">grid_lon_2d</span><span class="p">),</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">dataset2</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+        <span class="p">{</span><span class="n">variable</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">),</span> <span class="n">gridded_data</span><span class="p">)},</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">),</span>
+            <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">grid_lon</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">dataset2</span> <span class="o">=</span> <span class="n">dataset2</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset2</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="hypercoast.pace.pace_chla_to_image" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">pace_chla_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
@@ -1869,6 +2074,140 @@ Defaults to "nearest".</p></td>
 
     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.pace.read_pace_bgc" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_pace_bgc</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;h5netcdf&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.pace.read_pace_bgc" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Reads PACE BGC data from a specified file and returns an xarray Dataset.</p>
+<p>This function opens a dataset from a file using the specified engine,
+optionally selects a single variable, merges geophysical and navigation data,
+sets appropriate coordinates, and renames dimensions for easier use.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>filepath</code></td>
+        <td><code>str</code></td>
+        <td><p>The path to the file containing the PACE BGC data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>variable</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>The specific variable to extract
+from the geophysical_data group. If None, all variables are read. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>engine</code></td>
+        <td><code>str</code></td>
+        <td><p>The engine to use for reading the file. Defaults to "h5netcdf".</p></td>
+        <td><code>&#39;h5netcdf&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional keyword arguments to pass to <code>xr.open_dataset</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xr.Dataset</code></td>
+      <td><p>An xarray Dataset containing the requested PACE BGC data,
+with merged geophysical and navigation data, set coordinates, and renamed dimensions.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_pace_bgc</span><span class="p">(</span><span class="s2">&quot;path/to/your/datafile.h5&quot;</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s2">&quot;chlor_a&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/pace.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_pace_bgc</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;h5netcdf&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads PACE BGC data from a specified file and returns an xarray Dataset.</span>
+
+<span class="sd">    This function opens a dataset from a file using the specified engine,</span>
+<span class="sd">    optionally selects a single variable, merges geophysical and navigation data,</span>
+<span class="sd">    sets appropriate coordinates, and renames dimensions for easier use.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filepath (str): The path to the file containing the PACE BGC data.</span>
+<span class="sd">        variable (Optional[str], optional): The specific variable to extract</span>
+<span class="sd">            from the geophysical_data group. If None, all variables are read. Defaults to None.</span>
+<span class="sd">        engine (str, optional): The engine to use for reading the file. Defaults to &quot;h5netcdf&quot;.</span>
+<span class="sd">        **kwargs (Any): Additional keyword arguments to pass to `xr.open_dataset`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xr.Dataset: An xarray Dataset containing the requested PACE BGC data,</span>
+<span class="sd">        with merged geophysical and navigation data, set coordinates, and renamed dimensions.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; dataset = read_pace_bgc(&quot;path/to/your/datafile.h5&quot;, variable=&quot;chlor_a&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(dataset)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;geophysical_data&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">variable</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+        <span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;navigation_data&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">set_coords</span><span class="p">((</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">))</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;pixel_control_points&quot;</span><span class="p">:</span> <span class="s2">&quot;pixels_per_line&quot;</span><span class="p">})</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">ds</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">()])</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;number_of_lines&quot;</span><span class="p">:</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pixels_per_line&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">attrs</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dataset</span>
 </code></pre></div>
