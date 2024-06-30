@@ -45,6 +45,56 @@ def read_pace(
     return dataset
 
 
+def read_pace_bgc(
+    filepath: str,
+    variable: Optional[str] = None,
+    engine: str = "h5netcdf",
+    **kwargs: Any,
+) -> xr.Dataset:
+    """
+    Reads PACE BGC data from a specified file and returns an xarray Dataset.
+
+    This function opens a dataset from a file using the specified engine,
+    optionally selects a single variable, merges geophysical and navigation data,
+    sets appropriate coordinates, and renames dimensions for easier use.
+
+    Args:
+        filepath (str): The path to the file containing the PACE BGC data.
+        variable (Optional[str], optional): The specific variable to extract
+            from the geophysical_data group. If None, all variables are read. Defaults to None.
+        engine (str, optional): The engine to use for reading the file. Defaults to "h5netcdf".
+        **kwargs (Any): Additional keyword arguments to pass to `xr.open_dataset`.
+
+    Returns:
+        xr.Dataset: An xarray Dataset containing the requested PACE BGC data,
+        with merged geophysical and navigation data, set coordinates, and renamed dimensions.
+
+    Example:
+        >>> dataset = read_pace_bgc("path/to/your/datafile.h5", variable="chlor_a")
+        >>> print(dataset)
+    """
+
+    ds = xr.open_dataset(filepath, engine=engine, group="geophysical_data", **kwargs)
+    if variable is not None:
+        ds = ds[variable]
+    dataset = xr.open_dataset(
+        filepath, engine=engine, group="navigation_data", **kwargs
+    )
+    dataset = dataset.set_coords(("longitude", "latitude"))
+    dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
+    dataset = xr.merge([ds, dataset.coords.to_dataset()])
+    dataset = dataset.rename(
+        {
+            "number_of_lines": "latitude",
+            "pixels_per_line": "longitude",
+        }
+    )
+    attrs = xr.open_dataset(filepath, engine=engine, **kwargs).attrs
+    dataset.attrs.update(attrs)
+
+    return dataset
+
+
 def read_pace_chla(
     filepaths: Union[str, List[str]], engine: str = "h5netcdf", **kwargs
 ) -> xr.DataArray:
@@ -429,6 +479,68 @@ def grid_pace(dataset, wavelengths=None, method="nearest", **kwargs):
     )
 
     dataset2["Rrs"].rio.write_crs("EPSG:4326", inplace=True)
+
+    return dataset2
+
+
+def grid_pace_bgc(
+    dataset: xr.Dataset,
+    variable: str = "chlor_a",
+    method: str = "nearest",
+    **kwargs: Any,
+) -> xr.DataArray:
+    """
+    Grids PACE BGC data using specified interpolation method.
+
+    This function takes an xarray Dataset containing PACE BGC data, interpolates it onto a regular grid
+    using the specified method, and returns the gridded data as an xarray DataArray with the specified
+    variable.
+
+    Args:
+        dataset (xr.Dataset): The input dataset containing PACE BGC data with latitude and longitude coordinates.
+        variable (str, optional): The variable within the dataset to grid. Can be
+           one of chlor_a, carbon_phyto, poc, chlor_a_unc, carbon_phyto_unc, and l2_flags.
+           Defaults to "chlor_a".
+        method (str, optional): The interpolation method to use. Options include "nearest", "linear", and "cubic".
+            Defaults to "nearest".
+        **kwargs (Any): Additional keyword arguments to pass to the xr.Dataset creation.
+
+    Returns:
+        xr.DataArray: The gridded data as an xarray DataArray, with the specified variable and EPSG:4326 CRS.
+
+    Example:
+        >>> dataset = hypercoast.read_pace_bgc("path_to_your_dataset.nc")
+        >>> gridded_data = grid_pace_bgc(dataset, variable="chlor_a", method="nearest")
+        >>> print(gridded_data)
+    """
+    import rioxarray
+    from scipy.interpolate import griddata
+
+    lat = dataset.latitude
+    lon = dataset.longitude
+
+    grid_lat = np.linspace(lat.min(), lat.max(), lat.shape[0])
+    grid_lon = np.linspace(lon.min(), lon.max(), lon.shape[1])
+    grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
+
+    data = dataset[variable]
+    gridded_data = griddata(
+        (lat.data.flatten(), lon.data.flatten()),
+        data.data.flatten(),
+        (grid_lat_2d, grid_lon_2d),
+        method=method,
+    )
+
+    dataset2 = xr.Dataset(
+        {variable: (("latitude", "longitude"), gridded_data)},
+        coords={
+            "latitude": ("latitude", grid_lat),
+            "longitude": ("longitude", grid_lon),
+        },
+        **kwargs,
+    )
+
+    dataset2 = dataset2[variable].rio.write_crs("EPSG:4326")
 
     return dataset2
 
