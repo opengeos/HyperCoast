@@ -142,6 +142,43 @@ def netcdf_groups(filepath: str) -> List[str]:
     return groups
 
 
+def search_datasets(count: int = -1, **kwargs: Any) -> List[Dict[str, Any]]:
+    """
+    Searches for datasets using the EarthAccess API with optional filters.
+
+    This function wraps the `earthaccess.search_datasets` function, allowing for
+    customized search queries based on a count limit and additional keyword arguments
+    which serve as filters for the search.
+
+    Args:
+        count (int, optional): The maximum number of datasets to return. A value of -1
+            indicates no limit. Defaults to -1.
+        **kwargs (Any): Additional keyword arguments to pass as search filters to the
+            EarthAccess API.
+            keyword: case-insensitive and supports wildcards ? and *
+            short_name: e.g. ATL08
+            doi: DOI for a dataset
+            daac: e.g. NSIDC or PODAAC
+            provider: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
+            temporal: a tuple representing temporal bounds in the form (date_from, date_to)
+            bounding_box: a tuple representing spatial bounds in the form
+            (lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)
+
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries, where each dictionary contains
+            information about a dataset found in the search.
+
+    Example:
+        >>> results = search_datasets(count=5, keyword='temperature')
+        >>> print(results)
+    """
+
+    import earthaccess
+
+    return earthaccess.search_datasets(count=count, **kwargs)
+
+
 def search_nasa_data(
     count: int = -1,
     short_name: Optional[str] = None,
@@ -175,6 +212,9 @@ def search_nasa_data(
     Returns:
         Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.
     """
+
+    if isinstance(bbox, list):
+        bbox = tuple(bbox)
 
     return leafmap.nasa_data_search(
         count=count,
