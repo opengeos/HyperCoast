@@ -921,6 +921,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.search_datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_datasets()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.search_ecostress" class="md-nav__link">
     <span class="md-ellipsis">
       search_ecostress()
@@ -1245,6 +1254,15 @@
   <a href="#hypercoast.common.open_dataset" class="md-nav__link">
     <span class="md-ellipsis">
       open_dataset()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.search_datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      search_datasets()
     </span>
   </a>
   
@@ -2732,6 +2750,124 @@ the dataset is not chunked.</p></td>
 
 
 
+<h2 id="hypercoast.common.search_datasets" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_datasets</span><span class="p">(</span><span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.search_datasets" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Searches for datasets using the EarthAccess API with optional filters.</p>
+<p>This function wraps the <code>earthaccess.search_datasets</code> function, allowing for
+customized search queries based on a count limit and additional keyword arguments
+which serve as filters for the search.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>int</code></td>
+        <td><p>The maximum number of datasets to return. A value of -1
+indicates no limit. Defaults to -1.</p></td>
+        <td><code>-1</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional keyword arguments to pass as search filters to the
+EarthAccess API.
+keyword: case-insensitive and supports wildcards ? and *
+short_name: e.g. ATL08
+doi: DOI for a dataset
+daac: e.g. NSIDC or PODAAC
+provider: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.
+temporal: a tuple representing temporal bounds in the form (date_from, date_to)
+bounding_box: a tuple representing spatial bounds in the form
+(lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Dict[str, Any]]</code></td>
+      <td><p>A list of dictionaries, where each dictionary contains
+    information about a dataset found in the search.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">search_datasets</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_datasets</span><span class="p">(</span><span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Searches for datasets using the EarthAccess API with optional filters.</span>
+
+<span class="sd">    This function wraps the `earthaccess.search_datasets` function, allowing for</span>
+<span class="sd">    customized search queries based on a count limit and additional keyword arguments</span>
+<span class="sd">    which serve as filters for the search.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        count (int, optional): The maximum number of datasets to return. A value of -1</span>
+<span class="sd">            indicates no limit. Defaults to -1.</span>
+<span class="sd">        **kwargs (Any): Additional keyword arguments to pass as search filters to the</span>
+<span class="sd">            EarthAccess API.</span>
+<span class="sd">            keyword: case-insensitive and supports wildcards ? and *</span>
+<span class="sd">            short_name: e.g. ATL08</span>
+<span class="sd">            doi: DOI for a dataset</span>
+<span class="sd">            daac: e.g. NSIDC or PODAAC</span>
+<span class="sd">            provider: particular to each DAAC, e.g. POCLOUD, LPDAAC etc.</span>
+<span class="sd">            temporal: a tuple representing temporal bounds in the form (date_from, date_to)</span>
+<span class="sd">            bounding_box: a tuple representing spatial bounds in the form</span>
+<span class="sd">            (lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[Dict[str, Any]]: A list of dictionaries, where each dictionary contains</span>
+<span class="sd">            information about a dataset found in the search.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; results = search_datasets(count=5, keyword=&#39;temperature&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(results)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">earthaccess</span>
+
+    <span class="k">return</span> <span class="n">earthaccess</span><span class="o">.</span><span class="n">search_datasets</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="hypercoast.common.search_ecostress" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">search_ecostress</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">short_name</span><span class="o">=</span><span class="s1">&#39;ECO_L2T_LSTE&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">return_gdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
@@ -3149,6 +3285,9 @@ the dataset is not chunked.</p></td>
 <span class="sd">    Returns:</span>
 <span class="sd">        Union[List[dict], tuple]: The retrieved granules. If return_gdf is True, also returns the resulting GeoDataFrame.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">leafmap</span><span class="o">.</span><span class="n">nasa_data_search</span><span class="p">(</span>
         <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
