@@ -1,6 +1,6 @@
 [project]
 name = "HyperCoast"
-version = "0.6.1"
+version = "0.6.2"
 dynamic = [
     "dependencies",
 ]
@@ -55,7 +55,7 @@ universal = true
 
 
 [tool.bumpversion]
-current_version = "0.6.1"
+current_version = "0.6.2"
 commit = true
 tag = true
 
