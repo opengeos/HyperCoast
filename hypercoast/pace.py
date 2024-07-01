@@ -678,11 +678,16 @@ def pace_chla_to_image(data, output=None, **kwargs):
     Returns:
         rasterio.Dataset or None: The image converted from the data. If `output` is provided, the image will be saved to the specified file and the function will return None.
     """
-    from leafmap import array_to_image
+    from leafmap import array_to_image, image_to_geotiff
 
     if isinstance(data, str):
         data = read_pace_chla(data)
     elif not isinstance(data, xr.DataArray):
         raise ValueError("data must be an xarray DataArray")
 
-    return array_to_image(data, transpose=False, output=output, **kwargs)
+    image = array_to_image(data, transpose=False, output=None, **kwargs)
+
+    if output is not None:
+        image_to_geotiff(image, output, dtype="float32")
+
+    return image
