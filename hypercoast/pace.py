@@ -157,7 +157,7 @@ def read_pace_chla(
     import rioxarray
 
     date = None
-    if os.path.isfile(filepaths):
+    if isinstance(filepaths, str) and os.path.isfile(filepaths):
         filepaths = [filepaths]
     if "combine" not in kwargs:
         kwargs["combine"] = "nested"
