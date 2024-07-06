@@ -11,6 +11,16 @@
 
 -   Free software: MIT License
 -   Documentation: <https://hypercoast.org>
+-
+
+## Introduction
+
+HyperCoast is a Python package designed to provide an accessible and comprehensive set of tools for visualizing and analyzing hyperspectral data in coastal regions. Building on the capabilities of popular packages like [Leafmap](https://leafmap.org) and [PyVista](https://pyvista.org), HyperCoast streamlines the process of exploring and interpreting complex remote sensing data. This enables researchers and environmental managers to gain deeper insights into the dynamic processes occurring in coastal environments.
+
+HyperCoast supports the reading and visualization of hyperspectral data from various NASA airborne and satellite missions, such as [AVIRIS](https://aviris.jpl.nasa.gov), [NEON](https://data.neonscience.org/data-products/DP3.30006.001), [PACE](https://pace.gsfc.nasa.gov), and [EMIT](https://earth.jpl.nasa.gov/emit), along with other datasets like [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf) and [ECOSTRESS](https://ecostress.jpl.nasa.gov). Users can interactively explore hyperspectral data, extract spectral signatures, change band combinations and colormaps, visualize data in 3D, and perform interactive slicing and thresholding operations (see Figure 1). Additionally, leveraging the earthaccess package, HyperCoast offers tools for searching NASA hyperspectral data interactively. This makes it a versatile and powerful tool for working with hyperspectral data globally, with a particular focus on coastal regions.
+
+![EMIT](https://assets.gishub.org/images/EMIT-demo.png)
+**Figure 1.** An example of visualizing NASA EMIT hyperspectral data using HyperCoast.
 
 ## Features
 
