@@ -32,6 +32,16 @@ HyperCoast supports the reading and visualization of hyperspectral data from var
 
 # Statement of Need
 
+Coastal regions are dynamic and complex environments that require advanced remote sensing techniques to monitor and understand their various geophysical, biological, and biogeochemical processes [@Klemas2010; @McCarthy2017]. Hyperspectral remote sensing data, with its high spectral resolution, offers valuable insights into the composition and characteristics of coastal environments [@Brando2003; @Bioucas-Dias2013].
+
+The launch of new hyperspectral sensors, such as NASA's Plankton, Aerosol, Cloud, ocean Ecosystem (PACE) mission [@Gorman2019] and Earth Surface Mineral Dust Source Investigation (EMIT) [@Green2021], provides unprecedented opportunities to study coastal regions with high spatial and spectral resolutions. These sensors capture detailed information about water quality, benthic habitats, and biogeochemical processes in coastal waters, which are essential for monitoring and managing these sensitive ecosystems.
+
+However, effectively working with and visualizing hyperspectral data poses significant challenges, especially for non-expert users. HyperCoast addresses this gap by offering a user-friendly and powerful Python package that simplifies the exploration and analysis of hyperspectral data in coastal regions.
+
+Currently, very few Python packages are available for hyperspectral data visualization and analysis. One such package, HyperSpy [@De_La_Pena2017], is widely used for hyperspectral data analysis but is not specifically designed for new hyperspectral sensors or coastal applications. Additionally, it does not leverage the latest advances in the Jupyter ecosystem and 3D visualization. Existing packages are often limited in functionality or lack a focus on coastal applications.
+
+HyperCoast fills this gap by providing a comprehensive set of tools tailored to the unique needs of researchers and environmental managers working in coastal regions. By integrating advanced visualization techniques and interactive tools, HyperCoast enables users to effectively analyze hyperspectral data, facilitating better understanding and management of coastal ecosystems.
+
 # Acknowledgements
 
 TBA
