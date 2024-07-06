@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.6.3 - Jul 1, 2024
+## v0.6.3 - Jul 01, 2024
 
 **What's Changed**
 
@@ -101,7 +101,7 @@
 
 **Full Changelog**: [v0.4.0...v0.5.0](https://github.com/opengeos/HyperCoast/compare/v0.4.0...v0.5.0)
 
-## v0.4.0 - Jun 3, 2024
+## v0.4.0 - Jun 03, 2024
 
 **What's Changed**
 
@@ -129,11 +129,11 @@
 
 **Full Changelog**: [v0.3.1...v0.3.2](https://github.com/opengeos/HyperCoast/compare/v0.3.1...v0.3.2)
 
-## v0.3.1 - May 9, 2024
+## v0.3.1 - May 09, 2024
 
 **Full Changelog**: [v0.3.0...v0.3.1](https://github.com/opengeos/HyperCoast/compare/v0.3.0...v0.3.1)
 
-## v0.3.0 - May 8, 2024
+## v0.3.0 - May 08, 2024
 
 **What's Changed**
 
@@ -146,7 +146,7 @@
 
 **Full Changelog**: [v0.2.0...v0.3.0](https://github.com/opengeos/HyperCoast/compare/v0.2.0...v0.3.0)
 
-## v0.2.0 - May 5, 2024
+## v0.2.0 - May 05, 2024
 
 **What's Changed**
 
@@ -218,7 +218,7 @@
 
 **Full Changelog**: [v0.0.1...v0.0.2](https://github.com/opengeos/HyperCoast/compare/v0.0.1...v0.0.2)
 
-## v0.0.1 - Apr 8, 2024
+## v0.0.1 - Apr 08, 2024
 
 **What's Changed**
 **Full Changelog**: [v0.0.1](https://github.com/giswqs/HyperCoast/commits/v0.0.1)
