@@ -21,6 +21,7 @@ mkdocstrings-crystal
 mkdocstrings-python-legacy
 nbconvert
 nbformat
+psutil
 pygments
 pymdown-extensions
 pytest

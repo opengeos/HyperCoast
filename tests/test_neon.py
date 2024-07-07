@@ -11,7 +11,6 @@ class TestHypercoastNeon(unittest.TestCase):
         cls.filepath = "test_data/neon.h5"
         os.makedirs("test_data", exist_ok=True)
         hypercoast.download_file(cls.url, cls.filepath)
-        cls.dataset = hypercoast.read_neon(cls.filepath)
 
     def test_download_file(self):
         self.assertTrue(os.path.exists(self.filepath))

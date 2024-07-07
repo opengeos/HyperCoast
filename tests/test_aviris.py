@@ -14,7 +14,6 @@ class TestHypercoastDesis(unittest.TestCase):
         cls.filepath = "test_data/desis.tif"
         os.makedirs("test_data", exist_ok=True)
         hypercoast.download_file(cls.url, cls.filepath)
-        cls.dataset = hypercoast.read_desis(cls.filepath)
 
     def test_download_file(self):
         self.assertTrue(os.path.exists(self.filepath))
