@@ -89,6 +89,7 @@ nav:
     - Changelog: changelog.md
     - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
+          - examples/overview.md
           - examples/search_data.ipynb
           - examples/image_cube.ipynb
           - examples/image_slicing.ipynb
