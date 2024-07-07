@@ -48,6 +48,6 @@ HyperCoast fills this gap by providing a comprehensive set of tools tailored to 
 
 # Acknowledgements
 
-TBA
+The HyperCoast project draws inspiration from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository. Credit goes to the original authors.
 
 # References
