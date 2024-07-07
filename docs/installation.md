@@ -8,6 +8,12 @@
 pip install hypercoast
 ```
 
+HyperCoast has some optional dependencies that are not installed by default, such as cartopy, earthaccess, mapclassify, and pyvista. To install all optional dependencies all at once, run the following command:
+
+```bash
+pip install "hypercoast[extra]"
+```
+
 ## Install from conda-forge
 
 **hypercoast** is also available on [conda-forge](https://anaconda.org/conda-forge/hypercoast). If you have
@@ -24,6 +30,12 @@ conda install -n base mamba -c conda-forge
 conda create -n hyper python=3.11
 conda activate hyper
 mamba install -c conda-forge hypercoast
+```
+
+To install the optional dependencies, run the following command:
+
+```bash
+mamba install -c conda-forge cartopy earthaccess mapclassify pyvista
 ```
 
 ## Install from GitHub
