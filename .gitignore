@@ -4,6 +4,7 @@ private/
 *.py[cod]
 *$py.class
 *.nc
+changelog_update.md
 
 # C extensions
 *.so
