@@ -83,4 +83,4 @@ HyperCoast supports the reading and visualization of hyperspectral data from var
 
 ## Acknowledgement
 
-This projects draws inspiration and adapts source code from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository. Credit goes to the original authors.
+This project draws inspiration and adapts source code from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository. Credit goes to the original authors.
