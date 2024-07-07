@@ -5,7 +5,7 @@
 
 import unittest
 
-from hypercoast import hypercoast
+import hypercoast
 
 
 class TestHypercoast(unittest.TestCase):
