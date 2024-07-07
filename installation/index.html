@@ -413,26 +413,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../faq/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    FAQ
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../changelog/" class="md-nav__link">
         
   
@@ -480,10 +460,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -494,12 +474,33 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Examples
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -795,10 +796,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -809,8 +810,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             API Reference
           </label>
@@ -1070,6 +1071,9 @@
 <p><strong>hypercoast</strong> is available on <a href="https://pypi.org/project/hypercoast/">PyPI</a>. To install <strong>hypercoast</strong>, run this command in your terminal:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>hypercoast
 </code></pre></div></td></tr></table></div>
+<p>HyperCoast has some optional dependencies that are not installed by default, such as cartopy, earthaccess, mapclassify, and pyvista. To install all optional dependencies all at once, run the following command:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;hypercoast[extra]&quot;</span>
+</code></pre></div></td></tr></table></div>
 <h2 id="install-from-conda-forge">Install from conda-forge<a class="headerlink" href="#install-from-conda-forge" title="Permanent link">&para;</a></h2>
 <p><strong>hypercoast</strong> is also available on <a href="https://anaconda.org/conda-forge/hypercoast">conda-forge</a>. If you have
 <a href="https://www.anaconda.com/distribution/#download-section">Anaconda</a> or <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> installed on your computer, you can install hypercoast using the following command:</p>
@@ -1083,6 +1087,9 @@
 conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>hyper<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
 conda<span class="w"> </span>activate<span class="w"> </span>hyper
 mamba<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>hypercoast
+</code></pre></div></td></tr></table></div>
+<p>To install the optional dependencies, run the following command:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>mamba<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>cartopy<span class="w"> </span>earthaccess<span class="w"> </span>mapclassify<span class="w"> </span>pyvista
 </code></pre></div></td></tr></table></div>
 <h2 id="install-from-github">Install from GitHub<a class="headerlink" href="#install-from-github" title="Permanent link">&para;</a></h2>
 <p>To install the development version from GitHub using <a href="https://git-scm.com/">Git</a>, run the following command in your terminal:</p>
@@ -1110,7 +1117,7 @@ mamba<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> <
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2024-04-19T13:34:38+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2024-04-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2024-07-07T03:19:56+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2024-07-07</span>
   </span>
 
     

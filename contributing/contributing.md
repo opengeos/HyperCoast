@@ -53,17 +53,21 @@ Ready to contribute? Here's how to set up HyperCoast for local development.
 2.  Clone your fork locally:
 
     ```shell
-    $ git clone git@github.com:your_name_here/HyperCoast.git
+    $ git clone https://github.com/<YOUR-GITHUB-USERNAME>/HyperCoast.git
     ```
 
-3.  Install your local copy into a virtualenv. Assuming you have
-    virtualenvwrapper installed, this is how you set up your fork for
-    local development:
+3.  Create a new conda environment to install HyperCoast and its dependencies. Assuming you have
+    [Anaconda](https://www.anaconda.com/distribution/#download-section) or
+    [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed,
+    this is how you set up your fork for local development:
 
     ```shell
-    $ mkvirtualenv HyperCoast
+    $ conda install -n base mamba -c conda-forge
+    $ conda create -n hyper python=3.11
+    $ conda activate hyper
+    $ mamba install -c conda-forge hypercoast cartopy earthaccess mapclassify pyvista
     $ cd HyperCoast/
-    $ python setup.py develop
+    $ pip install -e .
     ```
 
 4.  Create a branch for local development:
@@ -74,16 +78,15 @@ Ready to contribute? Here's how to set up HyperCoast for local development.
 
     Now you can make your changes locally.
 
-5.  When you're done making changes, check that your changes pass flake8
-    and the tests, including testing other Python versions with tox:
+5.  When you're done making changes, check that your changes pass
+    [pre-commit](https://pre-commit.com/) and the tests:
 
     ```shell
-    $ flake8 HyperCoast tests
-    $ python setup.py test or pytest
-    $ tox
+    $ pip install pre-commit
+    $ pre-commit install
+    $ pre-commit run --all-files
+    $ python -m unittest discover tests/
     ```
-
-    To get flake8 and tox, just pip install them into your virtualenv.
 
 6.  Commit your changes and push your branch to GitHub:
 
@@ -94,15 +97,8 @@ Ready to contribute? Here's how to set up HyperCoast for local development.
     ```
 
 7.  Submit a pull request through the GitHub website.
-
-## Pull Request Guidelines
-
-Before you submit a pull request, check that it meets these guidelines:
-
-1.  The pull request should include tests.
-2.  If the pull request adds functionality, the docs should be updated.
-    Put your new functionality into a function with a docstring, and add
-    the feature to the list in README.rst.
-3.  The pull request should work for Python 3.8 and later, and
-    for PyPy. Check <https://github.com/opengeos/HyperCoast/pull_requests> and make sure that the tests pass for all
-    supported Python versions.
+8.  Check the status of your pull request on GitHub and make sure
+    that the tests for the pull request pass for all supported Python versions.
+9.  Commit more changes to your branch to fix the text errors if necessary.
+10. Wait for the pull request to be reviewed by the maintainers.
+11. Congratulations! You've made your contribution to HyperCoast!
