@@ -15,6 +15,9 @@ jobs:
             - uses: actions/setup-python@v5
               with:
                   python-version: "3.11"
+              env:
+                  EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+                  EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
 
             - name: Install GDAL
               run: |

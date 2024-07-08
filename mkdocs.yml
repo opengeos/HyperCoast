@@ -102,6 +102,8 @@ nav:
           - examples/temperature.ipynb
           - examples/pace_oci_l1.ipynb
           - examples/pace_oci_l2.ipynb
+    - Workshops:
+          - workshops/emit.ipynb
     - API Reference:
           - aviris module: aviris.md
           - common module: common.md
