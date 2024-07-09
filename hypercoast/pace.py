@@ -217,8 +217,8 @@ def view_pace_pixel_locations(
 
     # Create the plot
     dataset = read_pace_aop(filepath)
-    number_of_lines = dataset.dims["number_of_lines"]
-    pixels_per_line = dataset.dims["pixels_per_line"]
+    number_of_lines = dataset.sizes["number_of_lines"]
+    pixels_per_line = dataset.sizes["pixels_per_line"]
 
     ax.scatter(
         dataset.sel(

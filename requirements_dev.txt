@@ -4,8 +4,10 @@ build
 bump-my-version
 
 cartopy
+
 click
 codespell
+earthaccess
 flake8
 
 ipykernel
@@ -26,6 +28,7 @@ pygments
 pymdown-extensions
 pytest
 pytest-runner
+pyvista
 sphinx
 twine
 watchdog
