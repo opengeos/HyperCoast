@@ -719,6 +719,69 @@
       
   
   
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Workshops
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Workshops
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workshops/emit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Emit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -731,10 +794,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -745,8 +808,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_8">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             API Reference
           </label>
@@ -2626,8 +2689,8 @@ data points being plotted. Defaults to 20.</p></td>
 
     <span class="c1"># Create the plot</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_pace_aop</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-    <span class="n">number_of_lines</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="s2">&quot;number_of_lines&quot;</span><span class="p">]</span>
-    <span class="n">pixels_per_line</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="s2">&quot;pixels_per_line&quot;</span><span class="p">]</span>
+    <span class="n">number_of_lines</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;number_of_lines&quot;</span><span class="p">]</span>
+    <span class="n">pixels_per_line</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;pixels_per_line&quot;</span><span class="p">]</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
         <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
