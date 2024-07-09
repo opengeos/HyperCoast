@@ -716,7 +716,7 @@ class Map(leafmap.Map):
             if "band" in xds:
                 dim_name = "band"
 
-            band_count = xds.dims[dim_name]
+            band_count = xds.sizes[dim_name]
             band_names = ["b" + str(band) for band in range(1, band_count + 1)]
             self.cog_layer_dict[layer_name]["band_names"] = band_names
 
