@@ -188,10 +188,15 @@ def viz_emit(
 
     if isinstance(ds, str):
         ds = read_emit(ds, ortho=ortho)
+
+    if not isinstance(wavelengths, list):
+        wavelengths = [wavelengths]
     example = ds.sel(wavelength=wavelengths, method=method)
 
+    wavelengths = ", ".join([f"{w:.3f}" for w in example["wavelength"]])
+
     if title is None:
-        title = f"Reflectance at {example.wavelengths.values:.3f} {example.wavelengths.units}"
+        title = f"Reflectance at {wavelengths} {example.wavelength.units}"
 
     if ortho:
         image = example.hvplot.image(

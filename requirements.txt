@@ -4,8 +4,9 @@ h5netcdf
 hvplot
 leafmap
 localtileserver
+mapclassify
 netcdf4
-numpy
+numpy<2.0.0
 rioxarray
 s3fs
 scipy
