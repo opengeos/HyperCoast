@@ -26,7 +26,7 @@ bibliography: paper.bib
 
 # Summary
 
-HyperCoast is a Python package designed to provide an accessible and comprehensive set of tools for visualizing and analyzing hyperspectral data in coastal regions. Building on the capabilities of popular packages like Leafmap [@Wu2021] and PyVista [@Sullivan2019], HyperCoast streamlines the process of exploring and interpreting complex hyperspectral remote sensing data acquired via exsiting spaceborne and airborne missions and is poised to support future hyperspectral missions, such as NASA's SBG and GLIMR. This enables researchers and environmental managers to gain deeper insights into the coastal dynamic processes occurring in aqautic environments [@Liu2021; @Liu2023].
+HyperCoast is a Python package designed to provide an accessible and comprehensive set of tools for visualizing and analyzing hyperspectral data in coastal regions. Building on the capabilities of popular packages like Leafmap [@Wu2021] and PyVista [@Sullivan2019], HyperCoast streamlines the process of exploring and interpreting complex hyperspectral remote sensing data acquired via exsiting spaceborne and airborne missions and is poised to support future hyperspectral missions, such as NASA's SBG and GLIMR (Dierssen et al., 2021). This enables researchers and environmental managers to gain deeper insights into the coastal dynamic processes occurring in aqautic environments [@Liu2021; @Liu2023].
 
 HyperCoast supports the reading and visualization of hyperspectral data from various missions, such as AVIRIS [@Green1998], NEON [@Kampe2010], PACE [@Gorman2019],EMIT [@Green2021], and DESIS [@Alonso2019] along with other datasets ECOSTRESS [@Fisher2020]. Users can interactively explore hyperspectral data, extract spectral signatures, change band combinations and colormaps, visualize data in 3D, and perform interactive slicing and thresholding operations (e.g., Figure 1). Additionally, leveraging the earthaccess [@barrett2024] package, HyperCoast offers tools for searching NASA's hyperspectral data interactively. This makes it a versatile and powerful tool for working with hyperspectral data globally, with a particular focus on coastal regions.
 
@@ -48,6 +48,6 @@ HyperCoast fills this gap by providing a comprehensive set of tools tailored to 
 
 # Acknowledgements
 
-The HyperCoast project draws inspiration from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository. Credit goes to the original authors.
+The HyperCoast project draws inspiration from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository. Credit goes to the original authors. We also acknowledges NASA EMIT program support through grant no. 80NSSC24K0865.
 
 # References
