@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.7.0 - Jul 08, 2024
+
+**What's Changed**
+
+-   Improve the pace chla function by @giswqs in [#70](https://github.com/opengeos/HyperCoast/pull/70)
+-   Add JOSS paper draft by @giswqs in [#71](https://github.com/opengeos/HyperCoast/pull/71)
+-   Add unittests by @giswqs in [#72](https://github.com/opengeos/HyperCoast/pull/72)
+-   Add EMIT workshop notebook by @giswqs in [#73](https://github.com/opengeos/HyperCoast/pull/73)
+
+**Full Changelog**: [v0.6.3...v0.7.0](https://github.com/opengeos/HyperCoast/compare/v0.6.3...v0.7.0)
+
 ## v0.6.3 - Jul 01, 2024
 
 **What's Changed**
