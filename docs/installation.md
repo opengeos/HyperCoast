@@ -35,7 +35,7 @@ mamba install -c conda-forge hypercoast
 To install the optional dependencies, run the following command:
 
 ```bash
-mamba install -c conda-forge cartopy earthaccess mapclassify pyvista
+mamba install -c conda-forge cartopy earthaccess mapclassify pyvista trame-vtk trame-vuetify
 ```
 
 ## Install from GitHub
