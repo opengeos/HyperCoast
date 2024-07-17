@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.29">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.76a95c52.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -1494,7 +1494,12 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">apply_glt</span><span class="p">(</span><span class="n">ds_array</span><span class="p">,</span> <span class="n">glt_array</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">9999</span><span class="p">,</span> <span class="n">GLT_NODATA_VALUE</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">apply_glt</span><span class="p">(</span>
+    <span class="n">ds_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">glt_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">fill_value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">,</span>
+    <span class="n">GLT_NODATA_VALUE</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies the GLT array to a numpy array of either 2 or 3 dimensions to orthorectify the data.</span>
 
@@ -1583,7 +1588,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">band_mask</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">band_mask</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Unpacks the packed band mask to apply to the dataset. Can be used manually or as an input in the emit_xarray() function.</span>
 
@@ -1629,7 +1634,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">coord_vects</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">coord_vects</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function calculates the Lat and Lon Coordinate Vectors using the GLT and Metadata from an EMIT dataset read into xarray.</span>
 
@@ -1738,7 +1743,13 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emit_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emit_to_image</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an EMIT dataset to an image.</span>
 
@@ -1817,7 +1828,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emit_to_netcdf</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emit_to_netcdf</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transposes an EMIT dataset and saves it as a NetCDF file.</span>
 
@@ -1921,13 +1932,13 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emit_xarray</span><span class="p">(</span>
-    <span class="n">filepath</span><span class="p">,</span>
-    <span class="n">ortho</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">qmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">unpacked_bmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-<span class="p">):</span>
+    <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ortho</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">qmask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">unpacked_bmask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Streamlines opening an EMIT dataset as an xarray.Dataset.</span>
 
@@ -2083,7 +2094,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">envi_header</span><span class="p">(</span><span class="n">inputpath</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">envi_header</span><span class="p">(</span><span class="n">inputpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a ENVI binary/header path to a header, handling extensions.</span>
 
@@ -2174,7 +2185,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_adjacent</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">same_orbit</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_adjacent</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">same_orbit</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks if the scene numbers from the same orbit are adjacent/sequential.</span>
 
@@ -2266,7 +2277,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">merge_emit</span><span class="p">(</span><span class="n">datasets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">merge_emit</span><span class="p">(</span><span class="n">datasets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Merges xarray datasets formatted using emit_xarray. Note: GDF may only work with a single geometry.</span>
 
@@ -2432,7 +2443,13 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ortho_browse</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">glt</span><span class="p">,</span> <span class="n">spatial_ref</span><span class="p">,</span> <span class="n">geotransform</span><span class="p">,</span> <span class="n">white_background</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ortho_browse</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">glt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">spatial_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">geotransform</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">white_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Use an EMIT GLT, geotransform, and spatial ref to orthorectify a browse image. (browse images are in native resolution)</span>
 
@@ -2544,7 +2561,11 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ortho_xr</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">GLT_NODATA_VALUE</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">9999</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ortho_xr</span><span class="p">(</span>
+    <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">GLT_NODATA_VALUE</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">fill_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Uses `apply_glt` to create an orthorectified xarray dataset.</span>
 
@@ -2781,21 +2802,21 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_emit</span><span class="p">(</span>
-    <span class="n">ds</span><span class="p">,</span>
-    <span class="n">longitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">downtrack</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">crosstrack</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">remove_nans</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-    <span class="n">frame_height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
-    <span class="n">frame_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-    <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">ds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">longitude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">latitude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">downtrack</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crosstrack</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">remove_nans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">frame_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">frame_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">ortho</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2950,7 +2971,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">quality_mask</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">quality_bands</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">quality_mask</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quality_bands</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Builds a single layer mask to apply based on the bands selected from an EMIT L2A Mask file.</span>
 
@@ -3046,7 +3067,7 @@ used to orthorectify the data at a later point in a workflow.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">raw_spatial_crop</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">raw_spatial_crop</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">gpd</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Use a polygon to clip the file GLT, then a bounding box to crop the spatially raw data. Regions clipped in the GLT are set to 0 so a mask will be applied when</span>
 <span class="sd">    used to orthorectify the data at a later point in a workflow.</span>
@@ -3202,7 +3223,13 @@ used to orthorectify the data at a later point in a workflow.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_emit</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_emit</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ortho</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Opens an EMIT dataset from a file path and assigns new coordinates to it.</span>
 
@@ -3368,17 +3395,17 @@ used to orthorectify the data at a later point in a workflow.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">viz_emit</span><span class="p">(</span>
-    <span class="n">ds</span><span class="p">,</span>
-    <span class="n">wavelengths</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
-    <span class="n">frame_width</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-    <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span>
-    <span class="n">tiles</span><span class="o">=</span><span class="s2">&quot;ESRI&quot;</span><span class="p">,</span>
-    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">ds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+    <span class="n">cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">frame_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">720</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">ortho</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">aspect</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;equal&quot;</span><span class="p">,</span>
+    <span class="n">tiles</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ESRI&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3536,13 +3563,13 @@ used to orthorectify the data at a later point in a workflow.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">write_envi</span><span class="p">(</span>
-    <span class="n">xr_ds</span><span class="p">,</span>
-    <span class="n">output_dir</span><span class="p">,</span>
-    <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.img&quot;</span><span class="p">,</span>
-    <span class="n">interleave</span><span class="o">=</span><span class="s2">&quot;BIL&quot;</span><span class="p">,</span>
-    <span class="n">glt_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">):</span>
+    <span class="n">xr_ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">extension</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.img&quot;</span><span class="p">,</span>
+    <span class="n">interleave</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;BIL&quot;</span><span class="p">,</span>
+    <span class="n">glt_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes an EMIT dataset read into an xarray dataset using the emit_xarray function and writes an ENVI file and header.</span>
 
