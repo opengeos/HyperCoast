@@ -7,7 +7,7 @@ import xarray as xr
 from typing import List, Union, Dict, Optional, Tuple, Any
 
 
-def github_raw_url(url):
+def github_raw_url(url: str) -> str:
     """Get the raw URL for a GitHub file.
 
     Args:
@@ -23,20 +23,20 @@ def github_raw_url(url):
 
 
 def download_file(
-    url=None,
-    output=None,
-    quiet=False,
-    proxy=None,
-    speed=None,
-    use_cookies=True,
-    verify=True,
-    id=None,
-    fuzzy=False,
-    resume=False,
-    unzip=True,
-    overwrite=False,
-    subfolder=False,
-):
+    url: Optional[str] = None,
+    output: Optional[str] = None,
+    quiet: Optional[bool] = False,
+    proxy: Optional[str] = None,
+    speed: Optional[float] = None,
+    use_cookies: Optional[bool] = True,
+    verify: Optional[bool] = True,
+    id: Optional[str] = None,
+    fuzzy: Optional[bool] = False,
+    resume: Optional[bool] = False,
+    unzip: Optional[bool] = True,
+    overwrite: Optional[bool] = False,
+    subfolder: Optional[bool] = False,
+) -> str:
     """Download a file from URL, including Google Drive shared URL.
 
     Args:

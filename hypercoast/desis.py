@@ -7,9 +7,15 @@ import numpy as np
 import xarray as xr
 import pandas as pd
 from .common import convert_coords
+from typing import Optional, Union
 
 
-def read_desis(filepath, wavelengths=None, method="nearest", **kwargs):
+def read_desis(
+    filepath: str,
+    wavelengths: Optional[Union[list, tuple]] = None,
+    method: Optional[str] = "nearest",
+    **kwargs,
+) -> xr.Dataset:
     """
     Reads DESIS data from a given file and returns an xarray Dataset.
 
@@ -42,7 +48,13 @@ def read_desis(filepath, wavelengths=None, method="nearest", **kwargs):
     return dataset
 
 
-def desis_to_image(dataset, wavelengths=None, method="nearest", output=None, **kwargs):
+def desis_to_image(
+    dataset: Union[xr.Dataset, str],
+    wavelengths: Union[list, tuple] = None,
+    method: Optional[str] = "nearest",
+    output: Optional[str] = None,
+    **kwargs,
+):
     """
     Converts an DESIS dataset to an image.
 
@@ -76,7 +88,7 @@ def desis_to_image(dataset, wavelengths=None, method="nearest", output=None, **k
     )
 
 
-def extract_desis(ds, lat, lon):
+def extract_desis(ds: xr.Dataset, lat: float, lon: float) -> xr.DataArray:
     """
     Extracts DESIS data from a given xarray Dataset.
 
@@ -102,7 +114,13 @@ def extract_desis(ds, lat, lon):
     return da
 
 
-def filter_desis(dataset, lat, lon, return_plot=False, **kwargs):
+def filter_desis(
+    dataset: xr.Dataset,
+    lat: Union[float, tuple],
+    lon: Union[float, tuple],
+    return_plot: Optional[bool] = False,
+    **kwargs,
+) -> xr.Dataset:
     """
     Filters a DESIS dataset based on latitude and longitude.
 

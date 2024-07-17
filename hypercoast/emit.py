@@ -12,9 +12,16 @@ import os
 import xarray as xr
 import numpy as np
 import geopandas as gpd
+from typing import Optional, Union
 
 
-def read_emit(filepath, ortho=True, wavelengths=None, method="nearest", **kwargs):
+def read_emit(
+    filepath: str,
+    ortho: Optional[bool] = True,
+    wavelengths: Union[tuple, list] = None,
+    method: Optional[str] = "nearest",
+    **kwargs,
+) -> xr.Dataset:
     """
     Opens an EMIT dataset from a file path and assigns new coordinates to it.
 
@@ -58,21 +65,21 @@ def read_emit(filepath, ortho=True, wavelengths=None, method="nearest", **kwargs
 
 
 def plot_emit(
-    ds,
-    longitude=None,
-    latitude=None,
-    downtrack=None,
-    crosstrack=None,
-    remove_nans=True,
-    x="wavelengths",
-    y="reflectance",
-    color="black",
-    frame_height=400,
-    frame_width=600,
-    title=None,
-    method="nearest",
-    ortho=True,
-    options={},
+    ds: Union[xr.Dataset, str],
+    longitude: Optional[float] = None,
+    latitude: Optional[float] = None,
+    downtrack: Optional[int] = None,
+    crosstrack: Optional[int] = None,
+    remove_nans: Optional[bool] = True,
+    x: str = "wavelengths",
+    y: str = "reflectance",
+    color: str = "black",
+    frame_height: Optional[int] = 400,
+    frame_width: Optional[int] = 600,
+    title: str = None,
+    method: Optional[str] = "nearest",
+    ortho: Optional[bool] = True,
+    options: Optional[dict] = {},
     **kwargs,
 ):
     """
@@ -151,17 +158,17 @@ def plot_emit(
 
 
 def viz_emit(
-    ds,
-    wavelengths,
-    cmap="viridis",
-    frame_width=720,
-    method="nearest",
-    ortho=True,
-    aspect="equal",
-    tiles="ESRI",
-    alpha=0.8,
-    title=None,
-    options={},
+    ds: Union[xr.Dataset, str],
+    wavelengths: Union[tuple, list],
+    cmap: Optional[str] = "viridis",
+    frame_width: int = 720,
+    method: Optional[str] = "nearest",
+    ortho: Optional[bool] = True,
+    aspect: Optional[str] = "equal",
+    tiles: str = "ESRI",
+    alpha: Optional[float] = 0.8,
+    title: Optional[str] = None,
+    options: Optional[dict] = {},
     **kwargs,
 ):
     """
@@ -215,7 +222,7 @@ def viz_emit(
     return image
 
 
-def emit_to_netcdf(data, output, **kwargs):
+def emit_to_netcdf(data: Union[xr.Dataset, str], output: str, **kwargs) -> None:
     """
     Transposes an EMIT dataset and saves it as a NetCDF file.
 
@@ -232,7 +239,13 @@ def emit_to_netcdf(data, output, **kwargs):
     ds_geo.to_netcdf(output, **kwargs)
 
 
-def emit_to_image(data, wavelengths=None, method="nearest", output=None, **kwargs):
+def emit_to_image(
+    data: Union[xr.Dataset, str],
+    wavelengths: Optional[Union[list, tuple]] = None,
+    method: Optional[str] = "nearest",
+    output: Optional[str] = None,
+    **kwargs,
+):
     """
     Converts an EMIT dataset to an image.
 
@@ -259,13 +272,13 @@ def emit_to_image(data, wavelengths=None, method="nearest", output=None, **kwarg
 
 
 def emit_xarray(
-    filepath,
-    ortho=False,
-    qmask=None,
-    unpacked_bmask=None,
-    wavelengths=None,
-    method="nearest",
-):
+    filepath: str,
+    ortho: Optional[bool] = False,
+    qmask: Optional[np.ndarray] = None,
+    unpacked_bmask: Optional[np.ndarray] = None,
+    wavelengths: Optional[Union[tuple, list]] = None,
+    method: Optional[str] = "nearest",
+) -> xr.Dataset:
     """
     Streamlines opening an EMIT dataset as an xarray.Dataset.
 
@@ -366,7 +379,7 @@ def emit_xarray(
 
 
 # Function to Calculate the Lat and Lon Vectors/Coordinate Grid
-def coord_vects(ds):
+def coord_vects(ds: xr.Dataset) -> np.ndarray:
     """
     This function calculates the Lat and Lon Coordinate Vectors using the GLT and Metadata from an EMIT dataset read into xarray.
 
@@ -395,7 +408,12 @@ def coord_vects(ds):
     return lon, lat
 
 
-def apply_glt(ds_array, glt_array, fill_value=-9999, GLT_NODATA_VALUE=0):
+def apply_glt(
+    ds_array: np.ndarray,
+    glt_array: np.ndarray,
+    fill_value: int = -9999,
+    GLT_NODATA_VALUE: Optional[int] = 0,
+) -> np.ndarray:
     """
     Applies the GLT array to a numpy array of either 2 or 3 dimensions to orthorectify the data.
 
@@ -428,7 +446,11 @@ def apply_glt(ds_array, glt_array, fill_value=-9999, GLT_NODATA_VALUE=0):
     return out_ds
 
 
-def ortho_xr(ds, GLT_NODATA_VALUE=0, fill_value=-9999):
+def ortho_xr(
+    ds: xr.Dataset,
+    GLT_NODATA_VALUE: Optional[int] = 0,
+    fill_value: Optional[int] = -9999,
+) -> xr.Dataset:
     """
     Uses `apply_glt` to create an orthorectified xarray dataset.
 
@@ -518,7 +540,7 @@ def ortho_xr(ds, GLT_NODATA_VALUE=0, fill_value=-9999):
     return out_xr
 
 
-def quality_mask(filepath, quality_bands):
+def quality_mask(filepath: str, quality_bands: list) -> np.ndarray:
     """
     Builds a single layer mask to apply based on the bands selected from an EMIT L2A Mask file.
 
@@ -551,7 +573,7 @@ def quality_mask(filepath, quality_bands):
     return qmask
 
 
-def band_mask(filepath):
+def band_mask(filepath: str) -> np.ndarray:
     """
     Unpacks the packed band mask to apply to the dataset. Can be used manually or as an input in the emit_xarray() function.
 
@@ -574,13 +596,13 @@ def band_mask(filepath):
 
 
 def write_envi(
-    xr_ds,
-    output_dir,
-    overwrite=False,
-    extension=".img",
-    interleave="BIL",
-    glt_file=False,
-):
+    xr_ds: xr.Dataset,
+    output_dir: str,
+    overwrite: Optional[bool] = False,
+    extension: str = ".img",
+    interleave: Optional[str] = "BIL",
+    glt_file: Optional[bool] = False,
+) -> tuple:
     """
     Takes an EMIT dataset read into an xarray dataset using the emit_xarray function and writes an ENVI file and header.
 
@@ -759,7 +781,7 @@ def write_envi(
         ).astype("int32")
 
 
-def envi_header(inputpath):
+def envi_header(inputpath: str) -> str:
     """
     Convert a ENVI binary/header path to a header, handling extensions.
 
@@ -788,7 +810,7 @@ def envi_header(inputpath):
         return inputpath + ".hdr"
 
 
-def raw_spatial_crop(ds, shape):
+def raw_spatial_crop(ds: xr.Dataset, shape: gpd) -> xr.Dataset:
     """
     Use a polygon to clip the file GLT, then a bounding box to crop the spatially raw data. Regions clipped in the GLT are set to 0 so a mask will be applied when
     used to orthorectify the data at a later point in a workflow.
@@ -864,7 +886,7 @@ def raw_spatial_crop(ds, shape):
     return clipped_ds
 
 
-def is_adjacent(scene: str, same_orbit: list):
+def is_adjacent(scene: str, same_orbit: list) -> bool:
     """
     Checks if the scene numbers from the same orbit are adjacent/sequential.
 
@@ -879,7 +901,7 @@ def is_adjacent(scene: str, same_orbit: list):
     return all(b - a == 1 for a, b in zip(scene_nums[:-1], scene_nums[1:]))
 
 
-def merge_emit(datasets: dict, gdf: gpd.GeoDataFrame):
+def merge_emit(datasets: dict, gdf: gpd.GeoDataFrame) -> xr.Dataset:
     """
     Merges xarray datasets formatted using emit_xarray. Note: GDF may only work with a single geometry.
 
@@ -965,7 +987,13 @@ def merge_emit(datasets: dict, gdf: gpd.GeoDataFrame):
     return merged_ds
 
 
-def ortho_browse(url, glt, spatial_ref, geotransform, white_background=True):
+def ortho_browse(
+    url: str,
+    glt: np.ndarray,
+    spatial_ref: str,
+    geotransform: list,
+    white_background: Optional[bool] = True,
+) -> xr.Dataset:
     """
     Use an EMIT GLT, geotransform, and spatial ref to orthorectify a browse image. (browse images are in native resolution)
 
