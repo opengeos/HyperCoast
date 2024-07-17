@@ -2,6 +2,7 @@ import unittest
 import hypercoast
 import os
 import matplotlib
+import pytest
 
 matplotlib.use("Agg")  # Use the Agg backend to suppress plots
 
@@ -16,6 +17,8 @@ class TestHypercoast(unittest.TestCase):
         hypercoast.download_file(cls.url, cls.filepath)
         cls.dataset = hypercoast.read_pace(cls.filepath)
 
+    # uncomment marker if testing download files
+    @pytest.mark.skip(reason="download takes long")
     def test_download_file(self):
         self.assertTrue(os.path.exists(self.filepath))
 

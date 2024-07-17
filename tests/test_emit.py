@@ -1,6 +1,7 @@
 import unittest
 import hypercoast
 import os
+import pytest
 
 
 class TestHypercoastEmit(unittest.TestCase):
@@ -13,6 +14,8 @@ class TestHypercoastEmit(unittest.TestCase):
         hypercoast.download_file(cls.url, cls.filepath)
         cls.dataset = hypercoast.read_emit(cls.filepath)
 
+    # uncomment marker if testing download files
+    @pytest.mark.skip(reason="download takes long")
     def test_download_file(self):
         self.assertTrue(os.path.exists(self.filepath))
 

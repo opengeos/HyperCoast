@@ -1,6 +1,7 @@
 import unittest
 import hypercoast
 import os
+import pytest
 
 
 class TestHypercoastNeon(unittest.TestCase):
@@ -12,6 +13,8 @@ class TestHypercoastNeon(unittest.TestCase):
         os.makedirs("test_data", exist_ok=True)
         hypercoast.download_file(cls.url, cls.filepath)
 
+    # uncomment marker if testing download files
+    @pytest.mark.skip(reason="download takes long")
     def test_download_file(self):
         self.assertTrue(os.path.exists(self.filepath))
 
