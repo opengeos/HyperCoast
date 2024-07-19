@@ -14,6 +14,7 @@ from .pace import extract_pace
 from .desis import extract_desis
 from .neon import extract_neon
 from .aviris import extract_aviris
+from .common import extract_spectral
 
 
 class SpectralWidget(widgets.HBox):
@@ -182,10 +183,15 @@ class SpectralWidget(widgets.HBox):
                 marker_cluster.markers = markers
                 self._host_map._plot_marker_cluster = marker_cluster
 
+                xlabel = "Wavelength (nm)"
+                ylabel = "Reflectance"
+
                 ds = self._host_map.cog_layer_dict[layer_name]["xds"]
 
-                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "Generic":
-                    pass
+                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "COG":
+                    da = extract_spectral(ds, lat, lon)
+                    xlabel = "Band"
+                    ylabel = "Value"
 
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "EMIT":
                     da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
@@ -221,9 +227,17 @@ class SpectralWidget(widgets.HBox):
 
                 self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 
-                da[da < 0] = np.nan
+                if self._host_map.cog_layer_dict[layer_name]["hyper"] != "COG":
+                    da[da < 0] = np.nan
+                    x_axis_options = {"label_offset": "30px"}
+                else:
+                    x_axis_options = {
+                        "label_offset": "30px",
+                        "tick_format": "0d",
+                        "num_ticks": da.sizes["band"],
+                    }
                 axes_options = {
-                    "x": {"label_offset": "30px"},
+                    "x": x_axis_options,
                     "y": {"label_offset": "35px"},
                 }
 
@@ -251,8 +265,9 @@ class SpectralWidget(widgets.HBox):
                             self._fig.axes = self._fig.axes[:-1]
                     except:
                         pass
-                plt.xlabel("Wavelength (nm)")
-                plt.ylabel("Reflectance")
+
+                plt.xlabel(xlabel)
+                plt.ylabel(ylabel)
 
                 if not self._show_plot:
                     with self._output_widget:

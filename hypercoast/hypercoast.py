@@ -165,7 +165,7 @@ class Map(leafmap.Map):
         da = da.transpose(dims[1], dims[2], dims[0])
         xds = da.to_dataset(name="data")
         self.cog_layer_dict[layer_name]["xds"] = xds
-        self.cog_layer_dict[layer_name]["hyper"] = "Generic"
+        self.cog_layer_dict[layer_name]["hyper"] = "COG"
 
     def add_dataset(
         self,
