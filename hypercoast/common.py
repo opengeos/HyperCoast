@@ -736,3 +736,29 @@ def extract_date_from_filename(filename: str):
         return pd.to_datetime(date_match.group(), format="%Y%m%d")
     else:
         return None
+
+
+def extract_spectral(
+    ds: xr.Dataset, lat: float, lon: float, name: str = "data"
+) -> xr.DataArray:
+    """
+    Extracts spectral signature from a given xarray Dataset.
+
+    Args:
+        ds (xarray.Dataset): The dataset containing the spectral data.
+        lat (float): The latitude of the point to extract.
+        lon (float): The longitude of the point to extract.
+
+    Returns:
+        xarray.DataArray: The extracted data.
+    """
+
+    crs = ds.rio.crs
+
+    x, y = convert_coords([[lat, lon]], "epsg:4326", crs)[0]
+
+    values = ds.sel(x=x, y=y, method="nearest")[name].values
+
+    da = xr.DataArray(values, dims=["band"], coords={"band": ds.coords["band"]})
+
+    return da

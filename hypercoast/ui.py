@@ -183,7 +183,11 @@ class SpectralWidget(widgets.HBox):
                 self._host_map._plot_marker_cluster = marker_cluster
 
                 ds = self._host_map.cog_layer_dict[layer_name]["xds"]
-                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "EMIT":
+
+                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "Generic":
+                    pass
+
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "EMIT":
                     da = ds.sel(latitude=lat, longitude=lon, method="nearest")[
                         "reflectance"
                     ]

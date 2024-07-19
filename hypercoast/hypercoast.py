@@ -100,6 +100,7 @@ class Map(leafmap.Map):
         zoom_to_layer=True,
         visible=True,
         array_args={},
+        open_args={},
         **kwargs,
     ):
         """Add a local raster dataset to the map.
@@ -140,6 +141,7 @@ class Map(leafmap.Map):
         """
 
         import numpy as np
+        import rioxarray as rxr
 
         if nodata is None:
             nodata = np.nan
@@ -157,6 +159,82 @@ class Map(leafmap.Map):
             array_args=array_args,
             **kwargs,
         )
+
+        da = rxr.open_rasterio(source, **open_args)
+        dims = da.dims
+        da = da.transpose(dims[1], dims[2], dims[0])
+        xds = da.to_dataset(name="data")
+        self.cog_layer_dict[layer_name]["xds"] = xds
+        self.cog_layer_dict[layer_name]["hyper"] = "Generic"
+
+    def add_dataset(
+        self,
+        source,
+        indexes=None,
+        colormap=None,
+        vmin=None,
+        vmax=None,
+        nodata=None,
+        attribution=None,
+        layer_name="Raster",
+        zoom_to_layer=True,
+        visible=True,
+        array_args={},
+        open_args={},
+        **kwargs,
+    ):
+        import rioxarray as rxr
+        from leafmap import array_to_image
+
+        if isinstance(source, str):
+            da = rxr.open_rasterio(source, **open_args)
+            dims = da.dims
+            da = da.transpose(dims[1], dims[2], dims[0])
+            xds = da.to_dataset(name="data")
+
+            # if "long_name" in dataset.attrs:
+            #     band_names = list(dataset.attrs["long_name"])
+            # else:
+            #     band_names = [
+            #         "b" + str(band) for band in range(1, dataset.sizes[dims[2]] + 1)
+            #     ]
+        elif not isinstance(source, xr.DataArray):
+            raise ValueError(
+                "source must be a path to a raster file or an xarray.DataArray object."
+            )
+        else:
+            xds = source
+
+        if indexes is None:
+            if xds.sizes[dims[2]] < 3:
+                indexes = [1]
+            elif xds.sizes[dims[2]] < 4:
+                indexes = [1, 2, 3]
+            else:
+                indexes = [3, 2, 1]
+
+        bands = [i - 1 for i in indexes]
+        da = xds.isel(band=bands)["data"]
+        image = array_to_image(da, transpose=False)
+
+        self.add_raster(
+            image,
+            indexes=None,
+            colormap=colormap,
+            vmin=vmin,
+            vmax=vmax,
+            nodata=nodata,
+            attribution=attribution,
+            layer_name=layer_name,
+            zoom_to_layer=zoom_to_layer,
+            visible=visible,
+            array_args=array_args,
+            **kwargs,
+        )
+
+        self.cog_layer_dict[layer_name]["xds"] = xds
+        self.cog_layer_dict[layer_name]["hyper"] = "Generic"
+        # self._update_band_names(layer_name, wavelengths)
 
     def add_emit(
         self,
