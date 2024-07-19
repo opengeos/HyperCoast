@@ -100,6 +100,7 @@ class Map(leafmap.Map):
         zoom_to_layer=True,
         visible=True,
         array_args={},
+        open_args={},
         **kwargs,
     ):
         """Add a local raster dataset to the map.
@@ -140,6 +141,7 @@ class Map(leafmap.Map):
         """
 
         import numpy as np
+        import rioxarray as rxr
 
         if nodata is None:
             nodata = np.nan
@@ -157,6 +159,83 @@ class Map(leafmap.Map):
             array_args=array_args,
             **kwargs,
         )
+
+        if isinstance(source, str):
+            da = rxr.open_rasterio(source, **open_args)
+            dims = da.dims
+            da = da.transpose(dims[1], dims[2], dims[0])
+
+            xds = da.to_dataset(name="data")
+            self.cog_layer_dict[layer_name]["xds"] = xds
+            self.cog_layer_dict[layer_name]["hyper"] = "COG"
+
+    def add_dataset(
+        self,
+        source,
+        indexes=None,
+        colormap=None,
+        vmin=None,
+        vmax=None,
+        nodata=None,
+        attribution=None,
+        layer_name="Raster",
+        zoom_to_layer=True,
+        visible=True,
+        array_args={},
+        open_args={},
+        **kwargs,
+    ):
+        import rioxarray as rxr
+        from leafmap import array_to_image
+
+        if isinstance(source, str):
+            da = rxr.open_rasterio(source, **open_args)
+            dims = da.dims
+            da = da.transpose(dims[1], dims[2], dims[0])
+            xds = da.to_dataset(name="data")
+
+        elif not isinstance(source, xr.Dataset):
+            raise ValueError(
+                "source must be a path to a raster file or an xarray.Dataset object."
+            )
+        else:
+            xds = source
+
+        if indexes is None:
+            if xds.sizes[dims[2]] < 3:
+                indexes = [1]
+            elif xds.sizes[dims[2]] < 4:
+                indexes = [1, 2, 3]
+            else:
+                indexes = [3, 2, 1]
+
+        bands = [i - 1 for i in indexes]
+        da = xds.isel(band=bands)["data"]
+        image = array_to_image(da, transpose=False)
+
+        self.add_raster(
+            image,
+            indexes=None,
+            colormap=colormap,
+            vmin=vmin,
+            vmax=vmax,
+            nodata=nodata,
+            attribution=attribution,
+            layer_name=layer_name,
+            zoom_to_layer=zoom_to_layer,
+            visible=visible,
+            array_args=array_args,
+            **kwargs,
+        )
+
+        self.cog_layer_dict[layer_name]["xds"] = xds
+        self.cog_layer_dict[layer_name]["type"] = "XARRAY"
+        self.cog_layer_dict[layer_name]["hyper"] = "XARRAY"
+        self.cog_layer_dict[layer_name]["band_names"] = [
+            "b" + str(i) for i in xds.coords["band"].values.tolist()
+        ]
+        self.cog_layer_dict[layer_name]["indexes"] = indexes
+        self.cog_layer_dict[layer_name]["vis_bands"] = ["b" + str(i) for i in indexes]
 
     def add_emit(
         self,
@@ -592,9 +671,15 @@ class Map(leafmap.Map):
         """
 
         if wvl_indexes is not None:
-            kwargs["wavelengths"] = (
-                xds.isel(wavelength=wvl_indexes).coords["wavelength"].values.tolist()
-            )
+            if type == "XARRAY":
+                kwargs["indexes"] = [i + 1 for i in wvl_indexes]
+            else:
+
+                kwargs["wavelengths"] = (
+                    xds.isel(wavelength=wvl_indexes)
+                    .coords["wavelength"]
+                    .values.tolist()
+                )
 
         if type == "EMIT":
             self.add_emit(xds, **kwargs)
@@ -606,6 +691,9 @@ class Map(leafmap.Map):
             self.add_neon(xds, **kwargs)
         elif type == "AVIRIS":
             self.add_aviris(xds, **kwargs)
+        elif type == "XARRAY":
+            kwargs.pop("wavelengths", None)
+            self.add_dataset(xds, **kwargs)
 
     def set_plot_options(
         self,
