@@ -188,7 +188,7 @@ class SpectralWidget(widgets.HBox):
 
                 ds = self._host_map.cog_layer_dict[layer_name]["xds"]
 
-                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "COG":
+                if self._host_map.cog_layer_dict[layer_name]["hyper"] == "XARRAY":
                     da = extract_spectral(ds, lat, lon)
                     xlabel = "Band"
                     ylabel = "Value"
@@ -227,7 +227,7 @@ class SpectralWidget(widgets.HBox):
 
                 self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 
-                if self._host_map.cog_layer_dict[layer_name]["hyper"] != "COG":
+                if self._host_map.cog_layer_dict[layer_name]["hyper"] != "XARRAY":
                     da[da < 0] = np.nan
                     x_axis_options = {"label_offset": "30px"}
                 else:

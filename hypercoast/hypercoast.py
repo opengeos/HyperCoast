@@ -194,15 +194,9 @@ class Map(leafmap.Map):
             da = da.transpose(dims[1], dims[2], dims[0])
             xds = da.to_dataset(name="data")
 
-            # if "long_name" in dataset.attrs:
-            #     band_names = list(dataset.attrs["long_name"])
-            # else:
-            #     band_names = [
-            #         "b" + str(band) for band in range(1, dataset.sizes[dims[2]] + 1)
-            #     ]
-        elif not isinstance(source, xr.DataArray):
+        elif not isinstance(source, xr.Dataset):
             raise ValueError(
-                "source must be a path to a raster file or an xarray.DataArray object."
+                "source must be a path to a raster file or an xarray.Dataset object."
             )
         else:
             xds = source
@@ -235,8 +229,13 @@ class Map(leafmap.Map):
         )
 
         self.cog_layer_dict[layer_name]["xds"] = xds
-        self.cog_layer_dict[layer_name]["hyper"] = "Generic"
-        # self._update_band_names(layer_name, wavelengths)
+        self.cog_layer_dict[layer_name]["type"] = "XARRAY"
+        self.cog_layer_dict[layer_name]["hyper"] = "XARRAY"
+        self.cog_layer_dict[layer_name]["band_names"] = [
+            "b" + str(i) for i in xds.coords["band"].values.tolist()
+        ]
+        self.cog_layer_dict[layer_name]["indexes"] = indexes
+        self.cog_layer_dict[layer_name]["vis_bands"] = ["b" + str(i) for i in indexes]
 
     def add_emit(
         self,
@@ -672,9 +671,15 @@ class Map(leafmap.Map):
         """
 
         if wvl_indexes is not None:
-            kwargs["wavelengths"] = (
-                xds.isel(wavelength=wvl_indexes).coords["wavelength"].values.tolist()
-            )
+            if type == "XARRAY":
+                kwargs["indexes"] = [i + 1 for i in wvl_indexes]
+            else:
+
+                kwargs["wavelengths"] = (
+                    xds.isel(wavelength=wvl_indexes)
+                    .coords["wavelength"]
+                    .values.tolist()
+                )
 
         if type == "EMIT":
             self.add_emit(xds, **kwargs)
@@ -686,6 +691,9 @@ class Map(leafmap.Map):
             self.add_neon(xds, **kwargs)
         elif type == "AVIRIS":
             self.add_aviris(xds, **kwargs)
+        elif type == "XARRAY":
+            kwargs.pop("wavelengths", None)
+            self.add_dataset(xds, **kwargs)
 
     def set_plot_options(
         self,
