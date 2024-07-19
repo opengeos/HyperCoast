@@ -961,6 +961,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.common.extract_spectral" class="md-nav__link">
+    <span class="md-ellipsis">
+      extract_spectral()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.common.github_raw_url" class="md-nav__link">
     <span class="md-ellipsis">
       github_raw_url()
@@ -1294,6 +1303,15 @@
   <a href="#hypercoast.common.extract_date_from_filename" class="md-nav__link">
     <span class="md-ellipsis">
       extract_date_from_filename()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.extract_spectral" class="md-nav__link">
+    <span class="md-ellipsis">
+      extract_spectral()
     </span>
   </a>
   
@@ -2152,6 +2170,100 @@ or None if no date in 'YYYYMMDD' format is found.</p></td>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">date_match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.common.extract_spectral" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extract_spectral</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.extract_spectral" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Extracts spectral signature from a given xarray Dataset.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ds</code></td>
+        <td><code>xarray.Dataset</code></td>
+        <td><p>The dataset containing the spectral data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>lat</code></td>
+        <td><code>float</code></td>
+        <td><p>The latitude of the point to extract.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>lon</code></td>
+        <td><code>float</code></td>
+        <td><p>The longitude of the point to extract.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xarray.DataArray</code></td>
+      <td><p>The extracted data.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_spectral</span><span class="p">(</span>
+    <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts spectral signature from a given xarray Dataset.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ds (xarray.Dataset): The dataset containing the spectral data.</span>
+<span class="sd">        lat (float): The latitude of the point to extract.</span>
+<span class="sd">        lon (float): The longitude of the point to extract.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xarray.DataArray: The extracted data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">crs</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span>
+
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">([[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]],</span> <span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span> <span class="n">crs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">values</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">]})</span>
+
+    <span class="k">return</span> <span class="n">da</span>
 </code></pre></div>
         </details>
     </div>
