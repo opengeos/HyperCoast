@@ -164,11 +164,10 @@ class Map(leafmap.Map):
             da = rxr.open_rasterio(source, **open_args)
             dims = da.dims
             da = da.transpose(dims[1], dims[2], dims[0])
-        elif isinstance(source, xr.DataArray):
-            da = source
-        xds = da.to_dataset(name="data")
-        self.cog_layer_dict[layer_name]["xds"] = xds
-        self.cog_layer_dict[layer_name]["hyper"] = "COG"
+
+            xds = da.to_dataset(name="data")
+            self.cog_layer_dict[layer_name]["xds"] = xds
+            self.cog_layer_dict[layer_name]["hyper"] = "COG"
 
     def add_dataset(
         self,
