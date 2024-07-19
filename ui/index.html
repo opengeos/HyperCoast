@@ -1411,8 +1411,17 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                 <span class="n">marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="n">markers</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="o">=</span> <span class="n">marker_cluster</span>
 
+                <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span>
+                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Reflectance&quot;</span>
+
                 <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+                    <span class="n">da</span> <span class="o">=</span> <span class="n">extract_spectral</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+                    <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Band&quot;</span>
+                    <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Value&quot;</span>
+
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span>
                         <span class="s2">&quot;reflectance&quot;</span>
                     <span class="p">]</span>
@@ -1446,9 +1455,17 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lon</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span>
 
-                <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+                    <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                    <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;tick_format&quot;</span><span class="p">:</span> <span class="s2">&quot;0d&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;num_ticks&quot;</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">],</span>
+                    <span class="p">}</span>
                 <span class="n">axes_options</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x_axis_options</span><span class="p">,</span>
                     <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;35px&quot;</span><span class="p">},</span>
                 <span class="p">}</span>
 
@@ -1476,8 +1493,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                             <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">except</span><span class="p">:</span>
                         <span class="k">pass</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Wavelength (nm)&quot;</span><span class="p">)</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Reflectance&quot;</span><span class="p">)</span>
+
+                <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_plot</span><span class="p">:</span>
                     <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
@@ -1739,8 +1757,17 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
             <span class="n">marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="n">markers</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="o">=</span> <span class="n">marker_cluster</span>
 
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span>
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Reflectance&quot;</span>
+
             <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+                <span class="n">da</span> <span class="o">=</span> <span class="n">extract_spectral</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+                <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Band&quot;</span>
+                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Value&quot;</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span>
                     <span class="s2">&quot;reflectance&quot;</span>
                 <span class="p">]</span>
@@ -1774,9 +1801,17 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lon</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span>
 
-            <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+                <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;tick_format&quot;</span><span class="p">:</span> <span class="s2">&quot;0d&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;num_ticks&quot;</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">],</span>
+                <span class="p">}</span>
             <span class="n">axes_options</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x_axis_options</span><span class="p">,</span>
                 <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;35px&quot;</span><span class="p">},</span>
             <span class="p">}</span>
 
@@ -1804,8 +1839,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                         <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="k">pass</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Wavelength (nm)&quot;</span><span class="p">)</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Reflectance&quot;</span><span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_plot</span><span class="p">:</span>
                 <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
