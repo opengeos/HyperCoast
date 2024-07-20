@@ -3,9 +3,21 @@ This Module has the functions related to working with an EMIT dataset. This incl
 doing things like opening and flattening the data to work in xarray, orthorectification,
 and visualization.
 
-Some source code is adapted from https://github.com/nasa/EMIT-Data-Resources.
+Some source code is adapted from https://github.com/nasa/EMIT-Data-Resource,
+which is licensed under the Apache License 2.0.
 Credits to the original authors, including Erik Bolch, Alex Leigh, and others.
 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """
 
 import os
@@ -269,6 +281,10 @@ def emit_to_image(
     if wavelengths is not None:
         ds = ds.sel(wavelength=wavelengths, method=method)
     return array_to_image(ds, transpose=False, output=output, **kwargs)
+
+
+########### This source code below is adapted from the EMIT-Data-Resource repository ###########
+########### It is licensed under the Apache License 2.0 ########################################
 
 
 def emit_xarray(
@@ -1035,3 +1051,7 @@ def ortho_browse(
     da = xr.DataArray(ortho_data, dims=["band", "y", "x"], coords=coords)
     da.rio.write_crs(spatial_ref, inplace=True)
     return da
+
+
+########### This source code above is adapted from the EMIT-Data-Resource repository ###########
+########### It is licensed under the Apache License 2.0 ########################################
