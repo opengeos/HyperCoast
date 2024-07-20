@@ -13,3 +13,4 @@
 -   [Visualize ERA5 temperature data interactively](https://hypercoast.org/examples/temperature)
 -   [Visualize PACE OCI L1 data products](https://hypercoast.org/examples/pace_oci_l1)
 -   [Visualize PACE OCI L2 data products](https://hypercoast.org/examples/pace_oci_l2)
+-   [Visualize Multispectral data interactively](https://hypercoast.org/examples/multispectral)
