@@ -839,3 +839,84 @@ def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
 
     print(f"Extracted to {extracted_path}")
     return extracted_path
+
+
+def run_acolite(
+    acolite_dir: str,
+    settings_file: Optional[str] = None,
+    input_file: Optional[str] = None,
+    output: Optional[str] = None,
+    polygon: Optional[str] = None,
+    l2w_parameters: Optional[str] = None,
+    rgb_rhot: bool = True,
+    rgb_rhos: bool = True,
+    map_l2w: bool = True,
+    verbose: bool = True,
+    **kwargs: Any,
+) -> None:
+    """
+    Runs the ACOLITE software for atmospheric correction and water quality retrieval.
+
+    This function constructs and executes a command to run the ACOLITE software with the specified
+    parameters. It supports running ACOLITE with a settings file or with individual parameters
+    specified directly. Additional parameters can be passed as keyword arguments.
+
+    Args:
+        acolite_dir (str): The directory where ACOLITE is installed.
+        settings_file (Optional[str], optional): The path to the ACOLITE settings file. If provided,
+            other parameters except `verbose` are ignored. Defaults to None.
+        input_file (Optional[str], optional): The path to the input file for processing. Defaults to None.
+        output (Optional[str], optional): The directory where output files will be saved. Defaults to None.
+        polygon (Optional[str], optional): The path to a polygon file for spatial subset. Defaults to None.
+        l2w_parameters (Optional[str], optional): Parameters for L2W processing. Defaults to None.
+        rgb_rhot (bool, optional): Flag to generate RGB images using rhot. Defaults to True.
+        rgb_rhos (bool, optional): Flag to generate RGB images using rhos. Defaults to True.
+        map_l2w (bool, optional): Flag to map L2W products. Defaults to True.
+        verbose (bool, optional): If True, prints the command output; otherwise, suppresses it. Defaults to True.
+        **kwargs (Any): Additional command line arguments to pass to ACOLITE.
+
+    Returns:
+        None: This function does not return a value. It executes the ACOLITE software.
+
+    Example:
+        >>> run_acolite("/path/to/acolite", input_file="/path/to/inputfile", output="/path/to/output")
+    """
+
+    import subprocess
+
+    acolite_dir_name = os.path.split(os.path.dirname(acolite_dir))[-1]
+    acolite_exe = "acolite"
+    if acolite_dir_name.endswith("win"):
+        acolite_exe += ".exe"
+
+    acolite_exe_path = os.path.join(acolite_dir, "dist", "acolite", acolite_exe)
+
+    acolite_cmd = [acolite_exe_path, "--cli"]
+
+    if settings_file is not None:
+        acolite_cmd.extend(["--settings", settings_file])
+    else:
+        if input_file is not None:
+            acolite_cmd.extend(["--inputfile", input_file])
+        if output is not None:
+            acolite_cmd.extend(["--output", output])
+        if polygon is not None:
+            acolite_cmd.extend(["--polygon", polygon])
+        if l2w_parameters is not None:
+            acolite_cmd.extend(["--l2w_parameters", l2w_parameters])
+        if rgb_rhot:
+            acolite_cmd.append("--rgb_rhot")
+        if rgb_rhos:
+            acolite_cmd.append("--rgb_rhos")
+        if map_l2w:
+            acolite_cmd.append("--map_l2w")
+
+    for key, value in kwargs.items():
+        acolite_cmd.extend([f"--{key}", str(value)])
+
+    if verbose:
+        subprocess.run(acolite_cmd)
+    else:
+        subprocess.run(
+            acolite_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
