@@ -762,3 +762,80 @@ def extract_spectral(
     da = xr.DataArray(values, dims=["band"], coords={"band": ds.coords["band"]})
 
     return da
+
+
+def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
+    """
+    Downloads the ACOLITE release based on the OS platform and extracts it to the specified directory.
+
+    Args:
+        outdir (str): The output directory where the file will be downloaded and extracted.
+        platform (Optional[str]): The platform for which to download ACOLITE. If None, the current system platform is used.
+                                  Valid values are 'linux', 'darwin', and 'windows'.
+
+    Returns:
+        str: The path to the extracted ACOLITE directory.
+
+    Raises:
+        Exception: If the platform is unsupported or the download fails.
+    """
+    import platform as pf
+    import requests
+    import tarfile
+    from tqdm import tqdm
+
+    base_url = "https://github.com/acolite/acolite/releases/download/20231023.0/"
+
+    if platform is None:
+        platform = pf.system().lower()
+    else:
+        platform = platform.lower()
+
+    if platform == "linux":
+        download_url = base_url + "acolite_py_linux_20231023.0.tar.gz"
+        root_dir = "acolite_py_linux"
+    elif platform == "darwin":
+        download_url = base_url + "acolite_py_mac_20231023.0.tar.gz"
+        root_dir = "acolite_py_mac"
+    elif platform == "windows":
+        download_url = base_url + "acolite_py_win_20231023.0.tar.gz"
+        root_dir = "acolite_py_win"
+    else:
+        raise Exception(f"Unsupported OS platform: {platform}")
+
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
+
+    extracted_path = os.path.join(outdir, root_dir)
+    file_name = os.path.join(outdir, download_url.split("/")[-1])
+
+    if os.path.exists(file_name):
+        print(f"{file_name} already exists. Skip downloading.")
+        return extracted_path
+
+    response = requests.get(download_url, stream=True)
+    total_size = int(response.headers.get("content-length", 0))
+    block_size = 8192
+
+    if response.status_code == 200:
+        with open(file_name, "wb") as file, tqdm(
+            desc=file_name,
+            total=total_size,
+            unit="iB",
+            unit_scale=True,
+            unit_divisor=1024,
+        ) as bar:
+            for chunk in response.iter_content(chunk_size=block_size):
+                if chunk:
+                    file.write(chunk)
+                    bar.update(len(chunk))
+        print(f"Downloaded {file_name}")
+    else:
+        raise Exception(f"Failed to download file from {download_url}")
+
+    # Unzip the file
+    with tarfile.open(file_name, "r:gz") as tar:
+        tar.extractall(path=outdir)
+
+    print(f"Extracted to {extracted_path}")
+    return extracted_path
