@@ -1,0 +1,23 @@
+version = 1
+
+# All files are under MIT License except otherwise specified
+[[annotations]]
+path = "**"
+SPDX-FileCopyrightText = "2024 Qiusheng Wu <giswqs@gmail.com>"
+SPDX-License-Identifier = "MIT"
+
+# Some files are with multiple copyright holders
+[[annotations]]
+path = ["hypercoast/emit.py"]
+SPDX-FileCopyrightText = [
+    "2024 Erik Bolch <ebolch@contractor.usgs.gov>",
+]
+SPDX-License-Identifier = "Apache-2.0"
+
+
+[[annotations]]
+path = ["hypercoast/aviris.py"]
+SPDX-FileCopyrightText = [
+    "2024 Jack McNelis <jjmcne@gmail.com>",
+]
+SPDX-License-Identifier = "MIT"
