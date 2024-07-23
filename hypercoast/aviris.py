@@ -3,6 +3,11 @@ More info about the data can be found at https://aviris.jpl.nasa.gov.
 A portion of the source code is adapted from the jjmcnelis/aviris-ng-notebooks repository
 available at https://bit.ly/4bRCgqs. It is licensed under the MIT License. Credit goes to the
 original author Jack McNelis.
+
+SPDX-FileCopyrightText = [
+    "2024 Jack McNelis <jjmcne@gmail.com>",
+]
+SPDX-License-Identifier = "MIT"
 """
 
 import rioxarray

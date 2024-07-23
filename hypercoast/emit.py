@@ -3,21 +3,14 @@ This Module has the functions related to working with an EMIT dataset. This incl
 doing things like opening and flattening the data to work in xarray, orthorectification,
 and visualization.
 
-Some source code is adapted from https://github.com/nasa/EMIT-Data-Resource,
+Some source code is adapted from https://github.com/nasa/EMIT-Data-Resources,
 which is licensed under the Apache License 2.0.
 Credits to the original authors, including Erik Bolch, Alex Leigh, and others.
 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+SPDX-FileCopyrightText = [
+    "2024 Erik Bolch <ebolch@contractor.usgs.gov>",
+]
+SPDX-License-Identifier = "Apache-2.0"
 """
 
 import os
@@ -404,7 +397,7 @@ def coord_vects(ds: xr.Dataset) -> np.ndarray:
     loc: an xarray.Dataset containing the 'location' group of an EMIT dataset
 
     Returns:
-    lon, lat (numpy.array): longitute and latitude array grid for the dataset
+    lon, lat (numpy.array): longitude and latitude array grid for the dataset
 
     """
     # Retrieve Geotransform from Metadata
@@ -504,7 +497,7 @@ def ortho_xr(
         # Mask fill values
         out_ds[out_ds == fill_value] = np.nan
 
-        # Update variables - Only works for 2 or 3 dimensional arays
+        # Update variables - Only works for 2 or 3 dimensional arrays
         if raw_ds.ndim == 2:
             out_ds = out_ds.squeeze()
             data_vars[var] = (["latitude", "longitude"], out_ds)
