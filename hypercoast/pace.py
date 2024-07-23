@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 """This module contains functions to read and process PACE data.
 """
 

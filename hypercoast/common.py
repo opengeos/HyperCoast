@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 """The common module contains common functions and classes used by the other modules.
 """
 

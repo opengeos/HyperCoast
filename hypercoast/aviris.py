@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: 2024 Jack McNelis <jjmcne@gmail.com>
+# SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
+#
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+
 """This module contains functions to read and process NASA AVIRIS hyperspectral data.
 More info about the data can be found at https://aviris.jpl.nasa.gov.
 A portion of the source code is adapted from the jjmcnelis/aviris-ng-notebooks repository

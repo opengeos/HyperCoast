@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 """This module contains functions to read and process NEON AOP hyperspectral data.
 More info about the data can be found at https://bit.ly/3Rfszdc.
 The source code is adapted from https://bit.ly/3KwyZkn. Credit goes to the

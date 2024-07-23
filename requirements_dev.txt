@@ -29,6 +29,7 @@ pymdown-extensions
 pytest
 pytest-runner
 pyvista
+reuse>=3.0.2
 sphinx
 twine
 watchdog
