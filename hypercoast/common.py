@@ -762,3 +762,194 @@ def extract_spectral(
     da = xr.DataArray(values, dims=["band"], coords={"band": ds.coords["band"]})
 
     return da
+
+
+def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
+    """
+    Downloads the Acolite release based on the OS platform and extracts it to the specified directory.
+    For more information, see the Acolite manual https://github.com/acolite/acolite/releases.
+
+    Args:
+        outdir (str): The output directory where the file will be Acolite and extracted.
+        platform (Optional[str]): The platform for which to download acolite. If None, the current system platform is used.
+                                  Valid values are 'linux', 'darwin', and 'windows'.
+
+    Returns:
+        str: The path to the extracted Acolite directory.
+
+    Raises:
+        Exception: If the platform is unsupported or the download fails.
+    """
+    import platform as pf
+    import requests
+    import tarfile
+    from tqdm import tqdm
+
+    base_url = "https://github.com/acolite/acolite/releases/download/20231023.0/"
+
+    if platform is None:
+        platform = pf.system().lower()
+    else:
+        platform = platform.lower()
+
+    if platform == "linux":
+        download_url = base_url + "acolite_py_linux_20231023.0.tar.gz"
+        root_dir = "acolite_py_linux"
+    elif platform == "darwin":
+        download_url = base_url + "acolite_py_mac_20231023.0.tar.gz"
+        root_dir = "acolite_py_mac"
+    elif platform == "windows":
+        download_url = base_url + "acolite_py_win_20231023.0.tar.gz"
+        root_dir = "acolite_py_win"
+    else:
+        raise Exception(f"Unsupported OS platform: {platform}")
+
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
+
+    extracted_path = os.path.join(outdir, root_dir)
+    file_name = os.path.join(outdir, download_url.split("/")[-1])
+
+    if os.path.exists(file_name):
+        print(f"{file_name} already exists. Skip downloading.")
+        return extracted_path
+
+    response = requests.get(download_url, stream=True)
+    total_size = int(response.headers.get("content-length", 0))
+    block_size = 8192
+
+    if response.status_code == 200:
+        with open(file_name, "wb") as file, tqdm(
+            desc=file_name,
+            total=total_size,
+            unit="iB",
+            unit_scale=True,
+            unit_divisor=1024,
+        ) as bar:
+            for chunk in response.iter_content(chunk_size=block_size):
+                if chunk:
+                    file.write(chunk)
+                    bar.update(len(chunk))
+        print(f"Downloaded {file_name}")
+    else:
+        raise Exception(f"Failed to download file from {download_url}")
+
+    # Unzip the file
+    with tarfile.open(file_name, "r:gz") as tar:
+        tar.extractall(path=outdir)
+
+    print(f"Extracted to {extracted_path}")
+    return extracted_path
+
+
+def run_acolite(
+    acolite_dir: str,
+    settings_file: Optional[str] = None,
+    input_file: Optional[str] = None,
+    out_dir: Optional[str] = None,
+    polygon: Optional[str] = None,
+    l2w_parameters: Optional[str] = None,
+    rgb_rhot: bool = True,
+    rgb_rhos: bool = True,
+    map_l2w: bool = True,
+    verbose: bool = True,
+    **kwargs: Any,
+) -> None:
+    """
+    Runs the Acolite software for atmospheric correction and water quality retrieval.
+    For more information, see the Acolite manual https://github.com/acolite/acolite/releases
+
+    This function constructs and executes a command to run the Acolite software with the specified
+    parameters. It supports running Acolite with a settings file or with individual parameters
+    specified directly. Additional parameters can be passed as keyword arguments.
+
+    Args:
+        acolite_dir (str): The directory where Acolite is installed.
+        settings_file (Optional[str], optional): The path to the Acolite settings file. If provided,
+            other parameters except `verbose` are ignored. Defaults to None.
+        input_file (Optional[str], optional): The path to the input file for processing. Defaults to None.
+        out_dir (Optional[str], optional): The directory where output files will be saved. Defaults to None.
+        polygon (Optional[str], optional): The path to a polygon file for spatial subset. Defaults to None.
+        l2w_parameters (Optional[str], optional): Parameters for L2W processing. Defaults to None.
+        rgb_rhot (bool, optional): Flag to generate RGB images using rhot. Defaults to True.
+        rgb_rhos (bool, optional): Flag to generate RGB images using rhos. Defaults to True.
+        map_l2w (bool, optional): Flag to map L2W products. Defaults to True.
+        verbose (bool, optional): If True, prints the command output; otherwise, suppresses it. Defaults to True.
+        **kwargs (Any): Additional command line arguments to pass to acolite. Such as
+            --l2w_export_geotiff, --merge_tiles, etc.
+
+    Returns:
+        None: This function does not return a value. It executes the Acolite software.
+
+    Example:
+        >>> run_acolite("/path/to/acolite", input_file="/path/to/inputfile", output="/path/to/output")
+    """
+
+    import subprocess
+    from datetime import datetime
+
+    def get_formatted_current_time(format_str="%Y-%m-%d %H:%M:%S"):
+        current_time = datetime.now()
+        formatted_time = current_time.strftime(format_str)
+        return formatted_time
+
+    acolite_dir_name = os.path.split(os.path.dirname(acolite_dir))[-1]
+    acolite_exe = "acolite"
+    if acolite_dir_name.endswith("win"):
+        acolite_exe += ".exe"
+
+    if isinstance(input_file, list):
+        input_file = ",".join(input_file)
+
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
+    acolite_exe_path = os.path.join(acolite_dir, "dist", "acolite", acolite_exe)
+
+    acolite_cmd = [acolite_exe_path, "--cli"]
+
+    if settings_file is not None:
+        acolite_cmd.extend(["--settings", settings_file])
+    else:
+        lines = []
+        lines.append("## ACOLITE settings")
+        lines.append(f"## Written at {get_formatted_current_time()}")
+        if input_file is not None:
+            lines.append(f"inputfile={input_file}")
+        if out_dir is not None:
+            lines.append(f"output={out_dir}")
+        if polygon is not None:
+            lines.append(f"polygon={polygon}")
+        else:
+            lines.append("polygon=None")
+        if l2w_parameters is not None:
+            lines.append(f"l2w_parameters={l2w_parameters}")
+        if rgb_rhot:
+            lines.append("rgb_rhot=True")
+        else:
+            lines.append("rgb_rhot=False")
+        if rgb_rhos:
+            lines.append("rgb_rhos=True")
+        else:
+            lines.append("rgb_rhos=False")
+        if map_l2w:
+            lines.append("map_l2w=True")
+        else:
+            lines.append("map_l2w=False")
+
+        for key, value in kwargs.items():
+            lines.append(f"{key}={value}")
+
+        lines.append(f"runid={get_formatted_current_time('%Y%m%d_%H%M%S')}")
+        settings_filename = f"acolite_run_{get_formatted_current_time('%Y%m%d_%H%M%S')}_settings_user.txt"
+        settings_file = os.path.join(out_dir, settings_filename)
+        with open(settings_file, "w") as f:
+            f.write("\n".join(lines))
+        acolite_cmd.extend(["--settings", settings_file])
+
+    if verbose:
+        subprocess.run(acolite_cmd)
+    else:
+        subprocess.run(
+            acolite_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
