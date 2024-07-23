@@ -766,15 +766,16 @@ def extract_spectral(
 
 def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
     """
-    Downloads the ACOLITE release based on the OS platform and extracts it to the specified directory.
+    Downloads the Acolite release based on the OS platform and extracts it to the specified directory.
+    For more information, see the Acolite manual https://github.com/acolite/acolite/releases.
 
     Args:
-        outdir (str): The output directory where the file will be downloaded and extracted.
-        platform (Optional[str]): The platform for which to download ACOLITE. If None, the current system platform is used.
+        outdir (str): The output directory where the file will be Acolite and extracted.
+        platform (Optional[str]): The platform for which to download acolite. If None, the current system platform is used.
                                   Valid values are 'linux', 'darwin', and 'windows'.
 
     Returns:
-        str: The path to the extracted ACOLITE directory.
+        str: The path to the extracted Acolite directory.
 
     Raises:
         Exception: If the platform is unsupported or the download fails.
@@ -845,7 +846,7 @@ def run_acolite(
     acolite_dir: str,
     settings_file: Optional[str] = None,
     input_file: Optional[str] = None,
-    output: Optional[str] = None,
+    out_dir: Optional[str] = None,
     polygon: Optional[str] = None,
     l2w_parameters: Optional[str] = None,
     rgb_rhot: bool = True,
@@ -855,39 +856,53 @@ def run_acolite(
     **kwargs: Any,
 ) -> None:
     """
-    Runs the ACOLITE software for atmospheric correction and water quality retrieval.
+    Runs the Acolite software for atmospheric correction and water quality retrieval.
+    For more information, see the Acolite manual https://github.com/acolite/acolite/releases
 
-    This function constructs and executes a command to run the ACOLITE software with the specified
-    parameters. It supports running ACOLITE with a settings file or with individual parameters
+    This function constructs and executes a command to run the Acolite software with the specified
+    parameters. It supports running Acolite with a settings file or with individual parameters
     specified directly. Additional parameters can be passed as keyword arguments.
 
     Args:
-        acolite_dir (str): The directory where ACOLITE is installed.
-        settings_file (Optional[str], optional): The path to the ACOLITE settings file. If provided,
+        acolite_dir (str): The directory where Acolite is installed.
+        settings_file (Optional[str], optional): The path to the Acolite settings file. If provided,
             other parameters except `verbose` are ignored. Defaults to None.
         input_file (Optional[str], optional): The path to the input file for processing. Defaults to None.
-        output (Optional[str], optional): The directory where output files will be saved. Defaults to None.
+        out_dir (Optional[str], optional): The directory where output files will be saved. Defaults to None.
         polygon (Optional[str], optional): The path to a polygon file for spatial subset. Defaults to None.
         l2w_parameters (Optional[str], optional): Parameters for L2W processing. Defaults to None.
         rgb_rhot (bool, optional): Flag to generate RGB images using rhot. Defaults to True.
         rgb_rhos (bool, optional): Flag to generate RGB images using rhos. Defaults to True.
         map_l2w (bool, optional): Flag to map L2W products. Defaults to True.
         verbose (bool, optional): If True, prints the command output; otherwise, suppresses it. Defaults to True.
-        **kwargs (Any): Additional command line arguments to pass to ACOLITE.
+        **kwargs (Any): Additional command line arguments to pass to acolite. Such as
+            --l2w_export_geotiff, --merge_tiles, etc.
 
     Returns:
-        None: This function does not return a value. It executes the ACOLITE software.
+        None: This function does not return a value. It executes the Acolite software.
 
     Example:
         >>> run_acolite("/path/to/acolite", input_file="/path/to/inputfile", output="/path/to/output")
     """
 
     import subprocess
+    from datetime import datetime
+
+    def get_formatted_current_time(format_str="%Y-%m-%d %H:%M:%S"):
+        current_time = datetime.now()
+        formatted_time = current_time.strftime(format_str)
+        return formatted_time
 
     acolite_dir_name = os.path.split(os.path.dirname(acolite_dir))[-1]
     acolite_exe = "acolite"
     if acolite_dir_name.endswith("win"):
         acolite_exe += ".exe"
+
+    if isinstance(input_file, list):
+        input_file = ",".join(input_file)
+
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
 
     acolite_exe_path = os.path.join(acolite_dir, "dist", "acolite", acolite_exe)
 
@@ -896,23 +911,41 @@ def run_acolite(
     if settings_file is not None:
         acolite_cmd.extend(["--settings", settings_file])
     else:
+        lines = []
+        lines.append("## ACOLITE settings")
+        lines.append(f"## Written at {get_formatted_current_time()}")
         if input_file is not None:
-            acolite_cmd.extend(["--inputfile", input_file])
-        if output is not None:
-            acolite_cmd.extend(["--output", output])
+            lines.append(f"inputfile={input_file}")
+        if out_dir is not None:
+            lines.append(f"output={out_dir}")
         if polygon is not None:
-            acolite_cmd.extend(["--polygon", polygon])
+            lines.append(f"polygon={polygon}")
+        else:
+            lines.append("polygon=None")
         if l2w_parameters is not None:
-            acolite_cmd.extend(["--l2w_parameters", l2w_parameters])
+            lines.append(f"l2w_parameters={l2w_parameters}")
         if rgb_rhot:
-            acolite_cmd.append("--rgb_rhot")
+            lines.append("rgb_rhot=True")
+        else:
+            lines.append("rgb_rhot=False")
         if rgb_rhos:
-            acolite_cmd.append("--rgb_rhos")
+            lines.append("rgb_rhos=True")
+        else:
+            lines.append("rgb_rhos=False")
         if map_l2w:
-            acolite_cmd.append("--map_l2w")
+            lines.append("map_l2w=True")
+        else:
+            lines.append("map_l2w=False")
 
-    for key, value in kwargs.items():
-        acolite_cmd.extend([f"--{key}", str(value)])
+        for key, value in kwargs.items():
+            lines.append(f"{key}={value}")
+
+        lines.append(f"runid={get_formatted_current_time('%Y%m%d_%H%M%S')}")
+        settings_filename = f"acolite_run_{get_formatted_current_time('%Y%m%d_%H%M%S')}_settings_user.txt"
+        settings_file = os.path.join(out_dir, settings_filename)
+        with open(settings_file, "w") as f:
+            f.write("\n".join(lines))
+        acolite_cmd.extend(["--settings", settings_file])
 
     if verbose:
         subprocess.run(acolite_cmd)
