@@ -52,6 +52,7 @@ plugins:
           ignore: ["conf.py"]
           execute_ignore:
               [
+                  "acolite.ipynb",
                   "search_data.ipynb",
                   "ecostress.ipynb",
                   "aviris.ipynb",
@@ -89,6 +90,7 @@ nav:
     - Report Issues: https://github.com/opengeos/HyperCoast/issues
     - Examples:
           - examples/overview.md
+          - examples/acolite.ipynb
           - examples/search_data.ipynb
           - examples/image_cube.ipynb
           - examples/image_slicing.ipynb

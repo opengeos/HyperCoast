@@ -24,6 +24,7 @@ HyperCoast supports the reading and visualization of hyperspectral data from var
 ## Features
 
 -   Searching for NASA hyperspectral data interactively
+-   Performing atmospheric correction using [Acolite](https://github.com/acolite/acolite)
 -   Interactive visualization and analysis of hyperspectral data, such as [AVIRIS](https://aviris.jpl.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf), [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001)
 -   Interactive visualization of NASA [ECOSTRESS](https://ecostress.jpl.nasa.gov) data
 -   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chlorophyll-a data
@@ -88,5 +89,5 @@ The HyperCoast project draws inspiration from the [nasa/EMIT-Data-Resources](htt
 
 HyperCoast is released under the MIT License. However, some of the modules in HyperCoast adapt code from other open-source projects, which may have different licenses. Please refer to the license notice in each module for more information. Credits to the original authors.
 
--   [pace.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/pace.py): Part of the code is adapted from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository, which is released under the Apache License 2.0.
+-   [emit.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/emit.py): Part of the code is adapted from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository, which is released under the Apache License 2.0.
 -   [aviris.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/aviris.py): Part of the code is adapted from the [jjmcnelis/aviris-ng-notebooks](https://github.com/jjmcnelis/aviris-ng-notebooks), which is released under the MIT License.
