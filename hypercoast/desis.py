@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 """
 This Module has the functions related to working with a DESIS dataset.
 """

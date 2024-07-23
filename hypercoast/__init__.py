@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 """Top-level package for HyperCoast."""
 
 __author__ = """Qiusheng Wu"""

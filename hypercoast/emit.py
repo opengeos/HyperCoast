@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: 2024 Erik Bolch <ebolch@contractor.usgs.gov>
+# SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
+#
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+
 """
 This Module has the functions related to working with an EMIT dataset. This includes
 doing things like opening and flattening the data to work in xarray, orthorectification,
@@ -6,11 +12,6 @@ and visualization.
 Some source code is adapted from https://github.com/nasa/EMIT-Data-Resources,
 which is licensed under the Apache License 2.0.
 Credits to the original authors, including Erik Bolch, Alex Leigh, and others.
-
-SPDX-FileCopyrightText = [
-    "2024 Erik Bolch <ebolch@contractor.usgs.gov>",
-]
-SPDX-License-Identifier = "Apache-2.0"
 """
 
 import os
