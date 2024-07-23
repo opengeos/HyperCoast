@@ -87,5 +87,5 @@ The HyperCoast project draws inspiration from the [nasa/EMIT-Data-Resources](htt
 
 HyperCoast is released under the MIT License. However, some of the modules in HyperCoast adapt code from other open-source projects, which may have different licenses. Please refer to the license notice in each module for more information. Credits to the original authors.
 
--   [pace.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/pace.py): Part of the code is adapted from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository, which is released under the Apache License 2.0.
+-   [emit.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/emit.py): Part of the code is adapted from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository, which is released under the Apache License 2.0.
 -   [aviris.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/aviris.py): Part of the code is adapted from the [jjmcnelis/aviris-ng-notebooks](https://github.com/jjmcnelis/aviris-ng-notebooks), which is released under the MIT License.
