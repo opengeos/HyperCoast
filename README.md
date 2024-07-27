@@ -6,6 +6,7 @@
 [![image](https://img.shields.io/conda/vn/conda-forge/hypercoast.svg)](https://anaconda.org/conda-forge/hypercoast)
 [![Conda Recipe](https://img.shields.io/badge/recipe-hypercoast-green.svg)](https://github.com/conda-forge/hypercoast-feedstock)
 [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/hypercoast.svg)](https://anaconda.org/conda-forge/hypercoast)
+![](https://assets.gishub.org/images/hypercoast_logo_600.png)
 
 **A Python Package for Visualizing and Analyzing Hyperspectral Data in Coastal Environments**
 
