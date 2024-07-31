@@ -1503,10 +1503,16 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a layer to the map.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            obj (str or object): The name of the layer or a layer object.</span>
+<span class="sd">            position (str, optional): The position of the layer widget. Can be</span>
+<span class="sd">                &#39;topright&#39;, &#39;topleft&#39;, &#39;bottomright&#39;, or &#39;bottomleft&#39;. Defaults</span>
+<span class="sd">                to &#39;topright&#39;.</span>
+<span class="sd">            xlim (tuple, optional): The x-axis limits of the plot. Defaults to None.</span>
+<span class="sd">            ylim (tuple, optional): The y-axis limits of the plot. Defaults to None.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments that are passed to the parent</span>
 <span class="sd">                class&#39;s add_layer method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1514,7 +1520,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;spectral&quot;</span><span class="p">:</span>
 
-                <span class="n">SpectralWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">SpectralWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="n">ylim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_plot_options</span><span class="p">(</span><span class="n">add_marker_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -2359,7 +2365,7 @@ class's constructor.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s1">&#39;topright&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s1">&#39;topright&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -2380,6 +2386,32 @@ class's constructor.</p></td>
   </thead>
   <tbody>
       <tr>
+        <td><code>obj</code></td>
+        <td><code>str or object</code></td>
+        <td><p>The name of the layer or a layer object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>position</code></td>
+        <td><code>str</code></td>
+        <td><p>The position of the layer widget. Can be
+'topright', 'topleft', 'bottomright', or 'bottomleft'. Defaults
+to 'topright'.</p></td>
+        <td><code>&#39;topright&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>xlim</code></td>
+        <td><code>tuple</code></td>
+        <td><p>The x-axis limits of the plot. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>ylim</code></td>
+        <td><code>tuple</code></td>
+        <td><p>The y-axis limits of the plot. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>**kwargs</code></td>
         <td></td>
         <td><p>Arbitrary keyword arguments that are passed to the parent
@@ -2390,10 +2422,16 @@ class's add_layer method.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a layer to the map.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">        obj (str or object): The name of the layer or a layer object.</span>
+<span class="sd">        position (str, optional): The position of the layer widget. Can be</span>
+<span class="sd">            &#39;topright&#39;, &#39;topleft&#39;, &#39;bottomright&#39;, or &#39;bottomleft&#39;. Defaults</span>
+<span class="sd">            to &#39;topright&#39;.</span>
+<span class="sd">        xlim (tuple, optional): The x-axis limits of the plot. Defaults to None.</span>
+<span class="sd">        ylim (tuple, optional): The y-axis limits of the plot. Defaults to None.</span>
 <span class="sd">        **kwargs: Arbitrary keyword arguments that are passed to the parent</span>
 <span class="sd">            class&#39;s add_layer method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2401,7 +2439,7 @@ class's add_layer method.</p></td>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;spectral&quot;</span><span class="p">:</span>
 
-            <span class="n">SpectralWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">SpectralWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="n">ylim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_plot_options</span><span class="p">(</span><span class="n">add_marker_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
