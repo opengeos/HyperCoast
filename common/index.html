@@ -1937,7 +1937,7 @@ Defaults to 8.</p></td>
 
 
 <h2 id="hypercoast.common.download_file" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">proxy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_cookies</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unzip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subfolder</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">proxy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_cookies</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unzip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subfolder</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.common.download_file" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1972,8 +1972,8 @@ Defaults to 8.</p></td>
       <tr>
         <td><code>quiet</code></td>
         <td><code>bool</code></td>
-        <td><p>Suppress terminal output. Default is False.</p></td>
-        <td><code>False</code></td>
+        <td><p>Suppress terminal output. Default is True.</p></td>
+        <td><code>True</code></td>
       </tr>
       <tr>
         <td><code>proxy</code></td>
@@ -2058,7 +2058,7 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">quiet</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">proxy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">speed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">use_cookies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -2075,7 +2075,7 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
 <span class="sd">    Args:</span>
 <span class="sd">        url (str, optional): Google Drive URL is also supported. Defaults to None.</span>
 <span class="sd">        output (str, optional): Output filename. Default is basename of URL.</span>
-<span class="sd">        quiet (bool, optional): Suppress terminal output. Default is False.</span>
+<span class="sd">        quiet (bool, optional): Suppress terminal output. Default is True.</span>
 <span class="sd">        proxy (str, optional): Proxy. Defaults to None.</span>
 <span class="sd">        speed (float, optional): Download byte size per second (e.g., 256KB/s = 256 * 1024). Defaults to None.</span>
 <span class="sd">        use_cookies (bool, optional): Flag to use cookies. Defaults to True.</span>
