@@ -29,7 +29,7 @@ def github_raw_url(url: str) -> str:
 def download_file(
     url: Optional[str] = None,
     output: Optional[str] = None,
-    quiet: Optional[bool] = False,
+    quiet: Optional[bool] = True,
     proxy: Optional[str] = None,
     speed: Optional[float] = None,
     use_cookies: Optional[bool] = True,
@@ -46,7 +46,7 @@ def download_file(
     Args:
         url (str, optional): Google Drive URL is also supported. Defaults to None.
         output (str, optional): Output filename. Default is basename of URL.
-        quiet (bool, optional): Suppress terminal output. Default is False.
+        quiet (bool, optional): Suppress terminal output. Default is True.
         proxy (str, optional): Proxy. Defaults to None.
         speed (float, optional): Download byte size per second (e.g., 256KB/s = 256 * 1024). Defaults to None.
         use_cookies (bool, optional): Flag to use cookies. Defaults to True.

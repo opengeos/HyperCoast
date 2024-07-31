@@ -39,10 +39,16 @@ class Map(leafmap.Map):
         """
         super().__init__(**kwargs)
 
-    def add(self, obj, position="topright", **kwargs):
+    def add(self, obj, position="topright", xlim=None, ylim=None, **kwargs):
         """Add a layer to the map.
 
         Args:
+            obj (str or object): The name of the layer or a layer object.
+            position (str, optional): The position of the layer widget. Can be
+                'topright', 'topleft', 'bottomright', or 'bottomleft'. Defaults
+                to 'topright'.
+            xlim (tuple, optional): The x-axis limits of the plot. Defaults to None.
+            ylim (tuple, optional): The y-axis limits of the plot. Defaults to None.
             **kwargs: Arbitrary keyword arguments that are passed to the parent
                 class's add_layer method.
         """
@@ -50,7 +56,7 @@ class Map(leafmap.Map):
         if isinstance(obj, str):
             if obj == "spectral":
 
-                SpectralWidget(self, position=position, **kwargs)
+                SpectralWidget(self, position=position, xlim=xlim, ylim=ylim, **kwargs)
                 self.set_plot_options(add_marker_cluster=True)
             else:
                 super().add(obj, **kwargs)

@@ -35,13 +35,18 @@ class SpectralWidget(widgets.HBox):
         _spectral_control (ipyleaflet.WidgetControl): The control for the spectral widget.
     """
 
-    def __init__(self, host_map, stack=True, position="topright"):
+    def __init__(
+        self, host_map, stack=True, position="topright", xlim=None, ylim=None, **kwargs
+    ):
         """
         Initializes a new instance of the SpectralWidget class.
 
         Args:
             host_map (Map): The map to host the widget.
+            stack (bool, optional): Whether to stack the plots. Defaults to True.
             position (str, optional): The position of the widget on the map. Defaults to "topright".
+            xlim (tuple, optional): The x-axis limits. Defaults to None.
+            ylim (tuple, optional): The y-axis limits. Defaults to None.
         """
         self._host_map = host_map
         self.on_close = None
@@ -272,6 +277,10 @@ class SpectralWidget(widgets.HBox):
 
                 plt.xlabel(xlabel)
                 plt.ylabel(ylabel)
+                if xlim:
+                    plt.xlim(xlim[0], xlim[1])
+                if ylim:
+                    plt.ylim(ylim[0], ylim[1])
 
                 if not self._show_plot:
                     with self._output_widget:
