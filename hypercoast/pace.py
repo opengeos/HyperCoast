@@ -32,7 +32,8 @@ def read_pace(
     wvl = xr.open_dataset(filepath, engine=engine, group="sensor_band_parameters")
     dataset = xr.open_dataset(filepath, engine=engine, group="navigation_data")
     dataset = dataset.set_coords(("longitude", "latitude"))
-    dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
+    if "pixel_control_points" in dataset.dims:
+        dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
     dataset = xr.merge([rrs, dataset.coords.to_dataset()])
     dataset.coords["wavelength_3d"] = wvl.coords["wavelength_3d"]
     dataset = dataset.rename(
