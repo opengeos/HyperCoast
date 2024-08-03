@@ -33,7 +33,7 @@ pull_request_rules:
       actions:
           comment:
               # Message if there's conflict on pull request
-              message: your pull request are conflict @{{author}}, please fix it !
+              message: Your pull request are conflict @{{author}}, please fix it!
           label:
               # adding label on pull request if get trigger
               add:
