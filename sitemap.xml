@@ -141,6 +141,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://hypercoast.org/examples/pca/</loc>
+         <lastmod>2024-08-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://hypercoast.org/examples/search_data/</loc>
          <lastmod>2024-08-03</lastmod>
          <changefreq>daily</changefreq>

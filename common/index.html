@@ -750,6 +750,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/pca/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pca
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1060,6 +1081,15 @@
   <a href="#hypercoast.common.open_dataset" class="md-nav__link">
     <span class="md-ellipsis">
       open_dataset()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      pca()
     </span>
   </a>
   
@@ -1426,6 +1456,15 @@
   <a href="#hypercoast.common.open_dataset" class="md-nav__link">
     <span class="md-ellipsis">
       open_dataset()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.common.pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      pca()
     </span>
   </a>
   
@@ -3170,6 +3209,131 @@ the dataset is not chunked.</p></td>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;h5netcdf&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">chunks</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dataset</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.common.pca" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pca</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.common.pca" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Performs Principal Component Analysis (PCA) on a dataset.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input_file</code></td>
+        <td><code>str</code></td>
+        <td><p>The input file containing the data to analyze.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>output_file</code></td>
+        <td><code>str</code></td>
+        <td><p>The output file to save the PCA results.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>n_components</code></td>
+        <td><code>int</code></td>
+        <td><p>The number of principal components to compute. Defaults to 3.</p></td>
+        <td><code>3</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments to pass to the scikit-learn PCA function.
+For more info, see https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>None</code></td>
+      <td><p>This function does not return a value. It saves the PCA results to the output file.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pca</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs Principal Component Analysis (PCA) on a dataset.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_file (str): The input file containing the data to analyze.</span>
+<span class="sd">        output_file (str): The output file to save the PCA results.</span>
+<span class="sd">        n_components (int, optional): The number of principal components to compute. Defaults to 3.</span>
+<span class="sd">        **kwargs: Additional keyword arguments to pass to the scikit-learn PCA function.</span>
+<span class="sd">            For more info, see https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None: This function does not return a value. It saves the PCA results to the output file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">rasterio</span>
+    <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+
+    <span class="c1"># Function to load the GeoTIFF image</span>
+    <span class="k">def</span> <span class="nf">load_geotiff</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">profile</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">profile</span>
+        <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="n">profile</span>
+
+    <span class="c1"># Function to perform PCA</span>
+    <span class="k">def</span> <span class="nf">perform_pca</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Reshape the image to [n_bands, n_pixels]</span>
+        <span class="n">n_bands</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">image_reshaped</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_bands</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="c1"># Perform PCA</span>
+        <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">principal_components</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">image_reshaped</span><span class="p">)</span>
+
+        <span class="c1"># Reshape the principal components back to image dimensions</span>
+        <span class="n">pca_image</span> <span class="o">=</span> <span class="n">principal_components</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pca_image</span>
+
+    <span class="c1"># Function to save the PCA-transformed image</span>
+    <span class="k">def</span> <span class="nf">save_geotiff</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+        <span class="n">profile</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">profile</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+            <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="n">image</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">load_geotiff</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="n">pca_image</span> <span class="o">=</span> <span class="n">perform_pca</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">save_geotiff</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">pca_image</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
