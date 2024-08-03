@@ -8,8 +8,7 @@ on:
             - main
             - master
 
-
-name: Linux installation
+name: test-linux-installation
 jobs:
     test-ubuntu:
         runs-on: ubuntu-latest
