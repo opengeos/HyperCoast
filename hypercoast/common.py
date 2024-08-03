@@ -957,3 +957,53 @@ def run_acolite(
         subprocess.run(
             acolite_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
         )
+
+
+def pca(input_file, output_file, n_components=3, **kwargs):
+    """
+    Performs Principal Component Analysis (PCA) on a dataset.
+
+    Args:
+        input_file (str): The input file containing the data to analyze.
+        output_file (str): The output file to save the PCA results.
+        n_components (int, optional): The number of principal components to compute. Defaults to 3.
+        **kwargs: Additional keyword arguments to pass to the scikit-learn PCA function.
+            For more info, see https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html.
+
+    Returns:
+        None: This function does not return a value. It saves the PCA results to the output file.
+    """
+
+    import rasterio
+    from sklearn.decomposition import PCA
+
+    # Function to load the GeoTIFF image
+    def load_geotiff(file_path):
+        with rasterio.open(file_path) as src:
+            image = src.read()
+            profile = src.profile
+        return image, profile
+
+    # Function to perform PCA
+    def perform_pca(image, n_components=3, **kwargs):
+        # Reshape the image to [n_bands, n_pixels]
+        n_bands, width, height = image.shape
+        image_reshaped = image.reshape(n_bands, width * height).T
+
+        # Perform PCA
+        pca = PCA(n_components=n_components, **kwargs)
+        principal_components = pca.fit_transform(image_reshaped)
+
+        # Reshape the principal components back to image dimensions
+        pca_image = principal_components.T.reshape(n_components, width, height)
+        return pca_image
+
+    # Function to save the PCA-transformed image
+    def save_geotiff(file_path, image, profile):
+        profile.update(count=image.shape[0])
+        with rasterio.open(file_path, "w", **profile) as dst:
+            dst.write(image)
+
+    image, profile = load_geotiff(input_file)
+    pca_image = perform_pca(image, n_components, **kwargs)
+    save_geotiff(output_file, pca_image, profile)
