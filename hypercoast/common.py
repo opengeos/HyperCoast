@@ -1007,3 +1007,111 @@ def pca(input_file, output_file, n_components=3, **kwargs):
     image, profile = load_geotiff(input_file)
     pca_image = perform_pca(image, n_components, **kwargs)
     save_geotiff(output_file, pca_image, profile)
+
+
+def show_field_data(
+    data: Union[str],
+    x_col: str = "wavelength",
+    y_col_prefix: str = "(",
+    x_label: str = "Wavelengths (nm)",
+    y_label: str = "Reflectance",
+    use_marker_cluster: bool = True,
+    min_width: int = 400,
+    max_width: int = 600,
+    min_height: int = 200,
+    max_height: int = 250,
+    layer_name: str = "Marker Cluster",
+    m: object = None,
+    center: Tuple[float, float] = (20, 0),
+    zoom: int = 2,
+):
+    """
+    Displays field data on a map with interactive markers and popups showing time series data.
+
+    Args:
+        data (Union[str, pd.DataFrame]): Path to the CSV file or a pandas DataFrame containing the data.
+        x_col (str): Column name to use for the x-axis of the charts. Default is "wavelength".
+        y_col_prefix (str): Prefix to identify the columns that contain the location-specific data. Default is "(".
+        x_label (str): Label for the x-axis of the charts. Default is "Wavelengths (nm)".
+        y_label (str): Label for the y-axis of the charts. Default is "Reflectance".
+        use_marker_cluster (bool): Whether to use marker clustering. Default is True.
+        min_width (int): Minimum width of the popup. Default is 400.
+        max_width (int): Maximum width of the popup. Default is 600.
+        min_height (int): Minimum height of the popup. Default is 200.
+        max_height (int): Maximum height of the popup. Default is 250.
+        layer_name (str): Name of the marker cluster layer. Default is "Marker Cluster".
+        m (Map, optional): An ipyleaflet Map instance to add the markers to. Default is None.
+        center (Tuple[float, float]): Center of the map as a tuple of (latitude, longitude). Default is (20, 0).
+        zoom (int): Zoom level of the map. Default is 2.
+
+    Returns:
+        Map: An ipyleaflet Map with the added markers and popups.
+    """
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from ipyleaflet import Map, Marker, Popup, MarkerCluster
+    from ipywidgets import Output, VBox
+
+    # Read the CSV file
+    if isinstance(data, str):
+        data = pd.read_csv(data)
+    elif isinstance(data, pd.DataFrame):
+        pass
+    else:
+        raise ValueError("data must be a path to a CSV file or a pandas DataFrame")
+
+    # Extract locations from columns
+    locations = [col for col in data.columns if col.startswith(y_col_prefix)]
+    coordinates = [tuple(map(float, loc.strip("()").split())) for loc in locations]
+
+    # Create the map
+    if m is None:
+        m = Map(center=center, zoom=zoom)
+
+    # Function to create the chart
+    def create_chart(data, title):
+        fig, ax = plt.subplots(figsize=(10, 6))  # Adjust the figure size here
+        ax.plot(data[x_col], data["values"])
+        ax.set_title(title)
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
+        output = Output()  # Adjust the output widget size here
+        with output:
+            plt.show()
+        return output
+
+    # Define a callback function to create and show the popup
+    def callback_with_popup_creation(location, values):
+        def f(**kwargs):
+            marker_center = kwargs["coordinates"]
+            output = create_chart(values, f"Location: {location}")
+            popup = Popup(
+                location=marker_center,
+                child=VBox([output]),
+                min_width=min_width,
+                max_width=max_width,
+                min_height=min_height,
+                max_height=max_height,
+            )
+            m.add_layer(popup)
+
+        return f
+
+    markers = []
+
+    # Add points to the map
+    for i, coord in enumerate(coordinates):
+        location = f"{coord}"
+        values = pd.DataFrame({x_col: data[x_col], "values": data[locations[i]]})
+        marker = Marker(location=coord, title=location, name=f"Marker {i + 1}")
+        marker.on_click(callback_with_popup_creation(location, values))
+        markers.append(marker)
+
+    if use_marker_cluster:
+        marker_cluster = MarkerCluster(markers=markers, name=layer_name)
+        m.add_layer(marker_cluster)
+    else:
+        for marker in markers:
+            m.add_layer(marker)
+
+    return m
