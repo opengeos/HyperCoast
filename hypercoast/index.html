@@ -771,6 +771,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/field_data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Field data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1079,6 +1100,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_field_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_field_data()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.add_hyper" class="md-nav__link">
     <span class="md-ellipsis">
       add_hyper()
@@ -1337,6 +1367,15 @@
   <a href="#hypercoast.hypercoast.Map.add_emit" class="md-nav__link">
     <span class="md-ellipsis">
       add_emit()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_field_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_field_data()
     </span>
   </a>
   
@@ -2309,6 +2348,56 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
                 <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vis_bands&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vis_bands</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_field_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">x_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">,</span>
+        <span class="n">y_col_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span><span class="p">,</span>
+        <span class="n">x_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Wavelengths (nm)&quot;</span><span class="p">,</span>
+        <span class="n">y_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Reflectance&quot;</span><span class="p">,</span>
+        <span class="n">use_marker_cluster</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">min_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">max_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span>
+        <span class="n">min_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="n">max_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Marker Cluster&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays field data on a map with interactive markers and popups showing time series data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (Union[str, pd.DataFrame]): Path to the CSV file or a pandas DataFrame containing the data.</span>
+<span class="sd">            x_col (str): Column name to use for the x-axis of the charts. Default is &quot;wavelength&quot;.</span>
+<span class="sd">            y_col_prefix (str): Prefix to identify the columns that contain the location-specific data. Default is &quot;(&quot;.</span>
+<span class="sd">            x_label (str): Label for the x-axis of the charts. Default is &quot;Wavelengths (nm)&quot;.</span>
+<span class="sd">            y_label (str): Label for the y-axis of the charts. Default is &quot;Reflectance&quot;.</span>
+<span class="sd">            use_marker_cluster (bool): Whether to use marker clustering. Default is True.</span>
+<span class="sd">            min_width (int): Minimum width of the popup. Default is 400.</span>
+<span class="sd">            max_width (int): Maximum width of the popup. Default is 600.</span>
+<span class="sd">            min_height (int): Minimum height of the popup. Default is 200.</span>
+<span class="sd">            max_height (int): Maximum height of the popup. Default is 250.</span>
+<span class="sd">            layer_name (str): Name of the marker cluster layer. Default is &quot;Marker Cluster&quot;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Map: An ipyleaflet Map with the added markers and popups.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">show_field_data</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="p">,</span>
+            <span class="n">y_col_prefix</span><span class="p">,</span>
+            <span class="n">x_label</span><span class="o">=</span><span class="n">x_label</span><span class="p">,</span>
+            <span class="n">y_label</span><span class="o">=</span><span class="n">y_label</span><span class="p">,</span>
+            <span class="n">use_marker_cluster</span><span class="o">=</span><span class="n">use_marker_cluster</span><span class="p">,</span>
+            <span class="n">min_width</span><span class="o">=</span><span class="n">min_width</span><span class="p">,</span>
+            <span class="n">max_width</span><span class="o">=</span><span class="n">max_width</span><span class="p">,</span>
+            <span class="n">min_height</span><span class="o">=</span><span class="n">min_height</span><span class="p">,</span>
+            <span class="n">max_height</span><span class="o">=</span><span class="n">max_height</span><span class="p">,</span>
+            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -3098,6 +3187,173 @@ True.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="hypercoast.hypercoast.Map.add_field_data" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_field_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">x_col</span><span class="o">=</span><span class="s1">&#39;wavelength&#39;</span><span class="p">,</span> <span class="n">y_col_prefix</span><span class="o">=</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;Wavelengths (nm)&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">use_marker_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">min_height</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">max_height</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Marker Cluster&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.add_field_data" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Displays field data on a map with interactive markers and popups showing time series data.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Union[str, pd.DataFrame]</code></td>
+        <td><p>Path to the CSV file or a pandas DataFrame containing the data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>x_col</code></td>
+        <td><code>str</code></td>
+        <td><p>Column name to use for the x-axis of the charts. Default is "wavelength".</p></td>
+        <td><code>&#39;wavelength&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>y_col_prefix</code></td>
+        <td><code>str</code></td>
+        <td><p>Prefix to identify the columns that contain the location-specific data. Default is "(".</p></td>
+        <td><code>&#39;(&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>x_label</code></td>
+        <td><code>str</code></td>
+        <td><p>Label for the x-axis of the charts. Default is "Wavelengths (nm)".</p></td>
+        <td><code>&#39;Wavelengths (nm)&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>y_label</code></td>
+        <td><code>str</code></td>
+        <td><p>Label for the y-axis of the charts. Default is "Reflectance".</p></td>
+        <td><code>&#39;Reflectance&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>use_marker_cluster</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to use marker clustering. Default is True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>min_width</code></td>
+        <td><code>int</code></td>
+        <td><p>Minimum width of the popup. Default is 400.</p></td>
+        <td><code>400</code></td>
+      </tr>
+      <tr>
+        <td><code>max_width</code></td>
+        <td><code>int</code></td>
+        <td><p>Maximum width of the popup. Default is 600.</p></td>
+        <td><code>600</code></td>
+      </tr>
+      <tr>
+        <td><code>min_height</code></td>
+        <td><code>int</code></td>
+        <td><p>Minimum height of the popup. Default is 200.</p></td>
+        <td><code>200</code></td>
+      </tr>
+      <tr>
+        <td><code>max_height</code></td>
+        <td><code>int</code></td>
+        <td><p>Maximum height of the popup. Default is 250.</p></td>
+        <td><code>250</code></td>
+      </tr>
+      <tr>
+        <td><code>layer_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of the marker cluster layer. Default is "Marker Cluster".</p></td>
+        <td><code>&#39;Marker Cluster&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Map</code></td>
+      <td><p>An ipyleaflet Map with the added markers and popups.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_field_data</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">,</span>
+    <span class="n">y_col_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span><span class="p">,</span>
+    <span class="n">x_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Wavelengths (nm)&quot;</span><span class="p">,</span>
+    <span class="n">y_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Reflectance&quot;</span><span class="p">,</span>
+    <span class="n">use_marker_cluster</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">min_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">max_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="n">min_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="n">max_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Marker Cluster&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Displays field data on a map with interactive markers and popups showing time series data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (Union[str, pd.DataFrame]): Path to the CSV file or a pandas DataFrame containing the data.</span>
+<span class="sd">        x_col (str): Column name to use for the x-axis of the charts. Default is &quot;wavelength&quot;.</span>
+<span class="sd">        y_col_prefix (str): Prefix to identify the columns that contain the location-specific data. Default is &quot;(&quot;.</span>
+<span class="sd">        x_label (str): Label for the x-axis of the charts. Default is &quot;Wavelengths (nm)&quot;.</span>
+<span class="sd">        y_label (str): Label for the y-axis of the charts. Default is &quot;Reflectance&quot;.</span>
+<span class="sd">        use_marker_cluster (bool): Whether to use marker clustering. Default is True.</span>
+<span class="sd">        min_width (int): Minimum width of the popup. Default is 400.</span>
+<span class="sd">        max_width (int): Maximum width of the popup. Default is 600.</span>
+<span class="sd">        min_height (int): Minimum height of the popup. Default is 200.</span>
+<span class="sd">        max_height (int): Maximum height of the popup. Default is 250.</span>
+<span class="sd">        layer_name (str): Name of the marker cluster layer. Default is &quot;Marker Cluster&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Map: An ipyleaflet Map with the added markers and popups.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">show_field_data</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">x_col</span><span class="p">,</span>
+        <span class="n">y_col_prefix</span><span class="p">,</span>
+        <span class="n">x_label</span><span class="o">=</span><span class="n">x_label</span><span class="p">,</span>
+        <span class="n">y_label</span><span class="o">=</span><span class="n">y_label</span><span class="p">,</span>
+        <span class="n">use_marker_cluster</span><span class="o">=</span><span class="n">use_marker_cluster</span><span class="p">,</span>
+        <span class="n">min_width</span><span class="o">=</span><span class="n">min_width</span><span class="p">,</span>
+        <span class="n">max_width</span><span class="o">=</span><span class="n">max_width</span><span class="p">,</span>
+        <span class="n">min_height</span><span class="o">=</span><span class="n">min_height</span><span class="p">,</span>
+        <span class="n">max_height</span><span class="o">=</span><span class="n">max_height</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+        <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
