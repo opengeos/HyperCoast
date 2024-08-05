@@ -6,7 +6,7 @@ leafmap
 localtileserver
 mapclassify
 netcdf4
-numpy<2.0.0
+numpy<3.0.0
 rioxarray
 s3fs
 scikit-learn
