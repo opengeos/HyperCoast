@@ -824,3 +824,53 @@ class Map(leafmap.Map):
                 self.cog_layer_dict[layer_name]["vis_bands"] = vis_bands
             except Exception as e:
                 print(e)
+
+    def add_field_data(
+        self,
+        data: Union[str],
+        x_col: str = "wavelength",
+        y_col_prefix: str = "(",
+        x_label: str = "Wavelengths (nm)",
+        y_label: str = "Reflectance",
+        use_marker_cluster: bool = True,
+        min_width: int = 400,
+        max_width: int = 600,
+        min_height: int = 200,
+        max_height: int = 250,
+        layer_name: str = "Marker Cluster",
+        **kwargs,
+    ):
+        """
+        Displays field data on a map with interactive markers and popups showing time series data.
+
+        Args:
+            data (Union[str, pd.DataFrame]): Path to the CSV file or a pandas DataFrame containing the data.
+            x_col (str): Column name to use for the x-axis of the charts. Default is "wavelength".
+            y_col_prefix (str): Prefix to identify the columns that contain the location-specific data. Default is "(".
+            x_label (str): Label for the x-axis of the charts. Default is "Wavelengths (nm)".
+            y_label (str): Label for the y-axis of the charts. Default is "Reflectance".
+            use_marker_cluster (bool): Whether to use marker clustering. Default is True.
+            min_width (int): Minimum width of the popup. Default is 400.
+            max_width (int): Maximum width of the popup. Default is 600.
+            min_height (int): Minimum height of the popup. Default is 200.
+            max_height (int): Maximum height of the popup. Default is 250.
+            layer_name (str): Name of the marker cluster layer. Default is "Marker Cluster".
+
+        Returns:
+            Map: An ipyleaflet Map with the added markers and popups.
+        """
+        show_field_data(
+            data,
+            x_col,
+            y_col_prefix,
+            x_label=x_label,
+            y_label=y_label,
+            use_marker_cluster=use_marker_cluster,
+            min_width=min_width,
+            max_width=max_width,
+            min_height=min_height,
+            max_height=max_height,
+            layer_name=layer_name,
+            m=self,
+            **kwargs,
+        )

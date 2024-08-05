@@ -106,6 +106,7 @@ nav:
           - examples/pace_oci_l2.ipynb
           - examples/multispectral.ipynb
           - examples/pca.ipynb
+          - examples/field_data.ipynb
     - Workshops:
           - workshops/emit.ipynb
     - API Reference:
