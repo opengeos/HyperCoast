@@ -74,7 +74,8 @@ def read_pace_aop(filepath, engine="h5netcdf", **kwargs):
         filepath, engine=engine, group="navigation_data", **kwargs
     )
     dataset = dataset.set_coords(("longitude", "latitude"))
-    dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
+    if "pixel_control_points" in dataset.dims:
+        dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
     dataset = xr.merge([rrs, dataset.coords.to_dataset()])
     dataset.coords["wavelength_3d"] = wvl.coords["wavelength_3d"]
 
@@ -117,7 +118,8 @@ def read_pace_bgc(
         filepath, engine=engine, group="navigation_data", **kwargs
     )
     dataset = dataset.set_coords(("longitude", "latitude"))
-    dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
+    if "pixel_control_points" in dataset.dims:
+        dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
     dataset = xr.merge([ds, dataset.coords.to_dataset()])
     dataset = dataset.rename(
         {
