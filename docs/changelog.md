@@ -1,5 +1,83 @@
 # Changelog
 
+## v0.7.6 - Aug 07, 2024
+
+**What's Changed**
+
+-   [pre-commit.ci] pre-commit autoupdate by @pre-commit-ci in [#107](https://github.com/opengeos/HyperCoast/pull/107)
+-   Clean up file path in notebook by @giswqs in [#108](https://github.com/opengeos/HyperCoast/pull/108)
+-   Fix read_pace bug for V2 by @giswqs in [#109](https://github.com/opengeos/HyperCoast/pull/109)
+
+**Full Changelog**: [v0.7.5...v0.7.6](https://github.com/opengeos/HyperCoast/compare/v0.7.5...v0.7.6)
+
+## v0.7.5 - Aug 05, 2024
+
+**What's Changed**
+
+-   ci(Mergify): configuration update by @slowy07 in [#99](https://github.com/opengeos/HyperCoast/pull/99)
+-   Add support for PCA by @giswqs in [#100](https://github.com/opengeos/HyperCoast/pull/100)
+-   Update mergify by @giswqs in [#101](https://github.com/opengeos/HyperCoast/pull/101)
+-   Add support for displaying field data by @giswqs in [#106](https://github.com/opengeos/HyperCoast/pull/106)
+
+**Full Changelog**: [v0.7.4...v0.7.5](https://github.com/opengeos/HyperCoast/compare/v0.7.4...v0.7.5)
+
+## v0.7.4 - Aug 01, 2024
+
+**What's Changed**
+
+-   Remove AVIRIS image bounds by @giswqs in [#96](https://github.com/opengeos/HyperCoast/pull/96)
+-   Fix read_pace bug for V2 by @giswqs in [#97](https://github.com/opengeos/HyperCoast/pull/97)
+
+**Full Changelog**: [v0.7.3...v0.7.4](https://github.com/opengeos/HyperCoast/compare/v0.7.3...v0.7.4)
+
+## v0.7.3 - Jul 30, 2024
+
+**What's Changed**
+
+-   Add reuse license management framework by @giswqs in [#83](https://github.com/opengeos/HyperCoast/pull/83)
+-   Add reuse dep and file header by @giswqs in [#84](https://github.com/opengeos/HyperCoast/pull/84)
+-   Pin reuse version by @giswqs in [#85](https://github.com/opengeos/HyperCoast/pull/85)
+-   Decapitalize Pringle et al title by @giswqs in [#89](https://github.com/opengeos/HyperCoast/pull/89)
+-   Remove sentence and citations by @giswqs in [#90](https://github.com/opengeos/HyperCoast/pull/90)
+-   Explain hyperspectral and other jargon by @giswqs in [#91](https://github.com/opengeos/HyperCoast/pull/91)
+-   Add xlim parameter for the spectral widget by @giswqs in [#93](https://github.com/opengeos/HyperCoast/pull/93)
+
+**Full Changelog**: [v0.7.2...v0.7.3](https://github.com/opengeos/HyperCoast/compare/v0.7.2...v0.7.3)
+
+## v0.7.2 - Jul 23, 2024
+
+**What's Changed**
+
+-   Update paper by @bingqing-liu in [#74](https://github.com/opengeos/HyperCoast/pull/74)
+-   Update pyvista dependencies by @giswqs in [#75](https://github.com/opengeos/HyperCoast/pull/75)
+-   chore: improving testing and typehinting by @slowy07 in [#77](https://github.com/opengeos/HyperCoast/pull/77)
+-   Add support for generic dataset by @giswqs in [#78](https://github.com/opengeos/HyperCoast/pull/78)
+-   Clarify license info by @giswqs in [#79](https://github.com/opengeos/HyperCoast/pull/79)
+-   Add multispectral notebook example by @giswqs in [#80](https://github.com/opengeos/HyperCoast/pull/80)
+-   Add support for acolite by @giswqs in [#81](https://github.com/opengeos/HyperCoast/pull/81)
+
+**New Contributors**
+
+-   @slowy07 made their first contribution in [#77](https://github.com/opengeos/HyperCoast/pull/77)
+
+**Full Changelog**: [v0.7.0...v0.7.2](https://github.com/opengeos/HyperCoast/compare/v0.7.0...v0.7.2)
+
+## v0.7.1 - Jul 20, 2024
+
+**What's Changed**
+
+-   Update paper by @bingqing-liu in [#74](https://github.com/opengeos/HyperCoast/pull/74)
+-   Update pyvista dependencies by @giswqs in [#75](https://github.com/opengeos/HyperCoast/pull/75)
+-   chore: improving testing and typehinting by @slowy07 in [#77](https://github.com/opengeos/HyperCoast/pull/77)
+-   Add support for generic dataset by @giswqs in [#78](https://github.com/opengeos/HyperCoast/pull/78)
+-   Clarify license info by @giswqs in [#79](https://github.com/opengeos/HyperCoast/pull/79)
+
+**New Contributors**
+
+-   @slowy07 made their first contribution in [#77](https://github.com/opengeos/HyperCoast/pull/77)
+
+**Full Changelog**: [v0.7.0...v0.7.1](https://github.com/opengeos/HyperCoast/compare/v0.7.0...v0.7.1)
+
 ## v0.7.0 - Jul 08, 2024
 
 **What's Changed**
