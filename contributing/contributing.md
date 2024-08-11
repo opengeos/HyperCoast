@@ -102,3 +102,10 @@ Ready to contribute? Here's how to set up HyperCoast for local development.
 9.  Commit more changes to your branch to fix the text errors if necessary.
 10. Wait for the pull request to be reviewed by the maintainers.
 11. Congratulations! You've made your contribution to HyperCoast!
+
+## Contributor Agreements
+
+Before your contribution can be accepted, you will need to sign the appropriate contributor agreement. The Contributor License Agreement (CLA) assistant will walk you through the process of signing the CLA. Please follow the instructions provided by the assistant on the pull request.
+
+-   [Individual Contributor Exclusive License Agreement](https://github.com/opengeos/HyperCoast/blob/main/docs/cla.md)
+-   [Entity Contributor Exclusive License Agreement](https://github.com/opengeos/HyperCoast/blob/main/docs/cla.md)
