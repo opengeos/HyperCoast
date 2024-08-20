@@ -13,7 +13,7 @@ from .aviris import aviris_to_image, read_aviris
 from .desis import desis_to_image, read_desis
 from .emit import emit_to_image, read_emit
 from .neon import neon_to_image, read_neon
-from .pace import pace_to_image, read_pace
+from .pace import pace_to_image, read_pace, view_pace_pixel_locations
 from .ui import SpectralWidget
 from .common import (
     download_file,
