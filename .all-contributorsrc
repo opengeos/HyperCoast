@@ -17,6 +17,17 @@
         "design",
         "ideas"
       ]
+    },
+    {
+      "login": "giswqs",
+      "name": "Qiusheng Wu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5016453?v=4",
+      "profile": "https://gishub.org",
+      "contributions": [
+        "code",
+        "design",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
