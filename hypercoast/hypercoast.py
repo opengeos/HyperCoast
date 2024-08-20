@@ -772,6 +772,42 @@ class Map(leafmap.Map):
         df = pd.DataFrame(self._spectral_data, **kwargs)
         return df
 
+    def spectral_to_gdf(self, **kwargs):
+        """Converts the spectral data to a GeoPandas GeoDataFrame.
+
+        Returns:
+            gpd.DataFrame: The spectral data as a pandas DataFrame.
+        """
+        import geopandas as gpd
+        from shapely.geometry import Point
+
+        df = self.spectral_to_df()
+
+        if len(df) == 0:
+            return None
+
+        # Step 1: Extract the coordinates from the columns
+        df = df.rename(columns={"wavelength": "latlon"})
+        coordinates = [col.strip("()").split() for col in df.columns[1:]]
+        coords = [(float(lat), float(lon)) for lat, lon in coordinates]
+
+        # Step 2: Create Point geometries for each coordinate
+        points = [Point(lon, lat) for lat, lon in coords]
+
+        # Step 3: Create a GeoDataFrame
+        df_transposed = df.set_index("latlon").T
+
+        # Convert the column names to strings to ensure compatibility with GeoJSON
+        df_transposed.columns = df_transposed.columns.astype(str)
+
+        # Create the GeoDataFrame
+        gdf = gpd.GeoDataFrame(df_transposed, geometry=points, **kwargs)
+
+        # Set the coordinate reference system (CRS)
+        gdf = gdf.set_geometry("geometry").set_crs("EPSG:4326")
+
+        return gdf
+
     def spectral_to_csv(self, filename, index=True, **kwargs):
         """Saves the spectral data to a CSV file.
 
