@@ -92,3 +92,14 @@ HyperCoast is released under the MIT License. However, some of the modules in Hy
 
 -   [emit.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/emit.py): Part of the code is adapted from the [nasa/EMIT-Data-Resources](https://github.com/nasa/EMIT-Data-Resources) repository, which is released under the Apache License 2.0.
 -   [aviris.py](https://github.com/opengeos/HyperCoast/blob/main/hypercoast/aviris.py): Part of the code is adapted from the [jjmcnelis/aviris-ng-notebooks](https://github.com/jjmcnelis/aviris-ng-notebooks), which is released under the MIT License.
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
