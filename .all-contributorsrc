@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "bingqing-liu",
+      "name": "Bingqing Liu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/123585527?v=4",
+      "profile": "https://github.com/bingqing-liu",
+      "contributions": [
+        "code",
+        "design",
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "HyperCoast",
+  "projectOwner": "opengeos"
+}
