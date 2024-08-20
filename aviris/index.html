@@ -1611,7 +1611,7 @@ all wavelengths are selected. Defaults to None.</p></td>
     <span class="n">geo_transform</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rio_transform</span><span class="p">)[:</span><span class="mi">6</span><span class="p">]</span>
 
     <span class="c1"># get the raster geotransform as its component parts</span>
-    <span class="n">xres</span><span class="p">,</span> <span class="n">xrot</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">yrot</span><span class="p">,</span> <span class="n">yres</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">geo_transform</span>
+    <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">geo_transform</span>
 
     <span class="c1"># generate coordinate arrays</span>
     <span class="n">xarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmin</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">xres</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cols</span><span class="p">)])</span>
