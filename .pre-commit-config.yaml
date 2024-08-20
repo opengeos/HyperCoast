@@ -23,7 +23,7 @@ repos:
           - id: codespell
             args:
                 [
-                    "--ignore-words-list=gis,timeseries,sav",
+                    "--ignore-words-list=gis,timeseries,sav,slowy",
                     "--skip=*.json,*.csv",
                 ]
 
