@@ -19,7 +19,7 @@ SPDX-License-Identifier = "MIT"
 import rioxarray
 import numpy as np
 import xarray as xr
-from typing import List, Union, Dict, Optional, Tuple, Any
+from typing import List, Union, Optional, Any
 from .common import convert_coords
 
 
@@ -59,7 +59,7 @@ def read_aviris(
     geo_transform = list(rio_transform)[:6]
 
     # get the raster geotransform as its component parts
-    xres, xrot, xmin, yrot, yres, ymax = geo_transform
+    xres, _, xmin, _, yres, ymax = geo_transform
 
     # generate coordinate arrays
     xarr = np.array([xmin + i * xres for i in range(0, cols)])

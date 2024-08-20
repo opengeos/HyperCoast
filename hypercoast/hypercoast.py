@@ -8,13 +8,33 @@ import ipyleaflet
 import leafmap
 import xarray as xr
 import numpy as np
-from .aviris import *
-from .common import *
-from .desis import *
-from .emit import *
-from .neon import *
-from .pace import *
+from typing import Union
+from .aviris import aviris_to_image, read_aviris
+from .desis import desis_to_image, read_desis
+from .emit import emit_to_image, read_emit
+from .neon import neon_to_image, read_neon
+from .pace import pace_to_image, read_pace
 from .ui import SpectralWidget
+from .common import (
+    download_file,
+    search_datasets,
+    search_nasa_data,
+    download_nasa_data,
+    search_pace,
+    search_pace_chla,
+    search_emit,
+    search_ecostress,
+    download_pace,
+    download_emit,
+    download_ecostress,
+    nasa_earth_login,
+    image_cube,
+    open_dataset,
+    download_acolite,
+    run_acolite,
+    pca,
+    show_field_data,
+)
 
 
 class Map(leafmap.Map):
@@ -38,6 +58,9 @@ class Map(leafmap.Map):
                 class's constructor.
         """
         super().__init__(**kwargs)
+        self._spectral_data = {}
+        self._plot_options = None
+        self._plot_marker_cluster = None
 
     def add(self, obj, position="topright", xlim=None, ylim=None, **kwargs):
         """Add a layer to the map.
@@ -107,10 +130,13 @@ class Map(leafmap.Map):
         nodata=None,
         attribution=None,
         layer_name="Raster",
+        layer_index=None,
         zoom_to_layer=True,
         visible=True,
-        array_args={},
-        open_args={},
+        opacity=1.0,
+        array_args=None,
+        client_args={"cors_all": False},
+        open_args=None,
         **kwargs,
     ):
         """Add a local raster dataset to the map.
@@ -142,16 +168,27 @@ class Map(leafmap.Map):
             attribution (str, optional): Attribution for the source raster. This
                 defaults to a message about it being a local file.. Defaults to None.
             layer_name (str, optional): The layer name to use. Defaults to 'Raster'.
+            layer_index (int, optional): The index of the layer. Defaults to None.
             zoom_to_layer (bool, optional): Whether to zoom to the extent of the
                 layer. Defaults to True.
             visible (bool, optional): Whether the layer is visible. Defaults to
                 True.
+            opacity (float, optional): The opacity of the layer. Defaults to 1.0.
             array_args (dict, optional): Additional arguments to pass to
                 `array_to_memory_file` when reading the raster. Defaults to {}.
+            client_args (dict, optional): Additional arguments to pass to
+                localtileserver.TileClient. Defaults to { "cors_all": False }.
+            open_args (dict, optional): Additional arguments to pass to
+                rioxarray.open_rasterio.
+
         """
 
-        import numpy as np
         import rioxarray as rxr
+
+        if array_args is None:
+            array_args = {}
+        if open_args is None:
+            open_args = {}
 
         if nodata is None:
             nodata = np.nan
@@ -164,9 +201,12 @@ class Map(leafmap.Map):
             nodata=nodata,
             attribution=attribution,
             layer_name=layer_name,
+            layer_index=layer_index,
             zoom_to_layer=zoom_to_layer,
             visible=visible,
+            opacity=opacity,
             array_args=array_args,
+            client_args=client_args,
             **kwargs,
         )
 
@@ -191,12 +231,18 @@ class Map(leafmap.Map):
         layer_name="Raster",
         zoom_to_layer=True,
         visible=True,
-        array_args={},
-        open_args={},
+        array_args=None,
+        open_args=None,
         **kwargs,
     ):
         import rioxarray as rxr
         from leafmap import array_to_image
+
+        if array_args is None:
+            array_args = {}
+
+        if open_args is None:
+            open_args = {}
 
         if isinstance(source, str):
             da = rxr.open_rasterio(source, **open_args)
@@ -260,7 +306,7 @@ class Map(leafmap.Map):
         layer_name="EMIT",
         zoom_to_layer=True,
         visible=True,
-        array_args={},
+        array_args=None,
         **kwargs,
     ):
         """Add an EMIT dataset to the map.
@@ -299,6 +345,9 @@ class Map(leafmap.Map):
             array_args (dict, optional): Additional arguments to pass to
                 `array_to_memory_file` when reading the raster. Defaults to {}.
         """
+
+        if array_args is None:
+            array_args = {}
 
         xds = None
         if isinstance(source, str):
@@ -343,7 +392,7 @@ class Map(leafmap.Map):
         visible=True,
         method="nearest",
         gridded=False,
-        array_args={},
+        array_args=None,
         **kwargs,
     ):
         """Add a PACE dataset to the map.
@@ -381,6 +430,9 @@ class Map(leafmap.Map):
             array_args (dict, optional): Additional arguments to pass to
                 `array_to_memory_file` when reading the raster. Defaults to {}.
         """
+
+        if array_args is None:
+            array_args = {}
 
         if isinstance(source, str):
 
@@ -426,7 +478,7 @@ class Map(leafmap.Map):
         zoom_to_layer=True,
         visible=True,
         method="nearest",
-        array_args={},
+        array_args=None,
         **kwargs,
     ):
         """Add a DESIS dataset to the map.
@@ -464,6 +516,8 @@ class Map(leafmap.Map):
             array_args (dict, optional): Additional arguments to pass to
                 `array_to_memory_file` when reading the raster. Defaults to {}.
         """
+        if array_args is None:
+            array_args = {}
 
         if isinstance(source, str):
 
@@ -515,7 +569,7 @@ class Map(leafmap.Map):
         layer_name="NEON",
         zoom_to_layer=True,
         visible=True,
-        array_args={},
+        array_args=None,
         method="nearest",
         **kwargs,
     ):
@@ -557,6 +611,8 @@ class Map(leafmap.Map):
                 Defaults to "nearest".
         """
 
+        if array_args is None:
+            array_args = {}
         xds = None
         if isinstance(source, str):
 
@@ -598,7 +654,7 @@ class Map(leafmap.Map):
         layer_name="AVIRIS",
         zoom_to_layer=True,
         visible=True,
-        array_args={},
+        array_args=None,
         method="nearest",
         **kwargs,
     ):
@@ -639,6 +695,8 @@ class Map(leafmap.Map):
             method (str, optional): The method to use for data interpolation.
                 Defaults to "nearest".
         """
+        if array_args is None:
+            array_args = {}
 
         xds = None
         if isinstance(source, str):
@@ -668,19 +726,19 @@ class Map(leafmap.Map):
         self.cog_layer_dict[layer_name]["hyper"] = "AVIRIS"
         self._update_band_names(layer_name, wavelengths)
 
-    def add_hyper(self, xds, type, wvl_indexes=None, **kwargs):
+    def add_hyper(self, xds, dtype, wvl_indexes=None, **kwargs):
         """Add a hyperspectral dataset to the map.
 
         Args:
             xds (str): The Xarray dataset containing the hyperspectral data.
-            type (str): The type of the hyperspectral dataset. Can be one of
+            dtype (str): The type of the hyperspectral dataset. Can be one of
                 "EMIT", "PACE", "DESIS", "NEON", "AVIRIS".
             **kwargs: Additional keyword arguments to pass to the corresponding
                 add function.
         """
 
         if wvl_indexes is not None:
-            if type == "XARRAY":
+            if dtype == "XARRAY":
                 kwargs["indexes"] = [i + 1 for i in wvl_indexes]
             else:
 
@@ -690,17 +748,17 @@ class Map(leafmap.Map):
                     .values.tolist()
                 )
 
-        if type == "EMIT":
+        if dtype == "EMIT":
             self.add_emit(xds, **kwargs)
-        elif type == "PACE":
+        elif dtype == "PACE":
             self.add_pace(xds, **kwargs)
-        elif type == "DESIS":
+        elif dtype == "DESIS":
             self.add_desis(xds, **kwargs)
-        elif type == "NEON":
+        elif dtype == "NEON":
             self.add_neon(xds, **kwargs)
-        elif type == "AVIRIS":
+        elif dtype == "AVIRIS":
             self.add_aviris(xds, **kwargs)
-        elif type == "XARRAY":
+        elif dtype == "XARRAY":
             kwargs.pop("wavelengths", None)
             self.add_dataset(xds, **kwargs)
 
