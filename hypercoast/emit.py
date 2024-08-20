@@ -127,10 +127,10 @@ def plot_emit(
             )
 
     if longitude is not None and latitude is not None:
-        ortho is True
+        ortho = True
 
     if downtrack is not None and crosstrack is not None:
-        ortho is False
+        ortho = False
 
     if isinstance(ds, str):
         ds = read_emit(ds, ortho=ortho)
