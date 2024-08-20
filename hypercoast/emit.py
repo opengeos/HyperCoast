@@ -43,7 +43,7 @@ def read_emit(
 
     """
 
-    if ortho == True:
+    if ortho is True:
         return emit_xarray(
             filepath, ortho=True, wavelengths=wavelengths, method=method, **kwargs
         )
@@ -113,9 +113,9 @@ def plot_emit(
         hvplot.Plot: The line plot of the reflectance data.
     """
 
-    import hvplot.xarray
+    import hvplot.xarray  # noqa F401
 
-    if ortho == True:
+    if ortho is True:
         if longitude is None or latitude is None:
             raise ValueError(
                 "Longitude and Latitude must be provided for orthorectified data."
@@ -127,10 +127,10 @@ def plot_emit(
             )
 
     if longitude is not None and latitude is not None:
-        ortho = True
+        ortho is True
 
     if downtrack is not None and crosstrack is not None:
-        ortho = False
+        ortho is False
 
     if isinstance(ds, str):
         ds = read_emit(ds, ortho=ortho)
@@ -197,7 +197,7 @@ def viz_emit(
     Returns:
         hvplot.Plot: The image plot of the reflectance data at the specified wavelengths.
     """
-    import hvplot.xarray
+    import hvplot.xarray  # noqa F401
 
     if isinstance(ds, str):
         ds = read_emit(ds, ortho=ortho)
@@ -304,12 +304,12 @@ def emit_xarray(
         xarray.Dataset: An xarray.Dataset constructed based on the parameters provided.
     """
     # Grab granule filename to check product
-    import s3fs
+    from s3fs.core import S3File
     from fsspec.implementations.http import HTTPFile
 
-    if type(filepath) == s3fs.core.S3File:
+    if isinstance(filepath, S3File):
         granule_id = filepath.info()["name"].split("/", -1)[-1].split(".", -1)[0]
-    elif type(filepath) == HTTPFile:
+    elif isinstance(filepath, HTTPFile):
         granule_id = filepath.path.split("/", -1)[-1].split(".", -1)[0]
     else:
         granule_id = os.path.splitext(os.path.basename(filepath))[0]
@@ -575,7 +575,7 @@ def quality_mask(filepath: str, quality_bands: list) -> np.ndarray:
     print(f"Flags used: {flags_used}")
     # Check for data bands and build mask
     if any(x in quality_bands for x in [5, 6]):
-        err_str = f"Selected flags include a data band (5 or 6) not just flag bands"
+        err_str = "Selected flags include a data band (5 or 6) not just flag bands"
         raise AttributeError(err_str)
     else:
         qmask = np.sum(mask_ds["mask"][:, :, quality_bands].values, axis=-1)
@@ -638,7 +638,7 @@ def write_envi(
     if (
         "Orthorectified" in xr_ds.attrs.keys()
         and xr_ds.attrs["Orthorectified"] == "True"
-        and glt_file == True
+        and glt_file is True
     ):
         raise Exception("Data is already orthorectified.")
 
@@ -759,7 +759,7 @@ def write_envi(
         mm[...] = dat
 
     # Create GLT Metadata/File
-    if glt_file == True:
+    if glt_file is True:
         # Output Name
         glt_output_name = os.path.join(
             output_dir, xr_ds.attrs["granule_id"] + "_" + "glt"
@@ -1022,7 +1022,7 @@ def ortho_browse(
     # Read Data
     data = io.imread(url)
     # Orthorectify using GLT and transpose so band is first dimension
-    if white_background == True:
+    if white_background is True:
         fill = 255
     else:
         fill = 0
