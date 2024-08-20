@@ -9,8 +9,8 @@ import leafmap
 import xarray as xr
 import numpy as np
 from typing import Union
-from .aviris import aviris_to_image, read_aviris
-from .desis import desis_to_image, read_desis
+from .aviris import aviris_to_image, read_aviris, extract_aviris
+from .desis import desis_to_image, read_desis, extract_desis, filter_desis
 from .emit import (
     emit_to_image,
     read_emit,
