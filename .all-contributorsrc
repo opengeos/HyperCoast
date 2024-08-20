@@ -58,6 +58,15 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "platipodium",
+      "name": "Carsten Lemmen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2676409?v=4",
+      "profile": "https://www.hereon.de",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
