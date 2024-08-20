@@ -28,6 +28,16 @@
         "design",
         "maintenance"
       ]
+    },
+    {
+      "login": "alexgleith",
+      "name": "Alex Leith",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3445853?v=4",
+      "profile": "https://auspatious.com",
+      "contributions": [
+        "code",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
