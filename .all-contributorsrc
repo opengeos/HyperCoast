@@ -38,6 +38,16 @@
         "code",
         "review"
       ]
+    },
+    {
+      "login": "slowy07",
+      "name": "arfy slowy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40540262?v=4",
+      "profile": "https://slowy-portofolio-website.vercel.app/",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
