@@ -1,4 +1,7 @@
 # HyperCoast
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![image](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/opengeos/HyperCoast/blob/main)
 [![image](https://img.shields.io/pypi/v/HyperCoast.svg)](https://pypi.python.org/pypi/HyperCoast)
@@ -96,6 +99,20 @@ HyperCoast is released under the MIT License. However, some of the modules in Hy
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bingqing-liu"><img src="https://avatars.githubusercontent.com/u/123585527?v=4?s=100" width="100px;" alt="Bingqing Liu"/><br /><sub><b>Bingqing Liu</b></sub></a><br /><a href="https://github.com/opengeos/HyperCoast/commits?author=bingqing-liu" title="Code">💻</a> <a href="#design-bingqing-liu" title="Design">🎨</a> <a href="#ideas-bingqing-liu" title="Ideas, Planning, & Feedback">🤔</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
