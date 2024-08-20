@@ -48,6 +48,16 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "gponce-ars",
+      "name": "Guillermo E. Ponce-Campos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20215136?v=4",
+      "profile": "http://tucson.ars.ag.gov",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
