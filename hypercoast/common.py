@@ -34,7 +34,7 @@ def download_file(
     speed: Optional[float] = None,
     use_cookies: Optional[bool] = True,
     verify: Optional[bool] = True,
-    id: Optional[str] = None,
+    uid: Optional[str] = None,
     fuzzy: Optional[bool] = False,
     resume: Optional[bool] = False,
     unzip: Optional[bool] = True,
@@ -52,7 +52,7 @@ def download_file(
         use_cookies (bool, optional): Flag to use cookies. Defaults to True.
         verify (bool | str, optional): Either a bool, in which case it controls whether the server's TLS certificate is verified, or a string,
             in which case it must be a path to a CA bundle to use. Default is True.. Defaults to True.
-        id (str, optional): Google Drive's file ID. Defaults to None.
+        uid (str, optional): Google Drive's file ID. Defaults to None.
         fuzzy (bool, optional): Fuzzy extraction of Google Drive's file Id. Defaults to False.
         resume (bool, optional): Resume the download from existing tmp file if possible. Defaults to False.
         unzip (bool, optional): Unzip the file. Defaults to True.
@@ -87,7 +87,7 @@ def download_file(
         fuzzy = True
 
     output = gdown.download(
-        url, output, quiet, proxy, speed, use_cookies, verify, id, fuzzy, resume
+        url, output, quiet, proxy, speed, use_cookies, verify, uid, fuzzy, resume
     )
 
     if unzip:
@@ -511,9 +511,9 @@ def image_cube(
     rgb_gamma: float = 1.0,
     rgb_cmap: Optional[str] = None,
     rgb_clim: Optional[Tuple[float, float]] = None,
-    rgb_args: Dict[str, Any] = {},
+    rgb_args: Dict[str, Any] = None,
     widget=None,
-    plotter_args: Dict[str, Any] = {},
+    plotter_args: Dict[str, Any] = None,
     show_axes: bool = True,
     grid_origin=(0, 0, 0),
     grid_spacing=(1, 1, 1),
@@ -558,7 +558,12 @@ def image_cube(
     """
 
     import pyvista as pv
-    import xarray as xr
+
+    if rgb_args is None:
+        rgb_args = {}
+
+    if plotter_args is None:
+        plotter_args = {}
 
     allowed_widgets = ["box", "plane", "slice", "orthogonal", "threshold"]
 
@@ -703,7 +708,7 @@ def open_dataset(
 
     try:
         dataset = xr.open_dataset(filename, engine=engine, chunks=chunks, **kwargs)
-    except Exception as e:
+    except OSError:
         dataset = xr.open_dataset(filename, engine="h5netcdf", chunks=chunks, **kwargs)
 
     return dataset
@@ -806,7 +811,8 @@ def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
         download_url = base_url + "acolite_py_win_20231023.0.tar.gz"
         root_dir = "acolite_py_win"
     else:
-        raise Exception(f"Unsupported OS platform: {platform}")
+        print(f"Unsupported OS platform: {platform}")
+        return
 
     if not os.path.exists(outdir):
         os.makedirs(outdir)
@@ -818,7 +824,7 @@ def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
         print(f"{file_name} already exists. Skip downloading.")
         return extracted_path
 
-    response = requests.get(download_url, stream=True)
+    response = requests.get(download_url, stream=True, timeout=60)
     total_size = int(response.headers.get("content-length", 0))
     block_size = 8192
 
@@ -836,7 +842,8 @@ def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
                     bar.update(len(chunk))
         print(f"Downloaded {file_name}")
     else:
-        raise Exception(f"Failed to download file from {download_url}")
+        print(f"Failed to download file from {download_url}")
+        return
 
     # Unzip the file
     with tarfile.open(file_name, "r:gz") as tar:
@@ -947,15 +954,18 @@ def run_acolite(
         lines.append(f"runid={get_formatted_current_time('%Y%m%d_%H%M%S')}")
         settings_filename = f"acolite_run_{get_formatted_current_time('%Y%m%d_%H%M%S')}_settings_user.txt"
         settings_file = os.path.join(out_dir, settings_filename)
-        with open(settings_file, "w") as f:
+        with open(settings_file, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
         acolite_cmd.extend(["--settings", settings_file])
 
     if verbose:
-        subprocess.run(acolite_cmd)
+        subprocess.run(acolite_cmd, check=True)
     else:
         subprocess.run(
-            acolite_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            acolite_cmd,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
         )
 
 
@@ -991,8 +1001,8 @@ def pca(input_file, output_file, n_components=3, **kwargs):
         image_reshaped = image.reshape(n_bands, width * height).T
 
         # Perform PCA
-        pca = PCA(n_components=n_components, **kwargs)
-        principal_components = pca.fit_transform(image_reshaped)
+        model = PCA(n_components=n_components, **kwargs)
+        principal_components = model.fit_transform(image_reshaped)
 
         # Reshape the principal components back to image dimensions
         pca_image = principal_components.T.reshape(n_components, width, height)
@@ -1070,7 +1080,7 @@ def show_field_data(
 
     # Function to create the chart
     def create_chart(data, title):
-        fig, ax = plt.subplots(figsize=(10, 6))  # Adjust the figure size here
+        _, ax = plt.subplots(figsize=(10, 6))  # Adjust the figure size here
         ax.plot(data[x_col], data["values"])
         ax.set_title(title)
         ax.set_xlabel(x_label)
