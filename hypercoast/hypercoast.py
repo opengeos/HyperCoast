@@ -11,9 +11,31 @@ import numpy as np
 from typing import Union
 from .aviris import aviris_to_image, read_aviris
 from .desis import desis_to_image, read_desis
-from .emit import emit_to_image, read_emit
+from .emit import (
+    emit_to_image,
+    read_emit,
+    plot_emit,
+    viz_emit,
+    emit_to_netcdf,
+    emit_to_image,
+)
 from .neon import neon_to_image, read_neon
-from .pace import pace_to_image, read_pace, view_pace_pixel_locations
+from .pace import (
+    pace_to_image,
+    read_pace,
+    read_pace_aop,
+    read_pace_bgc,
+    read_pace_chla,
+    view_pace_pixel_locations,
+    viz_pace,
+    viz_pace_chla,
+    filter_pace,
+    extract_pace,
+    grid_pace,
+    grid_pace_bgc,
+    pace_to_image,
+    pace_chla_to_image,
+)
 from .ui import SpectralWidget
 from .common import (
     download_file,
