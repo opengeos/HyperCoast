@@ -1580,6 +1580,9 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">                class&#39;s constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plot_options</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a layer to the map.</span>
@@ -1649,10 +1652,13 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;Raster&quot;</span><span class="p">,</span>
+        <span class="n">layer_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
-        <span class="n">open_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">client_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cors_all&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+        <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a local raster dataset to the map.</span>
@@ -1684,16 +1690,27 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            attribution (str, optional): Attribution for the source raster. This</span>
 <span class="sd">                defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">            layer_name (str, optional): The layer name to use. Defaults to &#39;Raster&#39;.</span>
+<span class="sd">            layer_index (int, optional): The index of the layer. Defaults to None.</span>
 <span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
 <span class="sd">                layer. Defaults to True.</span>
 <span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to</span>
 <span class="sd">                True.</span>
+<span class="sd">            opacity (float, optional): The opacity of the layer. Defaults to 1.0.</span>
 <span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">            client_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">                localtileserver.TileClient. Defaults to { &quot;cors_all&quot;: False }.</span>
+<span class="sd">            open_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">                rioxarray.open_rasterio.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
         <span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">open_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">open_args</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">nodata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">nodata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -1706,9 +1723,12 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
             <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
             <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">layer_index</span><span class="o">=</span><span class="n">layer_index</span><span class="p">,</span>
             <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
             <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
             <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+            <span class="n">client_args</span><span class="o">=</span><span class="n">client_args</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -1733,12 +1753,18 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;Raster&quot;</span><span class="p">,</span>
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
-        <span class="n">open_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
         <span class="kn">from</span> <span class="nn">leafmap</span> <span class="kn">import</span> <span class="n">array_to_image</span>
+
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">open_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">open_args</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">da</span> <span class="o">=</span> <span class="n">rxr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">open_args</span><span class="p">)</span>
@@ -1802,7 +1828,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;EMIT&quot;</span><span class="p">,</span>
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an EMIT dataset to the map.</span>
@@ -1841,6 +1867,9 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1885,7 +1914,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
         <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a PACE dataset to the map.</span>
@@ -1923,6 +1952,9 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -1968,7 +2000,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a DESIS dataset to the map.</span>
@@ -2006,6 +2038,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -2057,7 +2091,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;NEON&quot;</span><span class="p">,</span>
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
@@ -2099,6 +2133,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">                Defaults to &quot;nearest&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -2140,7 +2176,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;AVIRIS&quot;</span><span class="p">,</span>
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
@@ -2181,6 +2217,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            method (str, optional): The method to use for data interpolation.</span>
 <span class="sd">                Defaults to &quot;nearest&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -2210,19 +2248,19 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;AVIRIS&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a hyperspectral dataset to the map.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            xds (str): The Xarray dataset containing the hyperspectral data.</span>
-<span class="sd">            type (str): The type of the hyperspectral dataset. Can be one of</span>
+<span class="sd">            dtype (str): The type of the hyperspectral dataset. Can be one of</span>
 <span class="sd">                &quot;EMIT&quot;, &quot;PACE&quot;, &quot;DESIS&quot;, &quot;NEON&quot;, &quot;AVIRIS&quot;.</span>
 <span class="sd">            **kwargs: Additional keyword arguments to pass to the corresponding</span>
 <span class="sd">                add function.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">wvl_indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;indexes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">wvl_indexes</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
 
@@ -2232,17 +2270,17 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
                     <span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                 <span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_emit</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_pace</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_desis</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_neon</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_aviris</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_dataset</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2515,6 +2553,9 @@ class's constructor.</p></td>
 <span class="sd">            class&#39;s constructor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_plot_options</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
         </details>
     </div>
@@ -2622,7 +2663,7 @@ class's add_layer method.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_aviris" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_aviris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;AVIRIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_aviris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;AVIRIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_aviris" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -2727,7 +2768,7 @@ to True.</p></td>
         <td><code>dict</code></td>
         <td><p>Additional arguments to pass to
 <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
-        <td><code>{}</code></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>method</code></td>
@@ -2753,7 +2794,7 @@ Defaults to "nearest".</p></td>
     <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;AVIRIS&quot;</span><span class="p">,</span>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
@@ -2794,6 +2835,8 @@ Defaults to "nearest".</p></td>
 <span class="sd">        method (str, optional): The method to use for data interpolation.</span>
 <span class="sd">            Defaults to &quot;nearest&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -2836,7 +2879,7 @@ Defaults to "nearest".</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_desis" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_desis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">525</span><span class="p">],</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;DESIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_desis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">525</span><span class="p">],</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;DESIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_desis" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -2941,7 +2984,7 @@ layer. Defaults to True.</p></td>
         <td><code>dict</code></td>
         <td><p>Additional arguments to pass to
 <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
-        <td><code>{}</code></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -2961,7 +3004,7 @@ layer. Defaults to True.</p></td>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a DESIS dataset to the map.</span>
@@ -2999,6 +3042,8 @@ layer. Defaults to True.</p></td>
 <span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -3049,7 +3094,7 @@ layer. Defaults to True.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_emit" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;EMIT&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;EMIT&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_emit" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3155,7 +3200,7 @@ True.</p></td>
         <td><code>dict</code></td>
         <td><p>Additional arguments to pass to
 <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
-        <td><code>{}</code></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -3174,7 +3219,7 @@ True.</p></td>
     <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;EMIT&quot;</span><span class="p">,</span>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add an EMIT dataset to the map.</span>
@@ -3213,6 +3258,9 @@ True.</p></td>
 <span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -3421,7 +3469,7 @@ True.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_hyper" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_hyper" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3448,7 +3496,7 @@ True.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>type</code></td>
+        <td><code>dtype</code></td>
         <td><code>str</code></td>
         <td><p>The type of the hyperspectral dataset. Can be one of
 "EMIT", "PACE", "DESIS", "NEON", "AVIRIS".</p></td>
@@ -3465,19 +3513,19 @@ add function.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a hyperspectral dataset to the map.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        xds (str): The Xarray dataset containing the hyperspectral data.</span>
-<span class="sd">        type (str): The type of the hyperspectral dataset. Can be one of</span>
+<span class="sd">        dtype (str): The type of the hyperspectral dataset. Can be one of</span>
 <span class="sd">            &quot;EMIT&quot;, &quot;PACE&quot;, &quot;DESIS&quot;, &quot;NEON&quot;, &quot;AVIRIS&quot;.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to pass to the corresponding</span>
 <span class="sd">            add function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">wvl_indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;indexes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">wvl_indexes</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
 
@@ -3487,17 +3535,17 @@ add function.</p></td>
                 <span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_emit</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_pace</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_desis</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_neon</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_aviris</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_dataset</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
@@ -3513,7 +3561,7 @@ add function.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_neon" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_neon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;NEON&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_neon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;NEON&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_neon" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3618,7 +3666,7 @@ to True.</p></td>
         <td><code>dict</code></td>
         <td><p>Additional arguments to pass to
 <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
-        <td><code>{}</code></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>method</code></td>
@@ -3644,7 +3692,7 @@ Defaults to "nearest".</p></td>
     <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;NEON&quot;</span><span class="p">,</span>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
@@ -3686,6 +3734,8 @@ Defaults to "nearest".</p></td>
 <span class="sd">            Defaults to &quot;nearest&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -3726,7 +3776,7 @@ Defaults to "nearest".</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_pace" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;PACE&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;PACE&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_pace" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3831,7 +3881,7 @@ layer. Defaults to True.</p></td>
         <td><code>dict</code></td>
         <td><p>Additional arguments to pass to
 <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
-        <td><code>{}</code></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -3852,7 +3902,7 @@ layer. Defaults to True.</p></td>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
     <span class="n">gridded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a PACE dataset to the map.</span>
@@ -3890,6 +3940,9 @@ layer. Defaults to True.</p></td>
 <span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -3933,7 +3986,7 @@ layer. Defaults to True.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_raster" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_raster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Raster&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span> <span class="n">open_args</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_raster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Raster&#39;</span><span class="p">,</span> <span class="n">layer_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cors_all&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_raster" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -4021,6 +4074,12 @@ defaults to a message about it being a local file.. Defaults to None.</p></td>
         <td><code>&#39;Raster&#39;</code></td>
       </tr>
       <tr>
+        <td><code>layer_index</code></td>
+        <td><code>int</code></td>
+        <td><p>The index of the layer. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>zoom_to_layer</code></td>
         <td><code>bool</code></td>
         <td><p>Whether to zoom to the extent of the
@@ -4035,11 +4094,31 @@ True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
+        <td><code>opacity</code></td>
+        <td><code>float</code></td>
+        <td><p>The opacity of the layer. Defaults to 1.0.</p></td>
+        <td><code>1.0</code></td>
+      </tr>
+      <tr>
         <td><code>array_args</code></td>
         <td><code>dict</code></td>
         <td><p>Additional arguments to pass to
 <code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
-        <td><code>{}</code></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>client_args</code></td>
+        <td><code>dict</code></td>
+        <td><p>Additional arguments to pass to
+localtileserver.TileClient. Defaults to { "cors_all": False }.</p></td>
+        <td><code>{&#39;cors_all&#39;: False}</code></td>
+      </tr>
+      <tr>
+        <td><code>open_args</code></td>
+        <td><code>dict</code></td>
+        <td><p>Additional arguments to pass to
+rioxarray.open_rasterio.</p></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -4055,10 +4134,13 @@ True.</p></td>
     <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;Raster&quot;</span><span class="p">,</span>
+    <span class="n">layer_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">array_args</span><span class="o">=</span><span class="p">{},</span>
-    <span class="n">open_args</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">client_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cors_all&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a local raster dataset to the map.</span>
@@ -4090,16 +4172,27 @@ True.</p></td>
 <span class="sd">        attribution (str, optional): Attribution for the source raster. This</span>
 <span class="sd">            defaults to a message about it being a local file.. Defaults to None.</span>
 <span class="sd">        layer_name (str, optional): The layer name to use. Defaults to &#39;Raster&#39;.</span>
+<span class="sd">        layer_index (int, optional): The index of the layer. Defaults to None.</span>
 <span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
 <span class="sd">            layer. Defaults to True.</span>
 <span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to</span>
 <span class="sd">            True.</span>
+<span class="sd">        opacity (float, optional): The opacity of the layer. Defaults to 1.0.</span>
 <span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">        client_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">            localtileserver.TileClient. Defaults to { &quot;cors_all&quot;: False }.</span>
+<span class="sd">        open_args (dict, optional): Additional arguments to pass to</span>
+<span class="sd">            rioxarray.open_rasterio.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
     <span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+
+    <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">open_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">open_args</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">if</span> <span class="n">nodata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nodata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -4112,9 +4205,12 @@ True.</p></td>
         <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
         <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
         <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+        <span class="n">layer_index</span><span class="o">=</span><span class="n">layer_index</span><span class="p">,</span>
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+        <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
         <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+        <span class="n">client_args</span><span class="o">=</span><span class="n">client_args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 
