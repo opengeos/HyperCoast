@@ -12,7 +12,6 @@ import ipywidgets as widgets
 import numpy as np
 import xarray as xr
 from bqplot import pyplot as plt
-from IPython.core.display import display
 from ipyfilechooser import FileChooser
 from .pace import extract_pace
 from .desis import extract_desis
@@ -272,7 +271,7 @@ class SpectralWidget(widgets.HBox):
                             self._fig.axes = self._fig.axes[1:]
                         elif isinstance(self._fig.axes[-1], bqplot.ColorAxis):
                             self._fig.axes = self._fig.axes[:-1]
-                    except:
+                    except Exception:
                         pass
 
                 plt.xlabel(xlabel)

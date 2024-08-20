@@ -7,7 +7,6 @@ This Module has the functions related to working with a DESIS dataset.
 """
 
 import rioxarray
-import numpy as np
 import xarray as xr
 import pandas as pd
 from .common import convert_coords
