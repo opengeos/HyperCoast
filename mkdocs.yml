@@ -60,6 +60,7 @@ plugins:
                   "image_slicing.ipynb",
                   "temperature.ipynb",
                   "pace_oci_l1.ipynb",
+                  "pace_cyano.ipynb"
               ]
 
 markdown_extensions:
