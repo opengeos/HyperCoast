@@ -1,6 +1,9 @@
 # HyperCoast
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![image](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/opengeos/HyperCoast/blob/main)
@@ -9,6 +12,7 @@
 [![image](https://img.shields.io/conda/vn/conda-forge/hypercoast.svg)](https://anaconda.org/conda-forge/hypercoast)
 [![Conda Recipe](https://img.shields.io/badge/recipe-hypercoast-green.svg)](https://github.com/conda-forge/hypercoast-feedstock)
 [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/hypercoast.svg)](https://anaconda.org/conda-forge/hypercoast)
+[![JOSS](https://joss.theoj.org/papers/10.21105/joss.07025/status.svg)](https://doi.org/10.21105/joss.07025)
 ![](https://assets.gishub.org/images/hypercoast_logo_600.png)
 
 **A Python Package for Visualizing and Analyzing Hyperspectral Data in Coastal Environments**
@@ -24,6 +28,12 @@ HyperCoast supports the reading and visualization of hyperspectral data from var
 
 ![EMIT](https://assets.gishub.org/images/EMIT-demo.png)
 **Figure 1.** An example of visualizing NASA EMIT hyperspectral data using HyperCoast.
+
+## Citations
+
+If you find HyperCoast useful in your research, please consider citing the following papers to support us. Thank you!
+
+-   Liu, B. & Wu, Q. (2024). HyperCoast: A Python Package for Visualizing and Analyzing Hyperspectral Data in Coastal Environments. _Journal of Open Source Software_, 9(100), 7025. <https://doi.org/10.21105/joss.07025>.
 
 ## Features
 
