@@ -26,7 +26,7 @@ HyperCoast supports the reading and visualization of hyperspectral data from var
 
 If you find HyperCoast useful in your research, please consider citing the following papers to support us. Thank you!
 
--   Liu, B. & Wu, Q. (2024). HyperCoast: A Python Package for Visualizing and Analyzing Hyperspectral Data in Coastal Environments. _Journal of Open Source Software_, 9(100), 7025. <https://doi.org/10.21105/joss.07025>.
+-   Liu, B., & Wu, Q. (2024). HyperCoast: A Python Package for Visualizing and Analyzing Hyperspectral Data in Coastal Environments. _Journal of Open Source Software_, 9(100), 7025. <https://doi.org/10.21105/joss.07025>.
 
 ## Features
 
