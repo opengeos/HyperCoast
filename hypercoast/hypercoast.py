@@ -82,7 +82,7 @@ class Map(leafmap.Map):
         super().__init__(**kwargs)
         self._spectral_data = {}
         self._plot_options = None
-        self._plot_marker_cluster = None
+        self._plot_marker_cluster = ipyleaflet.MarkerCluster(name="Marker Cluster")
 
     def add(self, obj, position="topright", xlim=None, ylim=None, **kwargs):
         """Add a layer to the map.
