@@ -38,6 +38,9 @@ jobs:
             - name: Build docs
               run: |
                   mkdocs build
+              env:
+                  EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+                  EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
             - name: Deploy to Netlify
               uses: nwtgck/actions-netlify@v3.0
               with:
@@ -52,6 +55,4 @@ jobs:
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
                   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-                  EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
-                  EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
               timeout-minutes: 10
