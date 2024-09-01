@@ -7,6 +7,7 @@ cartopy
 click
 codespell
 earthaccess
+fiona
 flake8
 
 ipykernel

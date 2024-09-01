@@ -36,8 +36,10 @@ all = [
 extra = [
     "cartopy",
     "earthaccess",
-    "pyvista[jupyter]",
+    "fiona",
+    "geopandas",
     "openpyxl",
+    "pyvista[jupyter]",
 ]
 
 
