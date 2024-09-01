@@ -472,12 +472,13 @@ def nasa_earth_login(strategy: str = "all", persist: bool = True, **kwargs) -> N
         persist (bool, optional): Whether to persist the login. Defaults to True.
     """
     from leafmap import get_api_key
+    import earthaccess
 
     USERNAME = get_api_key("EARTHDATA_USERNAME")
     PASSWORD = get_api_key("EARTHDATA_PASSWORD")
     if (USERNAME is not None) and (PASSWORD is not None):
         strategy = "environment"
-    leafmap.nasa_data_login(strategy=strategy, persist=persist, **kwargs)
+    earthaccess.login(strategy=strategy, persist=persist, **kwargs)
 
 
 def convert_coords(
