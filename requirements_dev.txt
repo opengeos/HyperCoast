@@ -6,7 +6,6 @@ bump-my-version
 cartopy
 click
 codespell
-earthaccess
 fiona
 flake8
 
