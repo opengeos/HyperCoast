@@ -108,6 +108,7 @@ nav:
           - examples/multispectral.ipynb
           - examples/pca.ipynb
           - examples/field_data.ipynb
+          - examples/hypoxia.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
