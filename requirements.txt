@@ -3,7 +3,7 @@ earthaccess
 geopandas
 h5netcdf
 hvplot
-leafmap
+leafmap>=0.37.1
 localtileserver
 mapclassify
 netcdf4
