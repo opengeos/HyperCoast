@@ -14,7 +14,6 @@ jobs:
             - uses: actions/setup-python@v5
               with:
                   python-version: "3.11"
-
             - name: Install dependencies
               run: |
                   python -m pip install --upgrade pip
@@ -24,4 +23,8 @@ jobs:
             - name: PKG-TEST
               run: |
                   python -m unittest discover tests/
-            - run: mkdocs gh-deploy --force
+            - name: Build docs
+              run: mkdocs gh-deploy --force
+              env:
+                  EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+                  EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
