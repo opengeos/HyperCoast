@@ -39,6 +39,7 @@ extra = [
     "geopandas",
     "openpyxl",
     "pyvista[jupyter]",
+    "scikit-learn",
 ]
 
 
