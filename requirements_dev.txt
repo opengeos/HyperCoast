@@ -4,10 +4,9 @@ build
 bump-my-version
 
 cartopy
-
 click
 codespell
-earthaccess
+fiona
 flake8
 
 ipykernel
@@ -23,6 +22,7 @@ mkdocstrings-crystal
 mkdocstrings-python-legacy
 nbconvert
 nbformat
+openpyxl
 psutil
 pygments
 pymdown-extensions

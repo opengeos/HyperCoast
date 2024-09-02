@@ -90,6 +90,7 @@ class SpectralWidget(widgets.HBox):
         stack_btn = widgets.ToggleButton(
             value=stack,
             icon="area-chart",
+            tooltip="Stack spectral signatures",
             button_style="primary",
             layout=widgets.Layout(width="32px"),
         )

@@ -239,7 +239,8 @@ class Map(leafmap.Map):
 
             xds = da.to_dataset(name="data")
             self.cog_layer_dict[layer_name]["xds"] = xds
-            self.cog_layer_dict[layer_name]["hyper"] = "COG"
+            # if self.cog_layer_dict[layer_name].get("hyper") is None:
+            #     self.cog_layer_dict[layer_name]["hyper"] = "COG"
 
     def add_dataset(
         self,
@@ -460,31 +461,34 @@ class Map(leafmap.Map):
 
             source = read_pace(source)
 
-        image = pace_to_image(
-            source, wavelengths=wavelengths, method=method, gridded=gridded
-        )
+        try:
+            image = pace_to_image(
+                source, wavelengths=wavelengths, method=method, gridded=gridded
+            )
 
-        if isinstance(wavelengths, list) and len(wavelengths) > 1:
-            colormap = None
+            if isinstance(wavelengths, list) and len(wavelengths) > 1:
+                colormap = None
 
-        self.add_raster(
-            image,
-            indexes=indexes,
-            colormap=colormap,
-            vmin=vmin,
-            vmax=vmax,
-            nodata=nodata,
-            attribution=attribution,
-            layer_name=layer_name,
-            zoom_to_layer=zoom_to_layer,
-            visible=visible,
-            array_args=array_args,
-            **kwargs,
-        )
+            self.add_raster(
+                image,
+                indexes=indexes,
+                colormap=colormap,
+                vmin=vmin,
+                vmax=vmax,
+                nodata=nodata,
+                attribution=attribution,
+                layer_name=layer_name,
+                zoom_to_layer=zoom_to_layer,
+                visible=visible,
+                array_args=array_args,
+                **kwargs,
+            )
 
-        self.cog_layer_dict[layer_name]["xds"] = source
-        self.cog_layer_dict[layer_name]["hyper"] = "PACE"
-        self._update_band_names(layer_name, wavelengths)
+            self.cog_layer_dict[layer_name]["xds"] = source
+            self.cog_layer_dict[layer_name]["hyper"] = "PACE"
+            self._update_band_names(layer_name, wavelengths)
+        except Exception as e:
+            print(e)
 
     def add_desis(
         self,
@@ -864,10 +868,13 @@ class Map(leafmap.Map):
         df = self.spectral_to_df()
 
         if len(df) == 0:
-            return None
+            return df
 
         # Step 1: Extract the coordinates from the columns
-        df = df.rename(columns={"wavelength": "latlon"})
+        if "wavelength" in df.columns:
+            df = df.rename(columns={"wavelength": "latlon"})
+        elif "wavelengths" in df.columns:
+            df = df.rename(columns={"wavelengths": "latlon"})
         coordinates = [col.strip("()").split() for col in df.columns[1:]]
         coords = [(float(lat), float(lon)) for lat, lon in coordinates]
 

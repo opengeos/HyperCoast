@@ -15,10 +15,6 @@ jobs:
             - uses: actions/setup-python@v5
               with:
                   python-version: "3.11"
-              env:
-                  EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
-                  EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
-
             - name: Install GDAL
               run: |
                   python -m pip install --upgrade pip
@@ -38,6 +34,9 @@ jobs:
             - name: Build docs
               run: |
                   mkdocs build
+              env:
+                  EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+                  EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
             - name: Deploy to Netlify
               uses: nwtgck/actions-netlify@v3.0
               with:

@@ -60,7 +60,7 @@ plugins:
                   "image_slicing.ipynb",
                   "temperature.ipynb",
                   "pace_oci_l1.ipynb",
-                  "pace_cyano.ipynb"
+                  "pace_cyano.ipynb",
               ]
 
 markdown_extensions:
@@ -108,8 +108,10 @@ nav:
           - examples/multispectral.ipynb
           - examples/pca.ipynb
           - examples/field_data.ipynb
+          - examples/hypoxia.ipynb
     - Workshops:
           - workshops/emit.ipynb
+          - workshops/pace.ipynb
     - API Reference:
           - aviris module: aviris.md
           - common module: common.md
