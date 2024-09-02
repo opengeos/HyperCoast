@@ -30,6 +30,7 @@ pytest
 pytest-runner
 pyvista
 reuse>=4.0.3
+scikit-learn
 sphinx
 twine
 watchdog

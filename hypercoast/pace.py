@@ -592,8 +592,8 @@ def grid_pace_bgc(
     Args:
         dataset (xr.Dataset): The input dataset containing PACE BGC data with latitude and longitude coordinates.
         variable (str, optional): The variable within the dataset to grid. Can be
-           one of chlor_a, carbon_phyto, poc, chlor_a_unc, carbon_phyto_unc, and l2_flags.
-           Defaults to "chlor_a".
+            one of chlor_a, carbon_phyto, poc, chlor_a_unc, carbon_phyto_unc, and l2_flags.
+            Defaults to "chlor_a".
         method (str, optional): The interpolation method to use. Options include "nearest", "linear", and "cubic".
             Defaults to "nearest".
         **kwargs (Any): Additional keyword arguments to pass to the xr.Dataset creation.
