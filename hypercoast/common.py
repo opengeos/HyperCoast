@@ -910,7 +910,7 @@ def run_acolite(
         formatted_time = current_time.strftime(format_str)
         return formatted_time
 
-    acolite_dir_name = os.path.split(os.path.dirname(acolite_dir))[-1]
+    acolite_dir_name = os.path.split(acolite_dir)[-1]
     acolite_exe = "acolite"
     if acolite_dir_name.endswith("win"):
         acolite_exe += ".exe"
@@ -922,6 +922,7 @@ def run_acolite(
         os.makedirs(out_dir)
 
     acolite_exe_path = os.path.join(acolite_dir, "dist", "acolite", acolite_exe)
+    acolite_exe_path = acolite_exe_path.replace("\\", "/")
 
     acolite_cmd = [acolite_exe_path, "--cli"]
 
@@ -932,8 +933,10 @@ def run_acolite(
         lines.append("## ACOLITE settings")
         lines.append(f"## Written at {get_formatted_current_time()}")
         if input_file is not None:
+            input_file = input_file.replace("\\", "/")
             lines.append(f"inputfile={input_file}")
         if out_dir is not None:
+            out_dir = out_dir.replace("\\", "/")
             lines.append(f"output={out_dir}")
         if polygon is not None:
             lines.append(f"polygon={polygon}")
@@ -959,7 +962,7 @@ def run_acolite(
 
         lines.append(f"runid={get_formatted_current_time('%Y%m%d_%H%M%S')}")
         settings_filename = f"acolite_run_{get_formatted_current_time('%Y%m%d_%H%M%S')}_settings_user.txt"
-        settings_file = os.path.join(out_dir, settings_filename)
+        settings_file = os.path.join(out_dir, settings_filename).replace("\\", "/")
         with open(settings_file, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
         acolite_cmd.extend(["--settings", settings_file])
