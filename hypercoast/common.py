@@ -967,6 +967,9 @@ def run_acolite(
             f.write("\n".join(lines))
         acolite_cmd.extend(["--settings", settings_file])
 
+    if acolite_dir_name.endswith("win"):
+        acolite_cmd = " ".join(acolite_cmd)
+
     if verbose:
         subprocess.run(acolite_cmd, check=True)
     else:
