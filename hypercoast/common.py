@@ -835,13 +835,16 @@ def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
     block_size = 8192
 
     if response.status_code == 200:
-        with open(file_name, "wb") as file, tqdm(
-            desc=file_name,
-            total=total_size,
-            unit="iB",
-            unit_scale=True,
-            unit_divisor=1024,
-        ) as bar:
+        with (
+            open(file_name, "wb") as file,
+            tqdm(
+                desc=file_name,
+                total=total_size,
+                unit="iB",
+                unit_scale=True,
+                unit_divisor=1024,
+            ) as bar,
+        ):
             for chunk in response.iter_content(chunk_size=block_size):
                 if chunk:
                     file.write(chunk)
