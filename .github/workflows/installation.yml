@@ -10,7 +10,7 @@ on:
 
 name: test-linux-installation
 jobs:
-    test-ubuntu:
+    test-linux-installation:
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
