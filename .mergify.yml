@@ -7,10 +7,11 @@ pull_request_rules:
           - check-success=ubuntu-latest (3.9)
           - check-success=ubuntu-latest (3.10)
           - check-success=ubuntu-latest (3.11)
-          - check-success=macOS-latest (3.11)
+          - check-success=ubuntu-latest (3.12)
+          - check-success=macOS-latest (3.12)
           - check-success=test-windows
           - check-success=test-docs-build
-          - check-success=test-linux-installation
+          - check-success=test-linux-installation (3.12)
           # Approval by reviewer at least one maintainer
           # - "#approved-reviews-by>=1"
           - base=main

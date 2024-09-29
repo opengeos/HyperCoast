@@ -3,11 +3,12 @@ earthaccess
 geopandas
 h5netcdf
 hvplot
-leafmap>=0.37.1
+leafmap>=0.38.0
 localtileserver
 mapclassify
 netcdf4
-numpy<2.0.0
+numpy
+psutil
 rioxarray
 s3fs
 scikit-learn
