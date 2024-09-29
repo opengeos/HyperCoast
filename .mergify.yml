@@ -4,12 +4,12 @@ pull_request_rules:
           # If the requirement are satisfied
           # The bot will trigger automerge
           - label=ready-to-merge
-          - check-success=ubuntu-latest (3.9)
-          - check-success=ubuntu-latest (3.10)
-          - check-success=ubuntu-latest (3.11)
-          - check-success=ubuntu-latest (3.12)
+          - check-success=test-ubuntu (3.9)
+          - check-success=test-ubuntu (3.10)
+          - check-success=test-ubuntu (3.11)
+          - check-success=test-ubuntu (3.12)
           - check-success=macOS-latest (3.12)
-          - check-success=test-windows
+          - check-success=test-windows (3.12)
           - check-success=test-docs-build
           - check-success=test-linux-installation (3.12)
           # Approval by reviewer at least one maintainer
@@ -34,7 +34,7 @@ pull_request_rules:
       actions:
           comment:
               # Message if there's conflict on pull request
-              message: Your pull request are conflict @{{author}}, please fix it!
+              message: Your pull request are in conflict @{{author}}, please fix it!
           label:
               # adding label on pull request if get trigger
               add:
