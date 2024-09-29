@@ -543,8 +543,8 @@ def grid_pace(dataset, wavelengths=None, method="nearest", **kwargs):
     lat = dataset.latitude
     lon = dataset.longitude
 
-    grid_lat = np.linspace(lat.min(), lat.max(), lat.shape[0])
-    grid_lon = np.linspace(lon.min(), lon.max(), lon.shape[1])
+    grid_lat = np.linspace(lat.min().values, lat.max().values, lat.shape[0])
+    grid_lon = np.linspace(lon.min().values, lon.max().values, lon.shape[1])
     grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
 
     gridded_data_dict = {}
@@ -612,8 +612,8 @@ def grid_pace_bgc(
     lat = dataset.latitude
     lon = dataset.longitude
 
-    grid_lat = np.linspace(lat.min(), lat.max(), lat.shape[0])
-    grid_lon = np.linspace(lon.min(), lon.max(), lon.shape[1])
+    grid_lat = np.linspace(lat.min().values, lat.max().values, lat.shape[0])
+    grid_lon = np.linspace(lon.min().values, lon.max().values, lon.shape[1])
     grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
 
     data = dataset[variable]
