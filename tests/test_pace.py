@@ -46,7 +46,7 @@ class TestHypercoast(unittest.TestCase):
         m.add("spectral")
         html = m.to_html()
         self.assertIsNotNone(m)
-        # assert "PACE" in html
+        assert "PACE" in html
 
         m = hypercoast.Map()
         m.add_basemap("Hybrid")
@@ -62,7 +62,7 @@ class TestHypercoast(unittest.TestCase):
         m.add("spectral")
         html = m.to_html()
         self.assertIsNotNone(m)
-        # assert "PACE" in html
+        assert "PACE" in html
 
 
 if __name__ == "__main__":
