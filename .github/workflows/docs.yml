@@ -45,9 +45,7 @@ jobs:
                   uv run pytest . --verbose
 
             - name: Install mkdocs
-              run: |
-                  uv pip install -r requirements_docs.txt
-                  uv run mkdocs gh-deploy --force
+              run: uv run mkdocs gh-deploy --force
               env:
                   EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
                   EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
