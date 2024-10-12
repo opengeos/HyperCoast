@@ -777,8 +777,8 @@ def apply_kmeans(
     n_clusters: int = 6,
     plot: bool = True,
     figsize: tuple[int, int] = (8, 6),
-    extent: list[float] | None = None,
-    title: str | None = None,
+    extent: list[float] = None,
+    title: str = None,
     **kwargs,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
