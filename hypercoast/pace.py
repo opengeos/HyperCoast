@@ -701,7 +701,7 @@ def pace_chla_to_image(data, output=None, **kwargs):
 
 
 def cyano_band_ratios(
-    dataset: xr.Dataset | str,
+    dataset: Union[xr.Dataset, str],
     plot: bool = True,
     extent: List[float] = None,
     figsize: tuple[int, int] = (12, 6),
