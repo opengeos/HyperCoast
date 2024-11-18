@@ -28,11 +28,11 @@ repos:
                 ]
 
     - repo: https://github.com/kynan/nbstripout
-      rev: 0.7.1
+      rev: 0.8.1
       hooks:
           - id: nbstripout
 
     - repo: https://github.com/fsfe/reuse-tool
-      rev: v4.0.3
+      rev: v5.0.2
       hooks:
           - id: reuse
