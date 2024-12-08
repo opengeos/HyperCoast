@@ -1,3 +1,0 @@
-# aviris module
-
-::: hypercoast.aviris

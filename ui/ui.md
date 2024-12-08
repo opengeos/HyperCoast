@@ -1,3 +1,0 @@
-# ui module
-
-::: hypercoast.ui
