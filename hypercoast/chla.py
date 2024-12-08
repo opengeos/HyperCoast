@@ -1,3 +1,7 @@
+"""
+Module for training and evaluating the VAE model for Chl-a concentration estimation.
+"""
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -17,7 +21,13 @@ from scipy.interpolate import griddata
 
 
 class VAE(nn.Module):
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, input_dim: int, output_dim: int) -> None:
+        """Initializes the VAE model with encoder and decoder layers.
+
+        Args:
+            input_dim (int): Dimension of the input features.
+            output_dim (int): Dimension of the output features.
+        """
         super().__init__()
 
         # encoder
@@ -45,36 +55,106 @@ class VAE(nn.Module):
             nn.Softplus(),
         )
 
-    def encode(self, x):
+    def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Encodes the input tensor into mean and log variance.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            tuple[torch.Tensor, torch.Tensor]: Mean and log variance tensors.
+        """
         x = self.encoder_layer(x)
         mu = self.fc1(x)
         log_var = self.fc2(x)
         return mu, log_var
 
-    def reparameterize(self, mu, log_var):
+    def reparameterize(self, mu: torch.Tensor, log_var: torch.Tensor) -> torch.Tensor:
+        """Applies the reparameterization trick to sample from the latent space.
+
+        Args:
+            mu (torch.Tensor): Mean tensor.
+            log_var (torch.Tensor): Log variance tensor.
+
+        Returns:
+            torch.Tensor: Sampled latent vector.
+        """
         std = torch.exp(0.5 * log_var)
         eps = torch.randn_like(std)
         z = mu + eps * std
         return z
 
-    def decode(self, z):
+    def decode(self, z: torch.Tensor) -> torch.Tensor:
+        """Decodes the latent vector back to the original space.
+
+        Args:
+            z (torch.Tensor): Latent vector.
+
+        Returns:
+            torch.Tensor: Reconstructed tensor.
+        """
         return self.decoder(z)
 
-    def forward(self, x):
+    def forward(
+        self, x: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Performs a forward pass through the VAE model.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            tuple[torch.Tensor, torch.Tensor, torch.Tensor]: Reconstructed tensor, mean, and log variance.
+        """
         mu, log_var = self.encode(x)
         z = self.reparameterize(mu, log_var)
         x_reconstructed = self.decode(z)
         return x_reconstructed, mu, log_var
 
 
-def loss_function(recon_x, x, mu, log_var):
+def loss_function(
+    recon_x: torch.Tensor, x: torch.Tensor, mu: torch.Tensor, log_var: torch.Tensor
+) -> torch.Tensor:
+    """Computes the VAE loss function.
+
+    Args:
+        recon_x (torch.Tensor): Reconstructed tensor.
+        x (torch.Tensor): Original input tensor.
+        mu (torch.Tensor): Mean tensor.
+        log_var (torch.Tensor): Log variance tensor.
+
+    Returns:
+        torch.Tensor: Computed loss.
+    """
     L1 = F.l1_loss(recon_x, x, reduction="mean")
     BCE = F.mse_loss(recon_x, x, reduction="mean")
     KLD = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
     return L1
 
 
-def train(model, train_dl, epochs=200):
+def train(
+    model: VAE,
+    train_dl: DataLoader,
+    epochs: int = 200,
+    device: torch.device = None,
+    opt: torch.optim.Optimizer = None,
+) -> None:
+    """Trains the VAE model.
+
+    Args:
+        model (VAE): VAE model to be trained.
+        train_dl (DataLoader): DataLoader for training data.
+        epochs (int, optional): Number of epochs to train. Defaults to 200.
+        device (torch.device, optional): Device to train on. Defaults to None.
+        opt (torch.optim.Optimizer, optional): Optimizer. Defaults to None.
+    """
+
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    if opt is None:
+        opt = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-3)
+
     model.train()
 
     min_total_loss = float("inf")
@@ -102,7 +182,23 @@ def train(model, train_dl, epochs=200):
     torch.save(model.state_dict(), "model/vae_model_PACE.pth")
 
 
-def evaluate(model, test_dl):
+def evaluate(
+    model: VAE, test_dl: DataLoader, device: torch.device = None
+) -> tuple[np.ndarray, np.ndarray]:
+    """Evaluates the VAE model.
+
+    Args:
+        model (VAE): VAE model to be evaluated.
+        test_dl (DataLoader): DataLoader for test data.
+        device (torch.device, optional): Device to evaluate on. Defaults to None.
+
+    Returns:
+        tuple[np.ndarray, np.ndarray]: Predictions and actual values.
+    """
+
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     model.eval()
     predictions, actuals = [], []
     with torch.no_grad():
@@ -114,7 +210,18 @@ def evaluate(model, test_dl):
     return np.vstack(predictions), np.vstack(actuals)
 
 
-def load_real_data(aphy_file_path, rrs_file_path):
+def load_real_data(
+    aphy_file_path: str, rrs_file_path: str
+) -> tuple[DataLoader, DataLoader, int, int]:
+    """Loads and preprocesses real data for training and testing.
+
+    Args:
+        aphy_file_path (str): Path to the aphy file.
+        rrs_file_path (str): Path to the rrs file.
+
+    Returns:
+        tuple[DataLoader, DataLoader, int, int]: Training DataLoader, testing DataLoader, input dimension, output dimension.
+    """
     array1 = np.loadtxt(aphy_file_path, delimiter=",", dtype=float)
     array2 = np.loadtxt(rrs_file_path, delimiter=",", dtype=float)
 
@@ -158,7 +265,18 @@ def load_real_data(aphy_file_path, rrs_file_path):
     return train_real_dl, test_real_dl, input_dim, output_dim
 
 
-def load_real_test(aphy_file_path, rrs_file_path):
+def load_real_test(
+    aphy_file_path: str, rrs_file_path: str
+) -> tuple[DataLoader, int, int]:
+    """Loads and preprocesses real data for testing.
+
+    Args:
+        aphy_file_path (str): Path to the aphy file.
+        rrs_file_path (str): Path to the rrs file.
+
+    Returns:
+        tuple[DataLoader, int, int]: Testing DataLoader, input dimension, output dimension.
+    """
     array1 = np.loadtxt(aphy_file_path, delimiter=",", dtype=float)
     array2 = np.loadtxt(rrs_file_path, delimiter=",", dtype=float)
 
@@ -193,14 +311,18 @@ def load_real_test(aphy_file_path, rrs_file_path):
     return test_real_dl, input_dim, output_dim
 
 
-def calculate_metrics(predictions, actuals, threshold=0.8):
-    """
-    Calculate epsilon, beta and additional metrics (RMSE, RMSLE, MAPE, Bias, MAE).
+def calculate_metrics(
+    predictions: np.ndarray, actuals: np.ndarray, threshold: float = 0.8
+) -> tuple[float, float, float, float, float, float, float]:
+    """Calculates epsilon, beta, and additional metrics (RMSE, RMSLE, MAPE, Bias, MAE).
 
-    :param predictions: array-like, predicted values
-    :param actuals: array-like, actual values
-    :param threshold: float, relative error threshold
-    :return: epsilon, beta, rmse, rmsle, mape, bias, mae
+    Args:
+        predictions (np.ndarray): Predicted values.
+        actuals (np.ndarray): Actual values.
+        threshold (float, optional): Relative error threshold. Defaults to 0.8.
+
+    Returns:
+        tuple[float, float, float, float, float, float, float]: epsilon, beta, rmse, rmsle, mape, bias, mae.
     """
     # Apply the threshold to filter out predictions with large relative error
     mask = np.abs(predictions - actuals) / np.abs(actuals + 1e-10) < threshold
@@ -233,8 +355,21 @@ def calculate_metrics(predictions, actuals, threshold=0.8):
 
 
 def plot_results(
-    predictions_rescaled, actuals_rescaled, save_dir, threshold=0.5, mode="test"
-):
+    predictions_rescaled: np.ndarray,
+    actuals_rescaled: np.ndarray,
+    save_dir: str,
+    threshold: float = 0.5,
+    mode: str = "test",
+) -> None:
+    """Plots the results of the predictions against the actual values.
+
+    Args:
+        predictions_rescaled (np.ndarray): Rescaled predicted values.
+        actuals_rescaled (np.ndarray): Rescaled actual values.
+        save_dir (str): Directory to save the plot.
+        threshold (float, optional): Relative error threshold. Defaults to 0.5.
+        mode (str, optional): Mode of the plot (e.g., "test"). Defaults to "test".
+    """
 
     actuals = actuals_rescaled.flatten()
     predictions = predictions_rescaled.flatten()
@@ -281,8 +416,8 @@ def plot_results(
         linewidths=0.8,
     )
 
-    plt.xlabel("Actual $Chla$ Values", fontsize=16, fontname="Ubuntu")
-    plt.ylabel("Predicted $Chla$ Values", fontsize=16, fontname="Ubuntu")
+    plt.xlabel("Actual $Chla$ Values", fontsize=16)
+    plt.ylabel("Predicted $Chla$ Values", fontsize=16)
     plt.xlim(-2, 4)
     plt.ylim(-2, 4)
     plt.grid(True, which="both", ls="--")
@@ -295,16 +430,21 @@ def plot_results(
         ),
         fontsize=16,
         title_fontsize=12,
-        prop={"family": "Ubuntu"},
     )
 
-    plt.xticks(fontsize=20, fontname="Ubuntu")
-    plt.yticks(fontsize=20, fontname="Ubuntu")
+    plt.xticks(fontsize=20)
+    plt.yticks(fontsize=20)
 
     plt.savefig(os.path.join(save_dir, f"{mode}_plot.pdf"), bbox_inches="tight")
     plt.close()
 
 
-def save_to_csv(data, file_path):
+def save_to_csv(data: np.ndarray, file_path: str) -> None:
+    """Saves data to a CSV file.
+
+    Args:
+        data (np.ndarray): Data to be saved.
+        file_path (str): Path to the CSV file.
+    """
     df = pd.DataFrame(data)
     df.to_csv(file_path, index=False)
