@@ -17,6 +17,10 @@
          <lastmod>2024-12-08</lastmod>
     </url>
     <url>
+         <loc>https://hypercoast.org/chla/</loc>
+         <lastmod>2024-12-08</lastmod>
+    </url>
+    <url>
          <loc>https://hypercoast.org/cla/</loc>
          <lastmod>2024-12-08</lastmod>
     </url>
@@ -70,6 +74,10 @@
     </url>
     <url>
          <loc>https://hypercoast.org/examples/aviris/</loc>
+         <lastmod>2024-12-08</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/chla_predict/</loc>
          <lastmod>2024-12-08</lastmod>
     </url>
     <url>
