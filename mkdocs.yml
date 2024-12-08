@@ -114,6 +114,7 @@ nav:
           - workshops/pace.ipynb
     - API Reference:
           - aviris module: aviris.md
+          - chla module: chla.md
           - common module: common.md
           - desis module: desis.md
           - emit module: emit.md

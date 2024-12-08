@@ -30,6 +30,7 @@ hypercoast = "hypercoast.cli:main"
 [project.optional-dependencies]
 all = [
     "HyperCoast[extra]",
+    "HyperCoast[torch]",
 ]
 
 extra = [
@@ -41,6 +42,7 @@ extra = [
     "scikit-learn",
 ]
 
+torch = ["pytorch", "seaborn"]
 
 [tool]
 [tool.setuptools.packages.find]
