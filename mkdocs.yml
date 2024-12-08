@@ -60,6 +60,7 @@ plugins:
                   "image_slicing.ipynb",
                   "temperature.ipynb",
                   "pace_oci_l1.ipynb",
+                  "chla_predict.ipynb",
               ]
 
 markdown_extensions:
@@ -101,6 +102,7 @@ nav:
           - examples/pace.ipynb
           - examples/ecostress.ipynb
           - examples/chlorophyll_a.ipynb
+          - examples/chla_predict.ipynb
           - examples/temperature.ipynb
           - examples/pace_oci_l1.ipynb
           - examples/pace_oci_l2.ipynb
@@ -114,6 +116,7 @@ nav:
           - workshops/pace.ipynb
     - API Reference:
           - aviris module: aviris.md
+          - chla module: chla.md
           - common module: common.md
           - desis module: desis.md
           - emit module: emit.md
