@@ -28,9 +28,11 @@ pygments
 pymdown-extensions
 pytest
 pytest-runner
+pytorch
 pyvista
 reuse>=4.0.3
 scikit-learn
+seaborn
 sphinx
 twine
 watchdog
