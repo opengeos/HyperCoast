@@ -1,3 +1,0 @@
-# desis module
-
-::: hypercoast.desis

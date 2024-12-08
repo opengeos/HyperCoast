@@ -1,3 +1,0 @@
-# neon module
-
-::: hypercoast.neon
