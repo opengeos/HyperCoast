@@ -1,5 +1,21 @@
 # Installation
 
+## Install using uv
+
+[uv](https://docs.astral.sh/uv/) is an extremely fast Python package and project manager, written in Rust. Follow the [instructions](https://docs.astral.sh/uv/getting-started/installation/) on the uv website to install uv on your computer. Once uv is installed, you can install **hypercoast** using the following command:
+
+```bash
+uv venv
+uv pip install hypercoast jupyterlab
+```
+
+To run JupyterLab, use the following command:
+
+```bash
+uv run jupyter lab
+```
+
+
 ## Install from PyPI
 
 **hypercoast** is available on [PyPI](https://pypi.org/project/hypercoast/). To install **hypercoast**, run this command in your terminal:
