@@ -2,8 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-"""This module contains the user interface for the hypercoast package.
-"""
+"""This module contains the user interface for the hypercoast package."""
 
 import os
 import ipyleaflet

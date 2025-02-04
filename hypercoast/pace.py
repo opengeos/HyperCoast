@@ -2,8 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-"""This module contains functions to read and process PACE data.
-"""
+"""This module contains functions to read and process PACE data."""
 
 import numpy as np
 import xarray as xr
