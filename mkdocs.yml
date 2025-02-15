@@ -53,6 +53,7 @@ plugins:
           execute_ignore:
               [
                   "acolite.ipynb",
+                  "acolite_emit.ipynb",
                   "search_data.ipynb",
                   "ecostress.ipynb",
                   "aviris.ipynb",
@@ -61,7 +62,7 @@ plugins:
                   "temperature.ipynb",
                   "pace_oci_l1.ipynb",
                   "chla_predict.ipynb",
-                  "_earthaccess.ipynb"
+                  "_earthaccess.ipynb",
               ]
 
 markdown_extensions:
@@ -93,6 +94,7 @@ nav:
     - Examples:
           - examples/overview.md
           - examples/acolite.ipynb
+          - examples/acolite_emit.ipynb
           - examples/search_data.ipynb
           - examples/image_cube.ipynb
           - examples/image_slicing.ipynb
