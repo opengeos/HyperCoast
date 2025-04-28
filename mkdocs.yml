@@ -63,6 +63,7 @@ plugins:
                   "pace_oci_l1.ipynb",
                   "chla_predict.ipynb",
                   "_earthaccess.ipynb",
+                  "pace_cyano.ipynb"
               ]
 
 markdown_extensions:
