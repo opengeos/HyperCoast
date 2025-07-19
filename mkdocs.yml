@@ -62,6 +62,7 @@ plugins:
                   "temperature.ipynb",
                   "pace_oci_l1.ipynb",
                   "chla_predict.ipynb",
+                  "pace_cyano.ipynb",
                   "_earthaccess.ipynb",
               ]
 
