@@ -1687,7 +1687,7 @@ longitude if they are not ranges. Defaults to 0.01.</p></td>
 
 
 <h2 id="hypercoast.tanager.grid_tanager" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.tanager.grid_tanager" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1716,7 +1716,13 @@ longitude if they are not ranges. Defaults to 0.01.</p></td>
       <tr>
         <td><code>bands</code></td>
         <td><code>list</code></td>
-        <td><p>The bands to select.</p></td>
+        <td><p>The band indices to select. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>list</code></td>
+        <td><p>The wavelength values to select. Takes priority over bands. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
@@ -1751,13 +1757,14 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Grids a Tanager dataset based on latitude and longitude.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dataset (xr.Dataset): The Tanager dataset to grid.</span>
-<span class="sd">        bands (list): The bands to select.</span>
+<span class="sd">        bands (list, optional): The band indices to select. Defaults to None.</span>
+<span class="sd">        wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for griddata interpolation.</span>
 <span class="sd">            Defaults to &quot;nearest&quot;.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to pass to the xr.Dataset constructor.</span>
@@ -1768,26 +1775,52 @@ Defaults to "nearest".</p></td>
     <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">griddata</span>
     <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">ConvexHull</span>
 
-    <span class="k">if</span> <span class="n">bands</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">bands</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Priority: wavelengths &gt; bands &gt; default</span>
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Use wavelengths directly</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">wavelengths</span><span class="p">]</span>
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="n">wavelengths</span>
+    <span class="k">elif</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Convert bands to wavelengths</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">bands</span><span class="p">]</span>
 
-    <span class="c1"># Ensure wavelengths is a list</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">band</span> <span class="o">&lt;</span> <span class="mi">500</span>
+            <span class="p">):</span>
+                <span class="c1"># Treat as band index</span>
+                <span class="n">selected_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">band</span><span class="p">)]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Treat as wavelength value</span>
+                <span class="n">selected_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">band</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Default to first wavelength</span>
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">latitude</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">longitude</span>
 
-    <span class="c1"># Find valid data points for any band to define spatial mask</span>
-    <span class="n">first_band_data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="n">bands</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span>
-    <span class="n">overall_valid_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">first_band_data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">first_band_data</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Find valid data points for any wavelength to define spatial mask</span>
+    <span class="n">first_wavelength_data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="n">selected_wavelengths</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
+    <span class="p">)[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span>
+    <span class="n">overall_valid_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">first_wavelength_data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+        <span class="n">first_wavelength_data</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">overall_valid_mask</span><span class="p">):</span>
         <span class="c1"># No valid data, return empty grid</span>
         <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">grid_lon_2d</span><span class="p">,</span> <span class="n">grid_lat_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">)</span>
-        <span class="n">gridded_data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">band</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">grid_lat_2d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">}</span>
+        <span class="n">gridded_data_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">wl</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">grid_lat_2d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span>
+        <span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Get valid coordinates for spatial masking</span>
         <span class="n">valid_lat</span> <span class="o">=</span> <span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">overall_valid_mask</span><span class="p">]</span>
@@ -1821,8 +1854,8 @@ Defaults to "nearest".</p></td>
             <span class="p">)</span>
 
         <span class="n">gridded_data_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="n">band</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wl</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span>
 
             <span class="c1"># Mask nodata values (both NaN and zero values)</span>
             <span class="n">data_flat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -1839,19 +1872,18 @@ Defaults to "nearest".</p></td>
                 <span class="p">)</span>
                 <span class="c1"># Apply spatial mask to prevent edge interpolation</span>
                 <span class="n">gridded_data</span><span class="p">[</span><span class="o">~</span><span class="n">inside_hull</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-            <span class="n">gridded_data_dict</span><span class="p">[</span><span class="n">band</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridded_data</span>
+            <span class="n">gridded_data_dict</span><span class="p">[</span><span class="n">wl</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridded_data</span>
 
-    <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+    <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gridded_data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="c1"># Create a 3D array with dimensions latitude, longitude, and wavelength</span>
     <span class="n">gridded_data_3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">gridded_data_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
 
     <span class="n">dataset2</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="p">{</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;band&quot;</span><span class="p">),</span> <span class="n">gridded_data_3d</span><span class="p">)},</span>
+        <span class="p">{</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">),</span> <span class="n">gridded_data_3d</span><span class="p">)},</span>
         <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">),</span>
             <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">grid_lon</span><span class="p">),</span>
-            <span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">gridded_data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())),</span>
-            <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">),</span>
+            <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">),</span>
         <span class="p">},</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
@@ -1978,21 +2010,21 @@ Defaults to "nearest".</p></td>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
 
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">),</span>
-        <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="n">fwhm</span><span class="p">),</span>
+        <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">wavelengths</span><span class="p">,</span>
+        <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">fwhm</span><span class="p">),</span>
         <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lat</span><span class="p">),</span>
         <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lon</span><span class="p">),</span>
     <span class="p">}</span>
 
-    <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">)</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;toa_radiance&quot;</span>
+    <span class="p">)</span>
 
     <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
         <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">:</span> <span class="n">da</span><span class="p">},</span>
         <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
-            <span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">band</span><span class="p">,</span>
-            <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">),</span>
-            <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="n">fwhm</span><span class="p">),</span>
+            <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">fwhm</span><span class="p">),</span>
             <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lat</span><span class="p">),</span>
             <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lon</span><span class="p">),</span>
         <span class="p">},</span>
@@ -2017,7 +2049,7 @@ Defaults to "nearest".</p></td>
 
 
 <h2 id="hypercoast.tanager.tanager_to_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">tanager_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">tanager_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.tanager.tanager_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2046,7 +2078,13 @@ Defaults to "nearest".</p></td>
       <tr>
         <td><code>bands</code></td>
         <td><code>array-like</code></td>
-        <td><p>The specific bands to select. If None, all bands are selected. Defaults to None.</p></td>
+        <td><p>The specific band indices to select. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>array-like</code></td>
+        <td><p>The specific wavelength values to select. Takes priority over bands. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
@@ -2086,13 +2124,16 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tanager_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tanager_to_image</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an Tanager dataset to an image.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dataset (xarray.Dataset or str): The dataset containing the EMIT data or the file path to the dataset.</span>
-<span class="sd">        bands (array-like, optional): The specific bands to select. If None, all bands are selected. Defaults to None.</span>
+<span class="sd">        bands (array-like, optional): The specific band indices to select. Defaults to None.</span>
+<span class="sd">        wavelengths (array-like, optional): The specific wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for data interpolation. Defaults to &quot;nearest&quot;.</span>
 <span class="sd">        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.</span>
@@ -2105,7 +2146,7 @@ Defaults to "nearest".</p></td>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">)</span>
 
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span>
     <span class="n">data</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

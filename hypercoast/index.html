@@ -2516,6 +2516,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -2543,8 +2544,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        Args:</span>
 <span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
 <span class="sd">                Optimized GeoTIFF.</span>
-<span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts</span>
-<span class="sd">                at 1. Defaults to None.</span>
+<span class="sd">            bands (list, optional): The band indices to select. Defaults to None.</span>
+<span class="sd">            wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
 <span class="sd">                to use when plotting a single band. See</span>
 <span class="sd">                    https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
@@ -2568,18 +2569,34 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">bands</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span>
-            <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
             <span class="n">source</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="n">wavelengths</span>
+        <span class="k">elif</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">band</span> <span class="o">&lt;</span> <span class="mi">500</span>
+                <span class="p">):</span>
+                    <span class="c1"># Treat as band index</span>
+                    <span class="n">selected_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">source</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">band</span><span class="p">)]</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Treat as wavelength value</span>
+                    <span class="n">selected_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">band</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">876.3</span><span class="p">,</span> <span class="mf">675.88</span><span class="p">,</span> <span class="mf">625.83</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span>
+                <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
@@ -2601,7 +2618,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vmax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmax</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vmin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmin</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;TANAGER&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">bands</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
@@ -4607,7 +4624,7 @@ rioxarray.open_rasterio.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_tanager" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_tanager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Tanager&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_tanager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Tanager&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_tanager" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -4645,10 +4662,15 @@ Optimized GeoTIFF.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>indexes</code></td>
-        <td><code>int</code></td>
-        <td><p>The band(s) to use. Band indexing starts
-at 1. Defaults to None.</p></td>
+        <td><code>bands</code></td>
+        <td><code>list</code></td>
+        <td><p>The band indices to select. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>list</code></td>
+        <td><p>The wavelength values to select. Takes priority over bands. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
@@ -4722,6 +4744,7 @@ layer. Defaults to True.</p></td>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -4749,8 +4772,8 @@ layer. Defaults to True.</p></td>
 <span class="sd">    Args:</span>
 <span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
 <span class="sd">            Optimized GeoTIFF.</span>
-<span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts</span>
-<span class="sd">            at 1. Defaults to None.</span>
+<span class="sd">        bands (list, optional): The band indices to select. Defaults to None.</span>
+<span class="sd">        wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
 <span class="sd">            to use when plotting a single band. See</span>
 <span class="sd">                https://matplotlib.org/stable/gallery/color/colormap_reference.html.</span>
@@ -4774,18 +4797,34 @@ layer. Defaults to True.</p></td>
     <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">bands</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">)</span>
-
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="n">source</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="n">wavelengths</span>
+    <span class="k">elif</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">band</span> <span class="o">&lt;</span> <span class="mi">500</span>
+            <span class="p">):</span>
+                <span class="c1"># Treat as band index</span>
+                <span class="n">selected_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">source</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">band</span><span class="p">)]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Treat as wavelength value</span>
+                <span class="n">selected_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">band</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bands</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">bands</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">876.3</span><span class="p">,</span> <span class="mf">675.88</span><span class="p">,</span> <span class="mf">625.83</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
@@ -4807,7 +4846,7 @@ layer. Defaults to True.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vmax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmax</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vmin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;TANAGER&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">bands</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </code></pre></div>
