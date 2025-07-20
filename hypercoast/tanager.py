@@ -56,7 +56,9 @@ def read_tanager(filepath, bands=None, stac_url=None, **kwargs):
         "longitude": (("y", "x"), lon),
     }
 
-    da = xr.DataArray(data, dims=("wavelength", "y", "x"), coords=coords, name="toa_radiance")
+    da = xr.DataArray(
+        data, dims=("wavelength", "y", "x"), coords=coords, name="toa_radiance"
+    )
 
     ds = xr.Dataset(
         data_vars={"toa_radiance": da},
@@ -104,12 +106,16 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
         # Convert bands to wavelengths
         if not isinstance(bands, list):
             bands = [bands]
-        
+
         selected_wavelengths = []
         for band in bands:
-            if isinstance(band, (int, np.integer)) or (isinstance(band, float) and band < 500):
+            if isinstance(band, (int, np.integer)) or (
+                isinstance(band, float) and band < 500
+            ):
                 # Treat as band index
-                selected_wavelengths.append(dataset.coords["wavelength"].values[int(band)])
+                selected_wavelengths.append(
+                    dataset.coords["wavelength"].values[int(band)]
+                )
             else:
                 # Treat as wavelength value
                 selected_wavelengths.append(band)
@@ -121,15 +127,21 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
     lon = dataset.longitude
 
     # Find valid data points for any wavelength to define spatial mask
-    first_wavelength_data = dataset.sel(wavelength=selected_wavelengths[0], method="nearest")["toa_radiance"]
-    overall_valid_mask = ~np.isnan(first_wavelength_data.data) & (first_wavelength_data.data > 0)
+    first_wavelength_data = dataset.sel(
+        wavelength=selected_wavelengths[0], method="nearest"
+    )["toa_radiance"]
+    overall_valid_mask = ~np.isnan(first_wavelength_data.data) & (
+        first_wavelength_data.data > 0
+    )
 
     if not np.any(overall_valid_mask):
         # No valid data, return empty grid
         grid_lat = np.linspace(lat.min().values, lat.max().values, lat.shape[0])
         grid_lon = np.linspace(lon.min().values, lon.max().values, lon.shape[1])
         grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
-        gridded_data_dict = {wl: np.full_like(grid_lat_2d, np.nan) for wl in selected_wavelengths}
+        gridded_data_dict = {
+            wl: np.full_like(grid_lat_2d, np.nan) for wl in selected_wavelengths
+        }
     else:
         # Get valid coordinates for spatial masking
         valid_lat = lat.data[overall_valid_mask]
@@ -202,7 +214,9 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
     return dataset2
 
 
-def tanager_to_image(dataset, bands=None, wavelengths=None, method="nearest", output=None, **kwargs):
+def tanager_to_image(
+    dataset, bands=None, wavelengths=None, method="nearest", output=None, **kwargs
+):
     """
     Converts an Tanager dataset to an image.
 
