@@ -6,6 +6,7 @@ private/
 *.nc
 changelog_update.md
 test_data/
+*.h5
 
 # C extensions
 *.so

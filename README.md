@@ -39,7 +39,7 @@ If you find HyperCoast useful in your research, please consider citing the follo
 
 -   Searching for NASA hyperspectral data interactively
 -   Performing atmospheric correction using [Acolite](https://github.com/acolite/acolite)
--   Interactive visualization and analysis of hyperspectral data, such as [AVIRIS](https://aviris.jpl.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf), [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001)
+-   Interactive visualization and analysis of hyperspectral data, such as [AVIRIS](https://aviris.jpl.nasa.gov), [DESIS](https://www.earthdata.nasa.gov/s3fs-public/imported/DESIS_TCloud_Mar0421.pdf), [EMIT](https://earth.jpl.nasa.gov/emit), [PACE](https://pace.gsfc.nasa.gov), [NEON AOP](https://data.neonscience.org/data-products/DP3.30006.001), and [Tanager](https://www.planet.com/data/stac/browser/tanager-core-imagery/catalog.json)
 -   Interactive visualization of NASA [ECOSTRESS](https://ecostress.jpl.nasa.gov) data
 -   Interactive visualization of [PACE](https://pace.gsfc.nasa.gov) chlorophyll-a data
 -   Interactive extraction and visualization of spectral signatures
