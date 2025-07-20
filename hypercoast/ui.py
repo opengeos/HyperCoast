@@ -221,7 +221,7 @@ class SpectralWidget(widgets.HBox):
                             "wavelength"
                         ].values
 
-                    da = da.swap_dims({"band": "wavelength"})
+                    # da = da.swap_dims({"band": "wavelength"})
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "PACE":
                     try:
                         da = extract_pace(ds, lat, lon)

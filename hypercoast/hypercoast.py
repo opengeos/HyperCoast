@@ -757,6 +757,7 @@ class Map(leafmap.Map):
         self,
         source,
         bands=None,
+        wavelengths=None,
         indexes=None,
         colormap=None,
         vmin=0,
@@ -784,8 +785,8 @@ class Map(leafmap.Map):
         Args:
             source (str): The path to the GeoTIFF file or the URL of the Cloud
                 Optimized GeoTIFF.
-            indexes (int, optional): The band(s) to use. Band indexing starts
-                at 1. Defaults to None.
+            bands (list, optional): The band indices to select. Defaults to None.
+            wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.
             colormap (str, optional): The name of the colormap from `matplotlib`
                 to use when plotting a single band. See
                     https://matplotlib.org/stable/gallery/color/colormap_reference.html.
@@ -809,18 +810,34 @@ class Map(leafmap.Map):
         if array_args is None:
             array_args = {}
 
-        if "wavelength" in kwargs:
-            bands = kwargs["wavelength"]
-            kwargs.pop("wavelength")
-
         if isinstance(source, str):
 
             source = read_tanager(source)
 
-        try:
-            image = tanager_to_image(source, bands=bands, method=method)
+        selected_wavelengths = []
+        if wavelengths is not None:
+            selected_wavelengths = wavelengths
+        elif bands is not None:
+            for band in bands:
+                if isinstance(band, (int, np.integer)) or (
+                    isinstance(band, float) and band < 500
+                ):
+                    # Treat as band index
+                    selected_wavelengths.append(
+                        source.coords["wavelength"].values[int(band)]
+                    )
+                else:
+                    # Treat as wavelength value
+                    selected_wavelengths.append(band)
 
-            if isinstance(bands, list) and len(bands) > 1:
+        else:
+            selected_wavelengths = [876.3, 675.88, 625.83]
+        try:
+            image = tanager_to_image(
+                source, wavelengths=selected_wavelengths, method=method
+            )
+
+            if isinstance(selected_wavelengths, list) and len(selected_wavelengths) > 1:
                 colormap = None
 
             self.add_raster(
@@ -842,7 +859,7 @@ class Map(leafmap.Map):
             self.cog_layer_dict[layer_name]["vmax"] = vmax
             self.cog_layer_dict[layer_name]["vmin"] = vmin
             self.cog_layer_dict[layer_name]["hyper"] = "TANAGER"
-            self._update_band_names(layer_name, bands)
+            self._update_band_names(layer_name, selected_wavelengths)
         except Exception as e:
             print(e)
 
