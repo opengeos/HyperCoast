@@ -1772,7 +1772,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                             <span class="s2">&quot;wavelength&quot;</span>
                         <span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-                    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">})</span>
+                    <span class="c1"># da = da.swap_dims({&quot;band&quot;: &quot;wavelength&quot;})</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">da</span> <span class="o">=</span> <span class="n">extract_pace</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
@@ -2164,7 +2164,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                         <span class="s2">&quot;wavelength&quot;</span>
                     <span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-                <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">})</span>
+                <span class="c1"># da = da.swap_dims({&quot;band&quot;: &quot;wavelength&quot;})</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_pace</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
