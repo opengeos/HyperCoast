@@ -1,0 +1,3 @@
+# tanager module
+
+::: hypercoast.tanager
