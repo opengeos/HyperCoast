@@ -759,8 +759,8 @@ class Map(leafmap.Map):
         bands=None,
         indexes=None,
         colormap=None,
-        vmin=None,
-        vmax=None,
+        vmin=0,
+        vmax=120,
         nodata=np.nan,
         attribution=None,
         layer_name="Tanager",
@@ -809,6 +809,10 @@ class Map(leafmap.Map):
         if array_args is None:
             array_args = {}
 
+        if "wavelength" in kwargs:
+            bands = kwargs["wavelength"]
+            kwargs.pop("wavelength")
+
         if isinstance(source, str):
 
             source = read_tanager(source)
@@ -835,6 +839,8 @@ class Map(leafmap.Map):
             )
 
             self.cog_layer_dict[layer_name]["xds"] = source
+            self.cog_layer_dict[layer_name]["vmax"] = vmax
+            self.cog_layer_dict[layer_name]["vmin"] = vmin
             self.cog_layer_dict[layer_name]["hyper"] = "TANAGER"
             self._update_band_names(layer_name, bands)
         except Exception as e:
@@ -855,12 +861,14 @@ class Map(leafmap.Map):
             if dtype == "XARRAY":
                 kwargs["indexes"] = [i + 1 for i in wvl_indexes]
             else:
-
-                kwargs["wavelengths"] = (
-                    xds.isel(wavelength=wvl_indexes)
-                    .coords["wavelength"]
-                    .values.tolist()
-                )
+                if "wavelength" in xds.dims:
+                    kwargs["wavelengths"] = (
+                        xds.isel(wavelength=wvl_indexes)
+                        .coords["wavelength"]
+                        .values.tolist()
+                    )
+                else:
+                    kwargs["bands"] = wvl_indexes
 
         if dtype == "EMIT":
             self.add_emit(xds, **kwargs)
@@ -872,6 +880,8 @@ class Map(leafmap.Map):
             self.add_neon(xds, **kwargs)
         elif dtype == "AVIRIS":
             self.add_aviris(xds, **kwargs)
+        elif dtype == "TANAGER":
+            self.add_tanager(xds, **kwargs)
         elif dtype == "XARRAY":
             kwargs.pop("wavelengths", None)
             self.add_dataset(xds, **kwargs)

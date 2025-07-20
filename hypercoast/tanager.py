@@ -34,8 +34,8 @@ def read_tanager(filepath, bands=None, stac_url=None, **kwargs):
     stac_item = requests.get(stac_url, timeout=10).json()
     bands_meta = stac_item["assets"]["basic_radiance_hdf5"]["eo:bands"]
 
-    wavelengths = np.array([b["center_wavelength"] for b in bands_meta])
-    fwhm = np.array([b.get("full_width_half_max", np.nan) for b in bands_meta])
+    wavelengths = np.array([b["center_wavelength"] * 1000 for b in bands_meta])
+    fwhm = np.array([b.get("full_width_half_max", np.nan) * 1000 for b in bands_meta])
 
     if bands is not None:
         wavelengths = wavelengths[bands]
