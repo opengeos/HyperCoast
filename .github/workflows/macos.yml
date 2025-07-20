@@ -24,16 +24,18 @@ jobs:
             - uses: actions/checkout@v4
 
             - name: Install uv
-              uses: astral-sh/setup-uv@v5
+              uses: astral-sh/setup-uv@v6
               with:
-                  version: "0.4.12"
+                  version: "0.4.16"
                   #   enable-cache: true
 
             - name: Set up Python ${{ matrix.config.py }}
               run: uv python install ${{ matrix.config.py }}
 
             - name: Install dependencies
-              run: uv sync --python ${{ matrix.config.py }}
+              run: |
+                  uv venv --python ${{ matrix.config.py }}
+                  uv pip install -e .
 
             - name: Test import
               run: |

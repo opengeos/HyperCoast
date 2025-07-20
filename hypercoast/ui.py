@@ -17,6 +17,7 @@ from .desis import extract_desis
 from .neon import extract_neon
 from .aviris import extract_aviris
 from .common import extract_spectral
+from .tanager import extract_tanager
 
 
 class SpectralWidget(widgets.HBox):
@@ -95,6 +96,7 @@ class SpectralWidget(widgets.HBox):
         )
 
         def settings_btn_click(_):
+
             self._host_map._add_layer_editor(
                 position="topright",
                 layer_dict=self._host_map.cog_layer_dict[layers_widget.value],
@@ -210,6 +212,16 @@ class SpectralWidget(widgets.HBox):
                         self._host_map._spectral_data["wavelength"] = ds[
                             "wavelength"
                         ].values
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "TANAGER":
+                    da = extract_tanager(ds, lat, lon)
+                    ylabel = "TOA Radiance"
+
+                    if "wavelength" not in self._host_map._spectral_data:
+                        self._host_map._spectral_data["wavelength"] = ds[
+                            "wavelength"
+                        ].values
+
+                    da = da.swap_dims({"band": "wavelength"})
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "PACE":
                     try:
                         da = extract_pace(ds, lat, lon)
@@ -260,8 +272,15 @@ class SpectralWidget(widgets.HBox):
                     color = np.random.rand(
                         3,
                     )
+                    if "wavelength" in da.coords:
+                        xlabel = "Wavelength (nm)"
+                        x_values = da["wavelength"].values
+                    else:
+                        xlabel = "Band"
+                        x_values = da.coords[da.dims[0]].values
+
                     plt.plot(
-                        da.coords[da.dims[0]].values,
+                        x_values,
                         da.values,
                         color=color,
                         axes_options=axes_options,

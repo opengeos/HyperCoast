@@ -47,7 +47,7 @@ plugins:
     - mkdocs-jupyter:
           include_source: True
           ignore_h1_titles: True
-          execute: True
+          execute: false
           allow_errors: false
           ignore: ["conf.py"]
           execute_ignore:
@@ -62,6 +62,7 @@ plugins:
                   "temperature.ipynb",
                   "pace_oci_l1.ipynb",
                   "chla_predict.ipynb",
+                  "pace_cyano.ipynb",
                   "_earthaccess.ipynb",
               ]
 
@@ -114,6 +115,7 @@ nav:
           - examples/pca.ipynb
           - examples/field_data.ipynb
           - examples/hypoxia.ipynb
+          - examples/tanager.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
