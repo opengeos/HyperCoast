@@ -50,21 +50,19 @@ def read_tanager(filepath, bands=None, stac_url=None, **kwargs):
         data = data[bands]
 
     coords = {
-        "band": np.arange(data.shape[0]),
-        "wavelength": ("band", wavelengths),
-        "fwhm": ("band", fwhm),
+        "wavelength": wavelengths,
+        "fwhm": ("wavelength", fwhm),
         "latitude": (("y", "x"), lat),
         "longitude": (("y", "x"), lon),
     }
 
-    da = xr.DataArray(data, dims=("band", "y", "x"), coords=coords, name="toa_radiance")
+    da = xr.DataArray(data, dims=("wavelength", "y", "x"), coords=coords, name="toa_radiance")
 
     ds = xr.Dataset(
         data_vars={"toa_radiance": da},
         coords={
-            "band": da.band,
-            "wavelength": ("band", wavelengths),
-            "fwhm": ("band", fwhm),
+            "wavelength": da.wavelength,
+            "fwhm": ("wavelength", fwhm),
             "latitude": (("y", "x"), lat),
             "longitude": (("y", "x"), lon),
         },
@@ -78,13 +76,14 @@ def read_tanager(filepath, bands=None, stac_url=None, **kwargs):
     return ds
 
 
-def grid_tanager(dataset, bands=None, method="nearest", **kwargs):
+def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwargs):
     """
     Grids a Tanager dataset based on latitude and longitude.
 
     Args:
         dataset (xr.Dataset): The Tanager dataset to grid.
-        bands (list): The bands to select.
+        bands (list, optional): The band indices to select. Defaults to None.
+        wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.
         method (str, optional): The method to use for griddata interpolation.
             Defaults to "nearest".
         **kwargs: Additional keyword arguments to pass to the xr.Dataset constructor.
@@ -95,26 +94,42 @@ def grid_tanager(dataset, bands=None, method="nearest", **kwargs):
     from scipy.interpolate import griddata
     from scipy.spatial import ConvexHull
 
-    if bands is None:
-        bands = dataset.coords["band"].values[0]
-
-    # Ensure wavelengths is a list
-    if not isinstance(bands, list):
-        bands = [bands]
+    # Priority: wavelengths > bands > default
+    if wavelengths is not None:
+        # Use wavelengths directly
+        if not isinstance(wavelengths, list):
+            wavelengths = [wavelengths]
+        selected_wavelengths = wavelengths
+    elif bands is not None:
+        # Convert bands to wavelengths
+        if not isinstance(bands, list):
+            bands = [bands]
+        
+        selected_wavelengths = []
+        for band in bands:
+            if isinstance(band, (int, np.integer)) or (isinstance(band, float) and band < 500):
+                # Treat as band index
+                selected_wavelengths.append(dataset.coords["wavelength"].values[int(band)])
+            else:
+                # Treat as wavelength value
+                selected_wavelengths.append(band)
+    else:
+        # Default to first wavelength
+        selected_wavelengths = [dataset.coords["wavelength"].values[0]]
 
     lat = dataset.latitude
     lon = dataset.longitude
 
-    # Find valid data points for any band to define spatial mask
-    first_band_data = dataset.sel(band=bands[0], method="nearest")["toa_radiance"]
-    overall_valid_mask = ~np.isnan(first_band_data.data) & (first_band_data.data > 0)
+    # Find valid data points for any wavelength to define spatial mask
+    first_wavelength_data = dataset.sel(wavelength=selected_wavelengths[0], method="nearest")["toa_radiance"]
+    overall_valid_mask = ~np.isnan(first_wavelength_data.data) & (first_wavelength_data.data > 0)
 
     if not np.any(overall_valid_mask):
         # No valid data, return empty grid
         grid_lat = np.linspace(lat.min().values, lat.max().values, lat.shape[0])
         grid_lon = np.linspace(lon.min().values, lon.max().values, lon.shape[1])
         grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
-        gridded_data_dict = {band: np.full_like(grid_lat_2d, np.nan) for band in bands}
+        gridded_data_dict = {wl: np.full_like(grid_lat_2d, np.nan) for wl in selected_wavelengths}
     else:
         # Get valid coordinates for spatial masking
         valid_lat = lat.data[overall_valid_mask]
@@ -148,8 +163,8 @@ def grid_tanager(dataset, bands=None, method="nearest", **kwargs):
             )
 
         gridded_data_dict = {}
-        for band in bands:
-            data = dataset.sel(band=band, method="nearest")["toa_radiance"]
+        for wl in selected_wavelengths:
+            data = dataset.sel(wavelength=wl, method="nearest")["toa_radiance"]
 
             # Mask nodata values (both NaN and zero values)
             data_flat = data.data.flatten()
@@ -166,19 +181,18 @@ def grid_tanager(dataset, bands=None, method="nearest", **kwargs):
                 )
                 # Apply spatial mask to prevent edge interpolation
                 gridded_data[~inside_hull] = np.nan
-            gridded_data_dict[band] = gridded_data
+            gridded_data_dict[wl] = gridded_data
 
-    wavelengths = dataset.wavelength.values[bands]
+    selected_wavelengths = list(gridded_data_dict.keys())
     # Create a 3D array with dimensions latitude, longitude, and wavelength
     gridded_data_3d = np.dstack(list(gridded_data_dict.values()))
 
     dataset2 = xr.Dataset(
-        {"toa_radiance": (("latitude", "longitude", "band"), gridded_data_3d)},
+        {"toa_radiance": (("latitude", "longitude", "wavelength"), gridded_data_3d)},
         coords={
             "latitude": ("latitude", grid_lat),
             "longitude": ("longitude", grid_lon),
-            "band": ("band", list(gridded_data_dict.keys())),
-            "wavelength": ("band", wavelengths),
+            "wavelength": ("wavelength", selected_wavelengths),
         },
         **kwargs,
     )
@@ -188,13 +202,14 @@ def grid_tanager(dataset, bands=None, method="nearest", **kwargs):
     return dataset2
 
 
-def tanager_to_image(dataset, bands=None, method="nearest", output=None, **kwargs):
+def tanager_to_image(dataset, bands=None, wavelengths=None, method="nearest", output=None, **kwargs):
     """
     Converts an Tanager dataset to an image.
 
     Args:
         dataset (xarray.Dataset or str): The dataset containing the EMIT data or the file path to the dataset.
-        bands (array-like, optional): The specific bands to select. If None, all bands are selected. Defaults to None.
+        bands (array-like, optional): The specific band indices to select. Defaults to None.
+        wavelengths (array-like, optional): The specific wavelength values to select. Takes priority over bands. Defaults to None.
         method (str, optional): The method to use for data interpolation. Defaults to "nearest".
         output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.
         **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.
@@ -207,7 +222,7 @@ def tanager_to_image(dataset, bands=None, method="nearest", output=None, **kwarg
     if isinstance(dataset, str):
         dataset = read_tanager(dataset, bands=bands)
 
-    grid = grid_tanager(dataset, bands=bands, method=method)
+    grid = grid_tanager(dataset, bands=bands, wavelengths=wavelengths, method=method)
 
     data = grid["toa_radiance"]
     data.rio.write_crs("EPSG:4326", inplace=True)
