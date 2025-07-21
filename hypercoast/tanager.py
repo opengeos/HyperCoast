@@ -78,7 +78,15 @@ def read_tanager(filepath, bands=None, stac_url=None, **kwargs):
     return ds
 
 
-def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwargs):
+def grid_tanager(
+    dataset,
+    bands=None,
+    wavelengths=None,
+    method="nearest",
+    row_range=None,
+    col_range=None,
+    **kwargs,
+):
     """
     Grids a Tanager dataset based on latitude and longitude.
 
@@ -88,6 +96,8 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
         wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.
         method (str, optional): The method to use for griddata interpolation.
             Defaults to "nearest".
+        row_range (tuple, optional): Row range (start_row, end_row) to subset the data. Defaults to None.
+        col_range (tuple, optional): Column range (start_col, end_col) to subset the data. Defaults to None.
         **kwargs: Additional keyword arguments to pass to the xr.Dataset constructor.
 
     Returns:
@@ -121,7 +131,61 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
                 selected_wavelengths.append(band)
     else:
         # Default to first wavelength
-        selected_wavelengths = [dataset.coords["wavelength"].values[0]]
+        selected_wavelengths = dataset.coords["wavelength"].values
+
+    # Apply spatial subset filtering if ranges are provided
+    if row_range is not None or col_range is not None:
+        # Get original array dimensions
+        y_size, x_size = dataset.latitude.shape
+
+        # Determine row and column indices
+        start_row = row_range[0] if row_range is not None else 0
+        end_row = row_range[1] if row_range is not None else y_size
+        start_col = col_range[0] if col_range is not None else 0
+        end_col = col_range[1] if col_range is not None else x_size
+
+        # Ensure indices are within bounds
+        start_row = max(0, min(start_row, y_size))
+        end_row = max(start_row, min(end_row, y_size))
+        start_col = max(0, min(start_col, x_size))
+        end_col = max(start_col, min(end_col, x_size))
+
+        # Subset the dataset using isel for y and x dimensions
+        dataset_subset = dataset.isel(
+            y=slice(start_row, end_row), x=slice(start_col, end_col)
+        )
+
+        # For subsets, return the data directly without interpolation to avoid artifacts
+        selected_data_list = []
+        for wl in selected_wavelengths:
+            data = dataset_subset.sel(wavelength=wl, method="nearest")["toa_radiance"]
+            selected_data_list.append(data.values)
+
+        # Stack wavelengths as the last dimension
+        gridded_data_3d = np.stack(selected_data_list, axis=-1)
+
+        # Create output dataset with proper coordinates
+        lat_subset = dataset_subset.latitude
+        lon_subset = dataset_subset.longitude
+
+        # Create coordinate arrays for the subset
+        y_coords = np.arange(gridded_data_3d.shape[0])
+        x_coords = np.arange(gridded_data_3d.shape[1])
+
+        dataset2 = xr.Dataset(
+            {"toa_radiance": (("y", "x", "wavelength"), gridded_data_3d)},
+            coords={
+                "y": ("y", y_coords),
+                "x": ("x", x_coords),
+                "wavelength": ("wavelength", selected_wavelengths),
+                "latitude": (("y", "x"), lat_subset.values),
+                "longitude": (("y", "x"), lon_subset.values),
+            },
+            **kwargs,
+        )
+
+        dataset2["toa_radiance"].rio.write_crs("EPSG:4326", inplace=True)
+        return dataset2
 
     lat = dataset.latitude
     lon = dataset.longitude
@@ -135,9 +199,22 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
     )
 
     if not np.any(overall_valid_mask):
-        # No valid data, return empty grid
-        grid_lat = np.linspace(lat.min().values, lat.max().values, lat.shape[0])
-        grid_lon = np.linspace(lon.min().values, lon.max().values, lon.shape[1])
+        # No valid data, return empty grid using valid lat/lon bounds
+        valid_lat_data = lat.data[~np.isnan(lat.data)]
+        valid_lon_data = lon.data[~np.isnan(lon.data)]
+
+        if len(valid_lat_data) == 0 or len(valid_lon_data) == 0:
+            # Fallback to original bounds if no valid subset data
+            grid_lat = np.linspace(lat.min().values, lat.max().values, lat.shape[0])
+            grid_lon = np.linspace(lon.min().values, lon.max().values, lon.shape[1])
+        else:
+            grid_lat = np.linspace(
+                valid_lat_data.min(), valid_lat_data.max(), lat.shape[0]
+            )
+            grid_lon = np.linspace(
+                valid_lon_data.min(), valid_lon_data.max(), lon.shape[1]
+            )
+
         grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
         gridded_data_dict = {
             wl: np.full_like(grid_lat_2d, np.nan) for wl in selected_wavelengths
@@ -147,32 +224,45 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
         valid_lat = lat.data[overall_valid_mask]
         valid_lon = lon.data[overall_valid_mask]
 
-        grid_lat = np.linspace(lat.min().values, lat.max().values, lat.shape[0])
-        grid_lon = np.linspace(lon.min().values, lon.max().values, lon.shape[1])
+        # Create grid based on valid data bounds (considering subset if applied)
+        grid_lat = np.linspace(valid_lat.min(), valid_lat.max(), lat.shape[0])
+        grid_lon = np.linspace(valid_lon.min(), valid_lon.max(), lon.shape[1])
         grid_lon_2d, grid_lat_2d = np.meshgrid(grid_lon, grid_lat)
 
-        # Create convex hull mask to limit interpolation to data coverage area
-        try:
-            hull = ConvexHull(np.column_stack([valid_lon, valid_lat]))
-            from matplotlib.path import Path
-
-            hull_path = Path(
-                np.column_stack([valid_lon[hull.vertices], valid_lat[hull.vertices]])
-            )
-            grid_points = np.column_stack(
-                [grid_lon_2d.flatten(), grid_lat_2d.flatten()]
-            )
-            inside_hull = hull_path.contains_points(grid_points).reshape(
-                grid_lat_2d.shape
-            )
-        except:
-            # Fallback: use simple bounding box
+        # For subsets, use simple bounding box instead of convex hull to avoid over-masking
+        if row_range is not None or col_range is not None:
+            # For subsets, just use bounding box
             inside_hull = (
                 (grid_lat_2d >= valid_lat.min())
                 & (grid_lat_2d <= valid_lat.max())
                 & (grid_lon_2d >= valid_lon.min())
                 & (grid_lon_2d <= valid_lon.max())
             )
+        else:
+            # For full dataset, use convex hull for better edge handling
+            try:
+                hull = ConvexHull(np.column_stack([valid_lon, valid_lat]))
+                from matplotlib.path import Path
+
+                hull_path = Path(
+                    np.column_stack(
+                        [valid_lon[hull.vertices], valid_lat[hull.vertices]]
+                    )
+                )
+                grid_points = np.column_stack(
+                    [grid_lon_2d.flatten(), grid_lat_2d.flatten()]
+                )
+                inside_hull = hull_path.contains_points(grid_points).reshape(
+                    grid_lat_2d.shape
+                )
+            except:
+                # Fallback: use simple bounding box
+                inside_hull = (
+                    (grid_lat_2d >= valid_lat.min())
+                    & (grid_lat_2d <= valid_lat.max())
+                    & (grid_lon_2d >= valid_lon.min())
+                    & (grid_lon_2d <= valid_lon.max())
+                )
 
         gridded_data_dict = {}
         for wl in selected_wavelengths:
@@ -181,6 +271,7 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
             # Mask nodata values (both NaN and zero values)
             data_flat = data.data.flatten()
             valid_mask = ~np.isnan(data_flat) & (data_flat > 0)
+
             if not np.any(valid_mask):
                 gridded_data = np.full_like(grid_lat_2d, np.nan)
             else:
@@ -191,8 +282,9 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
                     method=method,
                     fill_value=np.nan,
                 )
-                # Apply spatial mask to prevent edge interpolation
-                gridded_data[~inside_hull] = np.nan
+                # Apply spatial mask to prevent edge interpolation (only for full dataset)
+                if row_range is None and col_range is None:
+                    gridded_data[~inside_hull] = np.nan
             gridded_data_dict[wl] = gridded_data
 
     selected_wavelengths = list(gridded_data_dict.keys())
@@ -215,7 +307,14 @@ def grid_tanager(dataset, bands=None, wavelengths=None, method="nearest", **kwar
 
 
 def tanager_to_image(
-    dataset, bands=None, wavelengths=None, method="nearest", output=None, **kwargs
+    dataset,
+    bands=None,
+    wavelengths=None,
+    method="nearest",
+    row_range=None,
+    col_range=None,
+    output=None,
+    **kwargs,
 ):
     """
     Converts an Tanager dataset to an image.
@@ -225,6 +324,8 @@ def tanager_to_image(
         bands (array-like, optional): The specific band indices to select. Defaults to None.
         wavelengths (array-like, optional): The specific wavelength values to select. Takes priority over bands. Defaults to None.
         method (str, optional): The method to use for data interpolation. Defaults to "nearest".
+        row_range (tuple, optional): Row range (start_row, end_row) to subset the data. Defaults to None.
+        col_range (tuple, optional): Column range (start_col, end_col) to subset the data. Defaults to None.
         output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.
         **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.
 
@@ -236,7 +337,14 @@ def tanager_to_image(
     if isinstance(dataset, str):
         dataset = read_tanager(dataset, bands=bands)
 
-    grid = grid_tanager(dataset, bands=bands, wavelengths=wavelengths, method=method)
+    grid = grid_tanager(
+        dataset,
+        bands=bands,
+        wavelengths=wavelengths,
+        method=method,
+        row_range=row_range,
+        col_range=col_range,
+    )
 
     data = grid["toa_radiance"]
     data.rio.write_crs("EPSG:4326", inplace=True)
