@@ -36,7 +36,7 @@ from .pace import (
     pace_to_image,
     pace_chla_to_image,
 )
-from .tanager import read_tanager, tanager_to_image, extract_tanager
+from .tanager import read_tanager, tanager_to_image, extract_tanager, grid_tanager
 from .ui import SpectralWidget
 from .common import (
     download_file,

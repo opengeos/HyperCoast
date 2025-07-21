@@ -116,6 +116,7 @@ nav:
           - examples/field_data.ipynb
           - examples/hypoxia.ipynb
           - examples/tanager.ipynb
+          - examples/tanager_3d.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
