@@ -957,6 +957,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/tanager_3d/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tanager 3d
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1687,7 +1710,7 @@ longitude if they are not ranges. Defaults to 0.01.</p></td>
 
 
 <h2 id="hypercoast.tanager.grid_tanager" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">row_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">col_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.tanager.grid_tanager" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1733,6 +1756,18 @@ Defaults to "nearest".</p></td>
         <td><code>&#39;nearest&#39;</code></td>
       </tr>
       <tr>
+        <td><code>row_range</code></td>
+        <td><code>tuple</code></td>
+        <td><p>Row range (start_row, end_row) to subset the data. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>col_range</code></td>
+        <td><code>tuple</code></td>
+        <td><p>Column range (start_col, end_col) to subset the data. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>**kwargs</code></td>
         <td></td>
         <td><p>Additional keyword arguments to pass to the xr.Dataset constructor.</p></td>
@@ -1757,7 +1792,15 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_tanager</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">row_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">col_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Grids a Tanager dataset based on latitude and longitude.</span>
 
@@ -1767,6 +1810,8 @@ Defaults to "nearest".</p></td>
 <span class="sd">        wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for griddata interpolation.</span>
 <span class="sd">            Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        row_range (tuple, optional): Row range (start_row, end_row) to subset the data. Defaults to None.</span>
+<span class="sd">        col_range (tuple, optional): Column range (start_col, end_col) to subset the data. Defaults to None.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to pass to the xr.Dataset constructor.</span>
 
 <span class="sd">    Returns:</span>
@@ -1800,7 +1845,61 @@ Defaults to "nearest".</p></td>
                 <span class="n">selected_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">band</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Default to first wavelength</span>
-        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># Apply spatial subset filtering if ranges are provided</span>
+    <span class="k">if</span> <span class="n">row_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">col_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Get original array dimensions</span>
+        <span class="n">y_size</span><span class="p">,</span> <span class="n">x_size</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Determine row and column indices</span>
+        <span class="n">start_row</span> <span class="o">=</span> <span class="n">row_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">row_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">end_row</span> <span class="o">=</span> <span class="n">row_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">row_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">y_size</span>
+        <span class="n">start_col</span> <span class="o">=</span> <span class="n">col_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">col_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">end_col</span> <span class="o">=</span> <span class="n">col_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">col_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">x_size</span>
+
+        <span class="c1"># Ensure indices are within bounds</span>
+        <span class="n">start_row</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_row</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+        <span class="n">end_row</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start_row</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">end_row</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+        <span class="n">start_col</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_col</span><span class="p">,</span> <span class="n">x_size</span><span class="p">))</span>
+        <span class="n">end_col</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start_col</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">end_col</span><span class="p">,</span> <span class="n">x_size</span><span class="p">))</span>
+
+        <span class="c1"># Subset the dataset using isel for y and x dimensions</span>
+        <span class="n">dataset_subset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+            <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">start_row</span><span class="p">,</span> <span class="n">end_row</span><span class="p">),</span> <span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">start_col</span><span class="p">,</span> <span class="n">end_col</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># For subsets, return the data directly without interpolation to avoid artifacts</span>
+        <span class="n">selected_data_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">dataset_subset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wl</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span>
+            <span class="n">selected_data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="c1"># Stack wavelengths as the last dimension</span>
+        <span class="n">gridded_data_3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">selected_data_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Create output dataset with proper coordinates</span>
+        <span class="n">lat_subset</span> <span class="o">=</span> <span class="n">dataset_subset</span><span class="o">.</span><span class="n">latitude</span>
+        <span class="n">lon_subset</span> <span class="o">=</span> <span class="n">dataset_subset</span><span class="o">.</span><span class="n">longitude</span>
+
+        <span class="c1"># Create coordinate arrays for the subset</span>
+        <span class="n">y_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">gridded_data_3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">x_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">gridded_data_3d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">dataset2</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">),</span> <span class="n">gridded_data_3d</span><span class="p">)},</span>
+            <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">),</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">x_coords</span><span class="p">),</span>
+                <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">),</span>
+                <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lat_subset</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+                <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lon_subset</span><span class="o">.</span><span class="n">values</span><span class="p">),</span>
+            <span class="p">},</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">dataset2</span><span class="p">[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataset2</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">latitude</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">longitude</span>
@@ -1814,9 +1913,22 @@ Defaults to "nearest".</p></td>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">overall_valid_mask</span><span class="p">):</span>
-        <span class="c1"># No valid data, return empty grid</span>
-        <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># No valid data, return empty grid using valid lat/lon bounds</span>
+        <span class="n">valid_lat_data</span> <span class="o">=</span> <span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="p">)]</span>
+        <span class="n">valid_lon_data</span> <span class="o">=</span> <span class="n">lon</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">data</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_lat_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_lon_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Fallback to original bounds if no valid subset data</span>
+            <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="n">valid_lat_data</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">valid_lat_data</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="n">valid_lon_data</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">valid_lon_data</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span>
+
         <span class="n">grid_lon_2d</span><span class="p">,</span> <span class="n">grid_lat_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">)</span>
         <span class="n">gridded_data_dict</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">wl</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">grid_lat_2d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span>
@@ -1826,32 +1938,45 @@ Defaults to "nearest".</p></td>
         <span class="n">valid_lat</span> <span class="o">=</span> <span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">overall_valid_mask</span><span class="p">]</span>
         <span class="n">valid_lon</span> <span class="o">=</span> <span class="n">lon</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">overall_valid_mask</span><span class="p">]</span>
 
-        <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># Create grid based on valid data bounds (considering subset if applied)</span>
+        <span class="n">grid_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">valid_lat</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">valid_lat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">grid_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">valid_lon</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">valid_lon</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lon</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">grid_lon_2d</span><span class="p">,</span> <span class="n">grid_lat_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">)</span>
 
-        <span class="c1"># Create convex hull mask to limit interpolation to data coverage area</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">hull</span> <span class="o">=</span> <span class="n">ConvexHull</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">valid_lon</span><span class="p">,</span> <span class="n">valid_lat</span><span class="p">]))</span>
-            <span class="kn">from</span> <span class="nn">matplotlib.path</span> <span class="kn">import</span> <span class="n">Path</span>
-
-            <span class="n">hull_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">valid_lon</span><span class="p">[</span><span class="n">hull</span><span class="o">.</span><span class="n">vertices</span><span class="p">],</span> <span class="n">valid_lat</span><span class="p">[</span><span class="n">hull</span><span class="o">.</span><span class="n">vertices</span><span class="p">]])</span>
-            <span class="p">)</span>
-            <span class="n">grid_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">grid_lon_2d</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">grid_lat_2d</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
-            <span class="p">)</span>
-            <span class="n">inside_hull</span> <span class="o">=</span> <span class="n">hull_path</span><span class="o">.</span><span class="n">contains_points</span><span class="p">(</span><span class="n">grid_points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                <span class="n">grid_lat_2d</span><span class="o">.</span><span class="n">shape</span>
-            <span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="c1"># Fallback: use simple bounding box</span>
+        <span class="c1"># For subsets, use simple bounding box instead of convex hull to avoid over-masking</span>
+        <span class="k">if</span> <span class="n">row_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">col_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># For subsets, just use bounding box</span>
             <span class="n">inside_hull</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">(</span><span class="n">grid_lat_2d</span> <span class="o">&gt;=</span> <span class="n">valid_lat</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
                 <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid_lat_2d</span> <span class="o">&lt;=</span> <span class="n">valid_lat</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
                 <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid_lon_2d</span> <span class="o">&gt;=</span> <span class="n">valid_lon</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
                 <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid_lon_2d</span> <span class="o">&lt;=</span> <span class="n">valid_lon</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
             <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># For full dataset, use convex hull for better edge handling</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">hull</span> <span class="o">=</span> <span class="n">ConvexHull</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">valid_lon</span><span class="p">,</span> <span class="n">valid_lat</span><span class="p">]))</span>
+                <span class="kn">from</span> <span class="nn">matplotlib.path</span> <span class="kn">import</span> <span class="n">Path</span>
+
+                <span class="n">hull_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">valid_lon</span><span class="p">[</span><span class="n">hull</span><span class="o">.</span><span class="n">vertices</span><span class="p">],</span> <span class="n">valid_lat</span><span class="p">[</span><span class="n">hull</span><span class="o">.</span><span class="n">vertices</span><span class="p">]]</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">grid_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">grid_lon_2d</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">grid_lat_2d</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+                <span class="p">)</span>
+                <span class="n">inside_hull</span> <span class="o">=</span> <span class="n">hull_path</span><span class="o">.</span><span class="n">contains_points</span><span class="p">(</span><span class="n">grid_points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                    <span class="n">grid_lat_2d</span><span class="o">.</span><span class="n">shape</span>
+                <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="c1"># Fallback: use simple bounding box</span>
+                <span class="n">inside_hull</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">grid_lat_2d</span> <span class="o">&gt;=</span> <span class="n">valid_lat</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+                    <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid_lat_2d</span> <span class="o">&lt;=</span> <span class="n">valid_lat</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+                    <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid_lon_2d</span> <span class="o">&gt;=</span> <span class="n">valid_lon</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+                    <span class="o">&amp;</span> <span class="p">(</span><span class="n">grid_lon_2d</span> <span class="o">&lt;=</span> <span class="n">valid_lon</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+                <span class="p">)</span>
 
         <span class="n">gridded_data_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
@@ -1860,6 +1985,7 @@ Defaults to "nearest".</p></td>
             <span class="c1"># Mask nodata values (both NaN and zero values)</span>
             <span class="n">data_flat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
             <span class="n">valid_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data_flat</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data_flat</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid_mask</span><span class="p">):</span>
                 <span class="n">gridded_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">grid_lat_2d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1870,8 +1996,9 @@ Defaults to "nearest".</p></td>
                     <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
                     <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="c1"># Apply spatial mask to prevent edge interpolation</span>
-                <span class="n">gridded_data</span><span class="p">[</span><span class="o">~</span><span class="n">inside_hull</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="c1"># Apply spatial mask to prevent edge interpolation (only for full dataset)</span>
+                <span class="k">if</span> <span class="n">row_range</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">col_range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">gridded_data</span><span class="p">[</span><span class="o">~</span><span class="n">inside_hull</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">gridded_data_dict</span><span class="p">[</span><span class="n">wl</span><span class="p">]</span> <span class="o">=</span> <span class="n">gridded_data</span>
 
     <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gridded_data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -2049,7 +2176,7 @@ Defaults to "nearest".</p></td>
 
 
 <h2 id="hypercoast.tanager.tanager_to_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">tanager_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">tanager_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">row_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">col_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.tanager.tanager_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2094,6 +2221,18 @@ Defaults to "nearest".</p></td>
         <td><code>&#39;nearest&#39;</code></td>
       </tr>
       <tr>
+        <td><code>row_range</code></td>
+        <td><code>tuple</code></td>
+        <td><p>Row range (start_row, end_row) to subset the data. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>col_range</code></td>
+        <td><code>tuple</code></td>
+        <td><p>Column range (start_col, end_col) to subset the data. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>output</code></td>
         <td><code>str</code></td>
         <td><p>The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</p></td>
@@ -2125,7 +2264,14 @@ Defaults to "nearest".</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tanager_to_image</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">row_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">col_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an Tanager dataset to an image.</span>
@@ -2135,6 +2281,8 @@ Defaults to "nearest".</p></td>
 <span class="sd">        bands (array-like, optional): The specific band indices to select. Defaults to None.</span>
 <span class="sd">        wavelengths (array-like, optional): The specific wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for data interpolation. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        row_range (tuple, optional): Row range (start_row, end_row) to subset the data. Defaults to None.</span>
+<span class="sd">        col_range (tuple, optional): Column range (start_col, end_col) to subset the data. Defaults to None.</span>
 <span class="sd">        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.</span>
 
@@ -2146,7 +2294,14 @@ Defaults to "nearest".</p></td>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">)</span>
 
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">grid_tanager</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">,</span>
+        <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span>
+        <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+        <span class="n">row_range</span><span class="o">=</span><span class="n">row_range</span><span class="p">,</span>
+        <span class="n">col_range</span><span class="o">=</span><span class="n">col_range</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span>
     <span class="n">data</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
