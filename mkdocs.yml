@@ -117,6 +117,7 @@ nav:
           - examples/hypoxia.ipynb
           - examples/tanager.ipynb
           - examples/tanager_3d.ipynb
+          - examples/prisma.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
@@ -129,4 +130,5 @@ nav:
           - hypercoast module: hypercoast.md
           - neon module: neon.md
           - pace module: pace.md
+          - prisma module: prisma.md
           - ui module: ui.md
