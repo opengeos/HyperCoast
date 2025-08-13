@@ -1,0 +1,3 @@
+# prisma module
+
+::: hypercoast.prisma
