@@ -67,6 +67,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "advait-0",
+      "name": "Advait Dhamorikar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/99654265?v=4",
+      "profile": "http://advait-0.github.io",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
