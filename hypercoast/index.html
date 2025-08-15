@@ -1007,6 +1007,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/enmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Enmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1381,6 +1404,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_enmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_enmap()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.add_field_data" class="md-nav__link">
     <span class="md-ellipsis">
       add_field_data()
@@ -1596,6 +1628,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../enmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    enmap module
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ui/" class="md-nav__link">
         
   
@@ -1704,6 +1759,15 @@
   <a href="#hypercoast.hypercoast.Map.add_emit" class="md-nav__link">
     <span class="md-ellipsis">
       add_emit()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_enmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_enmap()
     </span>
   </a>
   
@@ -2686,6 +2750,91 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PRISMA&quot;</span>
+
+    <span class="k">def</span> <span class="nf">add_enmap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">,</span>
+        <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;EnMAP&quot;</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an EnMAP dataset to the map.</span>
+
+<span class="sd">        This function reads an EnMAP hyperspectral dataset, optionally selects</span>
+<span class="sd">        specific wavelengths, converts the data to an image, and adds it as a</span>
+<span class="sd">        raster layer to the map. The dataset can be provided as a file path or as</span>
+<span class="sd">        an xarray Dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source (str or xarray.Dataset): The path to the EnMAP file or an</span>
+<span class="sd">                in-memory xarray Dataset containing EnMAP data.</span>
+<span class="sd">            wavelengths (list or np.ndarray, optional): Specific wavelengths to</span>
+<span class="sd">                select from the dataset. If None, all wavelengths are used.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            indexes (int or list, optional): The band(s) to display. Band</span>
+<span class="sd">                indexing starts at 1. Defaults to None.</span>
+<span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">                to use when plotting a single band.</span>
+<span class="sd">            vmin (float, optional): The minimum value for color mapping when</span>
+<span class="sd">                plotting a single band. Defaults to 0.</span>
+<span class="sd">            vmax (float, optional): The maximum value for color mapping when</span>
+<span class="sd">                plotting a single band. Defaults to 0.5.</span>
+<span class="sd">            nodata (float, optional): Value in the raster to interpret as</span>
+<span class="sd">                no-data. Defaults to np.nan.</span>
+<span class="sd">            attribution (str, optional): Attribution for the source raster.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            layer_name (str, optional): The name to assign to the map layer.</span>
+<span class="sd">                Defaults to &quot;EnMAP&quot;.</span>
+<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom the map to the</span>
+<span class="sd">                extent of the layer after adding it. Defaults to True.</span>
+<span class="sd">            visible (bool, optional): Whether the layer should be visible when</span>
+<span class="sd">                first added. Defaults to True.</span>
+<span class="sd">            array_args (dict, optional): Additional keyword arguments to pass to</span>
+<span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">            method (str, optional): Method to use for wavelength interpolation</span>
+<span class="sd">                when selecting bands. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">            **kwargs: Additional keyword arguments passed to `add_raster`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">xds</span> <span class="o">=</span> <span class="n">read_enmap</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xds</span> <span class="o">=</span> <span class="n">source</span>
+
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+            <span class="n">temp_path</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="n">enmap_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">temp_path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+            <span class="n">temp_path</span><span class="p">,</span>
+            <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+            <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+            <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+            <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+            <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+            <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EnMAP&quot;</span>
 
     <span class="k">def</span> <span class="nf">add_tanager</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3845,6 +3994,229 @@ True.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="hypercoast.hypercoast.Map.add_enmap" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_enmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;EnMAP&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.add_enmap" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Add an EnMAP dataset to the map.</p>
+<p>This function reads an EnMAP hyperspectral dataset, optionally selects
+specific wavelengths, converts the data to an image, and adds it as a
+raster layer to the map. The dataset can be provided as a file path or as
+an xarray Dataset.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>source</code></td>
+        <td><code>str or xarray.Dataset</code></td>
+        <td><p>The path to the EnMAP file or an
+in-memory xarray Dataset containing EnMAP data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>list or np.ndarray</code></td>
+        <td><p>Specific wavelengths to
+select from the dataset. If None, all wavelengths are used.
+Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>indexes</code></td>
+        <td><code>int or list</code></td>
+        <td><p>The band(s) to display. Band
+indexing starts at 1. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>colormap</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the colormap from <code>matplotlib</code>
+to use when plotting a single band.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>vmin</code></td>
+        <td><code>float</code></td>
+        <td><p>The minimum value for color mapping when
+plotting a single band. Defaults to 0.</p></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>vmax</code></td>
+        <td><code>float</code></td>
+        <td><p>The maximum value for color mapping when
+plotting a single band. Defaults to 0.5.</p></td>
+        <td><code>0.5</code></td>
+      </tr>
+      <tr>
+        <td><code>nodata</code></td>
+        <td><code>float</code></td>
+        <td><p>Value in the raster to interpret as
+no-data. Defaults to np.nan.</p></td>
+        <td><code>nan</code></td>
+      </tr>
+      <tr>
+        <td><code>attribution</code></td>
+        <td><code>str</code></td>
+        <td><p>Attribution for the source raster.
+Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>layer_name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name to assign to the map layer.
+Defaults to "EnMAP".</p></td>
+        <td><code>&#39;EnMAP&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>zoom_to_layer</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to zoom the map to the
+extent of the layer after adding it. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>visible</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether the layer should be visible when
+first added. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>array_args</code></td>
+        <td><code>dict</code></td>
+        <td><p>Additional keyword arguments to pass to
+<code>array_to_memory_file</code> when reading the raster. Defaults to {}.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>method</code></td>
+        <td><code>str</code></td>
+        <td><p>Method to use for wavelength interpolation
+when selecting bands. Defaults to "nearest".</p></td>
+        <td><code>&#39;nearest&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional keyword arguments passed to <code>add_raster</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_enmap</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">source</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+    <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;EnMAP&quot;</span><span class="p">,</span>
+    <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add an EnMAP dataset to the map.</span>
+
+<span class="sd">    This function reads an EnMAP hyperspectral dataset, optionally selects</span>
+<span class="sd">    specific wavelengths, converts the data to an image, and adds it as a</span>
+<span class="sd">    raster layer to the map. The dataset can be provided as a file path or as</span>
+<span class="sd">    an xarray Dataset.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source (str or xarray.Dataset): The path to the EnMAP file or an</span>
+<span class="sd">            in-memory xarray Dataset containing EnMAP data.</span>
+<span class="sd">        wavelengths (list or np.ndarray, optional): Specific wavelengths to</span>
+<span class="sd">            select from the dataset. If None, all wavelengths are used.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        indexes (int or list, optional): The band(s) to display. Band</span>
+<span class="sd">            indexing starts at 1. Defaults to None.</span>
+<span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
+<span class="sd">            to use when plotting a single band.</span>
+<span class="sd">        vmin (float, optional): The minimum value for color mapping when</span>
+<span class="sd">            plotting a single band. Defaults to 0.</span>
+<span class="sd">        vmax (float, optional): The maximum value for color mapping when</span>
+<span class="sd">            plotting a single band. Defaults to 0.5.</span>
+<span class="sd">        nodata (float, optional): Value in the raster to interpret as</span>
+<span class="sd">            no-data. Defaults to np.nan.</span>
+<span class="sd">        attribution (str, optional): Attribution for the source raster.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        layer_name (str, optional): The name to assign to the map layer.</span>
+<span class="sd">            Defaults to &quot;EnMAP&quot;.</span>
+<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom the map to the</span>
+<span class="sd">            extent of the layer after adding it. Defaults to True.</span>
+<span class="sd">        visible (bool, optional): Whether the layer should be visible when</span>
+<span class="sd">            first added. Defaults to True.</span>
+<span class="sd">        array_args (dict, optional): Additional keyword arguments to pass to</span>
+<span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
+<span class="sd">        method (str, optional): Method to use for wavelength interpolation</span>
+<span class="sd">            when selecting bands. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        **kwargs: Additional keyword arguments passed to `add_raster`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">xds</span> <span class="o">=</span> <span class="n">read_enmap</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">xds</span> <span class="o">=</span> <span class="n">source</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+        <span class="n">temp_path</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="n">enmap_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">temp_path</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+        <span class="n">temp_path</span><span class="p">,</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+        <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+        <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+        <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EnMAP&quot;</span>
 </code></pre></div>
         </details>
     </div>
