@@ -118,6 +118,7 @@ nav:
           - examples/tanager.ipynb
           - examples/tanager_3d.ipynb
           - examples/prisma.ipynb
+          - examples/enmap.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
@@ -131,4 +132,5 @@ nav:
           - neon module: neon.md
           - pace module: pace.md
           - prisma module: prisma.md
+          - enmap module: enmap.md
           - ui module: ui.md

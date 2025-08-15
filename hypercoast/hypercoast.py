@@ -14,6 +14,7 @@ from typing import Union
 from .aviris import aviris_to_image, read_aviris, extract_aviris
 from .desis import desis_to_image, read_desis, extract_desis, filter_desis
 from .prisma import read_prisma, prisma_to_image, extract_prisma
+from .enmap import read_enmap, enmap_to_image, extract_enmap
 from .emit import (
     emit_to_image,
     read_emit,
@@ -843,6 +844,91 @@ class Map(leafmap.Map):
 
         self.cog_layer_dict[layer_name]["xds"] = xds
         self.cog_layer_dict[layer_name]["hyper"] = "PRISMA"
+
+    def add_enmap(
+        self,
+        source,
+        wavelengths=None,
+        indexes=None,
+        colormap=None,
+        vmin=0,
+        vmax=0.5,
+        nodata=np.nan,
+        attribution=None,
+        layer_name="EnMAP",
+        zoom_to_layer=True,
+        visible=True,
+        array_args=None,
+        method="nearest",
+        **kwargs,
+    ):
+        """Add an EnMAP dataset to the map.
+
+        This function reads an EnMAP hyperspectral dataset, optionally selects
+        specific wavelengths, converts the data to an image, and adds it as a
+        raster layer to the map. The dataset can be provided as a file path or as
+        an xarray Dataset.
+
+        Args:
+            source (str or xarray.Dataset): The path to the EnMAP file or an
+                in-memory xarray Dataset containing EnMAP data.
+            wavelengths (list or np.ndarray, optional): Specific wavelengths to
+                select from the dataset. If None, all wavelengths are used.
+                Defaults to None.
+            indexes (int or list, optional): The band(s) to display. Band
+                indexing starts at 1. Defaults to None.
+            colormap (str, optional): The name of the colormap from `matplotlib`
+                to use when plotting a single band.
+            vmin (float, optional): The minimum value for color mapping when
+                plotting a single band. Defaults to 0.
+            vmax (float, optional): The maximum value for color mapping when
+                plotting a single band. Defaults to 0.5.
+            nodata (float, optional): Value in the raster to interpret as
+                no-data. Defaults to np.nan.
+            attribution (str, optional): Attribution for the source raster.
+                Defaults to None.
+            layer_name (str, optional): The name to assign to the map layer.
+                Defaults to "EnMAP".
+            zoom_to_layer (bool, optional): Whether to zoom the map to the
+                extent of the layer after adding it. Defaults to True.
+            visible (bool, optional): Whether the layer should be visible when
+                first added. Defaults to True.
+            array_args (dict, optional): Additional keyword arguments to pass to
+                `array_to_memory_file` when reading the raster. Defaults to {}.
+            method (str, optional): Method to use for wavelength interpolation
+                when selecting bands. Defaults to "nearest".
+            **kwargs: Additional keyword arguments passed to `add_raster`.
+        """
+        if array_args is None:
+            array_args = {}
+
+        if isinstance(source, str):
+            xds = read_enmap(source, wavelengths=wavelengths, method=method)
+        else:
+            xds = source
+
+        with tempfile.NamedTemporaryFile(suffix=".tif", delete=False) as tmp:
+            temp_path = tmp.name
+
+        enmap_to_image(xds, wavelengths=wavelengths, method=method, output=temp_path)
+
+        self.add_raster(
+            temp_path,
+            indexes=indexes,
+            colormap=colormap,
+            vmin=vmin,
+            vmax=vmax,
+            nodata=nodata,
+            attribution=attribution,
+            layer_name=layer_name,
+            zoom_to_layer=zoom_to_layer,
+            visible=visible,
+            array_args=array_args,
+            **kwargs,
+        )
+
+        self.cog_layer_dict[layer_name]["xds"] = xds
+        self.cog_layer_dict[layer_name]["hyper"] = "EnMAP"
 
     def add_tanager(
         self,
