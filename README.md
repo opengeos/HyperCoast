@@ -1,9 +1,7 @@
 # HyperCoast
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![image](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/opengeos/HyperCoast/blob/main)
@@ -120,6 +118,7 @@ HyperCoast is released under the MIT License. However, some of the modules in Hy
       <td align="center" valign="top" width="14.28%"><a href="https://slowy-portofolio-website.vercel.app/"><img src="https://avatars.githubusercontent.com/u/40540262?v=4?s=100" width="100px;" alt="arfy slowy"/><br /><sub><b>arfy slowy</b></sub></a><br /><a href="https://github.com/opengeos/HyperCoast/commits?author=slowy07" title="Code">💻</a> <a href="#maintenance-slowy07" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://tucson.ars.ag.gov"><img src="https://avatars.githubusercontent.com/u/20215136?v=4?s=100" width="100px;" alt="Guillermo E. Ponce-Campos"/><br /><sub><b>Guillermo E. Ponce-Campos</b></sub></a><br /><a href="https://github.com/opengeos/HyperCoast/commits?author=gponce-ars" title="Code">💻</a> <a href="https://github.com/opengeos/HyperCoast/issues?q=author%3Agponce-ars" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.hereon.de"><img src="https://avatars.githubusercontent.com/u/2676409?v=4?s=100" width="100px;" alt="Carsten Lemmen"/><br /><sub><b>Carsten Lemmen</b></sub></a><br /><a href="https://github.com/opengeos/HyperCoast/pulls?q=is%3Apr+reviewed-by%3Aplatipodium" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://advait-0.github.io"><img src="https://avatars.githubusercontent.com/u/99654265?v=4?s=100" width="100px;" alt="Advait Dhamorikar"/><br /><sub><b>Advait Dhamorikar</b></sub></a><br /><a href="https://github.com/opengeos/HyperCoast/commits?author=advait-0" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
