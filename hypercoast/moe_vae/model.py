@@ -4,13 +4,17 @@ This module implements VAE and MoE-VAE architectures for remote sensing data
 analysis, including sparse gating mechanisms and training utilities.
 """
 
-from pytorch_lightning import LightningModule
-import torch.nn as nn
-import torch
-import torch.nn.functional as F
-from torch.distributions.normal import Normal
 import os
 import numpy as np
+
+try:
+    from pytorch_lightning import LightningModule
+    import torch.nn as nn
+    import torch
+    import torch.nn.functional as F
+    from torch.distributions.normal import Normal
+except ImportError:
+    print("Please install pytorch-lightning")
 
 
 class VAE(LightningModule):

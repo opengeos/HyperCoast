@@ -42,7 +42,7 @@ extra = [
     "scikit-learn",
 ]
 
-torch = ["torch", "seaborn"]
+torch = ["torch", "seaborn", "pytorch-lightning"]
 
 [tool]
 [tool.setuptools.packages.find]

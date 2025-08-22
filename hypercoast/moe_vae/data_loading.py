@@ -5,12 +5,16 @@ remote sensing data for training and inference with VAE and MoE-VAE models.
 It includes support for various data formats and preprocessing techniques.
 """
 
-import torch
 import numpy as np
-from torch.utils.data import DataLoader, TensorDataset
-from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
-from torch.utils.data import DataLoader, TensorDataset, Subset
+
+try:
+    import torch
+    from torch.utils.data import DataLoader, TensorDataset
+    from sklearn.preprocessing import MinMaxScaler
+    from torch.utils.data import DataLoader, TensorDataset, Subset
+except ImportError:
+    print("Please install torch and scikit-learn")
 
 try:
     from .preprocess import RobustMinMaxScaler, LogScaler
