@@ -8,13 +8,140 @@ import os
 import numpy as np
 
 try:
-    from pytorch_lightning import LightningModule
-    import torch.nn as nn
     import torch
+    import torch.nn as nn
     import torch.nn.functional as F
     from torch.distributions.normal import Normal
+
+    HAS_TORCH = True
+
+    try:
+        from pytorch_lightning import LightningModule
+
+        HAS_LIGHTNING = True
+    except ImportError:
+        # Fallback base class when pytorch-lightning is not available
+        LightningModule = nn.Module
+        HAS_LIGHTNING = False
+
 except ImportError:
-    pass
+    # Fallback when PyTorch is not available
+    HAS_TORCH = False
+    HAS_LIGHTNING = False
+
+    class MockModule:
+        """Mock base class when PyTorch is not available."""
+
+        def __init__(self, *args, **kwargs):
+            raise ImportError(
+                "PyTorch is required for MoE-VAE models. "
+                "Please install PyTorch: pip install torch"
+            )
+
+    # Mock classes and functions
+    LightningModule = MockModule
+    nn = type(
+        "MockNN",
+        (),
+        {
+            "Module": MockModule,
+            "ModuleList": MockModule,
+            "Linear": MockModule,
+            "Sequential": MockModule,
+            "ReLU": MockModule,
+            "LeakyReLU": MockModule,
+            "Tanh": MockModule,
+            "Sigmoid": MockModule,
+            "BatchNorm1d": MockModule,
+            "LayerNorm": MockModule,
+            "Dropout": MockModule,
+            "Softplus": MockModule,
+            "Softmax": MockModule,
+            "Parameter": MockModule,
+        },
+    )()
+
+    class MockTensor:
+        """Mock tensor class when PyTorch is not available."""
+
+        pass
+
+    class MockTorch:
+        Tensor = MockTensor
+
+        @staticmethod
+        def zeros(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def tensor(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def randn_like(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def split(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def cat(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def zeros_like(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def exp(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def sum(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def nonzero(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def gather(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def clamp(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def arange(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def unsqueeze(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def gt(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+        @staticmethod
+        def where(*args, **kwargs):
+            raise ImportError("PyTorch is required")
+
+    torch = MockTorch()
+    F = type(
+        "MockF",
+        (),
+        {
+            "l1_loss": lambda *args, **kwargs: None,
+            "mse_loss": lambda *args, **kwargs: None,
+        },
+    )()
+
+    class Normal:
+        def __init__(self, *args, **kwargs):
+            raise ImportError("PyTorch is required")
 
 
 class VAE(LightningModule):
