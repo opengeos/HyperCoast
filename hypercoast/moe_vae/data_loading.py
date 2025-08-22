@@ -14,7 +14,7 @@ try:
     from sklearn.preprocessing import MinMaxScaler
     from torch.utils.data import DataLoader, TensorDataset, Subset
 except ImportError:
-    print("Please install torch and scikit-learn")
+    pass
 
 try:
     from .preprocess import RobustMinMaxScaler, LogScaler

@@ -14,7 +14,7 @@ try:
     import torch.nn.functional as F
     from torch.distributions.normal import Normal
 except ImportError:
-    print("Please install pytorch-lightning")
+    pass
 
 
 class VAE(LightningModule):

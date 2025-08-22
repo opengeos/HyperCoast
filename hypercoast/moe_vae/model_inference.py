@@ -3,18 +3,23 @@
 This module provides functions for preprocessing and inference using MoE-VAE models.
 """
 
-import torch
-import numpy as np
-from torch.utils.data import DataLoader, TensorDataset
-import torch.nn.functional as F
-from sklearn.preprocessing import MinMaxScaler
-import matplotlib.pyplot as plt
 import os
+import numpy as np
+import matplotlib.pyplot as plt
 import netCDF4 as nc
-import hypercoast
-from scipy.interpolate import griddata
-from torch.utils.data import DataLoader, TensorDataset
 from netCDF4 import Dataset as nc
+
+try:
+    import torch
+    from torch.utils.data import DataLoader, TensorDataset
+    import torch.nn.functional as F
+    from sklearn.preprocessing import MinMaxScaler
+    from scipy.interpolate import griddata
+    from torch.utils.data import DataLoader, TensorDataset
+except ImportError:
+    pass
+
+from ..pace import read_pace
 
 
 def preprocess_pace_data_Robust(
@@ -38,7 +43,7 @@ def preprocess_pace_data_Robust(
     """
     print(f"📥 Start processing: {nc_path}")
     try:
-        PACE_dataset = hypercoast.read_pace(nc_path)
+        PACE_dataset = read_pace(nc_path)
         print("✅ [1] Successfully read PACE data")
 
         da = PACE_dataset["Rrs"]
