@@ -367,7 +367,7 @@ def preprocess_pace_data_minmax(
     """
     try:
         # === Load data ===
-        PACE_dataset = hypercoast.read_pace(nc_path)
+        PACE_dataset = read_pace(nc_path)
         da = PACE_dataset["Rrs"]
         Rrs = da.values  # [lat, lon, bands]
         latitude = da.latitude.values
