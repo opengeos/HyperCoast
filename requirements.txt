@@ -8,9 +8,11 @@ localtileserver
 mapclassify
 netcdf4
 numpy
+openpyxl
 psutil
 rioxarray
 s3fs
 scikit-learn
 scipy
+seaborn
 xarray

@@ -119,6 +119,7 @@ nav:
           - examples/tanager_3d.ipynb
           - examples/prisma.ipynb
           - examples/enmap.ipynb
+          - examples/moe_vae.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
@@ -134,3 +135,8 @@ nav:
           - prisma module: prisma.md
           - enmap module: enmap.md
           - ui module: ui.md
+          - moe_vae modules
+            - data_loading module - moe_vae/data_loading.md
+            - model_inference module - moe_vae/model_inference.md
+            - model module - moe_vae/model.md
+            - plot_and_save module - moe_vae/plot_and_save.md
