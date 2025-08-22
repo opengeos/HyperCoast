@@ -10,3 +10,4 @@ __version__ = "0.13.0"
 
 
 from .hypercoast import *
+from . import moe_vae
