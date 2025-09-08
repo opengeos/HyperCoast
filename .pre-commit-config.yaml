@@ -33,6 +33,6 @@ repos:
           - id: nbstripout
 
     - repo: https://github.com/fsfe/reuse-tool
-      rev: v5.0.2
+      rev: v5.1.1
       hooks:
           - id: reuse
