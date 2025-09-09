@@ -2634,17 +2634,6 @@ save_to_csv(actuals, os.path.join(save_dir, "actuals.csv"))</div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="visualize-the-results">Visualize the results<a class="anchor-link" href="#visualize-the-results">¶</a></h2>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -2664,19 +2653,24 @@ save_to_csv(actuals, os.path.join(save_dir, "actuals.csv"))</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">rgb_image_tif_file</span> <span class="o">=</span> <span class="s2">"data/snapshot-2024-08-10T00_00_00Z.tif"</span>
-<span class="n">output_file</span> <span class="o">=</span> <span class="s2">"20241024-2.png"</span>
-<span class="n">title</span> <span class="o">=</span> <span class="s2">"PACE Chla Prediction"</span>
-<span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="n">cmap</span> <span class="o">=</span> <span class="s2">"jet"</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">geotiff_file</span> <span class="o">=</span> <span class="n">chla_data_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".npy"</span><span class="p">,</span> <span class="s2">".tif"</span><span class="p">)</span>
+<span class="n">npy_to_geotiff</span><span class="p">(</span><span class="n">chla_data_file</span><span class="p">,</span> <span class="n">geotiff_file</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-11">rgb_image_tif_file = "data/snapshot-2024-08-10T00_00_00Z.tif"
-output_file = "20241024-2.png"
-title = "PACE Chla Prediction"
-figsize = (12, 8)
-cmap = "jet"</div>
+<div class="clipboard-copy-txt" id="cell-11">geotiff_file = chla_data_file.replace(".npy", ".tif")
+npy_to_geotiff(chla_data_file, geotiff_file)</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="visualize-the-results">Visualize the results<a class="anchor-link" href="#visualize-the-results">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2699,9 +2693,44 @@ cmap = "jet"</div>
 </div>
 </clipboard-copy>
 </div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">rgb_image_tif_file</span> <span class="o">=</span> <span class="s2">"data/snapshot-2024-08-10T00_00_00Z.tif"</span>
+<span class="n">output_file</span> <span class="o">=</span> <span class="s2">"20241024-2.png"</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s2">"PACE Chla Prediction"</span>
+<span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="s2">"jet"</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-12">rgb_image_tif_file = "data/snapshot-2024-08-10T00_00_00Z.tif"
+output_file = "20241024-2.png"
+title = "PACE Chla Prediction"
+figsize = (12, 8)
+cmap = "jet"</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-13">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">chla_viz</span><span class="p">(</span><span class="n">rgb_image_tif_file</span><span class="p">,</span> <span class="n">chla_data_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">figsize</span><span class="p">,</span> <span class="n">cmap</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-12">chla_viz(rgb_image_tif_file, chla_data_file, output_file, title, figsize, cmap)</div>
+<div class="clipboard-copy-txt" id="cell-13">chla_viz(rgb_image_tif_file, chla_data_file, output_file, title, figsize, cmap)</div>
 </div>
 </div>
 </div>
@@ -2715,6 +2744,43 @@ cmap = "jet"</div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><img alt="image" src="https://github.com/user-attachments/assets/93944a8d-8784-441a-9a51-9050780eb22e"/></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-14">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="s2">"Esri.WorldImagery"</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+    <span class="n">geotiff_file</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Chla"</span>
+<span class="p">)</span>
+<span class="n">m</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-14">m = hypercoast.Map()
+m.add_basemap("Esri.WorldImagery")
+m.add_raster(
+    geotiff_file, colormap="jet", nodata=-9999.0, vmin=0, vmax=35, layer_name="Chla"
+)
+m</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2748,7 +2814,7 @@ cmap = "jet"</div>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 8, 2024 17:16:11 UTC"><span class="timeago" datetime="2024-12-08T17:16:11+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 8, 2024 17:16:11 UTC">2024-12-08</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="September 9, 2025 04:53:03 UTC"><span class="timeago" datetime="2025-09-09T04:53:03+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 9, 2025 04:53:03 UTC">2025-09-09</span>
   </span>
 
     
