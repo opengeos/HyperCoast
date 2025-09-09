@@ -671,3 +671,151 @@ def chla_viz(
     print(f"Saved overlay image to {output_file}")
 
     plt.show()
+
+
+def npy_to_geotiff(
+    npy_path,
+    out_tif,
+    resolution_m=1000,  # meters per pixel (lat exact, lon adjusted by cos(lat))
+    method="linear",  # 'linear' | 'nearest' | 'cubic'
+    nodata_val=-9999.0,
+    bbox_padding=0.0,  # degrees padding around bbox
+    lat_col=0,
+    lon_col=1,
+    band_cols=None,  # None=use all columns after lat/lon; or list like [2,3,5,...]
+    band_names=None,  # Optional list of per-band descriptions, same length as output bands
+    wavelengths=None,  # Optional list; if given, will be used in descriptions like "aphy_440"
+    crs="EPSG:4326",
+    compress="deflate",
+    bigtiff="IF_SAFER",  # 'YES'|'NO'|'IF_NEEDED'|'IF_SAFER'
+):
+    """
+    Convert [lat, lon, band1, band2, ...] scattered points in .npy into a multi-band GeoTIFF (EPSG:4326).
+
+    Args:
+        npy_path (str): Path to the .npy file.
+        out_tif (str): Path to the output GeoTIFF file.
+        resolution_m (int, optional): Resolution in meters per pixel. Defaults to 1000.
+        method (str, optional): Method for interpolation. Defaults to "linear".
+        nodata_val (float, optional): Value to fill NaN values. Defaults to -9999.0.
+        bbox_padding (float, optional): Padding around the bounding box. Defaults to 0.0.
+        lat_col (int, optional): Column index for latitude. Defaults to 0.
+        lon_col (int, optional): Column index for longitude. Defaults to 1.
+        band_cols (list, optional): Columns to rasterize as bands. Defaults to None.
+        band_names (list, optional): Band descriptions. Defaults to None.
+        wavelengths (list, optional): Wavelengths. Defaults to None.
+        crs (str, optional): Coordinate reference system. Defaults to "EPSG:4326".
+        compress (str, optional): Compression method. Defaults to "deflate".
+        bigtiff (str, optional): BigTIFF mode. Defaults to "IF_SAFER".
+    """
+
+    # 1) Load & basic checks
+    arr = np.load(npy_path)
+    if arr.ndim != 2 or arr.shape[1] < 3:
+        raise ValueError("Must be 2D with >=3 columns.")
+
+    lat = arr[:, lat_col].astype(float)
+    lon = arr[:, lon_col].astype(float)
+
+    # Decide which value columns become bands
+    if band_cols is None:
+        band_cols = [i for i in range(arr.shape[1]) if i not in (lat_col, lon_col)]
+    if isinstance(band_cols, (int, np.integer)):
+        band_cols = [int(band_cols)]
+    if len(band_cols) == 0:
+        raise ValueError("No value columns selected for bands.")
+
+    # 2) Bounds (+ padding)
+    lat_min, lat_max = np.nanmin(lat), np.nanmax(lat)
+    lon_min, lon_max = np.nanmin(lon), np.nanmax(lon)
+    lat_min -= bbox_padding
+    lat_max += bbox_padding
+    lon_min -= bbox_padding
+    lon_max += bbox_padding
+
+    # 3) Meter -> degree resolution (lat exact; lon scaled at center latitude)
+    lat_center = (lat_min + lat_max) / 2.0
+    deg_per_m_lat = 1.0 / 111000.0
+    deg_per_m_lon = 1.0 / (111000.0 * np.cos(np.radians(lat_center)))
+    res_lat_deg = resolution_m * deg_per_m_lat
+    res_lon_deg = resolution_m * deg_per_m_lon
+
+    # 4) Build grid (lon fastest axis -> width; lat -> height)
+    lon_axis = np.arange(lon_min, lon_max + res_lon_deg, res_lon_deg)
+    lat_axis = np.arange(lat_min, lat_max + res_lat_deg, res_lat_deg)
+    Lon, Lat = np.meshgrid(lon_axis, lat_axis)
+
+    # Precompute transform
+    transform = from_origin(lon_axis.min(), lat_axis.max(), res_lon_deg, res_lat_deg)
+
+    # 5) Interpolate each band onto the same grid
+    grids = []
+    for idx in band_cols:
+        vals = arr[:, idx].astype(float)
+
+        # Primary interpolation
+        g = griddata(points=(lon, lat), values=vals, xi=(Lon, Lat), method=method)
+
+        # Fill NaNs with nearest as a safety net
+        if np.isnan(g).any():
+            g_near = griddata(
+                points=(lon, lat), values=vals, xi=(Lon, Lat), method="nearest"
+            )
+            g = np.where(np.isnan(g), g_near, g)
+
+        # Flip vertically because raster origin is top-left
+        grids.append(np.flipud(g).astype(np.float32))
+
+    data_stack = np.stack(grids, axis=0)  # shape: (bands, height, width)
+
+    # 6) Write GeoTIFF
+    profile = {
+        "driver": "GTiff",
+        "height": data_stack.shape[1],
+        "width": data_stack.shape[2],
+        "count": data_stack.shape[0],
+        "dtype": rasterio.float32,
+        "crs": crs,
+        "transform": transform,
+        "nodata": nodata_val,
+        "compress": compress,
+        "tiled": True,
+        "blockxsize": 256,
+        "blockysize": 256,
+        "BIGTIFF": bigtiff,
+    }
+
+    os.makedirs(os.path.dirname(out_tif) or ".", exist_ok=True)
+    with rasterio.open(out_tif, "w", **profile) as dst:
+        # Write bands
+        for b in range(data_stack.shape[0]):
+            band = data_stack[b]
+            band[~np.isfinite(band)] = nodata_val
+            dst.write(band, b + 1)
+
+        # Add band descriptions
+        descriptions = []
+        n_bands = data_stack.shape[0]
+        if band_names is not None and len(band_names) == n_bands:
+            descriptions = list(map(str, band_names))
+        elif wavelengths is not None and len(wavelengths) == n_bands:
+            # e.g., "aphy_440"
+            descriptions = [f"aphy_{int(wl)}" for wl in wavelengths]
+        else:
+            # Fallback: use column indices
+            descriptions = [f"band_{band_cols[b]}" for b in range(n_bands)]
+
+        for b in range(1, n_bands + 1):
+            dst.set_band_description(b, descriptions[b - 1])
+
+    # 7) Log
+    print(f"✅ GeoTIFF：{out_tif}")
+    print(f"   Size：{profile['width']} x {profile['height']} pixels")
+    print(f"   Bands：{profile['count']}")
+    print(
+        f"   Resolution：{resolution_m} m/px (≈ {res_lon_deg:.6f}° × {res_lat_deg:.6f}° @ {lat_center:.2f}°)"
+    )
+    print(
+        f"   Extent：lon[{lon_min:.6f}, {lon_max:.6f}], lat[{lat_min:.6f}, {lat_max:.6f}]"
+    )
+    print(f"   Descriptions：{descriptions}")
