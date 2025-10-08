@@ -5,46 +5,61 @@
 """This module contains functions to read and process PACE data."""
 
 import numpy as np
+from numpy.typing import ArrayLike
+import os
 import xarray as xr
 import matplotlib.pyplot as plt
 from typing import List, Tuple, Union, Optional, Any, Callable
 from .common import extract_date_from_filename
 
 
-def read_pace(
-    filepath, wavelengths=None, method="nearest", engine="h5netcdf", **kwargs
-):
+def read_pace(filepath: Union[str,os.PathLike],
+              wavelengths: Union[ArrayLike, None] = None,
+              products: Union[ArrayLike, None] = None,
+              method: str = 'nearest',
+              engine: str = 'h5netcdf',
+              **kwargs) -> xr.Dataset:
     """
-    Reads PACE data from a given file and returns an xarray Dataset.
+    Import data from a L2 PACE file and re-orient to Earth coordinates.
 
     Args:
-        filepath (str): Path to the file to read.
+        filepath (os.PathLike): Pathlike string to the file to read.
         wavelengths (array-like, optional): Specific wavelengths to select. If None, all wavelengths are selected.
+        products (array-like, optional): Specific data products or variables to select. If None, all products are selected.
         method (str, optional): Method to use for selection when wavelengths is not None. Defaults to "nearest".
-        **kwargs: Additional keyword arguments to pass to the `sel` method when wavelengths is not None.
+        **kwargs: Additional keyword arguments to pass to the xarray `sel` method when wavelengths is not None.
 
     Returns:
         xr.Dataset: An xarray Dataset containing the PACE data.
     """
 
-    rrs = xr.open_dataset(filepath, engine=engine, group="geophysical_data")["Rrs"]
-    wvl = xr.open_dataset(filepath, engine=engine, group="sensor_band_parameters")
-    dataset = xr.open_dataset(filepath, engine=engine, group="navigation_data")
-    dataset = dataset.set_coords(("longitude", "latitude"))
-    if "pixel_control_points" in dataset.dims:
-        dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
-    dataset = xr.merge([rrs, dataset.coords.to_dataset()])
-    dataset.coords["wavelength_3d"] = wvl.coords["wavelength_3d"]
-    dataset = dataset.rename(
-        {
-            "number_of_lines": "latitude",
-            "pixels_per_line": "longitude",
-            "wavelength_3d": "wavelength",
-        }
-    )
+    # Import nav group as base dataset.
+    dataset = xr.open_dataset(filepath, group = 'navigation_data', engine = engine)
+    dataset = dataset.set_coords(['latitude', 'longitude'])
 
-    if wavelengths is not None:
-        dataset = dataset.sel(wavelength=wavelengths, method=method, **kwargs)
+    # Import geophysical data products.
+    product = xr.open_dataset(filepath, group = 'geophysical_data', engine = engine)
+
+    # Import sensor band parameters.
+    band_params = xr.open_dataset(filepath, group = 'sensor_band_parameters', engine = engine)
+
+    # Merge datasets and rename dimensions/coordinates.
+    dataset = xr.merge([dataset, product], join = 'outer', combine_attrs = 'drop_conflicts')
+    if "pixel_control_points" in dataset.dims:
+        dataset = dataset.rename({'pixel_control_points': 'pixels_per_line'})
+    if 'wavelength_3d' in band_params.coords:
+        dataset.coords['wavelength_3d'] = band_params.coords['wavelength_3d']
+        dataset = dataset.rename({'wavelength_3d': 'wavelength'})
+    dataset = dataset.rename({'number_of_lines': 'latitude',
+                              'pixels_per_line': 'longitude'})
+
+    # If specified, only keep products of interest.
+    if products is not None:
+        dataset = dataset[products]
+
+    # If specified, only keep wavelengths of interest for datasets with a wavelength dimension.
+    if wavelengths is not None and 'wavelength' in dataset.coords:
+        dataset = dataset.sel(wavelength = wavelengths, method = method, **kwargs)
 
     return dataset
 
