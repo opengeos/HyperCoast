@@ -13,12 +13,14 @@ from typing import List, Tuple, Union, Optional, Any, Callable
 from .common import extract_date_from_filename
 
 
-def read_pace(filepath: Union[str,os.PathLike],
-              wavelengths: Union[ArrayLike, None] = None,
-              products: Union[ArrayLike, None] = None,
-              method: str = 'nearest',
-              engine: str = 'h5netcdf',
-              **kwargs) -> xr.Dataset:
+def read_pace(
+    filepath: Union[str, os.PathLike],
+    wavelengths: Union[ArrayLike, None] = None,
+    products: Union[ArrayLike, None] = None,
+    method: str = "nearest",
+    engine: str = "h5netcdf",
+    **kwargs,
+) -> xr.Dataset:
     """
     Import data from a L2 PACE file and re-orient to Earth coordinates.
 
@@ -34,32 +36,35 @@ def read_pace(filepath: Union[str,os.PathLike],
     """
 
     # Import nav group as base dataset.
-    dataset = xr.open_dataset(filepath, group = 'navigation_data', engine = engine)
-    dataset = dataset.set_coords(['latitude', 'longitude'])
+    dataset = xr.open_dataset(filepath, group="navigation_data", engine=engine)
+    dataset = dataset.set_coords(["latitude", "longitude"])
 
     # Import geophysical data products.
-    product = xr.open_dataset(filepath, group = 'geophysical_data', engine = engine)
+    product = xr.open_dataset(filepath, group="geophysical_data", engine=engine)
 
     # Import sensor band parameters.
-    band_params = xr.open_dataset(filepath, group = 'sensor_band_parameters', engine = engine)
+    band_params = xr.open_dataset(
+        filepath, group="sensor_band_parameters", engine=engine
+    )
 
     # Merge datasets and rename dimensions/coordinates.
-    dataset = xr.merge([dataset, product], join = 'outer', combine_attrs = 'drop_conflicts')
+    dataset = xr.merge([dataset, product], join="outer", combine_attrs="drop_conflicts")
     if "pixel_control_points" in dataset.dims:
-        dataset = dataset.rename({'pixel_control_points': 'pixels_per_line'})
-    if 'wavelength_3d' in band_params.coords:
-        dataset.coords['wavelength_3d'] = band_params.coords['wavelength_3d']
-        dataset = dataset.rename({'wavelength_3d': 'wavelength'})
-    dataset = dataset.rename({'number_of_lines': 'latitude',
-                              'pixels_per_line': 'longitude'})
+        dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
+    if "wavelength_3d" in band_params.coords:
+        dataset.coords["wavelength_3d"] = band_params.coords["wavelength_3d"]
+        dataset = dataset.rename({"wavelength_3d": "wavelength"})
+    dataset = dataset.rename(
+        {"number_of_lines": "latitude", "pixels_per_line": "longitude"}
+    )
 
     # If specified, only keep products of interest.
     if products is not None:
         dataset = dataset[products]
 
     # If specified, only keep wavelengths of interest for datasets with a wavelength dimension.
-    if wavelengths is not None and 'wavelength' in dataset.coords:
-        dataset = dataset.sel(wavelength = wavelengths, method = method, **kwargs)
+    if wavelengths is not None and "wavelength" in dataset.coords:
+        dataset = dataset.sel(wavelength=wavelengths, method=method, **kwargs)
 
     return dataset
 
