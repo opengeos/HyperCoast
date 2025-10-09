@@ -5,7 +5,10 @@
 """This module contains functions to read and process PACE data."""
 
 import numpy as np
-from numpy.typing import ArrayLike
+try:
+    from numpy.typing import ArrayLike
+except ImportError:
+    from typing import Any as ArrayLike
 import os
 import xarray as xr
 import matplotlib.pyplot as plt
