@@ -5,6 +5,7 @@
 """This module contains functions to read and process PACE data."""
 
 import numpy as np
+
 try:
     from numpy.typing import ArrayLike
 except ImportError:
