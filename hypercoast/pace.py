@@ -56,8 +56,7 @@ def read_pace(
     if "pixel_control_points" in dataset.dims:
         dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
     if "wavelength_3d" in band_params.coords:
-        dataset.coords["wavelength_3d"] = band_params.coords["wavelength_3d"]
-        dataset = dataset.rename({"wavelength_3d": "wavelength"})
+        dataset.coords["wavelength"] = band_params.coords["wavelength_3d"]
     dataset = dataset.rename(
         {"number_of_lines": "latitude", "pixels_per_line": "longitude"}
     )
