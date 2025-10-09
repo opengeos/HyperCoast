@@ -11,7 +11,7 @@ repos:
           - id: check-added-large-files
             args: ["--maxkb=500"]
 
-    - repo: https://github.com/psf/black
+    - repo: https://github.com/psf/black-pre-commit-mirror
       rev: 25.9.0
       hooks:
           - id: black-jupyter
@@ -33,6 +33,6 @@ repos:
           - id: nbstripout
 
     - repo: https://github.com/fsfe/reuse-tool
-      rev: v5.1.1
+      rev: v6.0.0
       hooks:
           - id: reuse
