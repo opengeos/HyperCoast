@@ -55,11 +55,16 @@ def read_pace(
     dataset = xr.merge([dataset, product], join="outer", combine_attrs="drop_conflicts")
     if "pixel_control_points" in dataset.dims:
         dataset = dataset.rename({"pixel_control_points": "pixels_per_line"})
-    if "wavelength_3d" in band_params.coords:
-        dataset.coords["wavelength"] = band_params.coords["wavelength_3d"]
-    dataset = dataset.rename(
-        {"number_of_lines": "latitude", "pixels_per_line": "longitude"}
-    )
+
+    # Build rename dict for dimensions
+    rename_dict = {"number_of_lines": "latitude", "pixels_per_line": "longitude"}
+    if "wavelength_3d" in dataset.dims:
+        rename_dict["wavelength_3d"] = "wavelength"
+    dataset = dataset.rename(rename_dict)
+
+    # Set wavelength values from band parameters if available
+    if "wavelength_3d" in band_params.coords and "wavelength" in dataset.dims:
+        dataset = dataset.assign_coords(wavelength=band_params.coords["wavelength_3d"].values)
 
     # If specified, only keep products of interest.
     if products is not None:
