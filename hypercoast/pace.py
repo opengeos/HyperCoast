@@ -64,7 +64,9 @@ def read_pace(
 
     # Set wavelength values from band parameters if available
     if "wavelength_3d" in band_params.coords and "wavelength" in dataset.dims:
-        dataset = dataset.assign_coords(wavelength=band_params.coords["wavelength_3d"].values)
+        dataset = dataset.assign_coords(
+            wavelength=band_params.coords["wavelength_3d"].values
+        )
 
     # If specified, only keep products of interest.
     if products is not None:
