@@ -191,7 +191,6 @@ def filter_wyvern(
     else:
         x_min, y_min = coords[0]
         x_max, y_max = coords[1]
-        print(x_min, y_min, x_max, y_max)
         da = dataset.sel(x=slice(x_min, x_max), y=slice(y_min, y_max))["reflectance"]
 
     if return_plot:
