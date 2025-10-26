@@ -29,7 +29,7 @@ def read_wyvern(
         method (str, optional): Method to use for selection when wavelengths is not
             None. Defaults to "nearest".
         **kwargs: Additional keyword arguments to pass to the `sel` method when
-            bands is not None.
+            wavelengths is not None.
 
     Returns:
         xr.Dataset: An xarray Dataset containing the Wyvern data.
