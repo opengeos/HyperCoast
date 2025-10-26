@@ -121,6 +121,9 @@ nav:
           - examples/enmap.ipynb
           - examples/moe_vae.ipynb
           - examples/wyvern.ipynb
+          - examples/EMIT_aCDOM.ipynb
+          - examples/EMIT_chla.ipynb
+          - examples/EMIT_TSS.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
@@ -141,3 +144,9 @@ nav:
                 - model_inference module: moe_vae/model_inference.md
                 - model module: moe_vae/model.md
                 - plot_and_save module: moe_vae/plot_and_save.md
+          - emit_utils modules:
+                - data_loading module: emit_utils/data_loading.md
+                - model_inference module: emit_utils/model_inference.md
+                - moe_vae module: emit_utils/moe_vae.md
+                - plot_and_save module: emit_utils/plot_and_save.md
+                - preprocess module: emit_utils/preprocess.md
