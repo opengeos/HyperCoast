@@ -1,3 +1,3 @@
 # moe_vae module
 
-::: hypercoast.emit_utils.moe_vae
+::: hypercoast.emit_utils.MoE_VAE
