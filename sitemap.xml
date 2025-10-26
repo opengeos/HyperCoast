@@ -77,6 +77,38 @@
          <lastmod>2025-10-26</lastmod>
     </url>
     <url>
+         <loc>https://hypercoast.org/emit_utils/data_loading/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/emit_utils/model_inference/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/emit_utils/moe_vae/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/emit_utils/plot_and_save/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/emit_utils/preprocess/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/EMIT_TSS/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/EMIT_aCDOM/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/EMIT_chla/</loc>
+         <lastmod>2025-10-26</lastmod>
+    </url>
+    <url>
          <loc>https://hypercoast.org/examples/_earthaccess/</loc>
          <lastmod>2025-10-26</lastmod>
     </url>
