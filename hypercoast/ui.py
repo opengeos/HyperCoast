@@ -20,6 +20,7 @@ from .common import extract_spectral
 from .tanager import extract_tanager
 from .prisma import extract_prisma
 from .enmap import extract_enmap
+from .wyvern import extract_wyvern
 
 
 class SpectralWidget(widgets.HBox):
@@ -252,6 +253,9 @@ class SpectralWidget(widgets.HBox):
 
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "EnMAP":
                     da = extract_enmap(ds, lat, lon)
+
+                elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "WYVERN":
+                    da = extract_wyvern(ds, lat, lon)
 
                 self._host_map._spectral_data[f"({lat:.4f} {lon:.4f})"] = da.values
 
