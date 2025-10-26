@@ -120,6 +120,7 @@ nav:
           - examples/prisma.ipynb
           - examples/enmap.ipynb
           - examples/moe_vae.ipynb
+          - examples/wyvern.ipynb
     - Workshops:
           - workshops/emit.ipynb
           - workshops/pace.ipynb
