@@ -17,6 +17,7 @@ try:
     import torch.nn.functional as F
     from pytorch_lightning import LightningModule
     from torch.distributions.normal import Normal
+    from torch.utils.data import DataLoader
 except ImportError:
     pass
 
