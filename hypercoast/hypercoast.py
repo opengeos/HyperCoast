@@ -633,7 +633,7 @@ class Map(leafmap.Map):
                 as not valid data. Defaults to None.
             attribution (str, optional): Attribution for the source raster. This
                 defaults to a message about it being a local file.. Defaults to None.
-            layer_name (str, optional): The layer name to use. Defaults to 'EMIT'.
+            layer_name (str, optional): The layer name to use. Defaults to 'WYVERN'.
             zoom_to_layer (bool, optional): Whether to zoom to the extent of the
                 layer. Defaults to True.
             visible (bool, optional): Whether the layer is visible. Defaults to True.
