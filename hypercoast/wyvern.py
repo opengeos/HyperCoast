@@ -195,7 +195,7 @@ def filter_wyvern(
 
     if return_plot:
         rrs_stack = da.stack(
-            {"pixel": ["latitude", "longitude"]},
+            {"pixel": ["y", "x"]},
             create_index=False,
         )
         rrs_stack.plot.line(hue="pixel", **kwargs)
