@@ -17,6 +17,7 @@ def read_wyvern(
     filepath: str,
     wavelengths: Optional[Union[list, tuple]] = None,
     method: Optional[str] = "nearest",
+    wavelength_list: Optional[list] = None,
     **kwargs,
 ) -> xr.Dataset:
     """
@@ -28,6 +29,9 @@ def read_wyvern(
             None, all wavelengths are selected.
         method (str, optional): Method to use for selection when wavelengths is not
             None. Defaults to "nearest".
+        wavelength_list (list, optional): The list of wavelengths to use. If
+            None, the wavelengths will be inferred from the dataset attributes.
+            Defaults to None.
         **kwargs: Additional keyword arguments to pass to the `sel` method when
             wavelengths is not None.
 
@@ -35,13 +39,14 @@ def read_wyvern(
         xr.Dataset: An xarray Dataset containing the Wyvern data.
     """
 
-    url = "https://github.com/opengeos/datasets/releases/download/hypercoast/wyvern_wavelengths.csv"
-    df = pd.read_csv(url)
+    if wavelength_list is None:
+        wavelength_list = get_wyvern_wavelengths(filepath)
+
     dataset = xr.open_dataset(filepath)
     dataset = dataset.rename(
         {"band": "wavelength", "band_data": "reflectance"}
     ).transpose("y", "x", "wavelength")
-    dataset["wavelength"] = df["wavelength"].tolist()
+    dataset["wavelength"] = wavelength_list
 
     if wavelengths is not None:
         dataset = dataset.sel(wavelength=wavelengths, method=method, **kwargs)
@@ -201,3 +206,34 @@ def filter_wyvern(
         rrs_stack.plot.line(hue="pixel", **kwargs)
     else:
         return da
+
+
+def get_wyvern_wavelengths(filepath):
+    """
+    Gets the wavelengths of a Wyvern dataset.
+
+    Args:
+        filepath (str): The path to the Wyvern dataset.
+
+    Returns:
+        list: The wavelengths of the Wyvern dataset.
+    """
+    da = rioxarray.open_rasterio(filepath)
+    if "long_name" in da.attrs and isinstance(da.attrs["long_name"], list):
+        all_wavelengths = [int(i.split("_")[1]) for i in da.attrs["long_name"]]
+    else:
+        band_count = da.shape[0]
+
+        if band_count == 23:
+            url = "https://github.com/opengeos/datasets/releases/download/hypercoast/wyvern_dragonette-1_wavelengths.csv"
+            df = pd.read_csv(url)
+            all_wavelengths = df["wavelength"].tolist()
+        elif band_count == 31:
+            url = "https://github.com/opengeos/datasets/releases/download/hypercoast/wyvern_dragonette-3_wavelengths.csv"
+            df = pd.read_csv(url)
+            all_wavelengths = df["wavelength"].tolist()
+        else:
+            print("No long_name found in the dataset attributes, using band number")
+            all_wavelengths = list(range(1, da.shape[0] + 1))
+
+    return all_wavelengths
