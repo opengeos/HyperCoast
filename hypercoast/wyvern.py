@@ -220,20 +220,20 @@ def get_wyvern_wavelengths(filepath):
     """
     da = rioxarray.open_rasterio(filepath)
     if "long_name" in da.attrs:
-        all_wavelenghts = [int(i.split("_")[1]) for i in da.attrs["long_name"]]
+        all_wavelengths = [int(i.split("_")[1]) for i in da.attrs["long_name"]]
     else:
         band_count = da.shape[0]
 
         if band_count == 23:
             url = "https://github.com/opengeos/datasets/releases/download/hypercoast/wyvern_dragonette-1_wavelengths.csv"
             df = pd.read_csv(url)
-            all_wavelenghts = df["wavelength"].tolist()
+            all_wavelengths = df["wavelength"].tolist()
         elif band_count == 31:
             url = "https://github.com/opengeos/datasets/releases/download/hypercoast/wyvern_dragonette-3_wavelengths.csv"
             df = pd.read_csv(url)
-            all_wavelenghts = df["wavelength"].tolist()
+            all_wavelengths = df["wavelength"].tolist()
         else:
             print("No long_name found in the dataset attributes, using band number")
-            all_wavelenghts = range(1, da.shape[0] + 1)
+            all_wavelengths = range(1, da.shape[0] + 1)
 
-    return all_wavelenghts
+    return all_wavelengths
