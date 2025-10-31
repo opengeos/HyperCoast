@@ -2939,6 +2939,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="n">wavelength_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
@@ -2974,6 +2975,11 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
 <span class="sd">                layer. Defaults to True.</span>
 <span class="sd">            visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
+<span class="sd">            method (str, optional): The method to use for data interpolation.</span>
+<span class="sd">                Defaults to &quot;nearest&quot;.</span>
+<span class="sd">            wavelength_list (list, optional): The list of wavelengths to use. If</span>
+<span class="sd">                None, the wavelengths will be inferred from the dataset attributes.</span>
+<span class="sd">                Defaults to None.</span>
 <span class="sd">            array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2982,7 +2988,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-            <span class="n">source</span> <span class="o">=</span> <span class="n">read_wyvern</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">read_wyvern</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelength_list</span><span class="o">=</span><span class="n">wavelength_list</span><span class="p">)</span>
 
         <span class="n">image</span> <span class="o">=</span> <span class="n">wyvern_to_image</span><span class="p">(</span>
             <span class="n">source</span><span class="p">,</span>
@@ -6169,7 +6175,7 @@ layer. Defaults to True.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_wyvern" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_wyvern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;WYVERN&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_wyvern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;WYVERN&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">wavelength_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_wyvern" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -6270,6 +6276,21 @@ layer. Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
       <tr>
+        <td><code>method</code></td>
+        <td><code>str</code></td>
+        <td><p>The method to use for data interpolation.
+Defaults to "nearest".</p></td>
+        <td><code>&#39;nearest&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>wavelength_list</code></td>
+        <td><code>list</code></td>
+        <td><p>The list of wavelengths to use. If
+None, the wavelengths will be inferred from the dataset attributes.
+Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>array_args</code></td>
         <td><code>dict</code></td>
         <td><p>Additional arguments to pass to
@@ -6294,6 +6315,7 @@ layer. Defaults to True.</p></td>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">wavelength_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
@@ -6329,6 +6351,11 @@ layer. Defaults to True.</p></td>
 <span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the extent of the</span>
 <span class="sd">            layer. Defaults to True.</span>
 <span class="sd">        visible (bool, optional): Whether the layer is visible. Defaults to True.</span>
+<span class="sd">        method (str, optional): The method to use for data interpolation.</span>
+<span class="sd">            Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        wavelength_list (list, optional): The list of wavelengths to use. If</span>
+<span class="sd">            None, the wavelengths will be inferred from the dataset attributes.</span>
+<span class="sd">            Defaults to None.</span>
 <span class="sd">        array_args (dict, optional): Additional arguments to pass to</span>
 <span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -6337,7 +6364,7 @@ layer. Defaults to True.</p></td>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 
-        <span class="n">source</span> <span class="o">=</span> <span class="n">read_wyvern</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">read_wyvern</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">wavelength_list</span><span class="o">=</span><span class="n">wavelength_list</span><span class="p">)</span>
 
     <span class="n">image</span> <span class="o">=</span> <span class="n">wyvern_to_image</span><span class="p">(</span>
         <span class="n">source</span><span class="p">,</span>
