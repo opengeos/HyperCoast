@@ -219,7 +219,7 @@ def get_wyvern_wavelengths(filepath):
         list: The wavelengths of the Wyvern dataset.
     """
     da = rioxarray.open_rasterio(filepath)
-    if "long_name" in da.attrs:
+    if "long_name" in da.attrs and isinstance(da.attrs["long_name"], list):
         all_wavelengths = [int(i.split("_")[1]) for i in da.attrs["long_name"]]
     else:
         band_count = da.shape[0]
