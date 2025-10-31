@@ -234,6 +234,6 @@ def get_wyvern_wavelengths(filepath):
             all_wavelengths = df["wavelength"].tolist()
         else:
             print("No long_name found in the dataset attributes, using band number")
-            all_wavelengths = range(1, da.shape[0] + 1)
+            all_wavelengths = list(range(1, da.shape[0] + 1))
 
     return all_wavelengths
