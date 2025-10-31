@@ -602,6 +602,7 @@ class Map(leafmap.Map):
         zoom_to_layer=True,
         visible=True,
         method="nearest",
+        wavelength_list=None,
         array_args=None,
         **kwargs,
     ):
@@ -637,6 +638,11 @@ class Map(leafmap.Map):
             zoom_to_layer (bool, optional): Whether to zoom to the extent of the
                 layer. Defaults to True.
             visible (bool, optional): Whether the layer is visible. Defaults to True.
+            method (str, optional): The method to use for data interpolation.
+                Defaults to "nearest".
+            wavelength_list (list, optional): The list of wavelengths to use. If
+                None, the wavelengths will be inferred from the dataset attributes.
+                Defaults to None.
             array_args (dict, optional): Additional arguments to pass to
                 `array_to_memory_file` when reading the raster. Defaults to {}.
         """
@@ -645,7 +651,7 @@ class Map(leafmap.Map):
 
         if isinstance(source, str):
 
-            source = read_wyvern(source)
+            source = read_wyvern(source, wavelength_list=wavelength_list)
 
         image = wyvern_to_image(
             source,
