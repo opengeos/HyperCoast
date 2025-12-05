@@ -7,8 +7,15 @@ private/
 changelog_update.md
 test_data/
 *.h5
+settings.local.json
 docs/examples/data/
 docs/examples/test/
+docs/examples/*.npy
+docs/examples/*.png
+docs/examples/**/*.pdf
+docs/examples/**/*.csv
+docs/examples/**/*.pth
+
 
 # C extensions
 *.so
@@ -116,4 +123,3 @@ ENV/
 
 # IDE settings
 .vscode/
-.idea/

@@ -18,6 +18,7 @@ import rasterio
 from rasterio.transform import from_origin
 from rasterio.warp import reproject, Resampling
 from scipy.interpolate import griddata
+from scipy.spatial import cKDTree
 
 
 class VAE(nn.Module):
@@ -678,6 +679,7 @@ def npy_to_geotiff(
     out_tif,
     resolution_m=1000,  # meters per pixel (lat exact, lon adjusted by cos(lat))
     method="linear",  # 'linear' | 'nearest' | 'cubic'
+    max_distance_m=None,  # Optional: mask pixels farther than this from nearest point
     nodata_val=-9999.0,
     bbox_padding=0.0,  # degrees padding around bbox
     lat_col=0,
@@ -697,6 +699,9 @@ def npy_to_geotiff(
         out_tif (str): Path to the output GeoTIFF file.
         resolution_m (int, optional): Resolution in meters per pixel. Defaults to 1000.
         method (str, optional): Method for interpolation. Defaults to "linear".
+        max_distance_m (float, optional): If set, pixels farther than this
+            distance from the nearest input point are set to NaN to avoid
+            edge/interpolation artifacts.
         nodata_val (float, optional): Value to fill NaN values. Defaults to -9999.0.
         bbox_padding (float, optional): Padding around the bounding box. Defaults to 0.0.
         lat_col (int, optional): Column index for latitude. Defaults to 0.
@@ -735,6 +740,7 @@ def npy_to_geotiff(
 
     # 3) Meter -> degree resolution (lat exact; lon scaled at center latitude)
     lat_center = (lat_min + lat_max) / 2.0
+    lon_center = (lon_min + lon_max) / 2.0
     deg_per_m_lat = 1.0 / 111000.0
     deg_per_m_lon = 1.0 / (111000.0 * np.cos(np.radians(lat_center)))
     res_lat_deg = resolution_m * deg_per_m_lat
@@ -744,6 +750,19 @@ def npy_to_geotiff(
     lon_axis = np.arange(lon_min, lon_max + res_lon_deg, res_lon_deg)
     lat_axis = np.arange(lat_min, lat_max + res_lat_deg, res_lat_deg)
     Lon, Lat = np.meshgrid(lon_axis, lat_axis)
+
+    # Precompute nearest-neighbor distances (in meters) for masking edge regions
+    if max_distance_m is not None:
+        lon_m = (lon - lon_center) * 111000.0 * np.cos(np.radians(lat_center))
+        lat_m = (lat - lat_center) * 111000.0
+        tree = cKDTree(np.column_stack((lon_m, lat_m)))
+
+        lon_grid_m = (Lon - lon_center) * 111000.0 * np.cos(np.radians(lat_center))
+        lat_grid_m = (Lat - lat_center) * 111000.0
+        grid_coords_m = np.column_stack((lon_grid_m.ravel(), lat_grid_m.ravel()))
+        dist_grid = tree.query(grid_coords_m, k=1)[0].reshape(Lon.shape)
+    else:
+        dist_grid = None
 
     # Precompute transform
     transform = from_origin(lon_axis.min(), lat_axis.max(), res_lon_deg, res_lat_deg)
@@ -756,11 +775,17 @@ def npy_to_geotiff(
         # Primary interpolation
         g = griddata(points=(lon, lat), values=vals, xi=(Lon, Lat), method=method)
 
+        # Mask pixels that are too far from any input point to avoid edge artifacts
+        if dist_grid is not None:
+            g = np.where(dist_grid <= max_distance_m, g, np.nan)
+
         # Fill NaNs with nearest as a safety net
         if np.isnan(g).any():
             g_near = griddata(
                 points=(lon, lat), values=vals, xi=(Lon, Lat), method="nearest"
             )
+            if dist_grid is not None:
+                g_near = np.where(dist_grid <= max_distance_m, g_near, np.nan)
             g = np.where(np.isnan(g), g_near, g)
 
         # Flip vertically because raster origin is top-left
