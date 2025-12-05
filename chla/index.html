@@ -4098,7 +4098,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 
 <h2 id="hypercoast.chla.npy_to_geotiff" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">npy_to_geotiff</span><span class="p">(</span><span class="n">npy_path</span><span class="p">,</span> <span class="n">out_tif</span><span class="p">,</span> <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">lat_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lon_col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">band_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;deflate&#39;</span><span class="p">,</span> <span class="n">bigtiff</span><span class="o">=</span><span class="s1">&#39;IF_SAFER&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">npy_to_geotiff</span><span class="p">(</span><span class="n">npy_path</span><span class="p">,</span> <span class="n">out_tif</span><span class="p">,</span> <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">max_distance_m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">lat_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lon_col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">band_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;deflate&#39;</span><span class="p">,</span> <span class="n">bigtiff</span><span class="o">=</span><span class="s1">&#39;IF_SAFER&#39;</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.chla.npy_to_geotiff" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -4141,6 +4141,14 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <td><code>str</code></td>
         <td><p>Method for interpolation. Defaults to "linear".</p></td>
         <td><code>&#39;linear&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>max_distance_m</code></td>
+        <td><code>float</code></td>
+        <td><p>If set, pixels farther than this
+distance from the nearest input point are set to NaN to avoid
+edge/interpolation artifacts.</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>nodata_val</code></td>
@@ -4211,6 +4219,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
     <span class="n">out_tif</span><span class="p">,</span>
     <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>  <span class="c1"># meters per pixel (lat exact, lon adjusted by cos(lat))</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>  <span class="c1"># &#39;linear&#39; | &#39;nearest&#39; | &#39;cubic&#39;</span>
+    <span class="n">max_distance_m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Optional: mask pixels farther than this from nearest point</span>
     <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span>
     <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># degrees padding around bbox</span>
     <span class="n">lat_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -4230,6 +4239,9 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 <span class="sd">        out_tif (str): Path to the output GeoTIFF file.</span>
 <span class="sd">        resolution_m (int, optional): Resolution in meters per pixel. Defaults to 1000.</span>
 <span class="sd">        method (str, optional): Method for interpolation. Defaults to &quot;linear&quot;.</span>
+<span class="sd">        max_distance_m (float, optional): If set, pixels farther than this</span>
+<span class="sd">            distance from the nearest input point are set to NaN to avoid</span>
+<span class="sd">            edge/interpolation artifacts.</span>
 <span class="sd">        nodata_val (float, optional): Value to fill NaN values. Defaults to -9999.0.</span>
 <span class="sd">        bbox_padding (float, optional): Padding around the bounding box. Defaults to 0.0.</span>
 <span class="sd">        lat_col (int, optional): Column index for latitude. Defaults to 0.</span>
@@ -4268,6 +4280,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
     <span class="c1"># 3) Meter -&gt; degree resolution (lat exact; lon scaled at center latitude)</span>
     <span class="n">lat_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">lat_min</span> <span class="o">+</span> <span class="n">lat_max</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">lon_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon_min</span> <span class="o">+</span> <span class="n">lon_max</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
     <span class="n">deg_per_m_lat</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">111000.0</span>
     <span class="n">deg_per_m_lon</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">111000.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_center</span><span class="p">)))</span>
     <span class="n">res_lat_deg</span> <span class="o">=</span> <span class="n">resolution_m</span> <span class="o">*</span> <span class="n">deg_per_m_lat</span>
@@ -4277,6 +4290,19 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
     <span class="n">lon_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_max</span> <span class="o">+</span> <span class="n">res_lon_deg</span><span class="p">,</span> <span class="n">res_lon_deg</span><span class="p">)</span>
     <span class="n">lat_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">+</span> <span class="n">res_lat_deg</span><span class="p">,</span> <span class="n">res_lat_deg</span><span class="p">)</span>
     <span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon_axis</span><span class="p">,</span> <span class="n">lat_axis</span><span class="p">)</span>
+
+    <span class="c1"># Precompute nearest-neighbor distances (in meters) for masking edge regions</span>
+    <span class="k">if</span> <span class="n">max_distance_m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lon_m</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon</span> <span class="o">-</span> <span class="n">lon_center</span><span class="p">)</span> <span class="o">*</span> <span class="mf">111000.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_center</span><span class="p">))</span>
+        <span class="n">lat_m</span> <span class="o">=</span> <span class="p">(</span><span class="n">lat</span> <span class="o">-</span> <span class="n">lat_center</span><span class="p">)</span> <span class="o">*</span> <span class="mf">111000.0</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">lon_m</span><span class="p">,</span> <span class="n">lat_m</span><span class="p">)))</span>
+
+        <span class="n">lon_grid_m</span> <span class="o">=</span> <span class="p">(</span><span class="n">Lon</span> <span class="o">-</span> <span class="n">lon_center</span><span class="p">)</span> <span class="o">*</span> <span class="mf">111000.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_center</span><span class="p">))</span>
+        <span class="n">lat_grid_m</span> <span class="o">=</span> <span class="p">(</span><span class="n">Lat</span> <span class="o">-</span> <span class="n">lat_center</span><span class="p">)</span> <span class="o">*</span> <span class="mf">111000.0</span>
+        <span class="n">grid_coords_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">lon_grid_m</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">lat_grid_m</span><span class="o">.</span><span class="n">ravel</span><span class="p">()))</span>
+        <span class="n">dist_grid</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">grid_coords_m</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Lon</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dist_grid</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># Precompute transform</span>
     <span class="n">transform</span> <span class="o">=</span> <span class="n">from_origin</span><span class="p">(</span><span class="n">lon_axis</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lat_axis</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">res_lon_deg</span><span class="p">,</span> <span class="n">res_lat_deg</span><span class="p">)</span>
@@ -4289,11 +4315,17 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <span class="c1"># Primary interpolation</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
+        <span class="c1"># Mask pixels that are too far from any input point to avoid edge artifacts</span>
+        <span class="k">if</span> <span class="n">dist_grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dist_grid</span> <span class="o">&lt;=</span> <span class="n">max_distance_m</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
         <span class="c1"># Fill NaNs with nearest as a safety net</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="n">g_near</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span>
                 <span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">dist_grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">g_near</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dist_grid</span> <span class="o">&lt;=</span> <span class="n">max_distance_m</span><span class="p">,</span> <span class="n">g_near</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">g</span><span class="p">),</span> <span class="n">g_near</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
 
         <span class="c1"># Flip vertically because raster origin is top-left</span>
