@@ -2398,7 +2398,7 @@ longitude if they are not ranges. Defaults to 0.01.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_tanager</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_tanager</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">latitude</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
     <span class="n">longitude</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
@@ -2517,7 +2517,7 @@ longitude if they are not ranges. Defaults to 0.01.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">filter_tanager</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">filter_tanager</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2653,7 +2653,7 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grid_tanager</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">grid_tanager</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span>
     <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2678,8 +2678,8 @@ Defaults to "nearest".</p></td>
 <span class="sd">    Returns:</span>
 <span class="sd">        xr.DataArray: The gridded Tanager data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">griddata</span>
-    <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">ConvexHull</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">griddata</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvexHull</span>
 
     <span class="c1"># Priority: wavelengths &gt; bands &gt; default</span>
     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2817,7 +2817,7 @@ Defaults to "nearest".</p></td>
             <span class="c1"># For full dataset, use convex hull for better edge handling</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">hull</span> <span class="o">=</span> <span class="n">ConvexHull</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">valid_lon</span><span class="p">,</span> <span class="n">valid_lat</span><span class="p">]))</span>
-                <span class="kn">from</span> <span class="nn">matplotlib.path</span> <span class="kn">import</span> <span class="n">Path</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
                 <span class="n">hull_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
@@ -2955,7 +2955,7 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_tanager</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_tanager</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read Planet Tanager HDF5 hyperspectral data and return an xarray.Dataset.</span>
 
@@ -3124,7 +3124,7 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tanager_to_image</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">tanager_to_image</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span>
     <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3150,7 +3150,7 @@ Defaults to "nearest".</p></td>
 <span class="sd">    Returns:</span>
 <span class="sd">        rasterio.Dataset or None: The image converted from the dataset. If `output` is provided, the image will be saved to the specified file and the function will return None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">leafmap</span> <span class="kn">import</span> <span class="n">array_to_image</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">leafmap</span><span class="w"> </span><span class="kn">import</span> <span class="n">array_to_image</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">)</span>

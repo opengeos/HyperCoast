@@ -2507,7 +2507,7 @@ mae: Median absolute error in log space (antilog).</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit_utils/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_metrics</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_metrics</span><span class="p">(</span>
     <span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">actuals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate performance metrics for water quality parameter predictions.</span>
@@ -2642,7 +2642,7 @@ KDE density contours, and performance metrics in the legend.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit_utils/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plot_results</span><span class="p">(</span>
     <span class="n">predictions_rescaled</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">actuals_rescaled</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">save_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2845,7 +2845,7 @@ and performance metrics.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit_utils/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_results_with_density</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plot_results_with_density</span><span class="p">(</span>
     <span class="n">predictions_rescaled</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">actuals_rescaled</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">save_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3039,7 +3039,7 @@ and performance metrics.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit_utils/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">save_results_from_excel_for_test</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_results_from_excel_for_test</span><span class="p">(</span>
     <span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">actuals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">sample_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -3136,7 +3136,7 @@ and performance metrics.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit_utils/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">save_results_to_excel</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_results_to_excel</span><span class="p">(</span>
     <span class="n">ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">actuals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>

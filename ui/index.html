@@ -2466,7 +2466,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/ui.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SpectralWidget</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SpectralWidget</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget for spectral data visualization on a map.</span>
 
@@ -2480,7 +2480,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 <span class="sd">        _spectral_control (ipyleaflet.WidgetControl): The control for the spectral widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2541,7 +2541,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
             <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_add_layer_editor</span><span class="p">(</span>
                 <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span>
@@ -2550,7 +2550,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
         <span class="n">settings_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">settings_btn_click</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2571,7 +2571,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
             <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">chooser_callback</span><span class="p">(</span><span class="n">chooser</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">chooser_callback</span><span class="p">(</span><span class="n">chooser</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">chooser</span><span class="o">.</span><span class="n">selected</span><span class="p">:</span>
                 <span class="n">file_path</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">selected</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">spectral_to_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
@@ -2582,7 +2582,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">remove_control</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser_control</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">save_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">save_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
                 <span class="k">return</span>
 
@@ -2605,7 +2605,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
         <span class="n">save_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">save_btn_click</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">close_widget</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">close_widget</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
 
         <span class="n">close_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">close_widget</span><span class="p">)</span>
@@ -2623,7 +2623,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">def</span> <span class="nf">handle_interaction</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">handle_interaction</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
             <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinates&quot;</span><span class="p">)</span>
             <span class="n">lat</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -2771,7 +2771,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spectral_control</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes the widget from the map and performs cleanup.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">}</span>
@@ -2881,7 +2881,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/ui.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2942,7 +2942,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_add_layer_editor</span><span class="p">(</span>
             <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span>
@@ -2951,7 +2951,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
     <span class="n">settings_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">settings_btn_click</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2972,7 +2972,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">chooser_callback</span><span class="p">(</span><span class="n">chooser</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">chooser_callback</span><span class="p">(</span><span class="n">chooser</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">chooser</span><span class="o">.</span><span class="n">selected</span><span class="p">:</span>
             <span class="n">file_path</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">selected</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">spectral_to_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
@@ -2983,7 +2983,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">remove_control</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser_control</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">save_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
             <span class="k">return</span>
 
@@ -3006,7 +3006,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
     <span class="n">save_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">save_btn_click</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">close_widget</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close_widget</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
 
     <span class="n">close_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">close_widget</span><span class="p">)</span>
@@ -3024,7 +3024,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">handle_interaction</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_interaction</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinates&quot;</span><span class="p">)</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -3195,7 +3195,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/ui.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes the widget from the map and performs cleanup.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">}</span>

@@ -2476,7 +2476,7 @@ original authors.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/neon.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_neon</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_neon</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts NEON AOP data from a given xarray Dataset.</span>
 
@@ -2550,7 +2550,7 @@ If False, prints the name of each dataset. Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/neon.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">list_neon_datasets</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">print_node</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list_neon_datasets</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">print_node</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Lists all the datasets in an HDF5 file.</span>
 
@@ -2564,13 +2564,13 @@ If False, prints the name of each dataset. Defaults to False.</p></td>
 
     <span class="k">if</span> <span class="n">print_node</span><span class="p">:</span>
 
-        <span class="k">def</span> <span class="nf">list_dataset</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">list_dataset</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="k">def</span> <span class="nf">list_dataset</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">list_dataset</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
@@ -2664,7 +2664,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/neon.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">neon_to_image</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">neon_to_image</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
@@ -2691,7 +2691,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 <span class="sd">            `output` is provided, the image will be saved to the specified file</span>
 <span class="sd">            and the function will return None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">leafmap</span> <span class="kn">import</span> <span class="n">array_to_image</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">leafmap</span><span class="w"> </span><span class="kn">import</span> <span class="n">array_to_image</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_neon</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
@@ -2784,7 +2784,7 @@ all wavelengths are selected. Defaults to None.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/neon.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_neon</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_neon</span><span class="p">(</span>
     <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>

@@ -2615,7 +2615,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_and_visualize_single_model_Robust</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">infer_and_visualize_single_model_Robust</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="n">test_loader</span><span class="p">,</span>
     <span class="n">Rrs</span><span class="p">,</span>
@@ -2837,7 +2837,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_and_visualize_single_model_minmax</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">infer_and_visualize_single_model_minmax</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="n">test_loader</span><span class="p">,</span>
     <span class="n">Rrs</span><span class="p">,</span>
@@ -3058,7 +3058,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_and_visualize_token_model_Robust</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">infer_and_visualize_token_model_Robust</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="n">test_loader</span><span class="p">,</span>
     <span class="n">Rrs</span><span class="p">,</span>
@@ -3287,7 +3287,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">infer_and_visualize_token_model_minmax</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">infer_and_visualize_token_model_minmax</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="n">test_loader</span><span class="p">,</span>
     <span class="n">Rrs</span><span class="p">,</span>
@@ -3471,7 +3471,7 @@ longitude (array): Longitude values.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess_emit_data_Robust</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_emit_data_Robust</span><span class="p">(</span>
     <span class="n">nc_path</span><span class="p">,</span> <span class="n">scaler_Rrs</span><span class="p">,</span> <span class="n">use_diff</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_band_wavelengths</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3496,7 +3496,7 @@ longitude (array): Longitude values.</p></td>
             <span class="s2">&quot;full_band_wavelengths must be provided to match EMIT Rrs bands&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">find_closest_band</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">available_bands</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_closest_band</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">available_bands</span><span class="p">):</span>
         <span class="n">available_waves</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">available_bands</span><span class="p">]</span>
         <span class="n">closest_wave</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">available_waves</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">target</span><span class="p">))</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Rrs_</span><span class="si">{</span><span class="n">closest_wave</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -3542,7 +3542,7 @@ longitude (array): Longitude values.</p></td>
 
     <span class="c1"># ---- smooth + diff</span>
     <span class="k">if</span> <span class="n">use_diff</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter1d</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter1d</span>
 
         <span class="n">Rrs_smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">[</span><span class="n">gaussian_filter1d</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">spectrum</span> <span class="ow">in</span> <span class="n">valid_test_data</span><span class="p">]</span>
@@ -3641,7 +3641,7 @@ apply (optional) smooth+diff and robust normalization, and return a DataLoader.<
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess_emit_data_minmax</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_emit_data_minmax</span><span class="p">(</span>
     <span class="n">nc_path</span><span class="p">,</span> <span class="n">full_band_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3676,7 +3676,7 @@ apply (optional) smooth+diff and robust normalization, and return a DataLoader.<
                 <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">all_vars</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Rrs_&quot;</span><span class="p">)</span>
             <span class="p">]</span>
 
-            <span class="k">def</span> <span class="nf">find_closest_band</span><span class="p">(</span><span class="n">target_nm</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">find_closest_band</span><span class="p">(</span><span class="n">target_nm</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
                 <span class="n">nearest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">available_wavelengths</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">target_nm</span><span class="p">))</span>
                 <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Rrs_</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">nearest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -3714,7 +3714,7 @@ apply (optional) smooth+diff and robust normalization, and return a DataLoader.<
             <span class="c1"># ---- build mask using 440 &amp; 560 (or nearest present within your requested list)</span>
             <span class="n">have_waves</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bands_to_extract</span><span class="p">]</span>
 
-            <span class="k">def</span> <span class="nf">nearest_idx</span><span class="p">(</span><span class="n">target_nm</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">nearest_idx</span><span class="p">(</span><span class="n">target_nm</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="c1"># find nearest *among bands_to_extract*</span>
                 <span class="n">nearest_w</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">have_waves</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">target_nm</span><span class="p">))</span>
                 <span class="k">return</span> <span class="n">bands_to_extract</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rrs_</span><span class="si">{</span><span class="n">nearest_w</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -3747,7 +3747,7 @@ apply (optional) smooth+diff and robust normalization, and return a DataLoader.<
 
         <span class="c1"># === Check whether smoothing is needed (only executed if any differencing is enabled) ===</span>
         <span class="k">if</span> <span class="n">diff_before_norm</span> <span class="ow">or</span> <span class="n">diff_after_norm</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter1d</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter1d</span>
 
             <span class="n">Rrs_smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">gaussian_filter1d</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">spectrum</span> <span class="ow">in</span> <span class="n">valid_test_data</span><span class="p">]</span>
@@ -3870,7 +3870,7 @@ longitude (array): Longitude values.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess_pace_data_Robust</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_pace_data_Robust</span><span class="p">(</span>
     <span class="n">nc_path</span><span class="p">,</span> <span class="n">scaler_Rrs</span><span class="p">,</span> <span class="n">use_diff</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_band_wavelengths</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3951,7 +3951,7 @@ longitude (array): Longitude values.</p></td>
 
         <span class="c1"># ✅ Smoothing before differencing (enabled only if use_diff=True)</span>
         <span class="k">if</span> <span class="n">use_diff</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter1d</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter1d</span>
 
             <span class="n">Rrs_smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">gaussian_filter1d</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">spectrum</span> <span class="ow">in</span> <span class="n">valid_test_data</span><span class="p">]</span>
@@ -3968,7 +3968,7 @@ longitude (array): Longitude values.</p></td>
         <span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
         <span class="c1"># ✅ Construct DataLoader</span>
-        <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">TensorDataset</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">TensorDataset</span>
 
         <span class="n">test_tensor</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Rrs_normalized</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
         <span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_tensor</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -4059,7 +4059,7 @@ longitude (array): Longitude values.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">preprocess_pace_data_minmax</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_pace_data_minmax</span><span class="p">(</span>
     <span class="n">nc_path</span><span class="p">,</span> <span class="n">full_band_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -4134,7 +4134,7 @@ longitude (array): Longitude values.</p></td>
 
         <span class="c1"># === Check if smoothing is needed (only executed when any differencing is enabled) ===</span>
         <span class="k">if</span> <span class="n">diff_before_norm</span> <span class="ow">or</span> <span class="n">diff_after_norm</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter1d</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter1d</span>
 
             <span class="n">Rrs_smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">gaussian_filter1d</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">spectrum</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">]</span>

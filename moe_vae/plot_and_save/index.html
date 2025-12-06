@@ -2503,7 +2503,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_metrics</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_metrics</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate epsilon, beta and additional metrics (RMSE, RMSLE, MAPE, Bias, MAE).</span>
 
 <span class="sd">    Args:</span>
@@ -2620,7 +2620,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plot_results</span><span class="p">(</span>
     <span class="n">predictions_rescaled</span><span class="p">,</span> <span class="n">actuals_rescaled</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;test&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot the results of the MoE-VAE model.</span>
@@ -2777,7 +2777,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">save_and_plot_results_from_excel</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_and_plot_results_from_excel</span><span class="p">(</span>
     <span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">sample_ids</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">original_excel_path</span><span class="p">,</span> <span class="n">save_dir</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save and plot the results from an Excel file.</span>
@@ -2846,7 +2846,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">save_model_structure_from_classes</span><span class="p">(</span><span class="n">save_path</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_model_structure_from_classes</span><span class="p">(</span><span class="n">save_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the model structure from classes to a file.</span>
 
 <span class="sd">    Args:</span>
@@ -2928,7 +2928,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/plot_and_save.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">save_results_to_excel</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_results_to_excel</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save prediction results to an Excel file.</span>
 <span class="sd">    - If dates are included, output ID, Date, Actual, Predicted;</span>

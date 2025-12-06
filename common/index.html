@@ -2891,7 +2891,7 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">convert_coords</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert_coords</span><span class="p">(</span>
     <span class="n">coords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">from_epsg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_epsg</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2905,7 +2905,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        List of tuples containing converted coordinates in the format (x, y).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">pyproj</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
 
     <span class="c1"># Define the coordinate transformation</span>
     <span class="n">transformer</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="n">from_epsg</span><span class="p">,</span> <span class="n">to_epsg</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -2995,7 +2995,7 @@ For more information, see the Acolite manual https://github.com/acolite/acolite/
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_acolite</span><span class="p">(</span><span class="n">outdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">platform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_acolite</span><span class="p">(</span><span class="n">outdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">platform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Downloads the Acolite release based on the OS platform and extracts it to the specified directory.</span>
 <span class="sd">    For more information, see the Acolite manual https://github.com/acolite/acolite/releases.</span>
@@ -3011,10 +3011,10 @@ For more information, see the Acolite manual https://github.com/acolite/acolite/
 <span class="sd">    Raises:</span>
 <span class="sd">        Exception: If the platform is unsupported or the download fails.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">platform</span> <span class="k">as</span> <span class="nn">pf</span>
-    <span class="kn">import</span> <span class="nn">requests</span>
-    <span class="kn">import</span> <span class="nn">tarfile</span>
-    <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">platform</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pf</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">tarfile</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
     <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/acolite/acolite/releases/download/20231023.0/&quot;</span>
 
@@ -3133,7 +3133,7 @@ Defaults to 8.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_ecostress</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_ecostress</span><span class="p">(</span>
     <span class="n">granules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
@@ -3206,7 +3206,7 @@ Defaults to 8.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_emit</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_emit</span><span class="p">(</span>
     <span class="n">granules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
@@ -3353,7 +3353,7 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_file</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">quiet</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -3389,9 +3389,9 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The output file path.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">zipfile</span>
-    <span class="kn">import</span> <span class="nn">tarfile</span>
-    <span class="kn">import</span> <span class="nn">gdown</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">zipfile</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">tarfile</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">gdown</span>
 
     <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
@@ -3511,7 +3511,7 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_nasa_data</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_nasa_data</span><span class="p">(</span>
     <span class="n">granules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3586,7 +3586,7 @@ Defaults to 8.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_pace</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_pace</span><span class="p">(</span>
     <span class="n">granules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
@@ -3672,7 +3672,7 @@ or None if no date in 'YYYYMMDD' format is found.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_date_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_date_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts a date from a filename assuming the date is in &#39;YYYYMMDD&#39; format.</span>
 
@@ -3694,8 +3694,8 @@ or None if no date in 'YYYYMMDD' format is found.</p></td>
 <span class="sd">        &gt;&gt;&gt; extract_date_from_filename(&quot;no_date_in_this_filename.txt&quot;)</span>
 <span class="sd">        None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">re</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
     <span class="c1"># Assuming the date format in filename is &#39;YYYYMMDD&#39;</span>
     <span class="n">date_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d</span><span class="si">{8}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
@@ -3773,7 +3773,7 @@ or None if no date in 'YYYYMMDD' format is found.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_spectral</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_spectral</span><span class="p">(</span>
     <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3855,7 +3855,7 @@ or None if no date in 'YYYYMMDD' format is found.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">github_raw_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">github_raw_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the raw URL for a GitHub file.</span>
 
 <span class="sd">    Args:</span>
@@ -4034,7 +4034,7 @@ Defaults to (0, 0, 0).</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">image_cube</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">image_cube</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span>
     <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
     <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;jet&quot;</span><span class="p">,</span>
@@ -4091,7 +4091,7 @@ Defaults to (0, 0, 0).</p></td>
 <span class="sd">        pv.Plotter: The PyVista Plotter with the image cube added.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">if</span> <span class="n">rgb_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">rgb_args</span> <span class="o">=</span> <span class="p">{}</span>
@@ -4255,15 +4255,15 @@ Defaults to (0, 0, 0).</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">nasa_earth_login</span><span class="p">(</span><span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">persist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">nasa_earth_login</span><span class="p">(</span><span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">persist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Logs in to NASA Earthdata.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        strategy (str, optional): The login strategy. Defaults to &quot;all&quot;.</span>
 <span class="sd">        persist (bool, optional): Whether to persist the login. Defaults to True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">leafmap</span> <span class="kn">import</span> <span class="n">get_api_key</span>
-    <span class="kn">import</span> <span class="nn">earthaccess</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">leafmap</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_api_key</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">earthaccess</span>
 
     <span class="n">USERNAME</span> <span class="o">=</span> <span class="n">get_api_key</span><span class="p">(</span><span class="s2">&quot;EARTHDATA_USERNAME&quot;</span><span class="p">)</span>
     <span class="n">PASSWORD</span> <span class="o">=</span> <span class="n">get_api_key</span><span class="p">(</span><span class="s2">&quot;EARTHDATA_PASSWORD&quot;</span><span class="p">)</span>
@@ -4333,7 +4333,7 @@ Defaults to (0, 0, 0).</p></td>
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">netcdf_groups</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">netcdf_groups</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the list of groups in a NetCDF file.</span>
 
@@ -4347,7 +4347,7 @@ Defaults to (0, 0, 0).</p></td>
 <span class="sd">        &gt;&gt;&gt; netcdf_groups(&#39;path/to/netcdf/file&#39;)</span>
 <span class="sd">        [&#39;group1&#39;, &#39;group2&#39;, &#39;group3&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">h5netcdf</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">h5netcdf</span>
 
     <span class="k">with</span> <span class="n">h5netcdf</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
@@ -4441,7 +4441,7 @@ the dataset is not chunked.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">open_dataset</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">open_dataset</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chunks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4556,7 +4556,7 @@ For more info, see https://scikit-learn.org/stable/modules/generated/sklearn.dec
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pca</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">pca</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs Principal Component Analysis (PCA) on a dataset.</span>
 
@@ -4571,18 +4571,18 @@ For more info, see https://scikit-learn.org/stable/modules/generated/sklearn.dec
 <span class="sd">        None: This function does not return a value. It saves the PCA results to the output file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">rasterio</span>
-    <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
 
     <span class="c1"># Function to load the GeoTIFF image</span>
-    <span class="k">def</span> <span class="nf">load_geotiff</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_geotiff</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
             <span class="n">image</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="n">profile</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">profile</span>
         <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="n">profile</span>
 
     <span class="c1"># Function to perform PCA</span>
-    <span class="k">def</span> <span class="nf">perform_pca</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">perform_pca</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># Reshape the image to [n_bands, n_pixels]</span>
         <span class="n">n_bands</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">image_reshaped</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_bands</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
@@ -4596,7 +4596,7 @@ For more info, see https://scikit-learn.org/stable/modules/generated/sklearn.dec
         <span class="k">return</span> <span class="n">pca_image</span>
 
     <span class="c1"># Function to save the PCA-transformed image</span>
-    <span class="k">def</span> <span class="nf">save_geotiff</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_geotiff</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
         <span class="n">profile</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">profile</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
             <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
@@ -4732,7 +4732,7 @@ other parameters except <code>verbose</code> are ignored. Defaults to None.</p><
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">run_acolite</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_acolite</span><span class="p">(</span>
     <span class="n">acolite_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">settings_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">input_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4775,10 +4775,10 @@ other parameters except <code>verbose</code> are ignored. Defaults to None.</p><
 <span class="sd">        &gt;&gt;&gt; run_acolite(&quot;/path/to/acolite&quot;, input_file=&quot;/path/to/inputfile&quot;, output=&quot;/path/to/output&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">subprocess</span>
-    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
-    <span class="k">def</span> <span class="nf">get_formatted_current_time</span><span class="p">(</span><span class="n">format_str</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_formatted_current_time</span><span class="p">(</span><span class="n">format_str</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">):</span>
         <span class="n">current_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="n">formatted_time</span> <span class="o">=</span> <span class="n">current_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_str</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">formatted_time</span>
@@ -4935,7 +4935,7 @@ bounding_box: a tuple representing spatial bounds in the form
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_datasets</span><span class="p">(</span><span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_datasets</span><span class="p">(</span><span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Searches for datasets using the EarthAccess API with optional filters.</span>
 
@@ -4967,7 +4967,7 @@ bounding_box: a tuple representing spatial bounds in the form
 <span class="sd">        &gt;&gt;&gt; print(results)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">earthaccess</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">earthaccess</span>
 
     <span class="k">return</span> <span class="n">earthaccess</span><span class="o">.</span><span class="n">search_datasets</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
@@ -5070,7 +5070,7 @@ bounding_box: a tuple representing spatial bounds in the form
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_ecostress</span><span class="p">(</span>
     <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
@@ -5206,7 +5206,7 @@ bounding_box: a tuple representing spatial bounds in the form
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_emit</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_emit</span><span class="p">(</span>
     <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
@@ -5366,7 +5366,7 @@ bounding_box: a tuple representing spatial bounds in the form
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_nasa_data</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_nasa_data</span><span class="p">(</span>
     <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">short_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -5517,7 +5517,7 @@ bounding_box: a tuple representing spatial bounds in the form
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_pace</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_pace</span><span class="p">(</span>
     <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
@@ -5653,7 +5653,7 @@ bounding_box: a tuple representing spatial bounds in the form
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_pace_chla</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_pace_chla</span><span class="p">(</span>
     <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
@@ -5827,7 +5827,7 @@ bounding_box: a tuple representing spatial bounds in the form
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">show_field_data</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">show_field_data</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">x_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">,</span>
     <span class="n">y_col_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span><span class="p">,</span>
@@ -5865,10 +5865,10 @@ bounding_box: a tuple representing spatial bounds in the form
 <span class="sd">    Returns:</span>
 <span class="sd">        Map: An ipyleaflet Map with the added markers and popups.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-    <span class="kn">from</span> <span class="nn">ipyleaflet</span> <span class="kn">import</span> <span class="n">Map</span><span class="p">,</span> <span class="n">Marker</span><span class="p">,</span> <span class="n">Popup</span><span class="p">,</span> <span class="n">MarkerCluster</span>
-    <span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">Output</span><span class="p">,</span> <span class="n">VBox</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ipyleaflet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Map</span><span class="p">,</span> <span class="n">Marker</span><span class="p">,</span> <span class="n">Popup</span><span class="p">,</span> <span class="n">MarkerCluster</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ipywidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Output</span><span class="p">,</span> <span class="n">VBox</span>
 
     <span class="c1"># Read the CSV file</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -5887,7 +5887,7 @@ bounding_box: a tuple representing spatial bounds in the form
         <span class="n">m</span> <span class="o">=</span> <span class="n">Map</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">,</span> <span class="n">zoom</span><span class="o">=</span><span class="n">zoom</span><span class="p">)</span>
 
     <span class="c1"># Function to create the chart</span>
-    <span class="k">def</span> <span class="nf">create_chart</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_chart</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>  <span class="c1"># Adjust the figure size here</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">])</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
@@ -5899,8 +5899,8 @@ bounding_box: a tuple representing spatial bounds in the form
         <span class="k">return</span> <span class="n">output</span>
 
     <span class="c1"># Define a callback function to create and show the popup</span>
-    <span class="k">def</span> <span class="nf">callback_with_popup_creation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">callback_with_popup_creation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">marker_center</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">create_chart</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Location: </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">popup</span> <span class="o">=</span> <span class="n">Popup</span><span class="p">(</span>

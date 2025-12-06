@@ -2842,7 +2842,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Map</span><span class="p">(</span><span class="n">leafmap</span><span class="o">.</span><span class="n">Map</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Map</span><span class="p">(</span><span class="n">leafmap</span><span class="o">.</span><span class="n">Map</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class that extends leafmap.Map to provide additional functionality for</span>
 <span class="sd">        hypercoast.</span>
@@ -2854,7 +2854,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        Any methods inherited from leafmap.Map.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes a new instance of the Map class.</span>
 
@@ -2867,7 +2867,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">_plot_options</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">MarkerCluster</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Marker Cluster&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a layer to the map.</span>
 
 <span class="sd">        Args:</span>
@@ -2892,7 +2892,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">search_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;EMITL2ARFL&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;EMITL2ARFL&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
 <span class="sd">            EMIT.</span>
@@ -2903,7 +2903,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">search_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_AOP_NRT&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_AOP_NRT&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
 <span class="sd">            PACE.</span>
@@ -2914,7 +2914,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
 <span class="sd">            ECOSTRESS.</span>
@@ -2925,7 +2925,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_raster</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_raster</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2988,7 +2988,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rxr</span>
 
         <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
@@ -3025,7 +3025,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="c1"># if self.cog_layer_dict[layer_name].get(&quot;hyper&quot;) is None:</span>
             <span class="c1">#     self.cog_layer_dict[layer_name][&quot;hyper&quot;] = &quot;COG&quot;</span>
 
-    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dataset</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3041,8 +3041,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
-        <span class="kn">from</span> <span class="nn">leafmap</span> <span class="kn">import</span> <span class="n">array_to_image</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rxr</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">leafmap</span><span class="w"> </span><span class="kn">import</span> <span class="n">array_to_image</span>
 
         <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
@@ -3099,7 +3099,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;indexes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">indexes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vis_bands&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">add_emit</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_emit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3183,7 +3183,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMIT&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_pace</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_pace</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3273,7 +3273,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_desis</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_desis</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">525</span><span class="p">],</span>
@@ -3365,7 +3365,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DESIS&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_wyvern</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_wyvern</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3470,7 +3470,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WYVERN&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_neon</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_neon</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3555,7 +3555,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NEON&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_aviris</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_aviris</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3640,7 +3640,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;AVIRIS&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_prisma</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_prisma</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3728,7 +3728,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PRISMA&quot;</span>
 
-    <span class="k">def</span> <span class="nf">add_enmap</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_enmap</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3813,7 +3813,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EnMAP&quot;</span>
 
-    <span class="k">def</span> <span class="nf">add_tanager</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_tanager</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">source</span><span class="p">,</span>
         <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -3923,7 +3923,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a hyperspectral dataset to the map.</span>
 
 <span class="sd">        Args:</span>
@@ -3963,7 +3963,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_dataset</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">set_plot_options</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_plot_options</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">add_marker_cluster</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">plot_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4020,25 +4020,25 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="k">if</span> <span class="n">add_marker_cluster</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plot_marker_cluster</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">spectral_to_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spectral_to_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the spectral data to a pandas DataFrame.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pd.DataFrame: The spectral data as a pandas DataFrame.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">df</span>
 
-    <span class="k">def</span> <span class="nf">spectral_to_gdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spectral_to_gdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the spectral data to a GeoPandas GeoDataFrame.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            gpd.DataFrame: The spectral data as a pandas DataFrame.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
-        <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
 
         <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectral_to_df</span><span class="p">()</span>
 
@@ -4070,7 +4070,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="k">return</span> <span class="n">gdf</span>
 
-    <span class="k">def</span> <span class="nf">spectral_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spectral_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves the spectral data to a CSV file.</span>
 
 <span class="sd">        Args:</span>
@@ -4081,10 +4081,10 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
         <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_update_band_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_band_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">):</span>
 
         <span class="c1"># Function to find the nearest indices</span>
-        <span class="k">def</span> <span class="nf">find_nearest_indices</span><span class="p">(</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">find_nearest_indices</span><span class="p">(</span>
             <span class="n">dataarray</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">dim_name</span><span class="o">=</span><span class="s2">&quot;wavelength&quot;</span>
         <span class="p">):</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
@@ -4123,7 +4123,7 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_field_data</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_field_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">x_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">,</span>
@@ -4226,7 +4226,7 @@ class's constructor.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initializes a new instance of the Map class.</span>
 
@@ -4308,7 +4308,7 @@ class's add_layer method.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a layer to the map.</span>
 
 <span class="sd">    Args:</span>
@@ -4463,7 +4463,7 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_aviris</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_aviris</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -4672,7 +4672,7 @@ layer. Defaults to True.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_desis</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_desis</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">525</span><span class="p">],</span>
@@ -4888,7 +4888,7 @@ True.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_emit</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_emit</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5110,7 +5110,7 @@ when selecting bands. Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_enmap</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_enmap</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5312,7 +5312,7 @@ when selecting bands. Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_field_data</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_field_data</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">x_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">,</span>
@@ -5418,7 +5418,7 @@ add function.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a hyperspectral dataset to the map.</span>
 
 <span class="sd">    Args:</span>
@@ -5588,7 +5588,7 @@ Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_neon</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_neon</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -5796,7 +5796,7 @@ layer. Defaults to True.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_pace</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_pace</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6027,7 +6027,7 @@ etc. Defaults to "nearest".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_prisma</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_prisma</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6265,7 +6265,7 @@ rioxarray.open_rasterio.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_raster</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_raster</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6328,7 +6328,7 @@ rioxarray.open_rasterio.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rxr</span>
 
     <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
@@ -6493,7 +6493,7 @@ layer. Defaults to True.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_tanager</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_tanager</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6741,7 +6741,7 @@ Defaults to None.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_wyvern</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_wyvern</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">source</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -6890,7 +6890,7 @@ Defaults to "ECO_L2T_LSTE".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_ecostress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;ECO_L2T_LSTE&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for</span>
 <span class="sd">        ECOSTRESS.</span>
@@ -6945,7 +6945,7 @@ Defaults to "EMITL2ARFL".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;EMITL2ARFL&quot;</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;EMITL2ARFL&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for</span>
 <span class="sd">        EMIT.</span>
@@ -7000,7 +7000,7 @@ Defaults to "PACE_OCI_L2_AOP_NRT".</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_AOP_NRT&quot;</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_AOP_NRT&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for</span>
 <span class="sd">        PACE.</span>
@@ -7111,7 +7111,7 @@ None it will respect the content size. Defaults to None.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_plot_options</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_plot_options</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">add_marker_cluster</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">plot_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -7216,7 +7216,7 @@ None it will respect the content size. Defaults to None.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">spectral_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">spectral_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Saves the spectral data to a CSV file.</span>
 
 <span class="sd">    Args:</span>
@@ -7265,13 +7265,13 @@ None it will respect the content size. Defaults to None.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">spectral_to_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">spectral_to_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts the spectral data to a pandas DataFrame.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pd.DataFrame: The spectral data as a pandas DataFrame.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span>
@@ -7314,14 +7314,14 @@ None it will respect the content size. Defaults to None.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">spectral_to_gdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">spectral_to_gdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts the spectral data to a GeoPandas GeoDataFrame.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        gpd.DataFrame: The spectral data as a pandas DataFrame.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
-    <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectral_to_df</span><span class="p">()</span>
 

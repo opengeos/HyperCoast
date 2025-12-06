@@ -2972,7 +2972,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MoE_VAE</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MoE_VAE</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Call a Sparsely gated mixture of experts layer with 1-layer Feed-Forward networks as experts.</span>
 <span class="sd">    Args:</span>
 <span class="sd">    input_dim: integer - size of the input</span>
@@ -2983,7 +2983,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">    k: an integer - how many experts to use for each batch element</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_dim</span><span class="p">,</span>
         <span class="n">output_dim</span><span class="p">,</span>
@@ -3067,7 +3067,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Forward pass of the MoE-VAE model.</span>
 
@@ -3107,7 +3107,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
         <span class="n">pred_y</span> <span class="o">=</span> <span class="n">dispatcher</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">expert_outputs</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute loss between model output and target.</span>
 
@@ -3134,7 +3134,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
             <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">get_batch_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_batch_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the gating weights from the last forward pass.</span>
 
 <span class="sd">        Returns:</span>
@@ -3142,7 +3142,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span>
 
-    <span class="k">def</span> <span class="nf">cv_squared</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cv_squared</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute squared coefficient of variation for load balancing.</span>
 
 <span class="sd">        Calculates the squared coefficient of variation (variance/mean²) which</span>
@@ -3162,7 +3162,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
             <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">var</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_gates_to_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gates_to_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert gate weights to expert load counts.</span>
 
 <span class="sd">        Computes the number of examples assigned to each expert (with gate &gt; 0).</span>
@@ -3175,7 +3175,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">gates</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_prob_in_top_k</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prob_in_top_k</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">clean_values</span><span class="p">,</span> <span class="n">noisy_values</span><span class="p">,</span> <span class="n">noise_stddev</span><span class="p">,</span> <span class="n">noisy_top_values</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute probability of expert being in top-k selection.</span>
@@ -3216,7 +3216,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
         <span class="n">prob</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_in</span><span class="p">,</span> <span class="n">prob_if_in</span><span class="p">,</span> <span class="n">prob_if_out</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">prob</span>
 
-    <span class="k">def</span> <span class="nf">noisy_top_k_gating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">noise_epsilon</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">noisy_top_k_gating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">noise_epsilon</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Noisy top-k gating mechanism for expert selection.</span>
 
 <span class="sd">        Implements the noisy top-k gating from &quot;Outrageously Large Neural Networks&quot;</span>
@@ -3404,7 +3404,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">input_dim</span><span class="p">,</span>
     <span class="n">output_dim</span><span class="p">,</span>
@@ -3548,7 +3548,7 @@ serves as a loss term to encourage uniform distribution across experts.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cv_squared</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cv_squared</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute squared coefficient of variation for load balancing.</span>
 
 <span class="sd">    Calculates the squared coefficient of variation (variance/mean²) which</span>
@@ -3634,7 +3634,7 @@ Defaults to 1e-2.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Forward pass of the MoE-VAE model.</span>
 
@@ -3712,7 +3712,7 @@ Defaults to 1e-2.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_batch_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_batch_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the gating weights from the last forward pass.</span>
 
 <span class="sd">    Returns:</span>
@@ -3783,7 +3783,7 @@ Defaults to 1e-2.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute loss between model output and target.</span>
 
@@ -3885,7 +3885,7 @@ Defaults to 1e-2.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">noisy_top_k_gating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">noise_epsilon</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">noisy_top_k_gating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">noise_epsilon</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Noisy top-k gating mechanism for expert selection.</span>
 
 <span class="sd">    Implements the noisy top-k gating from &quot;Outrageously Large Neural Networks&quot;</span>
@@ -4081,7 +4081,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MoE_VAE_Token</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MoE_VAE_Token</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Token-wise Mixture of Experts VAE for spectral data analysis.</span>
 
 <span class="sd">    This variant of MoE-VAE divides the input spectral bands among different</span>
@@ -4108,7 +4108,7 @@ Defaults to False.</p></td>
 <span class="sd">        **kwargs: Additional keyword arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_dim</span><span class="p">,</span>
         <span class="n">output_dim</span><span class="p">,</span>
@@ -4172,7 +4172,7 @@ Defaults to False.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Token-wise MoE forward pass:</span>
 <span class="sd">        Each expert processes a different spectral segment of the input.</span>
@@ -4200,7 +4200,7 @@ Defaults to False.</p></td>
             <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute loss for token-wise MoE-VAE model.</span>
 
 <span class="sd">        Computes reconstruction loss without MoE-specific penalties since</span>
@@ -4308,7 +4308,7 @@ Each expert processes a different spectral segment of the input.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Token-wise MoE forward pass:</span>
 <span class="sd">    Each expert processes a different spectral segment of the input.</span>
@@ -4402,7 +4402,7 @@ no gating mechanism is used in the token-wise approach.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute loss for token-wise MoE-VAE model.</span>
 
 <span class="sd">    Computes reconstruction loss without MoE-specific penalties since</span>
@@ -4519,7 +4519,7 @@ and after combine operations.</p>
 
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SparseDispatcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SparseDispatcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper for implementing a mixture of experts with sparse gating.</span>
 
 <span class="sd">    This class handles the distribution of inputs to experts and combines their</span>
@@ -4549,7 +4549,7 @@ and after combine operations.</p>
 <span class="sd">        and after combine operations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the SparseDispatcher.</span>
 
 <span class="sd">        Args:</span>
@@ -4599,7 +4599,7 @@ and after combine operations.</p>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nonzero_gates</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_nonzero_gates</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nonzero_gates</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Distribute input tensor to experts based on gating weights.</span>
 
 <span class="sd">        Creates separate input tensors for each expert containing only the</span>
@@ -4619,7 +4619,7 @@ and after combine operations.</p>
         <span class="n">inp_exp</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_batch_index</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inp_exp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_part_sizes</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expert_out</span><span class="p">,</span> <span class="n">multiply_by_gates</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expert_out</span><span class="p">,</span> <span class="n">multiply_by_gates</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Combine expert outputs weighted by gating values.</span>
 
 <span class="sd">        Aggregates outputs from all experts for each batch element, weighted</span>
@@ -4650,7 +4650,7 @@ and after combine operations.</p>
         <span class="n">combined</span> <span class="o">=</span> <span class="n">zeros</span><span class="o">.</span><span class="n">index_add</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_index</span><span class="p">,</span> <span class="n">stitched</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">combined</span>
 
-    <span class="k">def</span> <span class="nf">expert_to_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">expert_to_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract gate values for each expert&#39;s assigned samples.</span>
 
 <span class="sd">        Returns:</span>
@@ -4718,7 +4718,7 @@ and after combine operations.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the SparseDispatcher.</span>
 
 <span class="sd">    Args:</span>
@@ -4836,7 +4836,7 @@ gate values. If False, outputs are simply summed. Defaults to True.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expert_out</span><span class="p">,</span> <span class="n">multiply_by_gates</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expert_out</span><span class="p">,</span> <span class="n">multiply_by_gates</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine expert outputs weighted by gating values.</span>
 
 <span class="sd">    Aggregates outputs from all experts for each batch element, weighted</span>
@@ -4927,7 +4927,7 @@ samples assigned to that expert (where gates[b, i] &gt; 0).</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Distribute input tensor to experts based on gating weights.</span>
 
 <span class="sd">    Creates separate input tensors for each expert containing only the</span>
@@ -4986,7 +4986,7 @@ samples assigned to that expert (where gates[b, i] &gt; 0).</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expert_to_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expert_to_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract gate values for each expert&#39;s assigned samples.</span>
 
 <span class="sd">    Returns:</span>
@@ -5111,7 +5111,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">VAE</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">VAE</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Variational Autoencoder implementation using PyTorch Lightning.</span>
 
 <span class="sd">    A standard VAE architecture with configurable encoder/decoder networks,</span>
@@ -5134,7 +5134,7 @@ Defaults to False.</p></td>
 <span class="sd">        **kwargs: Additional keyword arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_dim</span><span class="p">,</span>
         <span class="n">output_dim</span><span class="p">,</span>
@@ -5199,7 +5199,7 @@ Defaults to False.</p></td>
         <span class="c1"># self.decoder_layers.add_module(&#39;output_activation&#39;, nn.Tanh())  # Assuming output is in range [-1, 1]</span>
         <span class="c1"># with the classic robust preprocessing method it is -1 to 1, but for others it may not.</span>
 
-    <span class="k">def</span> <span class="nf">build_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build sequential neural network layers.</span>
 
 <span class="sd">        Args:</span>
@@ -5227,7 +5227,7 @@ Defaults to False.</p></td>
             <span class="n">current_size</span> <span class="o">=</span> <span class="n">next_size</span>
         <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode input to latent space parameters.</span>
 
 <span class="sd">        Args:</span>
@@ -5243,7 +5243,7 @@ Defaults to False.</p></td>
         <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc_log_var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span>
 
-    <span class="k">def</span> <span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reparameterization trick for sampling from latent distribution.</span>
 
 <span class="sd">        Args:</span>
@@ -5258,7 +5258,7 @@ Defaults to False.</p></td>
         <span class="n">z</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">std</span>
         <span class="k">return</span> <span class="n">z</span>
 
-    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode latent representation to output space.</span>
 
 <span class="sd">        Args:</span>
@@ -5269,7 +5269,7 @@ Defaults to False.</p></td>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass through the VAE.</span>
 
 <span class="sd">        Args:</span>
@@ -5286,7 +5286,7 @@ Defaults to False.</p></td>
         <span class="n">pred_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">&quot;mu&quot;</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span> <span class="s2">&quot;log_var&quot;</span><span class="p">:</span> <span class="n">log_var</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">,</span> <span class="n">kld_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">,</span> <span class="n">kld_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute VAE loss (reconstruction + KL divergence).</span>
 
 <span class="sd">        Args:</span>
@@ -5430,7 +5430,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">input_dim</span><span class="p">,</span>
     <span class="n">output_dim</span><span class="p">,</span>
@@ -5571,7 +5571,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">build_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build sequential neural network layers.</span>
 
 <span class="sd">    Args:</span>
@@ -5656,7 +5656,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode latent representation to output space.</span>
 
 <span class="sd">    Args:</span>
@@ -5726,7 +5726,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode input to latent space parameters.</span>
 
 <span class="sd">    Args:</span>
@@ -5802,7 +5802,7 @@ Defaults to False.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward pass through the VAE.</span>
 
 <span class="sd">    Args:</span>
@@ -5887,7 +5887,7 @@ Defaults to 0.0.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">,</span> <span class="n">kld_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">,</span> <span class="n">kld_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute VAE loss (reconstruction + KL divergence).</span>
 
 <span class="sd">    Args:</span>
@@ -5985,7 +5985,7 @@ Defaults to 0.0.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reparameterization trick for sampling from latent distribution.</span>
 
 <span class="sd">    Args:</span>
@@ -6094,7 +6094,7 @@ Defaults to 0.0.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
@@ -6243,7 +6243,7 @@ Defaults to 0.0.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">evaluate_token</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_token</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the token-wise MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
@@ -6403,7 +6403,7 @@ Defaults to 0.0.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
