@@ -51,7 +51,9 @@ def create_hypercoast_icon(size=64):
             draw.line([points[i], points[i + 1]], fill=color, width=2)
 
     # Draw border
-    draw.rectangle([(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2)
+    draw.rectangle(
+        [(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2
+    )
 
     return img
 
@@ -69,20 +71,26 @@ def create_load_data_icon(size=64):
     folder_outline = (200, 150, 50, 255)
 
     # Folder back
-    draw.rectangle([(8, 18), (56, 52)], fill=folder_color, outline=folder_outline, width=2)
+    draw.rectangle(
+        [(8, 18), (56, 52)], fill=folder_color, outline=folder_outline, width=2
+    )
 
     # Folder tab
-    draw.polygon([(8, 18), (8, 12), (28, 12), (32, 18)], fill=folder_color, outline=folder_outline)
+    draw.polygon(
+        [(8, 18), (8, 12), (28, 12), (32, 18)],
+        fill=folder_color,
+        outline=folder_outline,
+    )
 
     # Draw spectral bars inside folder (representing hyperspectral data)
     bar_colors = [
-        (180, 50, 50, 255),    # Red
-        (200, 100, 50, 255),   # Orange
-        (200, 180, 50, 255),   # Yellow
-        (50, 180, 50, 255),    # Green
-        (50, 150, 200, 255),   # Cyan
-        (80, 80, 200, 255),    # Blue
-        (150, 50, 200, 255),   # Violet
+        (180, 50, 50, 255),  # Red
+        (200, 100, 50, 255),  # Orange
+        (200, 180, 50, 255),  # Yellow
+        (50, 180, 50, 255),  # Green
+        (50, 150, 200, 255),  # Cyan
+        (80, 80, 200, 255),  # Blue
+        (150, 50, 200, 255),  # Violet
     ]
 
     bar_width = 5
@@ -93,7 +101,9 @@ def create_load_data_icon(size=64):
         draw.rectangle([(x, 48 - height), (x + bar_width - 1, 48)], fill=color)
 
     # Draw border
-    draw.rectangle([(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2)
+    draw.rectangle(
+        [(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2
+    )
 
     return img
 
@@ -108,13 +118,28 @@ def create_band_combination_icon(size=64):
 
     # Draw three overlapping color rectangles (RGB bands)
     # Red band (back)
-    draw.rectangle([(12, 8), (44, 40)], fill=(220, 60, 60, 200), outline=(255, 100, 100, 255), width=2)
+    draw.rectangle(
+        [(12, 8), (44, 40)],
+        fill=(220, 60, 60, 200),
+        outline=(255, 100, 100, 255),
+        width=2,
+    )
 
     # Green band (middle)
-    draw.rectangle([(18, 14), (50, 46)], fill=(60, 180, 60, 200), outline=(100, 220, 100, 255), width=2)
+    draw.rectangle(
+        [(18, 14), (50, 46)],
+        fill=(60, 180, 60, 200),
+        outline=(100, 220, 100, 255),
+        width=2,
+    )
 
     # Blue band (front)
-    draw.rectangle([(24, 20), (56, 52)], fill=(60, 100, 220, 200), outline=(100, 140, 255, 255), width=2)
+    draw.rectangle(
+        [(24, 20), (56, 52)],
+        fill=(60, 100, 220, 200),
+        outline=(100, 140, 255, 255),
+        width=2,
+    )
 
     # Draw "RGB" text indicator with small circles
     draw.ellipse([(10, 50), (18, 58)], fill=(255, 80, 80, 255))
@@ -122,7 +147,9 @@ def create_band_combination_icon(size=64):
     draw.ellipse([(34, 50), (42, 58)], fill=(80, 120, 255, 255))
 
     # Draw border
-    draw.rectangle([(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2)
+    draw.rectangle(
+        [(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2
+    )
 
     return img
 
@@ -141,7 +168,9 @@ def create_spectral_inspector_icon(size=64):
     for x in range(8, 56):
         # Create a spectral response curve shape
         t = (x - 8) / 48
-        y = 48 - int(25 * math.exp(-((t - 0.5) ** 2) * 8) * (1 + 0.3 * math.sin(t * 20)))
+        y = 48 - int(
+            25 * math.exp(-((t - 0.5) ** 2) * 8) * (1 + 0.3 * math.sin(t * 20))
+        )
         points.append((x, y))
 
     for i in range(len(points) - 1):
@@ -163,10 +192,12 @@ def create_spectral_inspector_icon(size=64):
     # Draw axes
     axis_color = (150, 150, 150, 200)
     draw.line([(8, 52), (56, 52)], fill=axis_color, width=1)  # X axis
-    draw.line([(8, 52), (8, 12)], fill=axis_color, width=1)   # Y axis
+    draw.line([(8, 52), (8, 12)], fill=axis_color, width=1)  # Y axis
 
     # Draw border
-    draw.rectangle([(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2)
+    draw.rectangle(
+        [(0, 0), (size - 1, size - 1)], outline=(255, 255, 255, 200), width=2
+    )
 
     return img
 
@@ -199,4 +230,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

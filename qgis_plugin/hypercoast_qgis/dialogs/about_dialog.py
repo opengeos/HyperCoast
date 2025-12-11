@@ -103,4 +103,3 @@ class AboutDialog(QDialog):
         close_button.clicked.connect(self.accept)
         button_layout.addWidget(close_button)
         layout.addLayout(button_layout)
-
