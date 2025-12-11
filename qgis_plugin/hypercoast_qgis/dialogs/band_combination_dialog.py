@@ -31,8 +31,6 @@ from qgis.core import (
     QgsContrastEnhancement,
     QgsMultiBandColorRenderer,
     QgsSingleBandGrayRenderer,
-    QgsMessageLog,
-    Qgis,
 )
 
 
