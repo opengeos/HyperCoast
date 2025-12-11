@@ -4,53 +4,43 @@ A QGIS plugin for visualizing and analyzing hyperspectral data, including EMIT, 
 
 ## Features
 
-- **Load Multiple Hyperspectral Formats**: Support for NASA EMIT, PACE, DESIS, NEON AOP, AVIRIS, PRISMA, EnMAP, Planet Tanager, Wyvern, and generic GeoTIFF/NetCDF hyperspectral data.
+-   **Load Multiple Hyperspectral Formats**: Support for NASA EMIT, PACE, DESIS, NEON AOP, AVIRIS, PRISMA, EnMAP, Planet Tanager, Wyvern, and generic GeoTIFF/NetCDF hyperspectral data.
 
-- **Band Combination Visualization**: Easily change RGB band combinations using wavelength values. Includes presets for:
-  - True Color (RGB)
-  - Color Infrared (CIR)
-  - False Color (Urban)
-  - Agriculture
-  - Vegetation Analysis
-  - Water Bodies
-  - Geology
-  - Chlorophyll-a
+-   **Band Combination Visualization**: Easily change RGB band combinations using wavelength values. Includes presets for:
 
-- **Interactive Spectral Inspector**: Click anywhere on the map to extract and display spectral signatures. Features include:
-  - Stack multiple spectra for comparison
-  - Auto-scaling and manual axis range control
-  - Export to CSV
-  - Export plots as PNG/PDF/SVG
+    -   True Color (RGB)
+    -   Color Infrared (CIR)
+    -   False Color (Urban)
+    -   Agriculture
+    -   Vegetation Analysis
+    -   Water Bodies
+    -   Geology
+    -   Chlorophyll-a
 
-- **Wavelength-based Selection**: Select bands by wavelength (nm) rather than band index for intuitive visualization.
+-   **Interactive Spectral Inspector**: Click anywhere on the map to extract and display spectral signatures. Features include:
+
+    -   Stack multiple spectra for comparison
+    -   Auto-scaling and manual axis range control
+    -   Export to CSV
+    -   Export plots as PNG/PDF/SVG
+
+-   **Wavelength-based Selection**: Select bands by wavelength (nm) rather than band index for intuitive visualization.
 
 ## Requirements
 
 ### Python Dependencies
 
-**Recommended**: Install the hypercoast library for best compatibility with all data formats:
+Before using the plugin, please create a new conda environment to install QGIS and HyperCoast:
 
 ```bash
-pip install hypercoast
+conda create -n geo python=3.12
+conda activate geo
+conda install -c conda-forge qgis hypercoast
 ```
-
-This will install all required dependencies automatically.
-
-Alternatively, you can install dependencies manually:
-```bash
-pip install xarray h5netcdf rasterio h5py numpy matplotlib leafmap
-```
-
-Optional dependencies for specific data formats:
-```bash
-pip install rioxarray scipy pandas
-```
-
-> **Note**: The plugin works best when hypercoast is installed, as it provides properly tested data loaders for all supported hyperspectral formats (EMIT, PACE, DESIS, NEON, etc.). Without hypercoast, the plugin will use simplified fallback loaders that may not handle all edge cases.
 
 ### QGIS Version
 
-- QGIS 3.22 or later
+-   QGIS 3.22 or later
 
 ## Installation
 
@@ -65,9 +55,10 @@ pip install rioxarray scipy pandas
 ### Manual Installation
 
 1. Copy the `hypercoast_qgis` folder to your QGIS plugins directory:
-   - **Linux**: `~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/`
-   - **Windows**: `%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins\`
-   - **macOS**: `~/Library/Application Support/QGIS/QGIS3/profiles/default/python/plugins/`
+
+    - **Linux**: `~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/`
+    - **Windows**: `%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins\`
+    - **macOS**: `~/Library/Application Support/QGIS/QGIS3/profiles/default/python/plugins/`
 
 2. Restart QGIS
 
@@ -101,22 +92,22 @@ pip install rioxarray scipy pandas
 
 ## Supported File Formats
 
-| Sensor | Extensions | Description |
-|--------|------------|-------------|
-| EMIT | .nc, .nc4 | NASA EMIT L2A Reflectance |
-| PACE | .nc, .nc4 | NASA PACE OCI L2 AOP |
-| DESIS | .nc, .tif | DESIS Hyperspectral |
-| NEON | .h5 | NEON AOP Hyperspectral |
-| AVIRIS | .nc, .img, .bil | AVIRIS/AVIRIS-NG |
-| PRISMA | .he5, .nc | ASI PRISMA |
-| EnMAP | .nc, .tif | DLR EnMAP |
-| Tanager | .h5 | Planet Tanager |
-| Wyvern | .tif, .tiff | Wyvern Hyperspectral |
-| Generic | .tif, .nc | Multi-band GeoTIFF/NetCDF |
+| Sensor  | Extensions      | Description               |
+| ------- | --------------- | ------------------------- |
+| EMIT    | .nc, .nc4       | NASA EMIT L2A Reflectance |
+| PACE    | .nc, .nc4       | NASA PACE OCI L2 AOP      |
+| DESIS   | .nc, .tif       | DESIS Hyperspectral       |
+| NEON    | .h5             | NEON AOP Hyperspectral    |
+| AVIRIS  | .nc, .img, .bil | AVIRIS/AVIRIS-NG          |
+| PRISMA  | .he5, .nc       | ASI PRISMA                |
+| EnMAP   | .nc, .tif       | DLR EnMAP                 |
+| Tanager | .h5             | Planet Tanager            |
+| Wyvern  | .tif, .tiff     | Wyvern Hyperspectral      |
+| Generic | .tif, .nc       | Multi-band GeoTIFF/NetCDF |
 
 ## Screenshots
 
-*Coming soon*
+_Coming soon_
 
 ## Development
 
