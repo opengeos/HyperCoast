@@ -235,7 +235,14 @@ def install_plugin(zip_path=None, force=False):
     if not plugins_dir.parent.exists():
         print(f"\nWarning: QGIS profile directory not found: {plugins_dir.parent}")
         print("Please ensure QGIS is installed and has been run at least once.")
-        create = input("Create directory anyway? [y/N]: ").strip().lower()
+        while True:
+            try:
+                create = input("Create directory anyway? [y/N]: ").strip().lower()
+            except EOFError:
+                create = ""
+            if create in ("y", "n", ""):
+                break
+            print("Please enter 'y' to create the directory or 'n' to cancel.")
         if create != "y":
             return None
 
