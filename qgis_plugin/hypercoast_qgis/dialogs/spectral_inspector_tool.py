@@ -97,7 +97,7 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
             wgs84_point = transform.transform(point)
             lon = wgs84_point.x()
             lat = wgs84_point.y()
-        except:
+        except Exception:
             lon = point.x()
             lat = point.y()
 
