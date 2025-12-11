@@ -21,8 +21,17 @@ from pathlib import Path
 
 # Plugin configuration
 PLUGIN_NAME = "hypercoast_qgis"
-VERSION = "0.1.0"
 
+def get_version_from_metadata():
+    """Read the version from metadata.txt."""
+    script_dir = get_script_dir()
+    metadata_path = script_dir / "metadata.txt"
+    with open(metadata_path, encoding="utf-8") as f:
+        for line in f:
+            if line.strip().lower().startswith("version"):
+                # Handles lines like: version=0.1.0
+                return line.split("=", 1)[1].strip()
+    raise RuntimeError("Version not found in metadata.txt")
 # Files/directories to exclude from package
 EXCLUDE_PATTERNS = [
     "*.pyc",
