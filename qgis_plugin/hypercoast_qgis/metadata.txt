@@ -1,0 +1,38 @@
+# This file contains metadata for HyperCoast QGIS Plugin
+
+[general]
+name=HyperCoast
+qgisMinimumVersion=3.22
+description=Visualize and analyze hyperspectral data including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets
+version=0.1.0
+author=Qiusheng Wu
+email=giswqs@gmail.com
+
+about=HyperCoast QGIS Plugin provides powerful tools for hyperspectral data visualization and analysis. Features include:
+    - Load and display various hyperspectral formats (EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, Wyvern)
+    - Interactive band combination visualization
+    - Spectral signature inspection with click-to-plot functionality
+    - Export spectral profiles to CSV
+    - PCA analysis and visualization
+    - RGB composite creation with customizable wavelength selection
+
+tracker=https://github.com/opengeos/HyperCoast/issues
+repository=https://github.com/opengeos/HyperCoast
+
+changelog=
+    0.1.0 - Initial release
+        * Support for multiple hyperspectral formats
+        * Band combination tool
+        * Spectral signature inspector
+        * Wavelength-based RGB composite
+
+tags=hyperspectral,remote sensing,EMIT,PACE,spectral,analysis,visualization
+
+homepage=https://hypercoast.org
+category=Raster
+icon=icons/hypercoast.png
+experimental=True
+deprecated=False
+
+hasProcessingProvider=no
+
