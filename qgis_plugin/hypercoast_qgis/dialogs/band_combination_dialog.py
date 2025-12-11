@@ -82,13 +82,13 @@ class BandCombinationDialog(QDialog):
         mode_group = QGroupBox("Display Mode")
         mode_layout = QHBoxLayout()
 
-        self.rgb_radio = QCheckBox("RGB Composite")
+        self.rgb_radio = QRadioButton("RGB Composite")
         self.rgb_radio.setChecked(True)
-        self.rgb_radio.stateChanged.connect(self.on_mode_changed)
+        self.rgb_radio.toggled.connect(self.on_mode_changed)
         mode_layout.addWidget(self.rgb_radio)
 
-        self.single_radio = QCheckBox("Single Band")
-        self.single_radio.stateChanged.connect(self.on_mode_changed)
+        self.single_radio = QRadioButton("Single Band")
+        self.single_radio.toggled.connect(self.on_mode_changed)
         mode_layout.addWidget(self.single_radio)
 
         mode_group.setLayout(mode_layout)
