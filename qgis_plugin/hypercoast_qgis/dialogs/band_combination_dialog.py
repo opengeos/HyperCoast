@@ -22,11 +22,8 @@ from qgis.PyQt.QtWidgets import (
     QSlider,
     QCheckBox,
     QFormLayout,
-    QListWidget,
-    QListWidgetItem,
     QMessageBox,
     QProgressBar,
-    QSpinBox,
 )
 from qgis.core import (
     QgsProject,
