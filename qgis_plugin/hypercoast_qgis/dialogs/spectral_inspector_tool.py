@@ -125,7 +125,7 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
 
             try:
                 layer_point = to_layer_transform.transform(point)
-            except:
+            except Exception:
                 layer_point = point
 
             if not layer_extent.contains(layer_point):
