@@ -2,6 +2,9 @@
 
 A QGIS plugin for visualizing and analyzing hyperspectral data, including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets.
 
+![](https://github.com/user-attachments/assets/553d69de-c15c-4351-a322-b48663a1d2c7)
+
+
 ## Features
 
 -   **Load Multiple Hyperspectral Formats**: Support for NASA EMIT, PACE, DESIS, NEON AOP, AVIRIS, PRISMA, EnMAP, Planet Tanager, Wyvern, and generic GeoTIFF/NetCDF hyperspectral data.
@@ -17,25 +20,18 @@ A QGIS plugin for visualizing and analyzing hyperspectral data, including EMIT, 
     -   Geology
     -   Chlorophyll-a
 
--   **Interactive Spectral Inspector**: Click anywhere on the map to extract and display spectral signatures. Features include:
-
-    -   Stack multiple spectra for comparison
-    -   Auto-scaling and manual axis range control
-    -   Export to CSV
-    -   Export plots as PNG/PDF/SVG
-
--   **Wavelength-based Selection**: Select bands by wavelength (nm) rather than band index for intuitive visualization.
-
-## Requirements
-
-### Python Dependencies
-
 Before using the plugin, please create a new conda environment to install QGIS and HyperCoast:
 
 ```bash
 conda create -n geo python=3.12
 conda activate geo
 conda install -c conda-forge qgis hypercoast
+```
+
+After the installation, you can start QGIS by running the following command:
+
+```bash
+conda run qgis
 ```
 
 ### QGIS Version

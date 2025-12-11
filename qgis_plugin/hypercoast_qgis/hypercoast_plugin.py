@@ -17,6 +17,7 @@ from .dialogs.load_data_dialog import LoadDataDialog
 from .dialogs.band_combination_dialog import BandCombinationDialog
 from .dialogs.spectral_inspector_tool import SpectralInspectorTool
 from .dialogs.spectral_plot_dialog import SpectralPlotDialog
+from .dialogs.about_dialog import AboutDialog
 
 
 class HyperCoastPlugin:
@@ -42,6 +43,7 @@ class HyperCoastPlugin:
         self.band_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
+        self.about_dialog = None
 
         # Store hyperspectral datasets
         self.hyperspectral_data = {}
@@ -108,11 +110,11 @@ class HyperCoastPlugin:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = os.path.join(self.plugin_dir, "icons", "hypercoast.png")
+        icons_dir = os.path.join(self.plugin_dir, "icons")
 
         # Load Hyperspectral Data action
         self.add_action(
-            icon_path,
+            os.path.join(icons_dir, "load_data.png"),
             text=self.tr("Load Hyperspectral Data"),
             callback=self.show_load_dialog,
             parent=self.iface.mainWindow(),
@@ -121,7 +123,7 @@ class HyperCoastPlugin:
 
         # Band Combination action
         self.add_action(
-            icon_path,
+            os.path.join(icons_dir, "band_combination.png"),
             text=self.tr("Band Combination"),
             callback=self.show_band_dialog,
             parent=self.iface.mainWindow(),
@@ -130,12 +132,21 @@ class HyperCoastPlugin:
 
         # Spectral Inspector action
         self.add_action(
-            icon_path,
+            os.path.join(icons_dir, "hypercoast.png"),
             text=self.tr("Spectral Inspector"),
             callback=self.toggle_spectral_inspector,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Inspect spectral signatures interactively"),
             checkable=True,
+        )
+
+        # About action
+        self.add_action(
+            os.path.join(icons_dir, "about.svg"),
+            text=self.tr("About"),
+            callback=self.show_about_dialog,
+            parent=self.iface.mainWindow(),
+            status_tip=self.tr("About HyperCoast plugin"),
         )
 
     def unload(self):
@@ -195,6 +206,14 @@ class HyperCoastPlugin:
         self.spectral_plot_dialog.show()
         self.spectral_plot_dialog.raise_()
         self.spectral_plot_dialog.activateWindow()
+
+    def show_about_dialog(self):
+        """Show the About dialog."""
+        if self.about_dialog is None:
+            self.about_dialog = AboutDialog(self.iface.mainWindow())
+        self.about_dialog.show()
+        self.about_dialog.raise_()
+        self.about_dialog.activateWindow()
 
     def register_hyperspectral_layer(self, layer_id, data_info):
         """Register a hyperspectral layer with its metadata.

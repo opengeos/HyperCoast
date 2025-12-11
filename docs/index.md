@@ -42,6 +42,14 @@ If you find HyperCoast useful in your research, please consider citing the follo
 -   Interactive slicing and thresholding of hyperspectral data in 3D
 -   Saving spectral signatures as CSV files
 
+## QGIS Plugin
+
+HyperCoast also provides a QGIS plugin for visualizing and analyzing hyperspectral data, including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets.
+
+To install the QGIS plugin, please follow the instructions in the [QGIS Plugin README](qgis_plugin/README.md).
+
+![QGIS Plugin](https://github.com/user-attachments/assets/553d69de-c15c-4351-a322-b48663a1d2c7)
+
 ## Demos
 
 -   Visualizing hyperspectral data in 3D ([notebook](https://hypercoast.org/examples/image_cube))
