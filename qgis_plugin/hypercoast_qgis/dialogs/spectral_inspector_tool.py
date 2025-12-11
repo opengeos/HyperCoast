@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 """
 
 import numpy as np
-from qgis.PyQt.QtCore import Qt, pyqtSignal, QObject
+from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QCursor
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand
 from qgis.core import (
