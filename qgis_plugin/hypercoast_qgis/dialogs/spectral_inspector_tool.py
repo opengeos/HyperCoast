@@ -6,7 +6,6 @@ SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
 SPDX-License-Identifier: MIT
 """
 
-import numpy as np
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QCursor
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand
