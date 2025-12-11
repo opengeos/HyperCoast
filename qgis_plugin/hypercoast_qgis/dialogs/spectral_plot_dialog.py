@@ -30,7 +30,6 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
     QTabWidget,
 )
-from qgis.PyQt.QtGui import QColor
 
 try:
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
