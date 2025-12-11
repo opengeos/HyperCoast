@@ -35,7 +35,6 @@ from qgis.PyQt.QtWidgets import (
 from qgis.core import (
     QgsRasterLayer,
     QgsProject,
-    QgsCoordinateReferenceSystem,
     QgsMessageLog,
     Qgis,
 )
