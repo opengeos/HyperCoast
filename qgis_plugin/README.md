@@ -26,6 +26,8 @@ A QGIS plugin for visualizing and analyzing hyperspectral data, including EMIT, 
 
 -   **Wavelength-based Selection**: Select bands by wavelength (nm) rather than band index for intuitive visualization.
 
+![demo](https://github.com/user-attachments/assets/553d69de-c15c-4351-a322-b48663a1d2c7)
+
 ## Requirements
 
 ### Python Dependencies
@@ -36,6 +38,12 @@ Before using the plugin, please create a new conda environment to install QGIS a
 conda create -n geo python=3.12
 conda activate geo
 conda install -c conda-forge qgis hypercoast
+```
+
+After the installation, you can start QGIS by running the following command:
+
+```bash
+conda run qgis
 ```
 
 ### QGIS Version
