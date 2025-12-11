@@ -10,7 +10,6 @@ SPDX-License-Identifier: MIT
 """
 
 import os
-import tempfile
 import numpy as np
 
 try:
