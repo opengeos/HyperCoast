@@ -36,6 +36,8 @@ from qgis.core import (
     QgsRasterLayer,
     QgsProject,
     QgsMessageLog,
+    QgsCoordinateTransform,
+    QgsCoordinateReferenceSystem,
     Qgis,
 )
 
@@ -243,10 +245,13 @@ class LoadDataDialog(QDialog):
         if filepath:
             self.file_path_edit.setText(filepath)
 
-            # Auto-set layer name
-            if not self.layer_name_edit.text():
-                basename = os.path.splitext(os.path.basename(filepath))[0]
-                self.layer_name_edit.setText(basename)
+            # Always update layer name based on the new filename
+            basename = os.path.splitext(os.path.basename(filepath))[0]
+            self.layer_name_edit.setText(basename)
+
+            # Clear dataset info since we have a new file
+            self.dataset = None
+            self.info_text.clear()
 
     def preview_dataset(self):
         """Preview the selected dataset."""
@@ -413,9 +418,30 @@ class LoadDataDialog(QDialog):
 
             self.progress_bar.setValue(100)
 
-            # Zoom to layer
-            self.iface.mapCanvas().setExtent(raster_layer.extent())
-            self.iface.mapCanvas().refresh()
+            # Reset spectral plot when loading a new dataset
+            if self.plugin.spectral_plot_dialog is not None:
+                self.plugin.spectral_plot_dialog.clear_all_spectra()
+
+            # Zoom to layer with proper CRS transformation
+            canvas = self.iface.mapCanvas()
+            layer_extent = raster_layer.extent()
+            layer_crs = raster_layer.crs()
+            canvas_crs = canvas.mapSettings().destinationCrs()
+
+            # Transform extent if CRS differs
+            if layer_crs.isValid() and canvas_crs.isValid() and layer_crs != canvas_crs:
+                transform = QgsCoordinateTransform(
+                    layer_crs, canvas_crs, QgsProject.instance()
+                )
+                layer_extent = transform.transformBoundingBox(layer_extent)
+
+            # Set extent with a small buffer for better visibility
+            layer_extent.scale(1.05)
+            canvas.setExtent(layer_extent)
+            canvas.refresh()
+
+            # Set the layer as active
+            self.iface.setActiveLayer(raster_layer)
 
             QMessageBox.information(
                 self, "Success", f"Layer '{layer_name}' loaded successfully!"

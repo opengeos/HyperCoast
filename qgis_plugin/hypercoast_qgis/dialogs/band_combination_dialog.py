@@ -24,6 +24,7 @@ from qgis.PyQt.QtWidgets import (
     QFormLayout,
     QMessageBox,
     QProgressBar,
+    QRadioButton,
 )
 from qgis.core import (
     QgsProject,

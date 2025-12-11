@@ -138,19 +138,6 @@ class HyperCoastPlugin:
             checkable=True,
         )
 
-        # Separator
-        self.toolbar.addSeparator()
-
-        # Show Spectral Plot Window
-        self.add_action(
-            icon_path,
-            text=self.tr("Show Spectral Plot"),
-            callback=self.show_spectral_plot,
-            parent=self.iface.mainWindow(),
-            status_tip=self.tr("Show/hide spectral plot window"),
-            add_to_toolbar=False,
-        )
-
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:

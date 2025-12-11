@@ -23,10 +23,15 @@ from pathlib import Path
 PLUGIN_NAME = "hypercoast_qgis"
 
 
+def get_script_dir():
+    """Get the directory where this script is located."""
+    return Path(__file__).parent.resolve()
+
+
 def get_version_from_metadata():
     """Read the version from metadata.txt."""
     script_dir = get_script_dir()
-    metadata_path = script_dir / "metadata.txt"
+    metadata_path = script_dir / "hypercoast_qgis/metadata.txt"
     with open(metadata_path, encoding="utf-8") as f:
         for line in f:
             if line.strip().lower().startswith("version"):
@@ -34,6 +39,8 @@ def get_version_from_metadata():
                 return line.split("=", 1)[1].strip()
     raise RuntimeError("Version not found in metadata.txt")
 
+
+VERSION = get_version_from_metadata()
 
 # Files/directories to exclude from package
 EXCLUDE_PATTERNS = [
@@ -48,11 +55,6 @@ EXCLUDE_PATTERNS = [
     ".pytest_cache",
     "*.log",
 ]
-
-
-def get_script_dir():
-    """Get the directory where this script is located."""
-    return Path(__file__).parent.resolve()
 
 
 def get_qgis_plugins_dir():
