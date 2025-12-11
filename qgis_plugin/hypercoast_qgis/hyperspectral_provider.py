@@ -265,7 +265,7 @@ class HyperspectralDataset:
             if hasattr(ds, "rio") and ds.rio.crs:
                 bounds = ds.rio.bounds()
                 self.bounds = tuple(bounds)
-        except:
+        except Exception:
             self.crs = "EPSG:4326"
 
     def _extract_neon_metadata(self):
