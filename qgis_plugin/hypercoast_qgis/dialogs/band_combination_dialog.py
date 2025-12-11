@@ -317,6 +317,15 @@ class BandCombinationDialog(QDialog):
 
     def on_mode_changed(self, state):
         """Handle display mode change."""
+        # Enforce mutual exclusivity between the two checkboxes
+        if self.rgb_radio.isChecked():
+            self.single_radio.setChecked(False)
+        elif self.single_radio.isChecked():
+            self.rgb_radio.setChecked(False)
+        else:
+            # If both are unchecked, default to RGB mode
+            self.rgb_radio.setChecked(True)
+            self.single_radio.setChecked(False)
         is_rgb = self.rgb_radio.isChecked()
         self.rgb_group.setVisible(is_rgb)
         self.single_group.setVisible(not is_rgb)
