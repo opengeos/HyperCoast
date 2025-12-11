@@ -8,7 +8,7 @@ Requires: Pillow (pip install Pillow)
 """
 
 try:
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image, ImageDraw
 
     # Create a 64x64 icon
     size = 64
