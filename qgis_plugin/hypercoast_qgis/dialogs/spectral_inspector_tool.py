@@ -12,11 +12,9 @@ from qgis.PyQt.QtGui import QCursor
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand
 from qgis.core import (
     QgsProject,
-    QgsPointXY,
     QgsCoordinateReferenceSystem,
     QgsCoordinateTransform,
     QgsWkbTypes,
-    QgsGeometry,
     QgsMessageLog,
     Qgis,
 )
