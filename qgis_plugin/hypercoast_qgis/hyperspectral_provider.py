@@ -325,7 +325,7 @@ class HyperspectralDataset:
                 self.bounds = tuple(bounds)
             elif "crs" in ds.attrs:
                 self.crs = ds.attrs["crs"]
-        except:
+        except Exception:
             self.crs = "EPSG:4326"
 
     def _load_emit_fallback(self):
