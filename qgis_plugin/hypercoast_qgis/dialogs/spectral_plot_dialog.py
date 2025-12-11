@@ -6,7 +6,6 @@ SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
 SPDX-License-Identifier: MIT
 """
 
-import os
 import csv
 import numpy as np
 from qgis.PyQt.QtCore import Qt
