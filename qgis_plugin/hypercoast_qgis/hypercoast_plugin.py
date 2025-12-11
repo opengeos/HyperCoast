@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 import os
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QMenu, QToolBar
+from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsProject
 
 # Import dialogs
