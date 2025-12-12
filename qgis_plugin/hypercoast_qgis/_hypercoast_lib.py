@@ -35,7 +35,9 @@ def _is_module_from_dir(mod: ModuleType, directory: Path) -> bool:
         return False
 
 
-def _import_hypercoast_without_plugin_shadow(plugin_pkg_dir: Path) -> Optional[ModuleType]:
+def _import_hypercoast_without_plugin_shadow(
+    plugin_pkg_dir: Path,
+) -> Optional[ModuleType]:
     """
     Try to import `hypercoast` while temporarily removing the plugin path from sys.path.
     """
@@ -147,4 +149,3 @@ def get_hypercoast() -> ModuleType:
         "  import sys, subprocess\n"
         "  subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'hypercoast'])\n"
     )
-
