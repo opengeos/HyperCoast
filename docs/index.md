@@ -48,7 +48,9 @@ HyperCoast also provides a QGIS plugin for visualizing and analyzing hyperspectr
 
 To install the QGIS plugin, please follow the instructions in the [QGIS Plugin README](https://github.com/opengeos/HyperCoast/tree/main/qgis_plugin).
 
-![QGIS Plugin](https://github.com/user-attachments/assets/553d69de-c15c-4351-a322-b48663a1d2c7)
+Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video tutorial](https://youtu.be/RxDUcfv-vBc) on how to use the HyperCoast plugin in QGIS.
+
+[![youtube-video](https://github.com/user-attachments/assets/d7bb977a-c523-485f-8ffb-3c99cb4e89d3)](https://youtu.be/RxDUcfv-vBc)
 
 ## Demos
 
