@@ -36,7 +36,9 @@ except ImportError:
 
 # Check if hypercoast is available
 try:
-    import hypercoast
+    from ._hypercoast_lib import get_hypercoast
+
+    hypercoast = get_hypercoast()
 
     HAS_HYPERCOAST = True
 except ImportError:
