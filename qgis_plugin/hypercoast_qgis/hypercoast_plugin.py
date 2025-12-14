@@ -18,6 +18,7 @@ from .dialogs.band_combination_dialog import BandCombinationDialog
 from .dialogs.spectral_inspector_tool import SpectralInspectorTool
 from .dialogs.spectral_plot_dialog import SpectralPlotDialog
 from .dialogs.about_dialog import AboutDialog
+from .dialogs.update_checker import UpdateCheckerDialog
 
 
 class HyperCoastPlugin:
@@ -44,6 +45,7 @@ class HyperCoastPlugin:
         self.spectral_tool = None
         self.spectral_plot_dialog = None
         self.about_dialog = None
+        self.update_dialog = None
 
         # Store hyperspectral datasets
         self.hyperspectral_data = {}
@@ -140,6 +142,16 @@ class HyperCoastPlugin:
             checkable=True,
         )
 
+        # Check for Updates action (menu only, no toolbar)
+        self.add_action(
+            ":/images/themes/default/mActionRefresh.svg",
+            text=self.tr("Check for Updates..."),
+            callback=self.show_update_checker,
+            parent=self.iface.mainWindow(),
+            status_tip=self.tr("Check for plugin updates from GitHub"),
+            add_to_toolbar=False,
+        )
+
         # About action
         self.add_action(
             os.path.join(icons_dir, "about.svg"),
@@ -214,6 +226,16 @@ class HyperCoastPlugin:
         self.about_dialog.show()
         self.about_dialog.raise_()
         self.about_dialog.activateWindow()
+
+    def show_update_checker(self):
+        """Show the update checker dialog."""
+        if self.update_dialog is None:
+            self.update_dialog = UpdateCheckerDialog(
+                self.plugin_dir, self.iface.mainWindow()
+            )
+        self.update_dialog.show()
+        self.update_dialog.raise_()
+        self.update_dialog.activateWindow()
 
     def register_hyperspectral_layer(self, layer_id, data_info):
         """Register a hyperspectral layer with its metadata.
