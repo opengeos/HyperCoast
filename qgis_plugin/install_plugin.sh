@@ -7,7 +7,7 @@ cd "$SCRIPT_DIR"
 
 # Plugin name
 PLUGIN_NAME="hypercoast_qgis"
-VERSION="0.1.0"
+VERSION="0.3.0"
 
 # Create output directory
 OUTPUT_DIR="dist"
