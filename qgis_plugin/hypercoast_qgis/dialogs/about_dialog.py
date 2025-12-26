@@ -56,7 +56,7 @@ class AboutDialog(QDialog):
         # Title
         title_layout = QVBoxLayout()
         title_label = QLabel("<h2>HyperCoast</h2>")
-        version_label = QLabel("<b>Version:</b> 0.1.0")
+        version_label = QLabel("<b>Version:</b> 0.3.0")
         title_layout.addWidget(title_label)
         title_layout.addWidget(version_label)
         title_layout.addStretch()
