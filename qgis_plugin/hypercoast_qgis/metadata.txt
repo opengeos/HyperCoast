@@ -30,6 +30,9 @@ deprecated=False
 hasProcessingProvider=no
 
 changelog=
+    0.3.0
+        - Upgrade the plugin from experimental to stable
+
     0.2.0
         - Fix QGIS import issue
         - Add plugin update checker
