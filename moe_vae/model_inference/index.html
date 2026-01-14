@@ -1208,14 +1208,70 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/moe_vae/" class="md-nav__link">
+      <a href="../../examples/moe_vae_chla/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Moe vae
+    Moe vae chla
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/moe_vae_acdom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moe vae acdom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/moe_vae_tss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moe vae tss
   
 
     
@@ -2014,6 +2070,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.moe_vae.model_inference.npy_to_tif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        npy_to_tif()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.moe_vae.model_inference.preprocess_emit_data_Robust" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2414,6 +2481,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.moe_vae.model_inference.npy_to_tif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        npy_to_tif()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.moe_vae.model_inference.preprocess_emit_data_Robust" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2507,7 +2585,7 @@
 
 
 <h2 id="hypercoast.moe_vae.model_inference.infer_and_visualize_single_model_Robust" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">infer_and_visualize_single_model_Robust</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">Rrs</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">save_folder</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">rgb_image</span><span class="p">,</span> <span class="n">structure_name</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">infer_and_visualize_single_model_Robust</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">Rrs</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">save_folder</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">rgb_image</span><span class="p">,</span> <span class="n">structure_name</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.moe_vae.model_inference.infer_and_visualize_single_model_Robust" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2588,16 +2666,16 @@
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>run</code></td>
-        <td><code>int</code></td>
-        <td><p>Run number.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
         <td><code>TSS_scalers_dict</code></td>
         <td><code>dict</code></td>
         <td><p>Dictionary containing the scalers for TSS.</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>run</code></td>
+        <td><code>int</code></td>
+        <td><p>Run number. Defaults to None.</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmin</code></td>
@@ -2613,6 +2691,21 @@
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>numpy.ndarray</code></td>
+      <td><p>Final output array with lat, lon, and predicted values.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">infer_and_visualize_single_model_Robust</span><span class="p">(</span>
@@ -2626,8 +2719,8 @@
     <span class="n">extent</span><span class="p">,</span>
     <span class="n">rgb_image</span><span class="p">,</span>
     <span class="n">structure_name</span><span class="p">,</span>
-    <span class="n">run</span><span class="p">,</span>
     <span class="n">TSS_scalers_dict</span><span class="p">,</span>
+    <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">vmax</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
 <span class="p">):</span>
@@ -2645,10 +2738,13 @@
 <span class="sd">        extent (tuple): Tuple containing the extent of the image.</span>
 <span class="sd">        rgb_image (array): RGB image.</span>
 <span class="sd">        structure_name (str): Name of the structure.</span>
-<span class="sd">        run (int): Run number.</span>
 <span class="sd">        TSS_scalers_dict (dict): Dictionary containing the scalers for TSS.</span>
+<span class="sd">        run (int, optional): Run number. Defaults to None.</span>
 <span class="sd">        vmin (float): Minimum value for the colorbar.</span>
 <span class="sd">        vmax (float): Maximum value for the colorbar.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: Final output array with lat, lon, and predicted values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">device</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span>
     <span class="n">predictions_all</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2712,10 +2808,14 @@
         <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
-    <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;(mg m$^{-3}$)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">structure_name</span><span class="si">}</span><span class="s2"> - Run </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="c1"># cbar.set_label(&quot;(mg m$^{-3}$)&quot;, fontsize=16)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">structure_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">run</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">structure_name</span><span class="si">}</span><span class="s2"> - Run </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">png_path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">final_output</span>
 </code></pre></div>
         </details>
     </div>
@@ -2729,7 +2829,7 @@
 
 
 <h2 id="hypercoast.moe_vae.model_inference.infer_and_visualize_single_model_minmax" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">infer_and_visualize_single_model_minmax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">Rrs</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">save_folder</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">rgb_image</span><span class="p">,</span> <span class="n">structure_name</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">infer_and_visualize_single_model_minmax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">Rrs</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">save_folder</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">rgb_image</span><span class="p">,</span> <span class="n">structure_name</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.moe_vae.model_inference.infer_and_visualize_single_model_minmax" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2812,8 +2912,8 @@
       <tr>
         <td><code>run</code></td>
         <td><code>int</code></td>
-        <td><p>Run number.</p></td>
-        <td><em>required</em></td>
+        <td><p>Run number. Defaults to None.</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>vmin</code></td>
@@ -2835,6 +2935,21 @@
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>numpy.ndarray</code></td>
+      <td><p>Final output array with lat, lon, and predicted values.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">infer_and_visualize_single_model_minmax</span><span class="p">(</span>
@@ -2848,7 +2963,7 @@
     <span class="n">extent</span><span class="p">,</span>
     <span class="n">rgb_image</span><span class="p">,</span>
     <span class="n">structure_name</span><span class="p">,</span>
-    <span class="n">run</span><span class="p">,</span>
+    <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">vmax</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
@@ -2867,10 +2982,13 @@
 <span class="sd">        extent (tuple): Tuple containing the extent of the image.</span>
 <span class="sd">        rgb_image (array): RGB image.</span>
 <span class="sd">        structure_name (str): Name of the structure.</span>
-<span class="sd">        run (int): Run number.</span>
+<span class="sd">        run (int, optional): Run number. Defaults to None.</span>
 <span class="sd">        vmin (float): Minimum value for the colorbar.</span>
 <span class="sd">        vmax (float): Maximum value for the colorbar.</span>
 <span class="sd">        log_offset (float): Log offset for predictions.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: Final output array with lat, lon, and predicted values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">device</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span>
     <span class="n">predictions_all</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2934,9 +3052,13 @@
     <span class="p">)</span>
     <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
     <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;(mg m$^{-3}$)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">structure_name</span><span class="si">}</span><span class="s2"> - Run </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">structure_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">run</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">structure_name</span><span class="si">}</span><span class="s2"> - Run </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">png_path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">final_output</span>
 </code></pre></div>
         </details>
     </div>
@@ -3391,6 +3513,294 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">structure_name</span><span class="si">}</span><span class="s2"> - Run </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">png_path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.moe_vae.model_inference.npy_to_tif" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">npy_to_tif</span><span class="p">(</span><span class="n">npy_input</span><span class="p">,</span> <span class="n">out_tif</span><span class="p">,</span> <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">lat_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lon_col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">band_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;deflate&#39;</span><span class="p">,</span> <span class="n">bigtiff</span><span class="o">=</span><span class="s1">&#39;IF_SAFER&#39;</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.moe_vae.model_inference.npy_to_tif" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert [lat, lon, band1, band2, ...] scattered points into a multi-band GeoTIFF.</p>
+<p>This function takes scattered point data with latitude, longitude, and one or more
+value columns, and interpolates them onto a regular grid to create a GeoTIFF file.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>npy_input</code></td>
+        <td><code>str or np.ndarray</code></td>
+        <td><p>Path to .npy file or array of shape [N, M].</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>out_tif</code></td>
+        <td><code>str</code></td>
+        <td><p>Output path for the GeoTIFF file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>resolution_m</code></td>
+        <td><code>float</code></td>
+        <td><p>Grid resolution in meters. Defaults to 1000.</p></td>
+        <td><code>1000</code></td>
+      </tr>
+      <tr>
+        <td><code>method</code></td>
+        <td><code>str</code></td>
+        <td><p>Interpolation method ('linear', 'nearest', 'cubic').
+Defaults to 'linear'.</p></td>
+        <td><code>&#39;linear&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>nodata_val</code></td>
+        <td><code>float</code></td>
+        <td><p>Value to use for missing data. Defaults to -9999.0.</p></td>
+        <td><code>-9999.0</code></td>
+      </tr>
+      <tr>
+        <td><code>bbox_padding</code></td>
+        <td><code>float</code></td>
+        <td><p>Padding to add to bounding box in degrees.
+Defaults to 0.0.</p></td>
+        <td><code>0.0</code></td>
+      </tr>
+      <tr>
+        <td><code>lat_col</code></td>
+        <td><code>int</code></td>
+        <td><p>Column index for latitude. Defaults to 0.</p></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>lon_col</code></td>
+        <td><code>int</code></td>
+        <td><p>Column index for longitude. Defaults to 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>band_cols</code></td>
+        <td><code>list</code></td>
+        <td><p>Column indices to rasterize as bands.
+Defaults to all columns after lat/lon.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>band_names</code></td>
+        <td><code>list</code></td>
+        <td><p>Band descriptions. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>list</code></td>
+        <td><p>Wavelengths for band descriptions.
+Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>crs</code></td>
+        <td><code>str</code></td>
+        <td><p>Coordinate reference system. Defaults to "EPSG:4326".</p></td>
+        <td><code>&#39;EPSG:4326&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>compress</code></td>
+        <td><code>str</code></td>
+        <td><p>Compression method. Defaults to "deflate".</p></td>
+        <td><code>&#39;deflate&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>bigtiff</code></td>
+        <td><code>str</code></td>
+        <td><p>BigTIFF setting. Defaults to "IF_SAFER".</p></td>
+        <td><code>&#39;IF_SAFER&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>TypeError</code></td>
+        <td><p>If npy_input is neither a path string nor a numpy array.</p></td>
+      </tr>
+      <tr>
+        <td><code>ValueError</code></td>
+        <td><p>If input array has wrong shape or no value columns.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/moe_vae/model_inference.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">npy_to_tif</span><span class="p">(</span>
+    <span class="n">npy_input</span><span class="p">,</span>
+    <span class="n">out_tif</span><span class="p">,</span>
+    <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span>
+    <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">lat_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">lon_col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">band_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+    <span class="n">compress</span><span class="o">=</span><span class="s2">&quot;deflate&quot;</span><span class="p">,</span>
+    <span class="n">bigtiff</span><span class="o">=</span><span class="s2">&quot;IF_SAFER&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert [lat, lon, band1, band2, ...] scattered points into a multi-band GeoTIFF.</span>
+
+<span class="sd">    This function takes scattered point data with latitude, longitude, and one or more</span>
+<span class="sd">    value columns, and interpolates them onto a regular grid to create a GeoTIFF file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        npy_input (str or np.ndarray): Path to .npy file or array of shape [N, M].</span>
+<span class="sd">        out_tif (str): Output path for the GeoTIFF file.</span>
+<span class="sd">        resolution_m (float, optional): Grid resolution in meters. Defaults to 1000.</span>
+<span class="sd">        method (str, optional): Interpolation method (&#39;linear&#39;, &#39;nearest&#39;, &#39;cubic&#39;).</span>
+<span class="sd">            Defaults to &#39;linear&#39;.</span>
+<span class="sd">        nodata_val (float, optional): Value to use for missing data. Defaults to -9999.0.</span>
+<span class="sd">        bbox_padding (float, optional): Padding to add to bounding box in degrees.</span>
+<span class="sd">            Defaults to 0.0.</span>
+<span class="sd">        lat_col (int, optional): Column index for latitude. Defaults to 0.</span>
+<span class="sd">        lon_col (int, optional): Column index for longitude. Defaults to 1.</span>
+<span class="sd">        band_cols (list, optional): Column indices to rasterize as bands.</span>
+<span class="sd">            Defaults to all columns after lat/lon.</span>
+<span class="sd">        band_names (list, optional): Band descriptions. Defaults to None.</span>
+<span class="sd">        wavelengths (list, optional): Wavelengths for band descriptions.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        crs (str, optional): Coordinate reference system. Defaults to &quot;EPSG:4326&quot;.</span>
+<span class="sd">        compress (str, optional): Compression method. Defaults to &quot;deflate&quot;.</span>
+<span class="sd">        bigtiff (str, optional): BigTIFF setting. Defaults to &quot;IF_SAFER&quot;.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: If npy_input is neither a path string nor a numpy array.</span>
+<span class="sd">        ValueError: If input array has wrong shape or no value columns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># --- 1) Load data ---</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">npy_input</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">npy_input</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">npy_input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">npy_input</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;npy_input must be either a path string or a numpy.ndarray.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input must be 2D with &gt;=3 columns (lat, lon, values...).&quot;</span><span class="p">)</span>
+
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="n">lat_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="n">lon_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># --- 2) Band selection ---</span>
+    <span class="k">if</span> <span class="n">band_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">lat_col</span><span class="p">,</span> <span class="n">lon_col</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">band_cols</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
+        <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">band_cols</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">band_cols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No value columns selected for bands.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># --- 3) Bounds (+ padding) ---</span>
+    <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">lon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
+    <span class="n">lat_min</span> <span class="o">-=</span> <span class="n">bbox_padding</span>
+    <span class="n">lat_max</span> <span class="o">+=</span> <span class="n">bbox_padding</span>
+    <span class="n">lon_min</span> <span class="o">-=</span> <span class="n">bbox_padding</span>
+    <span class="n">lon_max</span> <span class="o">+=</span> <span class="n">bbox_padding</span>
+
+    <span class="c1"># --- 4) Resolution conversion ---</span>
+    <span class="n">lat_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">lat_min</span> <span class="o">+</span> <span class="n">lat_max</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">deg_per_m_lat</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">111000.0</span>
+    <span class="n">deg_per_m_lon</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">111000.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat_center</span><span class="p">)))</span>
+    <span class="n">res_lat_deg</span> <span class="o">=</span> <span class="n">resolution_m</span> <span class="o">*</span> <span class="n">deg_per_m_lat</span>
+    <span class="n">res_lon_deg</span> <span class="o">=</span> <span class="n">resolution_m</span> <span class="o">*</span> <span class="n">deg_per_m_lon</span>
+
+    <span class="c1"># --- 5) Grid ---</span>
+    <span class="n">lon_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lon_min</span><span class="p">,</span> <span class="n">lon_max</span> <span class="o">+</span> <span class="n">res_lon_deg</span><span class="p">,</span> <span class="n">res_lon_deg</span><span class="p">)</span>
+    <span class="n">lat_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">+</span> <span class="n">res_lat_deg</span><span class="p">,</span> <span class="n">res_lat_deg</span><span class="p">)</span>
+    <span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon_axis</span><span class="p">,</span> <span class="n">lat_axis</span><span class="p">)</span>
+
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">from_origin</span><span class="p">(</span><span class="n">lon_axis</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lat_axis</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">res_lon_deg</span><span class="p">,</span> <span class="n">res_lat_deg</span><span class="p">)</span>
+
+    <span class="c1"># --- 6) Interpolation ---</span>
+    <span class="n">grids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">band_cols</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="n">g</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">g_near</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span>
+                <span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
+            <span class="p">)</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">g</span><span class="p">),</span> <span class="n">g_near</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+
+        <span class="n">grids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+    <span class="n">data_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">grids</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># --- 7) Write GeoTIFF ---</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;driver&quot;</span><span class="p">:</span> <span class="s2">&quot;GTiff&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="n">crs</span><span class="p">,</span>
+        <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="n">transform</span><span class="p">,</span>
+        <span class="s2">&quot;nodata&quot;</span><span class="p">:</span> <span class="n">nodata_val</span><span class="p">,</span>
+        <span class="s2">&quot;compress&quot;</span><span class="p">:</span> <span class="n">compress</span><span class="p">,</span>
+        <span class="s2">&quot;tiled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;blockxsize&quot;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+        <span class="s2">&quot;blockysize&quot;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+        <span class="s2">&quot;BIGTIFF&quot;</span><span class="p">:</span> <span class="n">bigtiff</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">out_tif</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">out_tif</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">profile</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">band</span> <span class="o">=</span> <span class="n">data_stack</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+            <span class="n">band</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">band</span><span class="p">)]</span> <span class="o">=</span> <span class="n">nodata_val</span>
+            <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Descriptions</span>
+        <span class="n">n_bands</span> <span class="o">=</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">band_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">band_names</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_bands</span><span class="p">:</span>
+            <span class="n">descriptions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">band_names</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_bands</span><span class="p">:</span>
+            <span class="n">descriptions</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;band_</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">wl</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">descriptions</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;band_</span><span class="si">{</span><span class="n">band_cols</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bands</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_bands</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">dst</span><span class="o">.</span><span class="n">set_band_description</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">descriptions</span><span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ GeoTIFF saved: </span><span class="si">{</span><span class="n">out_tif</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

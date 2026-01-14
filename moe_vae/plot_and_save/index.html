@@ -1208,14 +1208,70 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/moe_vae/" class="md-nav__link">
+      <a href="../../examples/moe_vae_chla/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Moe vae
+    Moe vae chla
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/moe_vae_acdom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moe vae acdom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/moe_vae_tss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moe vae tss
   
 
     
@@ -2070,6 +2126,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.moe_vae.plot_and_save.save_results_from_excel_for_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        save_results_from_excel_for_test()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.moe_vae.plot_and_save.save_results_to_excel" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2374,6 +2441,17 @@
     <span class="md-ellipsis">
       
         save_model_structure_from_classes()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.moe_vae.plot_and_save.save_results_from_excel_for_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        save_results_from_excel_for_test()
       
     </span>
   </a>
@@ -2703,7 +2781,7 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s2">&quot;Ubuntu&quot;</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">_plot.pdf&quot;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -2859,6 +2937,104 @@
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# === Source for </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.moe_vae.plot_and_save.save_results_from_excel_for_test" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">save_results_from_excel_for_test</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">sample_ids</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">original_excel_path</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.moe_vae.plot_and_save.save_results_from_excel_for_test" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Save prediction results to an Excel file for test datasets.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>predictions</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Predicted values.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>actuals</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Actual values.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>sample_ids</code></td>
+        <td><code>array-like</code></td>
+        <td><p>IDs of the samples.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>dates</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Dates of the samples.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>original_excel_path</code></td>
+        <td><code>str</code></td>
+        <td><p>Path to the original Excel file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>save_dir</code></td>
+        <td><code>str</code></td>
+        <td><p>Directory to save the results.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/moe_vae/plot_and_save.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_results_from_excel_for_test</span><span class="p">(</span>
+    <span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">sample_ids</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">original_excel_path</span><span class="p">,</span> <span class="n">save_dir</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save prediction results to an Excel file for test datasets.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        predictions (array-like): Predicted values.</span>
+<span class="sd">        actuals (array-like): Actual values.</span>
+<span class="sd">        sample_ids (array-like): IDs of the samples.</span>
+<span class="sd">        dates (array-like): Dates of the samples.</span>
+<span class="sd">        original_excel_path (str): Path to the original Excel file.</span>
+<span class="sd">        save_dir (str): Directory to save the results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">original_excel_path</span><span class="p">)</span>
+    <span class="n">dataset_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">save_results_to_excel</span><span class="p">(</span>
+        <span class="n">sample_ids</span><span class="p">,</span>
+        <span class="n">actuals</span><span class="p">,</span>
+        <span class="n">predictions</span><span class="p">,</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">.xlsx&quot;</span><span class="p">),</span>
+        <span class="n">dates</span><span class="o">=</span><span class="n">dates</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
