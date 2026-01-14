@@ -9,9 +9,11 @@ The module includes:
     - Data loading and preprocessing functions
     - Model training and evaluation utilities
     - Visualization and plotting functions
+    - Custom scalers for robust data preprocessing
 """
 
 from .model import *
 from .data_loading import *
 from .model_inference import *
 from .plot_and_save import *
+from .preprocess import *
