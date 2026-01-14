@@ -157,7 +157,7 @@ def plot_results(
     plt.yticks(fontsize=20, fontname="Ubuntu")
 
     plt.savefig(os.path.join(save_dir, f"{mode}_plot.pdf"), bbox_inches="tight")
-    plt.close()
+    plt.show()
 
 
 def save_results_to_excel(ids, actuals, predictions, file_path, dates=None):
@@ -209,3 +209,30 @@ def save_and_plot_results_from_excel(
         dates=dates,
     )
     plot_results(predictions, actuals, save_dir, mode=dataset_name)
+
+
+def save_results_from_excel_for_test(
+    predictions, actuals, sample_ids, dates, original_excel_path, save_dir
+):
+    """Save prediction results to an Excel file for test datasets.
+
+    Args:
+        predictions (array-like): Predicted values.
+        actuals (array-like): Actual values.
+        sample_ids (array-like): IDs of the samples.
+        dates (array-like): Dates of the samples.
+        original_excel_path (str): Path to the original Excel file.
+        save_dir (str): Directory to save the results.
+    """
+    os.makedirs(save_dir, exist_ok=True)
+
+    filename = os.path.basename(original_excel_path)
+    dataset_name = os.path.splitext(filename)[0]
+
+    save_results_to_excel(
+        sample_ids,
+        actuals,
+        predictions,
+        os.path.join(save_dir, f"{dataset_name}.xlsx"),
+        dates=dates,
+    )

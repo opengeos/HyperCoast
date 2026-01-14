@@ -16,6 +16,8 @@ try:
     from sklearn.preprocessing import MinMaxScaler
     from scipy.interpolate import griddata
     from torch.utils.data import DataLoader, TensorDataset
+    import rasterio
+    from rasterio.transform import from_origin
 except ImportError:
     pass
 
@@ -144,8 +146,8 @@ def infer_and_visualize_single_model_Robust(
     extent,
     rgb_image,
     structure_name,
-    run,
     TSS_scalers_dict,
+    run=None,
     vmin=0,
     vmax=50,
 ):
@@ -163,10 +165,13 @@ def infer_and_visualize_single_model_Robust(
         extent (tuple): Tuple containing the extent of the image.
         rgb_image (array): RGB image.
         structure_name (str): Name of the structure.
-        run (int): Run number.
         TSS_scalers_dict (dict): Dictionary containing the scalers for TSS.
+        run (int, optional): Run number. Defaults to None.
         vmin (float): Minimum value for the colorbar.
         vmax (float): Maximum value for the colorbar.
+
+    Returns:
+        numpy.ndarray: Final output array with lat, lon, and predicted values.
     """
     device = next(model.parameters()).device
     predictions_all = []
@@ -230,10 +235,14 @@ def infer_and_visualize_single_model_Robust(
         vmax=vmax,
     )
     cbar = plt.colorbar(im)
-    cbar.set_label("(mg m$^{-3}$)", fontsize=16)
-    plt.title(f"{structure_name} - Run {run}", loc="left", fontsize=20)
+    # cbar.set_label("(mg m$^{-3}$)", fontsize=16)
+    title = f"{structure_name}" if run is None else f"{structure_name} - Run {run}"
+    plt.title(title, loc="left", fontsize=20)
     plt.savefig(png_path, dpi=300, bbox_inches="tight", pad_inches=0.1)
+    plt.show()
     plt.close()
+
+    return final_output
 
 
 def infer_and_visualize_token_model_Robust(
@@ -477,7 +486,7 @@ def infer_and_visualize_single_model_minmax(
     extent,
     rgb_image,
     structure_name,
-    run,
+    run=None,
     vmin=0,
     vmax=50,
     log_offset=0.01,
@@ -496,10 +505,13 @@ def infer_and_visualize_single_model_minmax(
         extent (tuple): Tuple containing the extent of the image.
         rgb_image (array): RGB image.
         structure_name (str): Name of the structure.
-        run (int): Run number.
+        run (int, optional): Run number. Defaults to None.
         vmin (float): Minimum value for the colorbar.
         vmax (float): Maximum value for the colorbar.
         log_offset (float): Log offset for predictions.
+
+    Returns:
+        numpy.ndarray: Final output array with lat, lon, and predicted values.
     """
     device = next(model.parameters()).device
     predictions_all = []
@@ -563,9 +575,13 @@ def infer_and_visualize_single_model_minmax(
     )
     cbar = plt.colorbar(im)
     cbar.set_label("(mg m$^{-3}$)", fontsize=16)
-    plt.title(f"{structure_name} - Run {run}", loc="left", fontsize=20)
+    title = f"{structure_name}" if run is None else f"{structure_name} - Run {run}"
+    plt.title(title, loc="left", fontsize=20)
     plt.savefig(png_path, dpi=300, bbox_inches="tight", pad_inches=0.1)
+    plt.show()
     plt.close()
+
+    return final_output
 
 
 def infer_and_visualize_token_model_minmax(
@@ -918,3 +934,147 @@ def preprocess_emit_data_minmax(
     except Exception as e:
         print(f"❌ [ERROR] Failed to process file {nc_path}: {e}")
         return None
+
+
+def npy_to_tif(
+    npy_input,
+    out_tif,
+    resolution_m=1000,
+    method="linear",
+    nodata_val=-9999.0,
+    bbox_padding=0.0,
+    lat_col=0,
+    lon_col=1,
+    band_cols=None,
+    band_names=None,
+    wavelengths=None,
+    crs="EPSG:4326",
+    compress="deflate",
+    bigtiff="IF_SAFER",
+):
+    """Convert [lat, lon, band1, band2, ...] scattered points into a multi-band GeoTIFF.
+
+    This function takes scattered point data with latitude, longitude, and one or more
+    value columns, and interpolates them onto a regular grid to create a GeoTIFF file.
+
+    Args:
+        npy_input (str or np.ndarray): Path to .npy file or array of shape [N, M].
+        out_tif (str): Output path for the GeoTIFF file.
+        resolution_m (float, optional): Grid resolution in meters. Defaults to 1000.
+        method (str, optional): Interpolation method ('linear', 'nearest', 'cubic').
+            Defaults to 'linear'.
+        nodata_val (float, optional): Value to use for missing data. Defaults to -9999.0.
+        bbox_padding (float, optional): Padding to add to bounding box in degrees.
+            Defaults to 0.0.
+        lat_col (int, optional): Column index for latitude. Defaults to 0.
+        lon_col (int, optional): Column index for longitude. Defaults to 1.
+        band_cols (list, optional): Column indices to rasterize as bands.
+            Defaults to all columns after lat/lon.
+        band_names (list, optional): Band descriptions. Defaults to None.
+        wavelengths (list, optional): Wavelengths for band descriptions.
+            Defaults to None.
+        crs (str, optional): Coordinate reference system. Defaults to "EPSG:4326".
+        compress (str, optional): Compression method. Defaults to "deflate".
+        bigtiff (str, optional): BigTIFF setting. Defaults to "IF_SAFER".
+
+    Raises:
+        TypeError: If npy_input is neither a path string nor a numpy array.
+        ValueError: If input array has wrong shape or no value columns.
+    """
+    # --- 1) Load data ---
+    if isinstance(npy_input, str):
+        arr = np.load(npy_input)
+    elif isinstance(npy_input, np.ndarray):
+        arr = npy_input
+    else:
+        raise TypeError("npy_input must be either a path string or a numpy.ndarray.")
+
+    if arr.ndim != 2 or arr.shape[1] < 3:
+        raise ValueError("Input must be 2D with >=3 columns (lat, lon, values...).")
+
+    lat = arr[:, lat_col].astype(float)
+    lon = arr[:, lon_col].astype(float)
+
+    # --- 2) Band selection ---
+    if band_cols is None:
+        band_cols = [i for i in range(arr.shape[1]) if i not in (lat_col, lon_col)]
+    if isinstance(band_cols, (int, np.integer)):
+        band_cols = [int(band_cols)]
+    if len(band_cols) == 0:
+        raise ValueError("No value columns selected for bands.")
+
+    # --- 3) Bounds (+ padding) ---
+    lat_min, lat_max = np.nanmin(lat), np.nanmax(lat)
+    lon_min, lon_max = np.nanmin(lon), np.nanmax(lon)
+    lat_min -= bbox_padding
+    lat_max += bbox_padding
+    lon_min -= bbox_padding
+    lon_max += bbox_padding
+
+    # --- 4) Resolution conversion ---
+    lat_center = (lat_min + lat_max) / 2.0
+    deg_per_m_lat = 1.0 / 111000.0
+    deg_per_m_lon = 1.0 / (111000.0 * np.cos(np.radians(lat_center)))
+    res_lat_deg = resolution_m * deg_per_m_lat
+    res_lon_deg = resolution_m * deg_per_m_lon
+
+    # --- 5) Grid ---
+    lon_axis = np.arange(lon_min, lon_max + res_lon_deg, res_lon_deg)
+    lat_axis = np.arange(lat_min, lat_max + res_lat_deg, res_lat_deg)
+    Lon, Lat = np.meshgrid(lon_axis, lat_axis)
+
+    transform = from_origin(lon_axis.min(), lat_axis.max(), res_lon_deg, res_lat_deg)
+
+    # --- 6) Interpolation ---
+    grids = []
+    for idx in band_cols:
+        vals = arr[:, idx].astype(float)
+
+        g = griddata(points=(lon, lat), values=vals, xi=(Lon, Lat), method=method)
+        if np.isnan(g).any():
+            g_near = griddata(
+                points=(lon, lat), values=vals, xi=(Lon, Lat), method=method
+            )
+            g = np.where(np.isnan(g), g_near, g)
+
+        grids.append(np.flipud(g).astype(np.float32))
+
+    data_stack = np.stack(grids, axis=0)
+
+    # --- 7) Write GeoTIFF ---
+    profile = {
+        "driver": "GTiff",
+        "height": data_stack.shape[1],
+        "width": data_stack.shape[2],
+        "count": data_stack.shape[0],
+        "dtype": rasterio.float32,
+        "crs": crs,
+        "transform": transform,
+        "nodata": nodata_val,
+        "compress": compress,
+        "tiled": True,
+        "blockxsize": 256,
+        "blockysize": 256,
+        "BIGTIFF": bigtiff,
+    }
+
+    os.makedirs(os.path.dirname(out_tif) or ".", exist_ok=True)
+    with rasterio.open(out_tif, "w", **profile) as dst:
+        for b in range(data_stack.shape[0]):
+            band = data_stack[b]
+            band[~np.isfinite(band)] = nodata_val
+            dst.write(band, b + 1)
+
+        # Descriptions
+        n_bands = data_stack.shape[0]
+        if band_names is not None and len(band_names) == n_bands:
+            descriptions = list(map(str, band_names))
+        elif wavelengths is not None and len(wavelengths) == n_bands:
+            descriptions = [f"band_{int(wl)}" for wl in wavelengths]
+        else:
+            descriptions = [f"band_{band_cols[b]}" for b in range(n_bands)]
+
+        for b in range(1, n_bands + 1):
+            dst.set_band_description(b, descriptions[b - 1])
+
+    print(f"✅ GeoTIFF saved: {out_tif}")

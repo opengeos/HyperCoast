@@ -119,7 +119,9 @@ nav:
           - examples/tanager_3d.ipynb
           - examples/prisma.ipynb
           - examples/enmap.ipynb
-          - examples/moe_vae.ipynb
+          - examples/moe_vae_chla.ipynb
+          - examples/moe_vae_acdom.ipynb
+          - examples/moe_vae_tss.ipynb
           - examples/wyvern.ipynb
           - examples/EMIT_aCDOM.ipynb
           - examples/EMIT_chla.ipynb
