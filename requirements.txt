@@ -1,6 +1,7 @@
 dask
 earthaccess
 geopandas
+h5py
 h5netcdf
 hvplot
 leafmap>=0.38.0
