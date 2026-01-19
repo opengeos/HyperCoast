@@ -18,7 +18,6 @@ import tempfile
 import platform
 from pathlib import Path
 
-
 # Plugin configuration
 PLUGIN_NAME = "hypercoast_qgis"
 

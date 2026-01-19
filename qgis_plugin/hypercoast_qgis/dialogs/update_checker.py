@@ -32,7 +32,6 @@ from qgis.PyQt.QtWidgets import (
 )
 from qgis.PyQt.QtGui import QFont
 
-
 # GitHub URLs for the plugin
 GITHUB_REPO = "opengeos/HyperCoast"
 GITHUB_BRANCH = "main"

@@ -18,7 +18,6 @@ import importlib.metadata
 import importlib.util
 import sys
 
-
 _CACHED: Optional[ModuleType] = None
 
 
