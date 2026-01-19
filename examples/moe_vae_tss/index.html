@@ -3201,6 +3201,7 @@ import torch</div>
     <span class="n">train</span><span class="p">,</span>
     <span class="n">evaluate</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hypercoast.moe_vae.preprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">preprocess</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-3">from hypercoast import download_file
 from hypercoast.emit_utils.plot_and_save import plot_results_with_density
@@ -3217,7 +3218,8 @@ from hypercoast.moe_vae import (
     MoE_VAE,
     train,
     evaluate,
-)</div>
+)
+import hypercoast.moe_vae.preprocess as preprocess</div>
 </div>
 </div>
 </div>
@@ -3740,7 +3742,7 @@ for file in test_files:
     <span class="n">model</span><span class="p">,</span>
     <span class="n">train_real_dl</span><span class="p">,</span>
     <span class="n">device</span><span class="p">,</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
     <span class="n">save_dir</span><span class="o">=</span><span class="n">save_dir</span><span class="p">,</span>
 <span class="p">)</span>
@@ -3751,11 +3753,88 @@ train_log = train(
     model,
     train_real_dl,
     device,
-    epochs=200,
+    epochs=20,
     optimizer=optimizer,
     save_dir=save_dir,
 )
 best_train_loss = train_log["best_loss"]</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-15">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># If you want to use an existing trained model, you can load it directly using the line below</span>
+<span class="c1"># and skip the training code above.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="n">pretrained_model_url</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"https://github.com/opengeos/datasets/releases/download/hypercoast/pace_models.zip"</span>
+<span class="p">)</span>
+<span class="n">download_file</span><span class="p">(</span><span class="n">pretrained_model_url</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+        <span class="s2">"pace_models/TSS/best_model_minloss.pth"</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">weights_only</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Register the preprocess module under the short name for pickle compatibility</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">"preprocess"</span><span class="p">]</span> <span class="o">=</span> <span class="n">preprocess</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"pace_models/TSS/scalers_Rrs_real.pkl"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">scalers_Rrs_real</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># robust + log scaler (pt)</span>
+<span class="n">scaler_pt_path</span> <span class="o">=</span> <span class="s2">"pace_models/TSS/scaler.pt"</span>
+<span class="n">TSS_scalers_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scaler_pt_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">robust_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">"robust"</span><span class="p">]</span>
+<span class="n">log_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">"log"</span><span class="p">]</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-15"># If you want to use an existing trained model, you can load it directly using the line below
+# and skip the training code above.
+import sys
+
+pretrained_model_url = (
+    "https://github.com/opengeos/datasets/releases/download/hypercoast/pace_models.zip"
+)
+download_file(pretrained_model_url, quiet=True)
+
+model.load_state_dict(
+    torch.load(
+        "pace_models/TSS/best_model_minloss.pth", map_location=device, weights_only=True
+    )
+)
+
+# Register the preprocess module under the short name for pickle compatibility
+sys.modules["preprocess"] = preprocess
+
+with open("pace_models/TSS/scalers_Rrs_real.pkl", "rb") as f:
+    scalers_Rrs_real = pickle.load(f)
+
+# robust + log scaler (pt)
+scaler_pt_path = "pace_models/TSS/scaler.pt"
+TSS_scalers_dict = torch.load(scaler_pt_path, map_location=device, weights_only=False)
+robust_scaler = TSS_scalers_dict["robust"]
+log_scaler = TSS_scalers_dict["log"]</div>
 </div>
 </div>
 </div>
@@ -3781,7 +3860,7 @@ best_train_loss = train_log["best_loss"]</div>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-15">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-16">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3801,7 +3880,7 @@ best_train_loss = train_log["best_loss"]</div>
     <span class="n">test_ids</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">"test_results.xlsx"</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-15">predictions, actuals = evaluate(
+<div class="clipboard-copy-txt" id="cell-16">predictions, actuals = evaluate(
     model, test_real_dl, device, TSS_scalers_dict=scalers_dict
 )
 epsilon, beta, rmse, rmsle, mape, bias, mae = calculate_metrics(predictions, actuals)
@@ -3824,7 +3903,7 @@ save_results_to_excel(
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-16">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-17">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3838,7 +3917,7 @@ save_results_to_excel(
     <span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"test_results"</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-16">plot_results_with_density(
+<div class="clipboard-copy-txt" id="cell-17">plot_results_with_density(
     predictions, actuals, save_dir, mode="test_results", xlim=(-2, 4), ylim=(-2, 4)
 )</div>
 </div>
@@ -3866,7 +3945,7 @@ save_results_to_excel(
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-17">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-18">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3878,7 +3957,7 @@ save_results_to_excel(
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">plot_results</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"test_results"</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-17">plot_results(predictions, actuals, save_dir, mode="test_results")</div>
+<div class="clipboard-copy-txt" id="cell-18">plot_results(predictions, actuals, save_dir, mode="test_results")</div>
 </div>
 </div>
 </div>
@@ -3904,7 +3983,7 @@ save_results_to_excel(
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-18">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-19">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3918,7 +3997,7 @@ save_results_to_excel(
     <span class="n">preds</span><span class="p">,</span> <span class="n">acts</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="o">=</span><span class="n">scalers_dict</span><span class="p">)</span>
     <span class="n">save_results_from_excel_for_test</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">acts</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-18">for dl, ids, dates, path in zip(test_dls, test_ids_list, test_dates_list, test_files):
+<div class="clipboard-copy-txt" id="cell-19">for dl, ids, dates, path in zip(test_dls, test_ids_list, test_dates_list, test_files):
     preds, acts = evaluate(model, dl, device, TSS_scalers_dict=scalers_dict)
     save_results_from_excel_for_test(preds, acts, ids, dates, path, save_dir)</div>
 </div>
@@ -3946,7 +4025,7 @@ save_results_to_excel(
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-19">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-20">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3976,7 +4055,7 @@ save_results_to_excel(
     <span class="sa">f</span><span class="s2">"✅ Finished training, train loss: </span><span class="si">{</span><span class="n">best_train_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, test loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
 <span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-19">Output = infer_and_visualize_single_model_Robust(
+<div class="clipboard-copy-txt" id="cell-20">Output = infer_and_visualize_single_model_Robust(
     model=model,
     test_loader=test_loader,
     Rrs=Rrs,
@@ -4031,7 +4110,7 @@ print(
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-20">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-21">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -4059,7 +4138,7 @@ print(
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"TSS"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-20">import matplotlib.pyplot as plt
+<div class="clipboard-copy-txt" id="cell-21">import matplotlib.pyplot as plt
 
 tif_path = os.path.join(save_dir, "TSS.tif")
 
@@ -4122,7 +4201,7 @@ plt.show()</div>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="August 22, 2025 15:08:53 UTC"><span class="timeago" datetime="2025-08-22T15:08:53+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 22, 2025 15:08:53 UTC">2025-08-22</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 19, 2026 06:27:17 UTC"><span class="timeago" datetime="2026-01-19T06:27:17+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 19, 2026 06:27:17 UTC">2026-01-19</span>
   </span>
 
     
