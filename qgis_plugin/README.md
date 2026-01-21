@@ -28,6 +28,8 @@ Before using the plugin, please create a new conda environment to install QGIS a
 ```bash
 conda create -n geo python=3.12
 conda activate geo
+conda config --add channels conda-forge
+conda config --set channel_priority strict
 conda install -c conda-forge qgis hypercoast
 ```
 
