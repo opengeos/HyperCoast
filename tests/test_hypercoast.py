@@ -2,7 +2,6 @@
 
 """Tests for `hypercoast` package."""
 
-
 import unittest
 
 import hypercoast
