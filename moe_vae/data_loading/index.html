@@ -3415,7 +3415,7 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
             <span class="n">wl</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
             <span class="n">rrs_wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wl</span><span class="p">)</span>
             <span class="n">rrs_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">continue</span>
 
     <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[]</span>

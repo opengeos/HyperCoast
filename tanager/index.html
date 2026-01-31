@@ -2886,7 +2886,7 @@ Defaults to "nearest".</p></td>
                 <span class="n">inside_hull</span> <span class="o">=</span> <span class="n">hull_path</span><span class="o">.</span><span class="n">contains_points</span><span class="p">(</span><span class="n">grid_points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                     <span class="n">grid_lat_2d</span><span class="o">.</span><span class="n">shape</span>
                 <span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="c1"># Fallback: use simple bounding box</span>
                 <span class="n">inside_hull</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="p">(</span><span class="n">grid_lat_2d</span> <span class="o">&gt;=</span> <span class="n">valid_lat</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
