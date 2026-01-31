@@ -21,7 +21,6 @@ from .emit import (
     plot_emit,
     viz_emit,
     emit_to_netcdf,
-    emit_to_image,
 )
 from .neon import neon_to_image, read_neon
 from .pace import (
