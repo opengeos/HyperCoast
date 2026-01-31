@@ -255,7 +255,7 @@ def grid_tanager(
                 inside_hull = hull_path.contains_points(grid_points).reshape(
                     grid_lat_2d.shape
                 )
-            except:
+            except Exception:
                 # Fallback: use simple bounding box
                 inside_hull = (
                     (grid_lat_2d >= valid_lat.min())

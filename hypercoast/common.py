@@ -5,6 +5,7 @@
 """The common module contains common functions and classes used by the other modules."""
 
 import os
+import sys
 import leafmap
 import xarray as xr
 from typing import List, Union, Dict, Optional, Tuple, Any
@@ -109,6 +110,12 @@ def download_file(
             else:
                 mode = "r"
 
+            # Use filter='data' on Python 3.12+ to avoid DeprecationWarning
+            # and mitigate path traversal risks (CVE-2007-4559).
+            tar_kwargs = {}
+            if sys.version_info >= (3, 12):
+                tar_kwargs["filter"] = "data"
+
             with tarfile.open(output, mode) as tar_ref:
                 if not quiet:
                     print("Extracting files...")
@@ -117,9 +124,9 @@ def download_file(
                     output = os.path.join(out_dir, basename)
                     if not os.path.exists(output):
                         os.makedirs(output)
-                    tar_ref.extractall(output)
+                    tar_ref.extractall(output, **tar_kwargs)
                 else:
-                    tar_ref.extractall(os.path.dirname(output))
+                    tar_ref.extractall(os.path.dirname(output), **tar_kwargs)
 
     return os.path.abspath(output)
 
@@ -854,8 +861,14 @@ def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
         return
 
     # Unzip the file
+    # Use filter='data' on Python 3.12+ to avoid DeprecationWarning
+    # and mitigate path traversal risks (CVE-2007-4559).
+    tar_kwargs = {}
+    if sys.version_info >= (3, 12):
+        tar_kwargs["filter"] = "data"
+
     with tarfile.open(file_name, "r:gz") as tar:
-        tar.extractall(path=outdir)
+        tar.extractall(path=outdir, **tar_kwargs)
 
     print(f"Extracted to {extracted_path}")
     return extracted_path

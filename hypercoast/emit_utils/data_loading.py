@@ -202,7 +202,7 @@ def load_real_test_Robust(
             wl = float(col)
             rrs_wavelengths.append(wl)
             rrs_cols.append(col)
-        except:
+        except ValueError:
             continue
 
     band_cols = []

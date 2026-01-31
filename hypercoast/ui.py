@@ -228,7 +228,7 @@ class SpectralWidget(widgets.HBox):
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "PACE":
                     try:
                         da = extract_pace(ds, lat, lon)
-                    except:
+                    except Exception:
                         da = xr.DataArray(
                             np.full(len(ds["wavelength"]), np.nan),
                             dims=["wavelength"],

@@ -50,7 +50,6 @@ If you find HyperCoast useful in your research, please consider citing the follo
 -   Visualizing ERA5 temperature data in 3D
 -   Interactive slicing and thresholding of hyperspectral data in 3D
 -   Saving spectral signatures as CSV files
--
 
 ## QGIS Plugin
 
