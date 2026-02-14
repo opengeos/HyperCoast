@@ -36,19 +36,24 @@ jobs:
                   uv pip install --find-links https://girder.github.io/large_image_wheels GDAL pyproj
                   uv pip install pytest
                   uv pip install -r requirements_dev.txt
+                  # Enforce a modern localtileserver build (no pkg_resources import)
+                  uv pip uninstall localtileserver || true
+                  uv pip install --upgrade "localtileserver==0.10.7" "setuptools<81"
+                  .venv/bin/python -c "import importlib.metadata as m; print('localtileserver', m.version('localtileserver')); print('setuptools', m.version('setuptools'))"
+                  .venv/bin/python -c "import localtileserver; print('localtileserver module:', localtileserver.__file__)"
 
             - name: Test import
               run: |
-                  uv run python -c "import hypercoast; print('hypercoast import successful')"
-                  uv run python -c "from osgeo import gdal; print('gdal import successful')"
-                  uv run gdalinfo --version
+                  .venv/bin/python -c "import hypercoast; print('hypercoast import successful')"
+                  .venv/bin/python -c "from osgeo import gdal; print('gdal import successful')"
+                  .venv/bin/gdalinfo --version
 
             - name: Running pytest
               run: |
-                  uv run pytest . --verbose
+                  .venv/bin/pytest . --verbose
 
             - name: Install mkdocs
-              run: uv run mkdocs build
+              run: .venv/bin/mkdocs build
               env:
                   EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
                   EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
