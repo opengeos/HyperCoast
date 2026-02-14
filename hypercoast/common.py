@@ -267,6 +267,7 @@ def search_pace(
     temporal: Optional[str] = None,
     count: int = -1,
     short_name: Optional[str] = "PACE_OCI_L2_AOP_NRT",
+    provider: Optional[str] = None,
     output: Optional[str] = None,
     crs: str = "EPSG:4326",
     return_gdf: bool = False,
@@ -279,6 +280,7 @@ def search_pace(
         temporal (str, optional): The temporal extent of the data.
         count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).
         short_name (str, optional): The short name of the dataset. Defaults to "PACE_OCI_L2_AOP_NRT".
+        provider (str, optional): The provider for the granules returned by Earthaccess.
         output (str, optional): The output file path to save the GeoDataFrame as a file.
         crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".
         return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.
@@ -293,6 +295,7 @@ def search_pace(
         short_name=short_name,
         bbox=bbox,
         temporal=temporal,
+        provider=provider,
         output=output,
         crs=crs,
         return_gdf=return_gdf,
@@ -419,6 +422,7 @@ def search_ecostress(
 def download_pace(
     granules: List[dict],
     out_dir: Optional[str] = None,
+    provider: Optional[str] = None,
     threads: int = 8,
 ) -> None:
     """Downloads NASA PACE granules.
@@ -427,11 +431,14 @@ def download_pace(
         granules (List[dict]): The granules to download.
         out_dir (str, optional): The output directory where the granules will be
             downloaded. Defaults to None (current directory).
+        provider (str, optional): The provider used for downloading the granules.
         threads (int, optional): The number of threads to use for downloading.
             Defaults to 8.
     """
 
-    download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
+    download_nasa_data(
+        granules=granules, out_dir=out_dir, provider=provider, threads=threads
+    )
 
 
 def download_emit(
