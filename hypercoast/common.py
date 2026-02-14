@@ -431,7 +431,7 @@ def download_pace(
         granules (List[dict]): The granules to download.
         out_dir (str, optional): The output directory where the granules will be
             downloaded. Defaults to None (current directory).
-        provider (str, optional): The provider used for downloading the granules.
+        provider (str, optional): The provider of the granules.
         threads (int, optional): The number of threads to use for downloading.
             Defaults to 8.
     """
