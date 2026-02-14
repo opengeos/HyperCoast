@@ -280,7 +280,7 @@ def search_pace(
         temporal (str, optional): The temporal extent of the data.
         count (int, optional): The number of granules to retrieve. Defaults to -1 (retrieve all).
         short_name (str, optional): The short name of the dataset. Defaults to "PACE_OCI_L2_AOP_NRT".
-        provider (str, optional): The provider for the granules returned by Earthaccess.
+        provider (str, optional): The provider of the dataset.
         output (str, optional): The output file path to save the GeoDataFrame as a file.
         crs (str, optional): The coordinate reference system (CRS) of the GeoDataFrame. Defaults to "EPSG:4326".
         return_gdf (bool, optional): Whether to return the GeoDataFrame in addition to the granules. Defaults to False.
