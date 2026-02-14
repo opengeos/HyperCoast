@@ -34,9 +34,10 @@ jobs:
             - name: Install optional dependencies
               run: |
                   uv pip install --find-links https://girder.github.io/large_image_wheels GDAL pyproj
-                  uv pip install setuptools
+                  uv pip install --upgrade "localtileserver>=0.10.7" setuptools
                   uv pip install pytest
                   uv pip install -r requirements_dev.txt
+                  uv run python -c "import localtileserver; print('localtileserver', localtileserver.__version__)"
 
             - name: Test import
               run: |
