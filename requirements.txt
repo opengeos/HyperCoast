@@ -16,4 +16,5 @@ s3fs
 scikit-learn
 scipy
 seaborn
+setuptools
 xarray
