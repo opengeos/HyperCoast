@@ -4,7 +4,7 @@
 name=HyperCoast
 qgisMinimumVersion=3.28
 description=Visualize and analyze hyperspectral data including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets
-version=0.3.0
+version=0.4.0
 author=Qiusheng Wu
 email=giswqs@gmail.com
 
@@ -30,9 +30,10 @@ deprecated=False
 hasProcessingProvider=no
 
 changelog=
+    0.4.0
+        - Add one-click dependency installer
     0.3.0
         - Upgrade the plugin from experimental to stable
-
     0.2.0
         - Fix QGIS import issue
         - Add plugin update checker
