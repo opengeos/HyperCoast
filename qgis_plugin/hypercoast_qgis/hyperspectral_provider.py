@@ -612,8 +612,13 @@ class HyperspectralDataset:
                 da = da / scaleFactor
 
             self._build_neon_dataset(
-                da, wavelengths_list, epsg_code_number,
-                mapInfo_split, res, scaleFactor, noDataValue,
+                da,
+                wavelengths_list,
+                epsg_code_number,
+                mapInfo_split,
+                res,
+                scaleFactor,
+                noDataValue,
             )
             _log("NEON h5py loader succeeded", LOG_INFO)
             return True
@@ -644,17 +649,13 @@ class HyperspectralDataset:
                 site_refl = f.groups[site_code].groups["Reflectance"]
                 metadata = site_refl.groups["Metadata"]
 
-                wl_raw = (
-                    metadata.groups["Spectral_Data"].variables["Wavelength"][:]
-                )
+                wl_raw = metadata.groups["Spectral_Data"].variables["Wavelength"][:]
                 wavelengths_list = [round(float(w), 2) for w in wl_raw.flat]
 
                 coord_sys = metadata.groups["Coordinate_System"]
 
                 epsg_raw = coord_sys.variables["EPSG Code"][:]
-                epsg_code_number = int(
-                    self._nc4_to_str(epsg_raw)
-                )
+                epsg_code_number = int(self._nc4_to_str(epsg_raw))
 
                 map_info_raw = coord_sys.variables["Map_Info"][:]
                 mapInfo_split = self._nc4_to_str(map_info_raw).split(",")
@@ -687,8 +688,13 @@ class HyperspectralDataset:
                 da = da / scaleFactor
 
             self._build_neon_dataset(
-                da, wavelengths_list, epsg_code_number,
-                mapInfo_split, res, scaleFactor, noDataValue,
+                da,
+                wavelengths_list,
+                epsg_code_number,
+                mapInfo_split,
+                res,
+                scaleFactor,
+                noDataValue,
             )
             _log("NEON netCDF4 loader succeeded", LOG_INFO)
             return True
@@ -708,8 +714,14 @@ class HyperspectralDataset:
         return str(val).strip()
 
     def _build_neon_dataset(
-        self, da, wavelengths_list, epsg_code_number,
-        mapInfo_split, res, scaleFactor, noDataValue,
+        self,
+        da,
+        wavelengths_list,
+        epsg_code_number,
+        mapInfo_split,
+        res,
+        scaleFactor,
+        noDataValue,
     ):
         """Assemble an xarray Dataset from raw NEON arrays."""
         xMin = float(mapInfo_split[3])
