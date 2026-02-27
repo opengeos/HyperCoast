@@ -10,6 +10,9 @@ SPDX-License-Identifier: MIT
 """
 
 import os
+import platform
+import sys
+import traceback
 import numpy as np
 
 try:
@@ -34,6 +37,19 @@ try:
 except ImportError:
     HAS_H5PY = False
 
+try:
+    from qgis.core import QgsMessageLog, Qgis
+
+    HAS_QGIS = True
+    LOG_INFO = Qgis.Info
+    LOG_WARNING = Qgis.Warning
+    LOG_CRITICAL = Qgis.Critical
+except Exception:
+    HAS_QGIS = False
+    LOG_INFO = None
+    LOG_WARNING = None
+    LOG_CRITICAL = None
+
 # Check if hypercoast is available
 try:
     from ._hypercoast_lib import get_hypercoast
@@ -41,8 +57,19 @@ try:
     hypercoast = get_hypercoast()
 
     HAS_HYPERCOAST = True
-except ImportError:
+except Exception:
     HAS_HYPERCOAST = False
+
+
+def _log(message, level=LOG_INFO):
+    """Write logs to QGIS message panel when available."""
+    text = str(message)
+    if HAS_QGIS:
+        QgsMessageLog.logMessage(
+            text, "HyperCoast", level if level is not None else LOG_INFO
+        )
+    else:
+        print(f"[HyperCoast] {text}")
 
 
 # Supported data types
@@ -118,6 +145,7 @@ class HyperspectralDataset:
         self.crs = None
         self.nodata = np.nan
         self._is_swath = False  # True for non-gridded data like PACE
+        self.last_error = None
 
     def _detect_type(self):
         """Auto-detect the data type based on file extension and content."""
@@ -145,10 +173,31 @@ class HyperspectralDataset:
         else:
             return "Generic"
 
+    def _log_windows_context(self, stage):
+        """Log extra runtime context for Windows debugging."""
+        if platform.system() != "Windows":
+            return
+        xarray_ver = getattr(xr, "__version__", "missing") if HAS_XARRAY else "missing"
+        h5py_ver = getattr(h5py, "__version__", "missing") if HAS_H5PY else "missing"
+        _log(
+            f"[{stage}] Windows context | "
+            f"file='{self.filepath}' | data_type='{self.data_type}' | "
+            f"python='{sys.executable}' | py_ver='{sys.version.split()[0]}' | "
+            f"xarray='{xarray_ver}' | h5py='{h5py_ver}' | "
+            f"has_hypercoast={HAS_HYPERCOAST}"
+        )
+
     def load(self):
         """Load the hyperspectral data based on its type."""
         if not HAS_XARRAY:
             raise ImportError("xarray is required to load hyperspectral data")
+
+        self.last_error = None
+        _log(
+            f"Starting dataset load: type={self.data_type}, file={self.filepath}",
+            LOG_INFO,
+        )
+        self._log_windows_context("load-start")
 
         # Use hypercoast library if available
         if HAS_HYPERCOAST:
@@ -163,11 +212,25 @@ class HyperspectralDataset:
             "Generic": self._load_generic,
         }.get(self.data_type, self._load_generic)
 
-        return loader()
+        success = loader()
+        if not success and self.last_error is None:
+            self.last_error = f"Failed to load {self.data_type} dataset"
+            _log(self.last_error, LOG_WARNING)
+        elif success:
+            _log(
+                f"Dataset loaded successfully: type={self.data_type}, "
+                f"has_dataset={self.dataset is not None}",
+                LOG_INFO,
+            )
+        return success
 
     def _load_with_hypercoast(self):
         """Load data using the hypercoast library."""
         try:
+            _log(
+                f"Trying hypercoast loader: type={self.data_type}, file={self.filepath}",
+                LOG_INFO,
+            )
             if self.data_type == "EMIT":
                 self.dataset = hypercoast.read_emit(self.filepath)
                 self._extract_emit_metadata()
@@ -208,11 +271,42 @@ class HyperspectralDataset:
             else:
                 return self._load_generic()
 
+            # Guard against readers that return None instead of raising
+            if self.dataset is None:
+                _log(
+                    "Hypercoast reader returned None; switching to generic fallback",
+                    LOG_WARNING,
+                )
+                return self._load_generic()
+
+            _log(
+                f"Hypercoast loader succeeded: type={self.data_type}",
+                LOG_INFO,
+            )
             return True
 
         except Exception as e:
-            print(f"Error loading with hypercoast: {e}")
-            # Try fallback
+            self.last_error = f"Error loading with hypercoast: {e}"
+            _log(self.last_error, LOG_WARNING)
+            _log(traceback.format_exc(limit=2), LOG_WARNING)
+            # Try type-specific fallback first, then generic.
+            fallback = {
+                "EMIT": self._load_emit_fallback,
+                "PACE": self._load_pace_fallback,
+                "DESIS": self._load_desis_fallback,
+                "NEON": self._load_neon_fallback,
+            }.get(self.data_type, self._load_generic)
+
+            _log(
+                f"Trying fallback loader for type={self.data_type}: {fallback.__name__}",
+                LOG_INFO,
+            )
+            if fallback():
+                _log(
+                    f"Fallback loader succeeded for type={self.data_type}",
+                    LOG_INFO,
+                )
+                return True
             return self._load_generic()
 
     def _extract_emit_metadata(self):
@@ -332,11 +426,17 @@ class HyperspectralDataset:
     def _load_emit_fallback(self):
         """Fallback EMIT loader without hypercoast."""
         try:
-            ds = xr.open_dataset(self.filepath, engine="h5netcdf")
-            wvl = xr.open_dataset(
-                self.filepath, group="sensor_band_parameters", engine="h5netcdf"
+            _log(f"Trying EMIT fallback loader: file={self.filepath}", LOG_INFO)
+            engine = self._select_group_engine(
+                self.filepath, required_groups=["location", "sensor_band_parameters"]
             )
-            loc = xr.open_dataset(self.filepath, group="location", engine="h5netcdf")
+            _log(f"EMIT fallback selected engine={engine}", LOG_INFO)
+
+            ds = xr.open_dataset(self.filepath, engine=engine)
+            wvl = xr.open_dataset(
+                self.filepath, group="sensor_band_parameters", engine=engine
+            )
+            loc = xr.open_dataset(self.filepath, group="location", engine=engine)
 
             ds = ds.assign_coords(
                 {
@@ -371,25 +471,38 @@ class HyperspectralDataset:
                 )
 
             self.crs = "EPSG:4326"
+            _log("EMIT fallback loader succeeded", LOG_INFO)
             return True
 
         except Exception as e:
-            print(f"Error in EMIT fallback loader: {e}")
+            self.last_error = f"Error in EMIT fallback loader: {e}"
+            _log(self.last_error, LOG_WARNING)
             return False
 
     def _load_pace_fallback(self):
         """Fallback PACE loader without hypercoast."""
         try:
+            _log(f"Trying PACE fallback loader: file={self.filepath}", LOG_INFO)
+            engine = self._select_group_engine(
+                self.filepath,
+                required_groups=[
+                    "navigation_data",
+                    "geophysical_data",
+                    "sensor_band_parameters",
+                ],
+            )
+            _log(f"PACE fallback selected engine={engine}", LOG_INFO)
+
             dataset = xr.open_dataset(
-                self.filepath, group="navigation_data", engine="h5netcdf"
+                self.filepath, group="navigation_data", engine=engine
             )
             dataset = dataset.set_coords(["latitude", "longitude"])
 
             product = xr.open_dataset(
-                self.filepath, group="geophysical_data", engine="h5netcdf"
+                self.filepath, group="geophysical_data", engine=engine
             )
             band_params = xr.open_dataset(
-                self.filepath, group="sensor_band_parameters", engine="h5netcdf"
+                self.filepath, group="sensor_band_parameters", engine=engine
             )
 
             dataset = xr.merge(
@@ -428,10 +541,12 @@ class HyperspectralDataset:
             )
 
             self.crs = "EPSG:4326"
+            _log("PACE fallback loader succeeded", LOG_INFO)
             return True
 
         except Exception as e:
-            print(f"Error in PACE fallback loader: {e}")
+            self.last_error = f"Error in PACE fallback loader: {e}"
+            _log(self.last_error, LOG_WARNING)
             return False
 
     def _load_desis_fallback(self):
@@ -439,11 +554,27 @@ class HyperspectralDataset:
         return self._load_generic()
 
     def _load_neon_fallback(self):
-        """Fallback NEON loader without hypercoast."""
-        try:
-            if not HAS_H5PY:
-                raise ImportError("h5py is required to load NEON data")
+        """Fallback NEON loader without hypercoast.
 
+        Tries h5py first (direct HDF5 access), then falls back to netCDF4
+        which bundles its own HDF5 library and avoids DLL conflicts on Windows.
+        """
+        _log(f"Trying NEON fallback loader: file={self.filepath}", LOG_INFO)
+
+        if HAS_H5PY:
+            if self._load_neon_with_h5py():
+                return True
+
+        if self._load_neon_with_netcdf4():
+            return True
+
+        if self.last_error is None:
+            self.last_error = "NEON loader: no suitable HDF5 backend available"
+        return False
+
+    def _load_neon_with_h5py(self):
+        """Load NEON data using h5py."""
+        try:
             with h5py.File(self.filepath, "r") as f:
                 site_code = list(f.keys())[0]
                 site_refl = f[site_code]["Reflectance"]
@@ -480,39 +611,152 @@ class HyperspectralDataset:
                 da[da > 10000] = np.nan
                 da = da / scaleFactor
 
-            coords = {
-                "y": np.linspace(yMax, yMin, da.shape[0]),
-                "x": np.linspace(xMin, xMax, da.shape[1]),
-                "wavelength": wavelengths_list,
-            }
-
-            xda = xr.DataArray(
+            self._build_neon_dataset(
                 da,
-                coords=coords,
-                dims=["y", "x", "wavelength"],
-                attrs={
-                    "scale_factor": scaleFactor,
-                    "no_data_value": noDataValue,
-                    "crs": f"EPSG:{epsg_code_number}",
-                    "transform": (res[0], 0.0, xMin, 0.0, -res[1], yMax),
-                },
+                wavelengths_list,
+                epsg_code_number,
+                mapInfo_split,
+                res,
+                scaleFactor,
+                noDataValue,
             )
-
-            self.dataset = xda.to_dataset(name="reflectance")
-            self.dataset.attrs = xda.attrs
-            self.wavelengths = np.array(wavelengths_list)
-            self.bounds = (xMin, yMin, xMax, yMax)
-            self.crs = f"EPSG:{epsg_code_number}"
-
+            _log("NEON h5py loader succeeded", LOG_INFO)
             return True
 
         except Exception as e:
-            print(f"Error in NEON fallback loader: {e}")
+            self.last_error = f"Error in NEON h5py loader: {e}"
+            _log(self.last_error, LOG_WARNING)
             return False
+
+    def _load_neon_with_netcdf4(self):
+        """Load NEON data using netCDF4 (avoids h5py DLL conflicts on Windows).
+
+        netCDF4.Dataset can open arbitrary HDF5 files since it is built on
+        the same HDF5 C library, and its pip wheel bundles a separate copy
+        of HDF5 that does not conflict with the host environment.
+        """
+        try:
+            from netCDF4 import Dataset as NC4Dataset
+        except ImportError:
+            _log("netCDF4 not available for NEON fallback", LOG_WARNING)
+            return False
+
+        try:
+            _log("Trying NEON loader with netCDF4 backend", LOG_INFO)
+
+            with NC4Dataset(self.filepath, "r") as f:
+                site_code = list(f.groups.keys())[0]
+                site_refl = f.groups[site_code].groups["Reflectance"]
+                metadata = site_refl.groups["Metadata"]
+
+                wl_raw = metadata.groups["Spectral_Data"].variables["Wavelength"][:]
+                wavelengths_list = [round(float(w), 2) for w in wl_raw.flat]
+
+                coord_sys = metadata.groups["Coordinate_System"]
+
+                epsg_raw = coord_sys.variables["EPSG Code"][:]
+                epsg_code_number = int(self._nc4_to_str(epsg_raw))
+
+                map_info_raw = coord_sys.variables["Map_Info"][:]
+                mapInfo_split = self._nc4_to_str(map_info_raw).split(",")
+
+                res = float(mapInfo_split[5]), float(mapInfo_split[6])
+
+                refl_var = site_refl.variables["Reflectance_Data"]
+                refl_shape = refl_var.shape
+
+                xMin = float(mapInfo_split[3])
+                yMax = float(mapInfo_split[4])
+                xMax = xMin + (refl_shape[1] * res[0])
+                yMin = yMax - (refl_shape[0] * res[1])
+
+                scaleFactor = float(
+                    refl_var.getncattr("Scale_Factor")
+                    if "Scale_Factor" in refl_var.ncattrs()
+                    else 10000.0
+                )
+                noDataValue = float(
+                    refl_var.getncattr("Data_Ignore_Value")
+                    if "Data_Ignore_Value" in refl_var.ncattrs()
+                    else -9999
+                )
+
+                da = refl_var[:, :, :].astype(float)
+                da[da == int(noDataValue)] = np.nan
+                da[da < 0] = np.nan
+                da[da > 10000] = np.nan
+                da = da / scaleFactor
+
+            self._build_neon_dataset(
+                da,
+                wavelengths_list,
+                epsg_code_number,
+                mapInfo_split,
+                res,
+                scaleFactor,
+                noDataValue,
+            )
+            _log("NEON netCDF4 loader succeeded", LOG_INFO)
+            return True
+
+        except Exception as e:
+            self.last_error = f"Error in NEON netCDF4 loader: {e}"
+            _log(self.last_error, LOG_WARNING)
+            return False
+
+    @staticmethod
+    def _nc4_to_str(val):
+        """Convert a netCDF4 scalar variable value to a Python string."""
+        if hasattr(val, "item"):
+            val = val.item()
+        if isinstance(val, bytes):
+            return val.decode("utf-8")
+        return str(val).strip()
+
+    def _build_neon_dataset(
+        self,
+        da,
+        wavelengths_list,
+        epsg_code_number,
+        mapInfo_split,
+        res,
+        scaleFactor,
+        noDataValue,
+    ):
+        """Assemble an xarray Dataset from raw NEON arrays."""
+        xMin = float(mapInfo_split[3])
+        yMax = float(mapInfo_split[4])
+        xMax = xMin + (da.shape[1] * res[0])
+        yMin = yMax - (da.shape[0] * res[1])
+
+        coords = {
+            "y": np.linspace(yMax, yMin, da.shape[0]),
+            "x": np.linspace(xMin, xMax, da.shape[1]),
+            "wavelength": wavelengths_list,
+        }
+
+        xda = xr.DataArray(
+            da,
+            coords=coords,
+            dims=["y", "x", "wavelength"],
+            attrs={
+                "scale_factor": scaleFactor,
+                "no_data_value": noDataValue,
+                "crs": f"EPSG:{epsg_code_number}",
+                "transform": (res[0], 0.0, xMin, 0.0, -res[1], yMax),
+            },
+        )
+
+        self.dataset = xda.to_dataset(name="reflectance")
+        self.dataset.attrs = xda.attrs
+        self.wavelengths = np.array(wavelengths_list)
+        self.bounds = (xMin, yMin, xMax, yMax)
+        self.crs = f"EPSG:{epsg_code_number}"
 
     def _load_generic(self):
         """Load generic hyperspectral data (GeoTIFF or NetCDF)."""
         try:
+            _log(f"Trying generic loader: file={self.filepath}", LOG_INFO)
             _, ext = os.path.splitext(self.filepath.lower())
 
             if ext in [".tif", ".tiff"]:
@@ -531,7 +775,7 @@ class HyperspectralDataset:
                 self.bounds = tuple(bounds)
 
             else:
-                ds = xr.open_dataset(self.filepath)
+                ds = self._open_dataset_with_fallback_engines(self.filepath, ext)
                 self.crs = "EPSG:4326"
 
             self.dataset = ds
@@ -541,11 +785,88 @@ class HyperspectralDataset:
                     self.wavelengths = np.array(ds.coords[coord_name].values)
                     break
 
+            _log(
+                f"Generic loader succeeded: ext={ext}, has_wavelengths={self.wavelengths is not None}",
+                LOG_INFO,
+            )
             return True
 
         except Exception as e:
-            print(f"Error loading generic data: {e}")
+            self.last_error = f"Error loading generic data: {e}"
+            _log(self.last_error, LOG_WARNING)
+            _log(traceback.format_exc(limit=2), LOG_WARNING)
             return False
+
+    def _open_dataset_with_fallback_engines(self, filepath, ext):
+        """Open NetCDF/HDF datasets with multiple backend engines."""
+        if platform.system() == "Windows":
+            # Prefer netcdf4 on Windows to avoid h5py DLL conflicts.
+            engines = [None, "netcdf4", "h5netcdf", "scipy"]
+        else:
+            engines = [None, "h5netcdf", "netcdf4", "scipy"]
+        errors = []
+
+        for engine in engines:
+            try:
+                label = "auto" if engine is None else engine
+                _log(
+                    f"Trying xarray open_dataset engine={label} for file={filepath}",
+                    LOG_INFO,
+                )
+                if engine is None:
+                    return xr.open_dataset(filepath)
+                return xr.open_dataset(filepath, engine=engine)
+            except Exception as exc:
+                errors.append(f"{label}: {exc}")
+                _log(
+                    f"xarray backend failed engine={label}: {exc}",
+                    LOG_WARNING,
+                )
+
+        raise ValueError(
+            f"Unable to open file '{filepath}' (ext={ext}) with any backend. "
+            + " | ".join(errors)
+        )
+
+    def _select_group_engine(self, filepath, required_groups):
+        """Select a backend engine that can open root + all required groups."""
+        if platform.system() == "Windows":
+            engines = ["netcdf4", "h5netcdf"]
+        else:
+            engines = ["h5netcdf", "netcdf4"]
+
+        errors = []
+        for engine in engines:
+            opened = []
+            try:
+                _log(
+                    f"Trying grouped dataset engine={engine} for file={filepath}",
+                    LOG_INFO,
+                )
+                root = xr.open_dataset(filepath, engine=engine)
+                opened.append(root)
+                for group in required_groups:
+                    ds = xr.open_dataset(filepath, group=group, engine=engine)
+                    opened.append(ds)
+
+                return engine
+            except Exception as exc:
+                errors.append(f"{engine}: {exc}")
+                _log(
+                    f"Grouped dataset engine failed engine={engine}: {exc}",
+                    LOG_WARNING,
+                )
+            finally:
+                for ds in opened:
+                    try:
+                        ds.close()
+                    except Exception:
+                        pass
+
+        raise ValueError(
+            "Unable to open grouped dataset with available backends. "
+            + " | ".join(errors)
+        )
 
     def get_data_variable(self):
         """Get the main data variable from the dataset."""
@@ -603,7 +924,7 @@ class HyperspectralDataset:
             return self.wavelengths, values
 
         except Exception as e:
-            print(f"Error extracting spectral signature: {e}")
+            _log(f"Error extracting spectral signature: {e}", LOG_WARNING)
             return None, None
 
     def _extract_with_hypercoast(self, lon, lat):
@@ -640,7 +961,7 @@ class HyperspectralDataset:
                 return self.wavelengths, values
 
         except Exception as e:
-            print(f"Error in hypercoast extraction: {e}")
+            _log(f"Error in hypercoast extraction: {e}", LOG_WARNING)
             return None, None
 
     def export_to_geotiff(self, output_path, wavelengths=None, bands=None):
@@ -656,6 +977,12 @@ class HyperspectralDataset:
 
         if self.dataset is None:
             raise ValueError("No dataset loaded")
+
+        _log(
+            f"Exporting dataset to GeoTIFF: output={output_path}, "
+            f"type={self.data_type}, has_hypercoast={HAS_HYPERCOAST}",
+            LOG_INFO,
+        )
 
         # Use hypercoast's export functions if available
         if HAS_HYPERCOAST:
@@ -702,11 +1029,12 @@ class HyperspectralDataset:
             return output_path
 
         except Exception as e:
-            print(f"Error in hypercoast export: {e}")
+            _log(f"Error in hypercoast export: {e}", LOG_WARNING)
             return self._export_fallback(output_path, wavelengths, None)
 
     def _export_fallback(self, output_path, wavelengths, bands):
         """Fallback export without hypercoast."""
+        _log("Using fallback GeoTIFF export path", LOG_INFO)
         data_var = self.get_data_variable()
         if data_var is None:
             raise ValueError("No data variable found")
@@ -753,19 +1081,40 @@ class HyperspectralDataset:
         else:
             transform = from_bounds(0, 0, width, height, width, height)
 
-        # Write to file
-        with rasterio.open(
-            output_path,
-            "w",
-            driver="GTiff",
-            height=height,
-            width=width,
-            count=n_bands,
-            dtype="float32",
-            crs=self.crs or "EPSG:4326",
-            transform=transform,
-        ) as dst:
-            dst.write(arr.astype("float32"))
+        def _write_geotiff(crs_value):
+            with rasterio.open(
+                output_path,
+                "w",
+                driver="GTiff",
+                height=height,
+                width=width,
+                count=n_bands,
+                dtype="float32",
+                crs=crs_value,
+                transform=transform,
+            ) as dst:
+                dst.write(arr.astype("float32"))
+
+        try:
+            _write_geotiff(self.crs or "EPSG:4326")
+        except Exception as e:
+            msg = str(e)
+            proj_db_conflict = (
+                "proj_create_from_database" in msg
+                or "DATABASE.LAYOUT.VERSION" in msg
+                or "It comes from another PROJ installation" in msg
+            )
+            if proj_db_conflict:
+                _log(
+                    "GeoTIFF export hit PROJ DB mismatch while writing CRS; "
+                    "retrying export without CRS metadata.",
+                    LOG_WARNING,
+                )
+                _write_geotiff(None)
+            else:
+                raise
+
+        _log(f"GeoTIFF export succeeded: {output_path}", LOG_INFO)
 
         return output_path
 
@@ -797,8 +1146,14 @@ def check_dependencies():
     missing = [name for name, available in deps.items() if not available]
 
     if missing:
-        print(f"Warning: Missing optional dependencies: {', '.join(missing)}")
+        _log(
+            f"Warning: Missing optional dependencies: {', '.join(missing)}",
+            LOG_WARNING,
+        )
         if "hypercoast" in missing:
-            print("Install hypercoast for best compatibility: pip install hypercoast")
+            _log(
+                "Install hypercoast for best compatibility: pip install hypercoast",
+                LOG_INFO,
+            )
 
     return deps

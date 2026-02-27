@@ -16,6 +16,7 @@ from typing import Optional
 import importlib
 import importlib.metadata
 import importlib.util
+import os
 import sys
 
 _CACHED: Optional[ModuleType] = None
@@ -24,12 +25,16 @@ _CACHED: Optional[ModuleType] = None
 def _is_module_from_dir(mod: ModuleType, directory: Path) -> bool:
     """
     Returns True if the given module's __file__ is located within the specified directory.
+
+    Uses os.path.normcase so the check is case-insensitive on Windows.
     """
     try:
         mod_file = getattr(mod, "__file__", None)
         if not mod_file:
             return False
-        return Path(mod_file).resolve().is_relative_to(directory.resolve())
+        mod_path = os.path.normcase(str(Path(mod_file).resolve()))
+        dir_path = os.path.normcase(str(directory.resolve()))
+        return mod_path.startswith(dir_path + os.sep) or mod_path == dir_path
     except (ValueError, OSError):
         return False
 
@@ -45,7 +50,12 @@ def _import_hypercoast_without_plugin_shadow(
     orig_mod = sys.modules.get("hypercoast")
 
     try:
-        sys.path = [p for p in sys.path if Path(p).resolve() != plugin_parent.resolve()]
+        parent_norm = os.path.normcase(str(plugin_parent.resolve()))
+        sys.path = [
+            p
+            for p in sys.path
+            if os.path.normcase(str(Path(p).resolve())) != parent_norm
+        ]
         if "hypercoast" in sys.modules:
             del sys.modules["hypercoast"]
 
