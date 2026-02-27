@@ -343,10 +343,14 @@ class HyperspectralDataset:
 
         import tempfile
 
-        tmp_nc = os.path.join(
-            tempfile.gettempdir(),
-            f"_hc_subprocess_{os.getpid()}.nc",
-        )
+        # Create a temp file name that does NOT already exist – the venv
+        # subprocess will create it.  On Windows, NamedTemporaryFile keeps the
+        # file open (and therefore locked) by default, so we use mkstemp,
+        # close the fd immediately, delete the placeholder, and let the
+        # subprocess create the file fresh.
+        fd, tmp_nc = tempfile.mkstemp(suffix=".nc", prefix="_hc_subprocess_")
+        os.close(fd)
+        os.remove(tmp_nc)  # subprocess will create this path
 
         # Escape backslashes for Windows paths in the script
         fp = self.filepath.replace("\\", "\\\\")
@@ -357,6 +361,7 @@ class HyperspectralDataset:
             f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
             "if ds is None:\n"
             "    sys.exit(1)\n"
+            "ds.load()\n"
             f"ds.to_netcdf(r'{out}')\n"
         )
 
@@ -375,7 +380,9 @@ class HyperspectralDataset:
             return False
 
         try:
-            self.dataset = xr.open_dataset(tmp_nc)
+            # Load into memory so the file handle is released before cleanup
+            with xr.open_dataset(tmp_nc) as ds:
+                self.dataset = ds.load()
             # Extract metadata using the same helpers as _load_with_hypercoast
             extractor = {
                 "EMIT": self._extract_emit_metadata,
@@ -442,9 +449,12 @@ class HyperspectralDataset:
             extra_args = ", method='nearest'"
 
         script = (
-            "import hypercoast\n"
+            "import hypercoast, sys\n"
             "from leafmap import image_to_geotiff\n"
             f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            "if 'wavelength' not in ds.dims and 'wavelength' not in ds.coords:\n"
+            "    print('NO_WAVELENGTH_DIM', file=sys.stderr)\n"
+            "    sys.exit(2)\n"
             f"image = hypercoast.{to_image_fn}(ds, wavelengths={wavelengths!r}"
             f"{extra_args})\n"
             f"image_to_geotiff(image, r'{op}', dtype='float32')\n"
@@ -458,7 +468,13 @@ class HyperspectralDataset:
 
         if rc != 0:
             detail = (stderr or stdout or "unknown error").strip()[-300:]
-            _log(f"Subprocess export failed (rc={rc}): {detail}", LOG_WARNING)
+            if rc == 2 and "NO_WAVELENGTH_DIM" in (stderr or ""):
+                _log(
+                    "Subprocess export skipped: dataset has no wavelength dimension",
+                    LOG_INFO,
+                )
+            else:
+                _log(f"Subprocess export failed (rc={rc}): {detail}", LOG_WARNING)
             return None
 
         if os.path.isfile(output_path):
@@ -1175,7 +1191,13 @@ class HyperspectralDataset:
         arr = data.values
 
         # Ensure correct shape (bands, height, width)
-        if arr.ndim == 2:
+        if arr.ndim == 1:
+            # 1-D data cannot be exported as a raster
+            raise ValueError(
+                f"Data variable has only 1 dimension {data.dims}; "
+                "cannot export as GeoTIFF"
+            )
+        elif arr.ndim == 2:
             arr = arr[np.newaxis, :, :]
         elif arr.ndim == 3:
             # Find wavelength dimension and move to first
@@ -1189,6 +1211,10 @@ class HyperspectralDataset:
         # Handle NaN values
         arr = np.nan_to_num(arr, nan=0.0)
 
+        if arr.ndim < 3:
+            raise ValueError(
+                f"Cannot reshape data to (bands, height, width); shape is {arr.shape}"
+            )
         n_bands, height, width = arr.shape
 
         # Create transform
