@@ -483,6 +483,183 @@ class HyperspectralDataset:
         _log("Subprocess export produced no output file", LOG_WARNING)
         return None
 
+    def _load_and_export_via_subprocess(self, output_path, wavelengths):
+        """Load dataset and export GeoTIFF in a single venv subprocess.
+
+        Combines the work of ``_load_via_subprocess`` and
+        ``_export_via_subprocess`` into one process so the source file is
+        read only once and the Python interpreter is cold-started only once.
+        This roughly halves the wall-clock time on Windows compared to
+        running two separate subprocesses.
+
+        Args:
+            output_path: Destination path for the GeoTIFF.
+            wavelengths: RGB wavelengths to export.
+
+        Returns:
+            The *output_path* on success, or ``None`` on failure.
+            On success ``self.dataset`` and related metadata attributes are
+            populated so that callers can proceed as if ``load()`` had been
+            called.
+        """
+        from .core.venv_manager import run_in_venv
+
+        reader_map = {
+            "EMIT": "read_emit",
+            "PACE": "read_pace",
+            "DESIS": "read_desis",
+            "NEON": "read_neon",
+            "AVIRIS": "read_aviris",
+            "PRISMA": "read_prisma",
+            "EnMAP": "read_enmap",
+            "Tanager": "read_tanager",
+            "Wyvern": "read_wyvern",
+        }
+        reader_fn = reader_map.get(self.data_type)
+        if reader_fn is None:
+            return None
+
+        fn_map = {
+            "EMIT": "emit_to_image",
+            "PACE": "pace_to_image",
+            "DESIS": "desis_to_image",
+            "NEON": "neon_to_image",
+            "Tanager": "tanager_to_image",
+        }
+        to_image_fn = fn_map.get(self.data_type)
+
+        if wavelengths is None:
+            wavelengths = [650, 550, 450]
+
+        import tempfile
+
+        fd, tmp_nc = tempfile.mkstemp(suffix=".nc", prefix="_hc_subprocess_")
+        os.close(fd)
+
+        fp = self.filepath.replace("\\", "\\\\")
+        op = output_path.replace("\\", "\\\\")
+        nc = tmp_nc.replace("\\", "\\\\")
+
+        extra_args = ""
+        if self.data_type == "PACE":
+            extra_args = ", method='nearest'"
+
+        # Build optional export block
+        export_block = ""
+        if to_image_fn:
+            export_block = (
+                "if 'wavelength' in ds.dims or 'wavelength' in ds.coords:\n"
+                f"    image = hypercoast.{to_image_fn}(ds, wavelengths={wavelengths!r}"
+                f"{extra_args})\n"
+                f"    image_to_geotiff(image, r'{op}', dtype='float32')\n"
+            )
+
+        script = (
+            "import hypercoast, sys\n"
+            "from leafmap import image_to_geotiff\n"
+            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            "if ds is None:\n"
+            "    sys.exit(1)\n" + export_block + "ds.load()\n"
+            f"ds.to_netcdf(r'{nc}')\n"
+        )
+
+        _log(
+            f"Running combined load+export in venv subprocess: {self.data_type}",
+            LOG_INFO,
+        )
+        rc, stdout, stderr = run_in_venv(script, timeout=180)
+
+        if rc != 0:
+            try:
+                os.remove(tmp_nc)
+            except OSError:
+                pass
+            detail = (stderr or stdout or "unknown error").strip()[-300:]
+            _log(f"Combined subprocess failed (rc={rc}): {detail}", LOG_WARNING)
+            return None
+
+        try:
+            with xr.open_dataset(tmp_nc) as ds:
+                self.dataset = ds.load()
+
+            extractor = {
+                "EMIT": self._extract_emit_metadata,
+                "PACE": self._extract_pace_metadata,
+                "DESIS": self._extract_desis_metadata,
+                "NEON": self._extract_neon_metadata,
+                "Tanager": self._extract_tanager_metadata,
+            }.get(self.data_type, self._extract_generic_metadata)
+            if self.data_type == "PACE":
+                self._is_swath = True
+            extractor()
+
+            if os.path.isfile(output_path):
+                _log(f"Combined load+export succeeded: {output_path}", LOG_INFO)
+                return output_path
+
+            _log(
+                "Combined subprocess: dataset loaded but no GeoTIFF produced",
+                LOG_WARNING,
+            )
+            return None
+
+        except Exception as exc:
+            _log(f"Failed to process combined subprocess output: {exc}", LOG_WARNING)
+            return None
+        finally:
+            try:
+                os.remove(tmp_nc)
+            except OSError:
+                pass
+
+    def load_and_export(self, output_path, wavelengths=None, bands=None):
+        """Load dataset and export to GeoTIFF in one operation.
+
+        On Windows where hypercoast is not available in-process, this
+        combines both steps into a single subprocess call so the source
+        file is read only once and the Python interpreter is started only
+        once, roughly halving wall-clock time.
+
+        On Linux (or when hypercoast is available in-process) this simply
+        delegates to :meth:`load` followed by :meth:`export_to_geotiff`.
+
+        Args:
+            output_path: Output GeoTIFF file path.
+            wavelengths: List of wavelengths to export.
+            bands: List of band indices to export.
+
+        Returns:
+            Path to the created GeoTIFF, or ``None`` if loading failed.
+
+        Raises:
+            ImportError: If required libraries are missing.
+            ValueError: If the export fails after a successful load.
+        """
+        self.last_error = None
+
+        # On Windows without in-process hypercoast, combine load + export
+        # into a single subprocess to avoid reading the file twice.
+        if (
+            platform.system() == "Windows"
+            and not HAS_HYPERCOAST
+            and self.data_type != "Generic"
+            and self.dataset is None
+        ):
+            result = self._load_and_export_via_subprocess(output_path, wavelengths)
+            if result:
+                return result
+            # If the load part succeeded but the export didn't, fall
+            # through to export_to_geotiff which will try its own
+            # fallback path.
+            if self.dataset is not None:
+                return self.export_to_geotiff(output_path, wavelengths, bands)
+
+        # Normal path: load if needed, then export separately.
+        if self.dataset is None:
+            if not self.load():
+                return None
+        return self.export_to_geotiff(output_path, wavelengths, bands)
+
     def _extract_emit_metadata(self):
         """Extract metadata from EMIT dataset."""
         ds = self.dataset

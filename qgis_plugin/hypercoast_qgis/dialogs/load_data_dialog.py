@@ -378,31 +378,6 @@ class LoadDataDialog(QDialog):
                 and self.dataset.data_type != requested_type
             )
 
-            # Load dataset if not already loaded, file changed, or previous load
-            # left an uninitialized dataset object.
-            if (
-                self.dataset is None
-                or self.dataset.filepath != filepath
-                or self.dataset.dataset is None
-                or type_changed
-            ):
-                self.dataset = HyperspectralDataset(filepath, requested_type)
-
-                if not self.dataset.load():
-                    detail = self.dataset.last_error or "Unknown error"
-                    QgsMessageLog.logMessage(
-                        f"Load dataset failed during read: file={filepath}, "
-                        f"selected_type={requested_type}, details={detail}",
-                        "HyperCoast",
-                        Qgis.Warning,
-                    )
-                    raise ValueError(f"Failed to load dataset. Details: {detail}")
-
-            if self.dataset.dataset is None:
-                raise ValueError("Dataset object is initialized but data is not loaded")
-
-            self.progress_bar.setValue(40)
-
             # Get wavelengths for RGB composite
             wavelengths = [
                 self.red_spin.value(),
@@ -418,9 +393,43 @@ class LoadDataDialog(QDialog):
             )
             temp_path = os.path.join(temp_dir, f"{layer_name}_rgb.tif")
 
-            self.progress_bar.setValue(60)
+            # Load dataset if not already loaded, file changed, or previous load
+            # left an uninitialized dataset object.
+            needs_load = (
+                self.dataset is None
+                or self.dataset.filepath != filepath
+                or self.dataset.dataset is None
+                or type_changed
+            )
 
-            self.dataset.export_to_geotiff(temp_path, wavelengths=wavelengths)
+            if needs_load:
+                self.dataset = HyperspectralDataset(filepath, requested_type)
+
+                self.progress_bar.setValue(40)
+
+                # Combined load+export reads the file only once on Windows
+                # (avoids a second subprocess + file re-read for the export).
+                result = self.dataset.load_and_export(
+                    temp_path, wavelengths=wavelengths
+                )
+                if result is None:
+                    detail = self.dataset.last_error or "Unknown error"
+                    QgsMessageLog.logMessage(
+                        f"Load dataset failed during read: file={filepath}, "
+                        f"selected_type={requested_type}, details={detail}",
+                        "HyperCoast",
+                        Qgis.Warning,
+                    )
+                    raise ValueError(f"Failed to load dataset. Details: {detail}")
+            else:
+                if self.dataset.dataset is None:
+                    raise ValueError(
+                        "Dataset object is initialized but data is not loaded"
+                    )
+
+                self.progress_bar.setValue(60)
+
+                self.dataset.export_to_geotiff(temp_path, wavelengths=wavelengths)
 
             self.progress_bar.setValue(80)
 
