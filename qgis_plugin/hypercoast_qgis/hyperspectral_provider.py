@@ -853,6 +853,12 @@ class HyperspectralDataset:
         if self.dataset is None:
             raise ValueError("No dataset loaded")
 
+        _log(
+            f"Exporting dataset to GeoTIFF: output={output_path}, "
+            f"type={self.data_type}, has_hypercoast={HAS_HYPERCOAST}",
+            LOG_INFO,
+        )
+
         # Use hypercoast's export functions if available
         if HAS_HYPERCOAST:
             return self._export_with_hypercoast(output_path, wavelengths)
@@ -903,6 +909,7 @@ class HyperspectralDataset:
 
     def _export_fallback(self, output_path, wavelengths, bands):
         """Fallback export without hypercoast."""
+        _log("Using fallback GeoTIFF export path", LOG_INFO)
         data_var = self.get_data_variable()
         if data_var is None:
             raise ValueError("No data variable found")
@@ -949,19 +956,40 @@ class HyperspectralDataset:
         else:
             transform = from_bounds(0, 0, width, height, width, height)
 
-        # Write to file
-        with rasterio.open(
-            output_path,
-            "w",
-            driver="GTiff",
-            height=height,
-            width=width,
-            count=n_bands,
-            dtype="float32",
-            crs=self.crs or "EPSG:4326",
-            transform=transform,
-        ) as dst:
-            dst.write(arr.astype("float32"))
+        def _write_geotiff(crs_value):
+            with rasterio.open(
+                output_path,
+                "w",
+                driver="GTiff",
+                height=height,
+                width=width,
+                count=n_bands,
+                dtype="float32",
+                crs=crs_value,
+                transform=transform,
+            ) as dst:
+                dst.write(arr.astype("float32"))
+
+        try:
+            _write_geotiff(self.crs or "EPSG:4326")
+        except Exception as e:
+            msg = str(e)
+            proj_db_conflict = (
+                "proj_create_from_database" in msg
+                or "DATABASE.LAYOUT.VERSION" in msg
+                or "It comes from another PROJ installation" in msg
+            )
+            if proj_db_conflict:
+                _log(
+                    "GeoTIFF export hit PROJ DB mismatch while writing CRS; "
+                    "retrying export without CRS metadata.",
+                    LOG_WARNING,
+                )
+                _write_geotiff(None)
+            else:
+                raise
+
+        _log(f"GeoTIFF export succeeded: {output_path}", LOG_INFO)
 
         return output_path
 

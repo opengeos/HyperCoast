@@ -430,6 +430,21 @@ class LoadDataDialog(QDialog):
             if not raster_layer.isValid():
                 raise ValueError("Created layer is not valid")
 
+            # If export omitted CRS due PROJ conflicts, assign known dataset CRS.
+            if (
+                (not raster_layer.crs().isValid())
+                and self.dataset is not None
+                and self.dataset.crs
+            ):
+                known_crs = QgsCoordinateReferenceSystem(str(self.dataset.crs))
+                if known_crs.isValid():
+                    raster_layer.setCrs(known_crs)
+                    QgsMessageLog.logMessage(
+                        f"Assigned layer CRS from dataset metadata: {self.dataset.crs}",
+                        "HyperCoast",
+                        Qgis.Info,
+                    )
+
             # Set value range for better visualization
             provider = raster_layer.dataProvider()
             if provider:
