@@ -65,7 +65,9 @@ def _log(message, level=LOG_INFO):
     """Write logs to QGIS message panel when available."""
     text = str(message)
     if HAS_QGIS:
-        QgsMessageLog.logMessage(text, "HyperCoast", level if level is not None else LOG_INFO)
+        QgsMessageLog.logMessage(
+            text, "HyperCoast", level if level is not None else LOG_INFO
+        )
     else:
         print(f"[HyperCoast] {text}")
 
