@@ -459,8 +459,6 @@ class BandCombinationDialog(QDialog):
 
             self.iface.mapCanvas().refresh()
 
-            QMessageBox.information(self, "Success", "Band combination applied!")
-
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error applying bands: {str(e)}")
 
