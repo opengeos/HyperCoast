@@ -518,10 +518,6 @@ class LoadDataDialog(QDialog):
             # Set the layer as active
             self.iface.setActiveLayer(raster_layer)
 
-            QMessageBox.information(
-                self, "Success", f"Layer '{layer_name}' loaded successfully!"
-            )
-
             QgsMessageLog.logMessage(
                 f"Loaded hyperspectral layer: {layer_name}", "HyperCoast", Qgis.Info
             )

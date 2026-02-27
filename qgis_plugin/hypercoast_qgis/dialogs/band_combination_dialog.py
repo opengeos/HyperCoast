@@ -27,6 +27,7 @@ from qgis.PyQt.QtWidgets import (
     QRadioButton,
 )
 from qgis.core import (
+    QgsCoordinateReferenceSystem,
     QgsProject,
     QgsRasterLayer,
     QgsContrastEnhancement,
@@ -397,6 +398,15 @@ class BandCombinationDialog(QDialog):
             if not new_layer.isValid():
                 raise ValueError("Failed to create layer")
 
+            # If the GeoTIFF was written without CRS (e.g. due to a PROJ DB
+            # conflict on Windows), restore it from the dataset metadata so
+            # the layer is placed at the correct location on the map.
+            dataset_crs = data_info.get("crs") or getattr(dataset, "crs", None)
+            if not new_layer.crs().isValid() and dataset_crs:
+                known_crs = QgsCoordinateReferenceSystem(str(dataset_crs))
+                if known_crs.isValid():
+                    new_layer.setCrs(known_crs)
+
             # Apply styling
             vmin = self.vmin_spin.value()
             vmax = self.vmax_spin.value()
@@ -448,8 +458,6 @@ class BandCombinationDialog(QDialog):
             self.refresh_layers()
 
             self.iface.mapCanvas().refresh()
-
-            QMessageBox.information(self, "Success", "Band combination applied!")
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error applying bands: {str(e)}")
