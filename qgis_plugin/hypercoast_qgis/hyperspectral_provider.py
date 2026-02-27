@@ -203,6 +203,13 @@ class HyperspectralDataset:
         if HAS_HYPERCOAST:
             return self._load_with_hypercoast()
 
+        # On Windows, h5py/hypercoast may be unavailable in-process due to
+        # HDF5 DLL conflicts, but they work fine in the venv's own Python.
+        # Run the loading in a subprocess and retrieve the result.
+        if platform.system() == "Windows" and self.data_type != "Generic":
+            if self._load_via_subprocess():
+                return True
+
         # Fallback to manual loading
         loader = {
             "EMIT": self._load_emit_fallback,
@@ -308,6 +315,158 @@ class HyperspectralDataset:
                 )
                 return True
             return self._load_generic()
+
+    def _load_via_subprocess(self):
+        """Load a dataset by running hypercoast in the venv subprocess.
+
+        On Windows the venv's h5py works in its own process (no HDF5 DLL
+        conflict with QGIS).  This method runs the hypercoast reader in a
+        subprocess, saves the result to a temp NetCDF file, then loads it
+        back with xarray in the QGIS process.
+        """
+        from .core.venv_manager import run_in_venv
+
+        reader_map = {
+            "EMIT": "read_emit",
+            "PACE": "read_pace",
+            "DESIS": "read_desis",
+            "NEON": "read_neon",
+            "AVIRIS": "read_aviris",
+            "PRISMA": "read_prisma",
+            "EnMAP": "read_enmap",
+            "Tanager": "read_tanager",
+            "Wyvern": "read_wyvern",
+        }
+        reader_fn = reader_map.get(self.data_type)
+        if reader_fn is None:
+            return False
+
+        import tempfile
+
+        tmp_nc = os.path.join(
+            tempfile.gettempdir(),
+            f"_hc_subprocess_{os.getpid()}.nc",
+        )
+
+        # Escape backslashes for Windows paths in the script
+        fp = self.filepath.replace("\\", "\\\\")
+        out = tmp_nc.replace("\\", "\\\\")
+
+        script = (
+            "import hypercoast, sys\n"
+            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            "if ds is None:\n"
+            "    sys.exit(1)\n"
+            f"ds.to_netcdf(r'{out}')\n"
+        )
+
+        _log(
+            f"Running hypercoast.{reader_fn} in venv subprocess",
+            LOG_INFO,
+        )
+        rc, stdout, stderr = run_in_venv(script, timeout=120)
+
+        if rc != 0:
+            detail = (stderr or stdout or "unknown error").strip()[-300:]
+            _log(
+                f"Subprocess load failed (rc={rc}): {detail}",
+                LOG_WARNING,
+            )
+            return False
+
+        try:
+            self.dataset = xr.open_dataset(tmp_nc)
+            # Extract metadata using the same helpers as _load_with_hypercoast
+            extractor = {
+                "EMIT": self._extract_emit_metadata,
+                "PACE": self._extract_pace_metadata,
+                "DESIS": self._extract_desis_metadata,
+                "NEON": self._extract_neon_metadata,
+                "Tanager": self._extract_tanager_metadata,
+            }.get(self.data_type, self._extract_generic_metadata)
+            if self.data_type == "PACE":
+                self._is_swath = True
+            extractor()
+            _log(
+                f"Subprocess load succeeded: type={self.data_type}",
+                LOG_INFO,
+            )
+            return True
+        except Exception as exc:
+            _log(f"Failed to read subprocess output: {exc}", LOG_WARNING)
+            return False
+        finally:
+            try:
+                os.remove(tmp_nc)
+            except OSError:
+                pass
+
+    def _export_via_subprocess(self, output_path, wavelengths):
+        """Export to GeoTIFF by running hypercoast in the venv subprocess.
+
+        This avoids h5py DLL conflicts on Windows by performing the
+        hypercoast export in a separate process that can load h5py.
+        """
+        from .core.venv_manager import run_in_venv
+
+        fn_map = {
+            "EMIT": "emit_to_image",
+            "PACE": "pace_to_image",
+            "DESIS": "desis_to_image",
+            "NEON": "neon_to_image",
+            "Tanager": "tanager_to_image",
+        }
+        to_image_fn = fn_map.get(self.data_type)
+        if to_image_fn is None:
+            return None
+
+        reader_map = {
+            "EMIT": "read_emit",
+            "PACE": "read_pace",
+            "DESIS": "read_desis",
+            "NEON": "read_neon",
+            "Tanager": "read_tanager",
+        }
+        reader_fn = reader_map.get(self.data_type)
+        if reader_fn is None:
+            return None
+
+        if wavelengths is None:
+            wavelengths = [650, 550, 450]
+
+        fp = self.filepath.replace("\\", "\\\\")
+        op = output_path.replace("\\", "\\\\")
+
+        extra_args = ""
+        if self.data_type == "PACE":
+            extra_args = ", method='nearest'"
+
+        script = (
+            "import hypercoast\n"
+            "from leafmap import image_to_geotiff\n"
+            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            f"image = hypercoast.{to_image_fn}(ds, wavelengths={wavelengths!r}"
+            f"{extra_args})\n"
+            f"image_to_geotiff(image, r'{op}', dtype='float32')\n"
+        )
+
+        _log(
+            f"Running hypercoast export in venv subprocess: {self.data_type}",
+            LOG_INFO,
+        )
+        rc, stdout, stderr = run_in_venv(script, timeout=180)
+
+        if rc != 0:
+            detail = (stderr or stdout or "unknown error").strip()[-300:]
+            _log(f"Subprocess export failed (rc={rc}): {detail}", LOG_WARNING)
+            return None
+
+        if os.path.isfile(output_path):
+            _log(f"Subprocess export succeeded: {output_path}", LOG_INFO)
+            return output_path
+
+        _log("Subprocess export produced no output file", LOG_WARNING)
+        return None
 
     def _extract_emit_metadata(self):
         """Extract metadata from EMIT dataset."""
@@ -554,27 +713,12 @@ class HyperspectralDataset:
         return self._load_generic()
 
     def _load_neon_fallback(self):
-        """Fallback NEON loader without hypercoast.
-
-        Tries h5py first (direct HDF5 access), then falls back to netCDF4
-        which bundles its own HDF5 library and avoids DLL conflicts on Windows.
-        """
-        _log(f"Trying NEON fallback loader: file={self.filepath}", LOG_INFO)
-
-        if HAS_H5PY:
-            if self._load_neon_with_h5py():
-                return True
-
-        if self._load_neon_with_netcdf4():
-            return True
-
-        if self.last_error is None:
-            self.last_error = "NEON loader: no suitable HDF5 backend available"
-        return False
-
-    def _load_neon_with_h5py(self):
-        """Load NEON data using h5py."""
+        """Fallback NEON loader without hypercoast."""
         try:
+            _log(f"Trying NEON fallback loader: file={self.filepath}", LOG_INFO)
+            if not HAS_H5PY:
+                raise ImportError("h5py is required to load NEON data")
+
             with h5py.File(self.filepath, "r") as f:
                 site_code = list(f.keys())[0]
                 site_refl = f[site_code]["Reflectance"]
@@ -620,98 +764,14 @@ class HyperspectralDataset:
                 scaleFactor,
                 noDataValue,
             )
-            _log("NEON h5py loader succeeded", LOG_INFO)
+            _log("NEON fallback loader succeeded", LOG_INFO)
             return True
 
         except Exception as e:
-            self.last_error = f"Error in NEON h5py loader: {e}"
+            self.last_error = f"Error in NEON fallback loader: {e}"
             _log(self.last_error, LOG_WARNING)
+            _log(traceback.format_exc(limit=2), LOG_WARNING)
             return False
-
-    def _load_neon_with_netcdf4(self):
-        """Load NEON data using netCDF4 (avoids h5py DLL conflicts on Windows).
-
-        netCDF4.Dataset can open arbitrary HDF5 files since it is built on
-        the same HDF5 C library, and its pip wheel bundles a separate copy
-        of HDF5 that does not conflict with the host environment.
-        """
-        try:
-            from netCDF4 import Dataset as NC4Dataset
-        except ImportError:
-            _log("netCDF4 not available for NEON fallback", LOG_WARNING)
-            return False
-
-        try:
-            _log("Trying NEON loader with netCDF4 backend", LOG_INFO)
-
-            with NC4Dataset(self.filepath, "r") as f:
-                site_code = list(f.groups.keys())[0]
-                site_refl = f.groups[site_code].groups["Reflectance"]
-                metadata = site_refl.groups["Metadata"]
-
-                wl_raw = metadata.groups["Spectral_Data"].variables["Wavelength"][:]
-                wavelengths_list = [round(float(w), 2) for w in wl_raw.flat]
-
-                coord_sys = metadata.groups["Coordinate_System"]
-
-                epsg_raw = coord_sys.variables["EPSG Code"][:]
-                epsg_code_number = int(self._nc4_to_str(epsg_raw))
-
-                map_info_raw = coord_sys.variables["Map_Info"][:]
-                mapInfo_split = self._nc4_to_str(map_info_raw).split(",")
-
-                res = float(mapInfo_split[5]), float(mapInfo_split[6])
-
-                refl_var = site_refl.variables["Reflectance_Data"]
-                refl_shape = refl_var.shape
-
-                xMin = float(mapInfo_split[3])
-                yMax = float(mapInfo_split[4])
-                xMax = xMin + (refl_shape[1] * res[0])
-                yMin = yMax - (refl_shape[0] * res[1])
-
-                scaleFactor = float(
-                    refl_var.getncattr("Scale_Factor")
-                    if "Scale_Factor" in refl_var.ncattrs()
-                    else 10000.0
-                )
-                noDataValue = float(
-                    refl_var.getncattr("Data_Ignore_Value")
-                    if "Data_Ignore_Value" in refl_var.ncattrs()
-                    else -9999
-                )
-
-                da = refl_var[:, :, :].astype(float)
-                da[da == int(noDataValue)] = np.nan
-                da[da < 0] = np.nan
-                da[da > 10000] = np.nan
-                da = da / scaleFactor
-
-            self._build_neon_dataset(
-                da,
-                wavelengths_list,
-                epsg_code_number,
-                mapInfo_split,
-                res,
-                scaleFactor,
-                noDataValue,
-            )
-            _log("NEON netCDF4 loader succeeded", LOG_INFO)
-            return True
-
-        except Exception as e:
-            self.last_error = f"Error in NEON netCDF4 loader: {e}"
-            _log(self.last_error, LOG_WARNING)
-            return False
-
-    @staticmethod
-    def _nc4_to_str(val):
-        """Convert a netCDF4 scalar variable value to a Python string."""
-        if hasattr(val, "item"):
-            val = val.item()
-        if isinstance(val, bytes):
-            return val.decode("utf-8")
-        return str(val).strip()
 
     def _build_neon_dataset(
         self,
@@ -799,11 +859,7 @@ class HyperspectralDataset:
 
     def _open_dataset_with_fallback_engines(self, filepath, ext):
         """Open NetCDF/HDF datasets with multiple backend engines."""
-        if platform.system() == "Windows":
-            # Prefer netcdf4 on Windows to avoid h5py DLL conflicts.
-            engines = [None, "netcdf4", "h5netcdf", "scipy"]
-        else:
-            engines = [None, "h5netcdf", "netcdf4", "scipy"]
+        engines = [None, "h5netcdf", "netcdf4", "scipy"]
         errors = []
 
         for engine in engines:
@@ -830,10 +886,7 @@ class HyperspectralDataset:
 
     def _select_group_engine(self, filepath, required_groups):
         """Select a backend engine that can open root + all required groups."""
-        if platform.system() == "Windows":
-            engines = ["netcdf4", "h5netcdf"]
-        else:
-            engines = ["h5netcdf", "netcdf4"]
+        engines = ["h5netcdf", "netcdf4"]
 
         errors = []
         for engine in engines:
@@ -964,6 +1017,52 @@ class HyperspectralDataset:
             _log(f"Error in hypercoast extraction: {e}", LOG_WARNING)
             return None, None
 
+    @staticmethod
+    def _find_and_set_proj_data():
+        """Locate proj.db and set PROJ_DATA if not already configured.
+
+        Returns:
+            The PROJ_DATA path that was set, or None if not found.
+        """
+        if os.environ.get("PROJ_DATA") or os.environ.get("PROJ_LIB"):
+            return os.environ.get("PROJ_DATA") or os.environ.get("PROJ_LIB")
+
+        candidates = []
+
+        # pyproj bundled data (pip wheel)
+        try:
+            import pyproj
+
+            candidates.append(
+                os.path.join(
+                    os.path.dirname(pyproj.__file__), "proj_dir", "share", "proj"
+                )
+            )
+            # pyproj.datadir may know the path
+            datadir_fn = getattr(getattr(pyproj, "datadir", None), "get_data_dir", None)
+            if datadir_fn:
+                try:
+                    candidates.append(datadir_fn())
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        # QGIS / system locations
+        if platform.system() == "Windows":
+            exe_dir = os.path.dirname(sys.executable)
+            candidates.append(os.path.join(os.path.dirname(exe_dir), "share", "proj"))
+        else:
+            candidates.extend(["/usr/share/proj", "/usr/local/share/proj"])
+
+        for candidate in candidates:
+            if candidate and os.path.isfile(os.path.join(candidate, "proj.db")):
+                os.environ["PROJ_DATA"] = candidate
+                _log(f"Set PROJ_DATA={candidate}", LOG_INFO)
+                return candidate
+
+        return None
+
     def export_to_geotiff(self, output_path, wavelengths=None, bands=None):
         """Export selected bands to a GeoTIFF file.
 
@@ -987,6 +1086,13 @@ class HyperspectralDataset:
         # Use hypercoast's export functions if available
         if HAS_HYPERCOAST:
             return self._export_with_hypercoast(output_path, wavelengths)
+
+        # On Windows, try running the export in a venv subprocess where
+        # h5py / hypercoast are available without DLL conflicts.
+        if platform.system() == "Windows":
+            result = self._export_via_subprocess(output_path, wavelengths)
+            if result:
+                return result
 
         return self._export_fallback(output_path, wavelengths, bands)
 
@@ -1029,6 +1135,16 @@ class HyperspectralDataset:
             return output_path
 
         except Exception as e:
+            msg = str(e)
+            # If PROJ can't find its database, try configuring PROJ_DATA and retry
+            if "no database context" in msg or "proj_create" in msg:
+                proj_data = self._find_and_set_proj_data()
+                if proj_data:
+                    try:
+                        image_to_geotiff(image, output_path, dtype="float32")
+                        return output_path
+                    except Exception:
+                        pass
             _log(f"Error in hypercoast export: {e}", LOG_WARNING)
             return self._export_fallback(output_path, wavelengths, None)
 
@@ -1103,6 +1219,7 @@ class HyperspectralDataset:
                 "proj_create_from_database" in msg
                 or "DATABASE.LAYOUT.VERSION" in msg
                 or "It comes from another PROJ installation" in msg
+                or "no database context" in msg
             )
             if proj_db_conflict:
                 _log(

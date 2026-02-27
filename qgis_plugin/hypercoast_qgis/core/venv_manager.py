@@ -64,6 +64,15 @@ def _configure_windows_dll_paths(site_packages):
         os.path.join(site_packages, "scipy.libs"),
     ]
 
+    # Also add QGIS host Library/bin (conda env) for HDF5/PROJ/GDAL DLLs
+    exe_dir = os.path.dirname(sys.executable)
+    qgis_lib_bin = os.path.join(os.path.dirname(exe_dir), "bin")
+    if os.path.isdir(qgis_lib_bin):
+        candidates.append(qgis_lib_bin)
+    # Also the directory containing qgis.exe itself
+    if os.path.isdir(exe_dir):
+        candidates.append(exe_dir)
+
     # Prepend to PATH so child processes also prefer these directories.
     path_entries = os.environ.get("PATH", "").split(os.pathsep)
     normalized_path = [os.path.normcase(p) for p in path_entries if p]
@@ -114,7 +123,9 @@ def _preload_venv_dlls(site_packages):
 
     libs_dir_names = (
         "h5py.libs",
+        "h5py",
         "netCDF4.libs",
+        "netCDF4",
         "numpy.libs",
         "scipy.libs",
     )
@@ -148,6 +159,58 @@ def _preload_venv_dlls(site_packages):
             f"Could not pre-load {len(failed)} DLL(s): {names}",
             Qgis.Warning,
         )
+
+
+def _configure_proj_data(site_packages):
+    """Set PROJ_DATA so the venv's rasterio/pyproj can find proj.db.
+
+    The venv's pyproj bundles its own PROJ database inside the wheel.
+    When loaded inside the QGIS process the PROJ C library may not
+    know where this database lives, causing ``proj_create: no database
+    context specified`` errors.  Even when PROJ_DATA is already set
+    (by QGIS), it may point to a different PROJ version causing
+    ``DATABASE.LAYOUT.VERSION`` mismatches.  We always prefer the
+    venv's pyproj bundled database to match the venv's PROJ library.
+
+    Args:
+        site_packages: Path to the venv site-packages directory.
+    """
+    # Always prefer the venv's pyproj bundled proj data, even if PROJ_DATA
+    # is already set, because QGIS's PROJ database may be a different
+    # version than the venv's pyproj/rasterio PROJ library.
+    venv_candidates = [
+        os.path.join(site_packages, "pyproj", "proj_dir", "share", "proj"),
+        os.path.join(site_packages, "pyproj", "data"),
+    ]
+
+    for candidate in venv_candidates:
+        proj_db = os.path.join(candidate, "proj.db")
+        if os.path.isfile(proj_db):
+            os.environ["PROJ_DATA"] = candidate
+            _log(f"Set PROJ_DATA={candidate}")
+            return
+
+    # If venv doesn't have its own proj.db, leave any existing value
+    if os.environ.get("PROJ_DATA") or os.environ.get("PROJ_LIB"):
+        return
+
+    # Try QGIS / system locations as last resort
+    fallback = []
+    if platform.system() == "Windows":
+        exe_dir = os.path.dirname(sys.executable)
+        # conda: Library/bin/qgis.exe → Library/share/proj
+        fallback.append(os.path.join(os.path.dirname(exe_dir), "share", "proj"))
+    else:
+        fallback.extend(["/usr/share/proj", "/usr/local/share/proj"])
+
+    for candidate in fallback:
+        proj_db = os.path.join(candidate, "proj.db")
+        if os.path.isfile(proj_db):
+            os.environ["PROJ_DATA"] = candidate
+            _log(f"Set PROJ_DATA={candidate} (system fallback)")
+            return
+
+    _log("Could not locate proj.db for PROJ_DATA", Qgis.Warning)
 
 
 def _get_qgis_site_packages():
@@ -231,6 +294,44 @@ def _try_qgis_h5py_fallback():
             except ValueError:
                 pass
         return False
+
+
+def run_in_venv(script, timeout=120):
+    """Run a Python script in the venv's interpreter as a subprocess.
+
+    On Windows the QGIS process has HDF5 DLLs that conflict with the
+    venv's pip-installed h5py.  Running h5py / hypercoast code in a
+    separate process avoids the conflict because the venv's Python loads
+    its own HDF5 DLLs without interference.
+
+    Args:
+        script: Python source code to execute.
+        timeout: Maximum seconds to wait for the subprocess.
+
+    Returns:
+        A tuple ``(returncode, stdout, stderr)``.
+    """
+    python_path = get_venv_python_path()
+    if not os.path.isfile(python_path):
+        return -1, "", f"venv python not found: {python_path}"
+
+    env = _get_clean_env_for_venv()
+    kwargs = _get_subprocess_kwargs()
+
+    try:
+        result = subprocess.run(
+            [python_path, "-c", script],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            env=env,
+            **kwargs,
+        )
+        return result.returncode, result.stdout, result.stderr
+    except subprocess.TimeoutExpired:
+        return -2, "", f"Timed out after {timeout}s"
+    except Exception as exc:
+        return -1, "", str(exc)
 
 
 # ---------------------------------------------------------------------------
@@ -1123,6 +1224,24 @@ def install_dependencies(plugin_dir, progress_callback=None, cancel_check=None):
     else:
         _log("Installing dependencies with pip")
 
+    # On Windows, skip h5py from the venv install when QGIS's host
+    # environment already provides it.  The pip-installed h5py bundles
+    # its own HDF5 DLLs which conflict with the HDF5 already loaded by
+    # the QGIS process, causing "DLL load failed" at runtime.  Using
+    # QGIS's h5py avoids the conflict entirely.
+    if platform.system() == "Windows":
+        qgis_sp = _get_qgis_site_packages()
+        if qgis_sp and os.path.isdir(os.path.join(qgis_sp, "h5py")):
+            skipped = [r for r in requirements if r["package"].lower() == "h5py"]
+            if skipped:
+                requirements = [
+                    r for r in requirements if r["package"].lower() != "h5py"
+                ]
+                _log(
+                    "Skipping h5py venv install (QGIS host h5py available)",
+                    Qgis.Info,
+                )
+
     # Build the full list of package specs for batch installation
     pkg_specs = [req["spec"] for req in requirements]
     pkg_names = [req["package"] for req in requirements]
@@ -1217,20 +1336,37 @@ def ensure_venv_packages_available():
 
     _configure_windows_dll_paths(site_packages)
     _preload_venv_dlls(site_packages)
+    _configure_proj_data(site_packages)
 
     if site_packages not in sys.path:
         # Insert at 0 so venv packages shadow QGIS-bundled numpy/pandas
         sys.path.insert(0, site_packages)
         _log(f"Added venv site-packages to sys.path: {site_packages}")
 
+    # On Windows when h5py is provided by QGIS's host env, ensure QGIS's
+    # site-packages is on sys.path so h5py can be imported from there.
+    if platform.system() == "Windows":
+        qgis_sp = _get_qgis_site_packages()
+        if qgis_sp and os.path.isdir(os.path.join(qgis_sp, "h5py")):
+            if qgis_sp not in sys.path:
+                sys.path.append(qgis_sp)
+                _log(f"Added QGIS site-packages for h5py: {qgis_sp}")
+
+    # On Windows, h5py may intentionally come from QGIS's host env to
+    # avoid HDF5 DLL conflicts.  Do NOT clear it from sys.modules.
+    h5py_from_qgis = False
+    if platform.system() == "Windows":
+        qgis_sp = _get_qgis_site_packages()
+        if qgis_sp and os.path.isdir(os.path.join(qgis_sp, "h5py")):
+            h5py_from_qgis = True
+
     # Clear stale module cache entries for key packages that QGIS may bundle.
     # This is especially important on Windows, where a preloaded QGIS package
     # can shadow the plugin venv package and break dataset backends.
-    for module_name in [
+    refresh_list = [
         "numpy",
         "pandas",
         "xarray",
-        "h5py",
         "h5netcdf",
         "netCDF4",
         "scipy",
@@ -1238,7 +1374,10 @@ def ensure_venv_packages_available():
         "rioxarray",
         "pyproj",
         "leafmap",
-    ]:
+    ]
+    if not h5py_from_qgis:
+        refresh_list.append("h5py")
+    for module_name in refresh_list:
         _refresh_module(module_name)
 
     # Invalidate import caches so Python re-scans directories
@@ -1414,24 +1553,36 @@ def get_venv_status(plugin_dir):
     if not site_packages or not os.path.isdir(site_packages):
         return False, "Virtual environment incomplete"
 
+    # On Windows, h5py may be provided by QGIS's host env instead of the venv
+    # to avoid HDF5 DLL conflicts (see install_dependencies).
+    h5py_from_qgis = False
+    if platform.system() == "Windows":
+        qgis_sp = _get_qgis_site_packages()
+        if qgis_sp and os.path.isdir(os.path.join(qgis_sp, "h5py")):
+            h5py_from_qgis = True
+
     # Quick check: verify key packages exist
     requirements = _parse_requirements(plugin_dir)
     for req in requirements:
         pkg_name = req["package"]
+        if h5py_from_qgis and pkg_name.lower() == "h5py":
+            continue  # h5py comes from QGIS host env
         version = _get_package_version_from_venv(pkg_name, site_packages)
         if version is None:
             return False, f"Missing package: {pkg_name}"
 
     # Import smoke test in the venv runtime catches cases where metadata exists
     # but imports fail (e.g., h5py backend issues on Windows).
-    for module_name in [
+    smoke_test_modules = [
         "numpy",
         "xarray",
-        "h5py",
         "h5netcdf",
         "netCDF4",
         "hypercoast",
-    ]:
+    ]
+    if not h5py_from_qgis:
+        smoke_test_modules.insert(2, "h5py")
+    for module_name in smoke_test_modules:
         ok, detail = _import_check_in_venv(module_name)
         if not ok:
             return False, f"Import check failed for {module_name}: {detail[:240]}"
