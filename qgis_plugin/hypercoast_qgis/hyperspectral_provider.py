@@ -343,14 +343,11 @@ class HyperspectralDataset:
 
         import tempfile
 
-        # Create a temp file name that does NOT already exist – the venv
-        # subprocess will create it.  On Windows, NamedTemporaryFile keeps the
-        # file open (and therefore locked) by default, so we use mkstemp,
-        # close the fd immediately, delete the placeholder, and let the
-        # subprocess create the file fresh.
+        # Create a unique temp file path. On Windows, NamedTemporaryFile keeps
+        # the file open (and therefore locked) by default, so we use mkstemp
+        # and close the fd immediately; the subprocess will overwrite this path.
         fd, tmp_nc = tempfile.mkstemp(suffix=".nc", prefix="_hc_subprocess_")
         os.close(fd)
-        os.remove(tmp_nc)  # subprocess will create this path
 
         # Escape backslashes for Windows paths in the script
         fp = self.filepath.replace("\\", "\\\\")
@@ -452,6 +449,8 @@ class HyperspectralDataset:
             "import hypercoast, sys\n"
             "from leafmap import image_to_geotiff\n"
             f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            "if ds is None:\n"
+            "    sys.exit(1)\n"
             "if 'wavelength' not in ds.dims and 'wavelength' not in ds.coords:\n"
             "    print('NO_WAVELENGTH_DIM', file=sys.stderr)\n"
             "    sys.exit(2)\n"
