@@ -203,6 +203,13 @@ class HyperspectralDataset:
         if HAS_HYPERCOAST:
             return self._load_with_hypercoast()
 
+        # On Windows, h5py/hypercoast may be unavailable in-process due to
+        # HDF5 DLL conflicts, but they work fine in the venv's own Python.
+        # Run the loading in a subprocess and retrieve the result.
+        if platform.system() == "Windows" and self.data_type != "Generic":
+            if self._load_via_subprocess():
+                return True
+
         # Fallback to manual loading
         loader = {
             "EMIT": self._load_emit_fallback,
@@ -308,6 +315,158 @@ class HyperspectralDataset:
                 )
                 return True
             return self._load_generic()
+
+    def _load_via_subprocess(self):
+        """Load a dataset by running hypercoast in the venv subprocess.
+
+        On Windows the venv's h5py works in its own process (no HDF5 DLL
+        conflict with QGIS).  This method runs the hypercoast reader in a
+        subprocess, saves the result to a temp NetCDF file, then loads it
+        back with xarray in the QGIS process.
+        """
+        from .core.venv_manager import run_in_venv
+
+        reader_map = {
+            "EMIT": "read_emit",
+            "PACE": "read_pace",
+            "DESIS": "read_desis",
+            "NEON": "read_neon",
+            "AVIRIS": "read_aviris",
+            "PRISMA": "read_prisma",
+            "EnMAP": "read_enmap",
+            "Tanager": "read_tanager",
+            "Wyvern": "read_wyvern",
+        }
+        reader_fn = reader_map.get(self.data_type)
+        if reader_fn is None:
+            return False
+
+        import tempfile
+
+        tmp_nc = os.path.join(
+            tempfile.gettempdir(),
+            f"_hc_subprocess_{os.getpid()}.nc",
+        )
+
+        # Escape backslashes for Windows paths in the script
+        fp = self.filepath.replace("\\", "\\\\")
+        out = tmp_nc.replace("\\", "\\\\")
+
+        script = (
+            "import hypercoast, sys\n"
+            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            "if ds is None:\n"
+            "    sys.exit(1)\n"
+            f"ds.to_netcdf(r'{out}')\n"
+        )
+
+        _log(
+            f"Running hypercoast.{reader_fn} in venv subprocess",
+            LOG_INFO,
+        )
+        rc, stdout, stderr = run_in_venv(script, timeout=120)
+
+        if rc != 0:
+            detail = (stderr or stdout or "unknown error").strip()[-300:]
+            _log(
+                f"Subprocess load failed (rc={rc}): {detail}",
+                LOG_WARNING,
+            )
+            return False
+
+        try:
+            self.dataset = xr.open_dataset(tmp_nc)
+            # Extract metadata using the same helpers as _load_with_hypercoast
+            extractor = {
+                "EMIT": self._extract_emit_metadata,
+                "PACE": self._extract_pace_metadata,
+                "DESIS": self._extract_desis_metadata,
+                "NEON": self._extract_neon_metadata,
+                "Tanager": self._extract_tanager_metadata,
+            }.get(self.data_type, self._extract_generic_metadata)
+            if self.data_type == "PACE":
+                self._is_swath = True
+            extractor()
+            _log(
+                f"Subprocess load succeeded: type={self.data_type}",
+                LOG_INFO,
+            )
+            return True
+        except Exception as exc:
+            _log(f"Failed to read subprocess output: {exc}", LOG_WARNING)
+            return False
+        finally:
+            try:
+                os.remove(tmp_nc)
+            except OSError:
+                pass
+
+    def _export_via_subprocess(self, output_path, wavelengths):
+        """Export to GeoTIFF by running hypercoast in the venv subprocess.
+
+        This avoids h5py DLL conflicts on Windows by performing the
+        hypercoast export in a separate process that can load h5py.
+        """
+        from .core.venv_manager import run_in_venv
+
+        fn_map = {
+            "EMIT": "emit_to_image",
+            "PACE": "pace_to_image",
+            "DESIS": "desis_to_image",
+            "NEON": "neon_to_image",
+            "Tanager": "tanager_to_image",
+        }
+        to_image_fn = fn_map.get(self.data_type)
+        if to_image_fn is None:
+            return None
+
+        reader_map = {
+            "EMIT": "read_emit",
+            "PACE": "read_pace",
+            "DESIS": "read_desis",
+            "NEON": "read_neon",
+            "Tanager": "read_tanager",
+        }
+        reader_fn = reader_map.get(self.data_type)
+        if reader_fn is None:
+            return None
+
+        if wavelengths is None:
+            wavelengths = [650, 550, 450]
+
+        fp = self.filepath.replace("\\", "\\\\")
+        op = output_path.replace("\\", "\\\\")
+
+        extra_args = ""
+        if self.data_type == "PACE":
+            extra_args = ", method='nearest'"
+
+        script = (
+            "import hypercoast\n"
+            "from leafmap import image_to_geotiff\n"
+            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            f"image = hypercoast.{to_image_fn}(ds, wavelengths={wavelengths!r}"
+            f"{extra_args})\n"
+            f"image_to_geotiff(image, r'{op}', dtype='float32')\n"
+        )
+
+        _log(
+            f"Running hypercoast export in venv subprocess: {self.data_type}",
+            LOG_INFO,
+        )
+        rc, stdout, stderr = run_in_venv(script, timeout=180)
+
+        if rc != 0:
+            detail = (stderr or stdout or "unknown error").strip()[-300:]
+            _log(f"Subprocess export failed (rc={rc}): {detail}", LOG_WARNING)
+            return None
+
+        if os.path.isfile(output_path):
+            _log(f"Subprocess export succeeded: {output_path}", LOG_INFO)
+            return output_path
+
+        _log("Subprocess export produced no output file", LOG_WARNING)
+        return None
 
     def _extract_emit_metadata(self):
         """Extract metadata from EMIT dataset."""
@@ -927,6 +1086,13 @@ class HyperspectralDataset:
         # Use hypercoast's export functions if available
         if HAS_HYPERCOAST:
             return self._export_with_hypercoast(output_path, wavelengths)
+
+        # On Windows, try running the export in a venv subprocess where
+        # h5py / hypercoast are available without DLL conflicts.
+        if platform.system() == "Windows":
+            result = self._export_via_subprocess(output_path, wavelengths)
+            if result:
+                return result
 
         return self._export_fallback(output_path, wavelengths, bands)
 

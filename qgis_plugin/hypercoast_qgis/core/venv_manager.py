@@ -167,37 +167,47 @@ def _configure_proj_data(site_packages):
     The venv's pyproj bundles its own PROJ database inside the wheel.
     When loaded inside the QGIS process the PROJ C library may not
     know where this database lives, causing ``proj_create: no database
-    context specified`` errors.  Setting ``PROJ_DATA`` before the first
-    CRS operation resolves this on both Linux and Windows.
+    context specified`` errors.  Even when PROJ_DATA is already set
+    (by QGIS), it may point to a different PROJ version causing
+    ``DATABASE.LAYOUT.VERSION`` mismatches.  We always prefer the
+    venv's pyproj bundled database to match the venv's PROJ library.
 
     Args:
         site_packages: Path to the venv site-packages directory.
     """
-    # Already set → nothing to do
-    if os.environ.get("PROJ_DATA") or os.environ.get("PROJ_LIB"):
-        return
-
-    # 1. Try the venv's pyproj bundled proj data
-    candidates = [
+    # Always prefer the venv's pyproj bundled proj data, even if PROJ_DATA
+    # is already set, because QGIS's PROJ database may be a different
+    # version than the venv's pyproj/rasterio PROJ library.
+    venv_candidates = [
         os.path.join(site_packages, "pyproj", "proj_dir", "share", "proj"),
         os.path.join(site_packages, "pyproj", "data"),
     ]
 
-    # 2. Try QGIS / conda PROJ data locations
-    if platform.system() == "Windows":
-        exe_dir = os.path.dirname(sys.executable)
-        # conda: Library/bin/qgis.exe → Library/share/proj
-        candidates.append(os.path.join(os.path.dirname(exe_dir), "share", "proj"))
-    else:
-        # Typical Linux locations
-        candidates.append("/usr/share/proj")
-        candidates.append("/usr/local/share/proj")
-
-    for candidate in candidates:
+    for candidate in venv_candidates:
         proj_db = os.path.join(candidate, "proj.db")
         if os.path.isfile(proj_db):
             os.environ["PROJ_DATA"] = candidate
             _log(f"Set PROJ_DATA={candidate}")
+            return
+
+    # If venv doesn't have its own proj.db, leave any existing value
+    if os.environ.get("PROJ_DATA") or os.environ.get("PROJ_LIB"):
+        return
+
+    # Try QGIS / system locations as last resort
+    fallback = []
+    if platform.system() == "Windows":
+        exe_dir = os.path.dirname(sys.executable)
+        # conda: Library/bin/qgis.exe → Library/share/proj
+        fallback.append(os.path.join(os.path.dirname(exe_dir), "share", "proj"))
+    else:
+        fallback.extend(["/usr/share/proj", "/usr/local/share/proj"])
+
+    for candidate in fallback:
+        proj_db = os.path.join(candidate, "proj.db")
+        if os.path.isfile(proj_db):
+            os.environ["PROJ_DATA"] = candidate
+            _log(f"Set PROJ_DATA={candidate} (system fallback)")
             return
 
     _log("Could not locate proj.db for PROJ_DATA", Qgis.Warning)
@@ -284,6 +294,44 @@ def _try_qgis_h5py_fallback():
             except ValueError:
                 pass
         return False
+
+
+def run_in_venv(script, timeout=120):
+    """Run a Python script in the venv's interpreter as a subprocess.
+
+    On Windows the QGIS process has HDF5 DLLs that conflict with the
+    venv's pip-installed h5py.  Running h5py / hypercoast code in a
+    separate process avoids the conflict because the venv's Python loads
+    its own HDF5 DLLs without interference.
+
+    Args:
+        script: Python source code to execute.
+        timeout: Maximum seconds to wait for the subprocess.
+
+    Returns:
+        A tuple ``(returncode, stdout, stderr)``.
+    """
+    python_path = get_venv_python_path()
+    if not os.path.isfile(python_path):
+        return -1, "", f"venv python not found: {python_path}"
+
+    env = _get_clean_env_for_venv()
+    kwargs = _get_subprocess_kwargs()
+
+    try:
+        result = subprocess.run(
+            [python_path, "-c", script],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            env=env,
+            **kwargs,
+        )
+        return result.returncode, result.stdout, result.stderr
+    except subprocess.TimeoutExpired:
+        return -2, "", f"Timed out after {timeout}s"
+    except Exception as exc:
+        return -1, "", str(exc)
 
 
 # ---------------------------------------------------------------------------
@@ -1190,8 +1238,7 @@ def install_dependencies(plugin_dir, progress_callback=None, cancel_check=None):
                     r for r in requirements if r["package"].lower() != "h5py"
                 ]
                 _log(
-                    "Skipping h5py install (using QGIS host h5py "
-                    "to avoid HDF5 DLL conflicts)",
+                    "Skipping h5py venv install (QGIS host h5py available)",
                     Qgis.Info,
                 )
 
