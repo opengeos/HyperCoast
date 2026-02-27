@@ -1028,9 +1028,23 @@ def ensure_venv_packages_available():
         sys.path.insert(0, site_packages)
         _log(f"Added venv site-packages to sys.path: {site_packages}")
 
-    # Clear stale module cache entries for key packages that QGIS may bundle
-    _refresh_module("numpy")
-    _refresh_module("pandas")
+    # Clear stale module cache entries for key packages that QGIS may bundle.
+    # This is especially important on Windows, where a preloaded QGIS package
+    # can shadow the plugin venv package and break dataset backends.
+    for module_name in [
+        "numpy",
+        "pandas",
+        "xarray",
+        "h5py",
+        "h5netcdf",
+        "netCDF4",
+        "scipy",
+        "rasterio",
+        "rioxarray",
+        "pyproj",
+        "leafmap",
+    ]:
+        _refresh_module(module_name)
 
     # Invalidate import caches so Python re-scans directories
     importlib.invalidate_caches()

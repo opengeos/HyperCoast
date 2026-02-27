@@ -265,6 +265,11 @@ class LoadDataDialog(QDialog):
 
         try:
             data_type = self.data_type_combo.currentData()
+            QgsMessageLog.logMessage(
+                f"Preview dataset requested: file={filepath}, selected_type={data_type}",
+                "HyperCoast",
+                Qgis.Info,
+            )
             self.dataset = HyperspectralDataset(filepath, data_type)
 
             self.progress_bar.setValue(50)
@@ -279,12 +284,15 @@ class LoadDataDialog(QDialog):
 
                 if self.dataset.wavelengths is not None:
                     n_bands = len(self.dataset.wavelengths)
-                    wl_min = self.dataset.wavelengths.min()
-                    wl_max = self.dataset.wavelengths.max()
                     info_lines.append(f"Bands: {n_bands}")
-                    info_lines.append(
-                        f"Wavelength Range: {wl_min:.1f} - {wl_max:.1f} nm"
-                    )
+                    try:
+                        wl_min = float(self.dataset.wavelengths.min())
+                        wl_max = float(self.dataset.wavelengths.max())
+                        info_lines.append(
+                            f"Wavelength Range: {wl_min:.1f} - {wl_max:.1f} nm"
+                        )
+                    except Exception:
+                        info_lines.append("Wavelength Range: unavailable")
 
                 if self.dataset.bounds:
                     info_lines.append(f"Bounds: {self.dataset.bounds}")
@@ -300,10 +308,35 @@ class LoadDataDialog(QDialog):
 
                 self.info_text.setText("\n".join(info_lines))
                 self.progress_bar.setValue(100)
+                QgsMessageLog.logMessage(
+                    f"Preview dataset succeeded: resolved_type={self.dataset.data_type}",
+                    "HyperCoast",
+                    Qgis.Info,
+                )
             else:
-                QMessageBox.warning(self, "Error", "Failed to load dataset preview.")
+                # Ensure failed preview does not leave a half-initialized dataset
+                # that would block reloading in load_data().
+                error_detail = self.dataset.last_error or "Unknown error"
+                QgsMessageLog.logMessage(
+                    f"Preview dataset failed: file={filepath}, "
+                    f"selected_type={data_type}, details={error_detail}",
+                    "HyperCoast",
+                    Qgis.Warning,
+                )
+                self.dataset = None
+                QMessageBox.warning(
+                    self,
+                    "Error",
+                    f"Failed to load dataset preview.\n\nDetails:\n{error_detail}",
+                )
 
         except Exception as e:
+            self.dataset = None
+            QgsMessageLog.logMessage(
+                f"Preview dataset exception: file={filepath}, error={e}",
+                "HyperCoast",
+                Qgis.Critical,
+            )
             QMessageBox.critical(self, "Error", f"Error loading dataset: {str(e)}")
 
         finally:
@@ -333,13 +366,40 @@ class LoadDataDialog(QDialog):
         self.progress_bar.setValue(10)
 
         try:
-            # Load dataset if not already loaded
-            if self.dataset is None or self.dataset.filepath != filepath:
-                data_type = self.data_type_combo.currentData()
-                self.dataset = HyperspectralDataset(filepath, data_type)
+            requested_type = self.data_type_combo.currentData()
+            QgsMessageLog.logMessage(
+                f"Load dataset requested: file={filepath}, selected_type={requested_type}",
+                "HyperCoast",
+                Qgis.Info,
+            )
+            type_changed = (
+                self.dataset is not None
+                and requested_type != "auto"
+                and self.dataset.data_type != requested_type
+            )
+
+            # Load dataset if not already loaded, file changed, or previous load
+            # left an uninitialized dataset object.
+            if (
+                self.dataset is None
+                or self.dataset.filepath != filepath
+                or self.dataset.dataset is None
+                or type_changed
+            ):
+                self.dataset = HyperspectralDataset(filepath, requested_type)
 
                 if not self.dataset.load():
-                    raise ValueError("Failed to load dataset")
+                    detail = self.dataset.last_error or "Unknown error"
+                    QgsMessageLog.logMessage(
+                        f"Load dataset failed during read: file={filepath}, "
+                        f"selected_type={requested_type}, details={detail}",
+                        "HyperCoast",
+                        Qgis.Warning,
+                    )
+                    raise ValueError(f"Failed to load dataset. Details: {detail}")
+
+            if self.dataset.dataset is None:
+                raise ValueError("Dataset object is initialized but data is not loaded")
 
             self.progress_bar.setValue(40)
 
