@@ -29,6 +29,8 @@ from qgis.core import QgsMessageLog, Qgis
 
 CACHE_DIR = os.path.expanduser("~/.qgis_hypercoast")
 VENV_DIR = os.path.join(CACHE_DIR, "venv")
+_DLL_DIR_HANDLES = []
+_ADDED_DLL_DIRS = set()
 
 
 def _log(message, level=Qgis.Info):
@@ -39,6 +41,55 @@ def _log(message, level=Qgis.Info):
         level: The log level (Qgis.Info, Qgis.Warning, Qgis.Critical).
     """
     QgsMessageLog.logMessage(str(message), "HyperCoast", level=level)
+
+
+def _configure_windows_dll_paths(site_packages):
+    """Ensure Windows DLL lookup prefers venv package directories."""
+    if platform.system() != "Windows":
+        return
+
+    add_dll_directory = getattr(os, "add_dll_directory", None)
+    if add_dll_directory is None:
+        return
+
+    candidates = [
+        os.path.join(VENV_DIR, "Library", "bin"),
+        os.path.join(VENV_DIR, "Scripts"),
+        site_packages,
+        os.path.join(site_packages, "h5py"),
+        os.path.join(site_packages, "h5py.libs"),
+        os.path.join(site_packages, "netCDF4"),
+        os.path.join(site_packages, "netCDF4.libs"),
+        os.path.join(site_packages, "numpy.libs"),
+        os.path.join(site_packages, "scipy.libs"),
+    ]
+
+    # Prepend to PATH so child processes also prefer these directories.
+    path_entries = os.environ.get("PATH", "").split(os.pathsep)
+    normalized_path = [os.path.normcase(p) for p in path_entries if p]
+    prepend = []
+
+    for directory in candidates:
+        if not os.path.isdir(directory):
+            continue
+        norm_dir = os.path.normcase(directory)
+        if norm_dir not in normalized_path:
+            prepend.append(directory)
+            normalized_path.insert(0, norm_dir)
+
+        if norm_dir in _ADDED_DLL_DIRS:
+            continue
+        try:
+            handle = add_dll_directory(directory)
+            _DLL_DIR_HANDLES.append(handle)  # keep alive for process lifetime
+            _ADDED_DLL_DIRS.add(norm_dir)
+            _log(f"Added DLL directory: {directory}")
+        except Exception as e:
+            _log(f"Failed to add DLL directory {directory}: {e}", Qgis.Warning)
+
+    if prepend:
+        os.environ["PATH"] = os.pathsep.join(prepend + path_entries)
+        _log(f"Prepended {len(prepend)} venv DLL paths to PATH")
 
 
 # ---------------------------------------------------------------------------
@@ -1022,6 +1073,8 @@ def ensure_venv_packages_available():
     if site_packages is None:
         _log(f"Venv site-packages not found in: {VENV_DIR}", Qgis.Warning)
         return False
+
+    _configure_windows_dll_paths(site_packages)
 
     if site_packages not in sys.path:
         # Insert at 0 so venv packages shadow QGIS-bundled numpy/pandas
