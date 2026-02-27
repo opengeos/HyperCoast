@@ -1049,7 +1049,65 @@ def ensure_venv_packages_available():
     # Invalidate import caches so Python re-scans directories
     importlib.invalidate_caches()
 
+    # Runtime import diagnostics (helps debug "installed but not importable"
+    # cases on Windows, e.g., h5py backend errors).
+    _log(f"Runtime Python executable: {sys.executable}")
+    if platform.system() == "Windows":
+        _log(f"Windows runtime sys.path[0:3]: {sys.path[:3]}")
+
+    for module_name in ["numpy", "xarray", "h5py", "h5netcdf", "hypercoast"]:
+        try:
+            mod = importlib.import_module(module_name)
+            version = getattr(mod, "__version__", "unknown")
+            mod_file = getattr(mod, "__file__", "<built-in>")
+            _log(
+                f"Runtime import OK: {module_name} {version} ({mod_file})",
+                Qgis.Info,
+            )
+        except Exception as e:
+            _log(
+                f"Runtime import FAILED: {module_name} -> {e}",
+                Qgis.Warning,
+            )
+
     return True
+
+
+def _import_check_in_venv(module_name):
+    """Check whether a module can be imported by the venv's Python."""
+    python_path = get_venv_python_path()
+    if not os.path.isfile(python_path):
+        return False, f"venv python not found: {python_path}"
+
+    env = _get_clean_env_for_venv()
+    kwargs = _get_subprocess_kwargs()
+
+    code = (
+        "import importlib,sys\n"
+        "name=sys.argv[1]\n"
+        "m=importlib.import_module(name)\n"
+        "v=getattr(m,'__version__','unknown')\n"
+        "f=getattr(m,'__file__','<built-in>')\n"
+        "print(f'{name} {v} {f}')\n"
+    )
+
+    try:
+        result = subprocess.run(
+            [python_path, "-c", code, module_name],
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=30,
+            **kwargs,
+        )
+    except Exception as e:
+        return False, str(e)
+
+    if result.returncode != 0:
+        detail = (result.stderr or result.stdout or "unknown error").strip()
+        return False, detail
+
+    return True, (result.stdout or "").strip()
 
 
 def _refresh_module(module_name):
@@ -1108,6 +1166,14 @@ def get_venv_status(plugin_dir):
         version = _get_package_version_from_venv(pkg_name, site_packages)
         if version is None:
             return False, f"Missing package: {pkg_name}"
+
+    # Import smoke test in the venv runtime catches cases where metadata exists
+    # but imports fail (e.g., h5py backend issues on Windows).
+    for module_name in ["numpy", "xarray", "h5py", "h5netcdf", "hypercoast"]:
+        ok, detail = _import_check_in_venv(module_name)
+        if not ok:
+            return False, f"Import check failed for {module_name}: {detail[:240]}"
+        _log(f"Venv import OK: {detail}", Qgis.Info)
 
     return True, "Ready"
 
