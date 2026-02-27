@@ -554,12 +554,27 @@ class HyperspectralDataset:
         return self._load_generic()
 
     def _load_neon_fallback(self):
-        """Fallback NEON loader without hypercoast."""
-        try:
-            _log(f"Trying NEON fallback loader: file={self.filepath}", LOG_INFO)
-            if not HAS_H5PY:
-                raise ImportError("h5py is required to load NEON data")
+        """Fallback NEON loader without hypercoast.
 
+        Tries h5py first (direct HDF5 access), then falls back to netCDF4
+        which bundles its own HDF5 library and avoids DLL conflicts on Windows.
+        """
+        _log(f"Trying NEON fallback loader: file={self.filepath}", LOG_INFO)
+
+        if HAS_H5PY:
+            if self._load_neon_with_h5py():
+                return True
+
+        if self._load_neon_with_netcdf4():
+            return True
+
+        if self.last_error is None:
+            self.last_error = "NEON loader: no suitable HDF5 backend available"
+        return False
+
+    def _load_neon_with_h5py(self):
+        """Load NEON data using h5py."""
+        try:
             with h5py.File(self.filepath, "r") as f:
                 site_code = list(f.keys())[0]
                 site_refl = f[site_code]["Reflectance"]
@@ -596,37 +611,135 @@ class HyperspectralDataset:
                 da[da > 10000] = np.nan
                 da = da / scaleFactor
 
-            coords = {
-                "y": np.linspace(yMax, yMin, da.shape[0]),
-                "x": np.linspace(xMin, xMax, da.shape[1]),
-                "wavelength": wavelengths_list,
-            }
-
-            xda = xr.DataArray(
-                da,
-                coords=coords,
-                dims=["y", "x", "wavelength"],
-                attrs={
-                    "scale_factor": scaleFactor,
-                    "no_data_value": noDataValue,
-                    "crs": f"EPSG:{epsg_code_number}",
-                    "transform": (res[0], 0.0, xMin, 0.0, -res[1], yMax),
-                },
+            self._build_neon_dataset(
+                da, wavelengths_list, epsg_code_number,
+                mapInfo_split, res, scaleFactor, noDataValue,
             )
-
-            self.dataset = xda.to_dataset(name="reflectance")
-            self.dataset.attrs = xda.attrs
-            self.wavelengths = np.array(wavelengths_list)
-            self.bounds = (xMin, yMin, xMax, yMax)
-            self.crs = f"EPSG:{epsg_code_number}"
-
-            _log("NEON fallback loader succeeded", LOG_INFO)
+            _log("NEON h5py loader succeeded", LOG_INFO)
             return True
 
         except Exception as e:
-            self.last_error = f"Error in NEON fallback loader: {e}"
+            self.last_error = f"Error in NEON h5py loader: {e}"
             _log(self.last_error, LOG_WARNING)
             return False
+
+    def _load_neon_with_netcdf4(self):
+        """Load NEON data using netCDF4 (avoids h5py DLL conflicts on Windows).
+
+        netCDF4.Dataset can open arbitrary HDF5 files since it is built on
+        the same HDF5 C library, and its pip wheel bundles a separate copy
+        of HDF5 that does not conflict with the host environment.
+        """
+        try:
+            from netCDF4 import Dataset as NC4Dataset
+        except ImportError:
+            _log("netCDF4 not available for NEON fallback", LOG_WARNING)
+            return False
+
+        try:
+            _log("Trying NEON loader with netCDF4 backend", LOG_INFO)
+
+            with NC4Dataset(self.filepath, "r") as f:
+                site_code = list(f.groups.keys())[0]
+                site_refl = f.groups[site_code].groups["Reflectance"]
+                metadata = site_refl.groups["Metadata"]
+
+                wl_raw = (
+                    metadata.groups["Spectral_Data"].variables["Wavelength"][:]
+                )
+                wavelengths_list = [round(float(w), 2) for w in wl_raw.flat]
+
+                coord_sys = metadata.groups["Coordinate_System"]
+
+                epsg_raw = coord_sys.variables["EPSG Code"][:]
+                epsg_code_number = int(
+                    self._nc4_to_str(epsg_raw)
+                )
+
+                map_info_raw = coord_sys.variables["Map_Info"][:]
+                mapInfo_split = self._nc4_to_str(map_info_raw).split(",")
+
+                res = float(mapInfo_split[5]), float(mapInfo_split[6])
+
+                refl_var = site_refl.variables["Reflectance_Data"]
+                refl_shape = refl_var.shape
+
+                xMin = float(mapInfo_split[3])
+                yMax = float(mapInfo_split[4])
+                xMax = xMin + (refl_shape[1] * res[0])
+                yMin = yMax - (refl_shape[0] * res[1])
+
+                scaleFactor = float(
+                    refl_var.getncattr("Scale_Factor")
+                    if "Scale_Factor" in refl_var.ncattrs()
+                    else 10000.0
+                )
+                noDataValue = float(
+                    refl_var.getncattr("Data_Ignore_Value")
+                    if "Data_Ignore_Value" in refl_var.ncattrs()
+                    else -9999
+                )
+
+                da = refl_var[:, :, :].astype(float)
+                da[da == int(noDataValue)] = np.nan
+                da[da < 0] = np.nan
+                da[da > 10000] = np.nan
+                da = da / scaleFactor
+
+            self._build_neon_dataset(
+                da, wavelengths_list, epsg_code_number,
+                mapInfo_split, res, scaleFactor, noDataValue,
+            )
+            _log("NEON netCDF4 loader succeeded", LOG_INFO)
+            return True
+
+        except Exception as e:
+            self.last_error = f"Error in NEON netCDF4 loader: {e}"
+            _log(self.last_error, LOG_WARNING)
+            return False
+
+    @staticmethod
+    def _nc4_to_str(val):
+        """Convert a netCDF4 scalar variable value to a Python string."""
+        if hasattr(val, "item"):
+            val = val.item()
+        if isinstance(val, bytes):
+            return val.decode("utf-8")
+        return str(val).strip()
+
+    def _build_neon_dataset(
+        self, da, wavelengths_list, epsg_code_number,
+        mapInfo_split, res, scaleFactor, noDataValue,
+    ):
+        """Assemble an xarray Dataset from raw NEON arrays."""
+        xMin = float(mapInfo_split[3])
+        yMax = float(mapInfo_split[4])
+        xMax = xMin + (da.shape[1] * res[0])
+        yMin = yMax - (da.shape[0] * res[1])
+
+        coords = {
+            "y": np.linspace(yMax, yMin, da.shape[0]),
+            "x": np.linspace(xMin, xMax, da.shape[1]),
+            "wavelength": wavelengths_list,
+        }
+
+        xda = xr.DataArray(
+            da,
+            coords=coords,
+            dims=["y", "x", "wavelength"],
+            attrs={
+                "scale_factor": scaleFactor,
+                "no_data_value": noDataValue,
+                "crs": f"EPSG:{epsg_code_number}",
+                "transform": (res[0], 0.0, xMin, 0.0, -res[1], yMax),
+            },
+        )
+
+        self.dataset = xda.to_dataset(name="reflectance")
+        self.dataset.attrs = xda.attrs
+        self.wavelengths = np.array(wavelengths_list)
+        self.bounds = (xMin, yMin, xMax, yMax)
+        self.crs = f"EPSG:{epsg_code_number}"
 
     def _load_generic(self):
         """Load generic hyperspectral data (GeoTIFF or NetCDF)."""

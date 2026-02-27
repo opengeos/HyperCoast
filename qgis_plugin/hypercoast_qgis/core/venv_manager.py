@@ -92,6 +92,147 @@ def _configure_windows_dll_paths(site_packages):
         _log(f"Prepended {len(prepend)} venv DLL paths to PATH")
 
 
+def _preload_venv_dlls(site_packages):
+    """Pre-load DLLs from venv .libs directories using ctypes.
+
+    On Windows, pip wheels built by delvewheel bundle shared libraries with
+    uniquely-hashed filenames in .libs/ directories.  Pre-loading them via
+    ctypes ensures they are resolved before any conflicting DLLs that the
+    host environment (e.g. QGIS's conda HDF5) may have already loaded.
+
+    Must be called AFTER ``_configure_windows_dll_paths`` so that
+    ``os.add_dll_directory`` entries are in place for transitive dependency
+    resolution.
+
+    Args:
+        site_packages: Path to the venv site-packages directory.
+    """
+    if platform.system() != "Windows":
+        return
+
+    import ctypes
+
+    libs_dir_names = (
+        "h5py.libs",
+        "netCDF4.libs",
+        "numpy.libs",
+        "scipy.libs",
+    )
+
+    loaded = 0
+    failed = []
+    for name in libs_dir_names:
+        libs_dir = os.path.join(site_packages, name)
+        if not os.path.isdir(libs_dir):
+            continue
+        try:
+            dll_files = sorted(
+                f for f in os.listdir(libs_dir) if f.lower().endswith(".dll")
+            )
+        except OSError:
+            continue
+
+        for dll_file in dll_files:
+            dll_path = os.path.join(libs_dir, dll_file)
+            try:
+                ctypes.WinDLL(dll_path)
+                loaded += 1
+            except OSError as exc:
+                failed.append((dll_file, str(exc)))
+
+    if loaded:
+        _log(f"Pre-loaded {loaded} venv DLL(s) via ctypes")
+    if failed:
+        names = ", ".join(f[0] for f in failed[:5])
+        _log(
+            f"Could not pre-load {len(failed)} DLL(s): {names}",
+            Qgis.Warning,
+        )
+
+
+def _get_qgis_site_packages():
+    """Return the QGIS host environment's site-packages path, or None.
+
+    Works for QGIS installed via conda (miniconda/mambaforge) or OSGeo4W
+    by walking up from ``sys.executable`` or ``sys._base_prefix``.
+    """
+    if platform.system() != "Windows":
+        return None
+
+    # Conda-based QGIS: sys._base_prefix → <env>/Library
+    base = getattr(sys, "_base_prefix", None) or sys.prefix
+    # Typical conda layout: <env>/Lib/site-packages
+    candidate = os.path.join(base, "Lib", "site-packages")
+    if os.path.isdir(candidate):
+        return candidate
+
+    # Try parent of Library/bin (conda: sys.executable is Library/bin/qgis.exe)
+    exe_dir = os.path.dirname(sys.executable)
+    env_root = os.path.dirname(os.path.dirname(exe_dir))  # up from Library/bin
+    candidate = os.path.join(env_root, "Lib", "site-packages")
+    if os.path.isdir(candidate):
+        return candidate
+
+    return None
+
+
+def _try_qgis_h5py_fallback():
+    """Try importing h5py from QGIS's host environment on Windows.
+
+    When the venv's pip-installed h5py fails due to HDF5 DLL conflicts,
+    QGIS's own conda environment may ship a compatible h5py that links
+    against the HDF5 already loaded in the process.
+
+    Returns:
+        True if h5py was successfully imported from QGIS, False otherwise.
+    """
+    if platform.system() != "Windows":
+        return False
+
+    qgis_sp = _get_qgis_site_packages()
+    if qgis_sp is None:
+        _log("QGIS site-packages not found for h5py fallback", Qgis.Info)
+        return False
+
+    h5py_dir = os.path.join(qgis_sp, "h5py")
+    if not os.path.isdir(h5py_dir):
+        _log(f"No h5py in QGIS site-packages: {qgis_sp}", Qgis.Info)
+        return False
+
+    # Remove any failed h5py entries from sys.modules
+    to_remove = [k for k in sys.modules if k == "h5py" or k.startswith("h5py.")]
+    for k in to_remove:
+        del sys.modules[k]
+
+    # Temporarily add QGIS site-packages and try importing
+    added = qgis_sp not in sys.path
+    if added:
+        sys.path.append(qgis_sp)
+
+    try:
+        importlib.invalidate_caches()
+        mod = importlib.import_module("h5py")
+        version = getattr(mod, "__version__", "unknown")
+        mod_file = getattr(mod, "__file__", "<unknown>")
+        _log(
+            f"h5py imported from QGIS environment: {version} ({mod_file})",
+            Qgis.Info,
+        )
+        return True
+    except Exception as exc:
+        _log(f"QGIS h5py fallback also failed: {exc}", Qgis.Info)
+        # Clean up failed import
+        to_remove = [k for k in sys.modules if k == "h5py" or k.startswith("h5py.")]
+        for k in to_remove:
+            del sys.modules[k]
+        if added:
+            try:
+                sys.path.remove(qgis_sp)
+            except ValueError:
+                pass
+        return False
+
+
 # ---------------------------------------------------------------------------
 # Environment helpers
 # ---------------------------------------------------------------------------
@@ -1075,6 +1216,7 @@ def ensure_venv_packages_available():
         return False
 
     _configure_windows_dll_paths(site_packages)
+    _preload_venv_dlls(site_packages)
 
     if site_packages not in sys.path:
         # Insert at 0 so venv packages shadow QGIS-bundled numpy/pandas
@@ -1108,6 +1250,8 @@ def ensure_venv_packages_available():
     if platform.system() == "Windows":
         _log(f"Windows runtime sys.path[0:3]: {sys.path[:3]}")
 
+    import_ok = set()
+    import_failed = {}
     for module_name in [
         "numpy",
         "xarray",
@@ -1124,9 +1268,60 @@ def ensure_venv_packages_available():
                 f"Runtime import OK: {module_name} {version} ({mod_file})",
                 Qgis.Info,
             )
+            import_ok.add(module_name)
         except Exception as e:
+            import_failed[module_name] = e
+
+    # On Windows, h5py often fails due to HDF5 DLL version conflicts with
+    # QGIS's host environment.  Try falling back to QGIS's own h5py.
+    if "h5py" in import_failed and platform.system() == "Windows":
+        _log(
+            f"Venv h5py failed ({import_failed['h5py']}); " "trying QGIS host h5py...",
+            Qgis.Info,
+        )
+        if _try_qgis_h5py_fallback():
+            import_ok.add("h5py")
+            del import_failed["h5py"]
+            # Re-attempt hypercoast now that h5py is available
+            if "hypercoast" in import_failed:
+                # Clear stale hypercoast modules so it re-imports with h5py
+                to_remove = [
+                    k
+                    for k in sys.modules
+                    if k == "hypercoast" or k.startswith("hypercoast.")
+                ]
+                for k in to_remove:
+                    del sys.modules[k]
+                try:
+                    importlib.invalidate_caches()
+                    mod = importlib.import_module("hypercoast")
+                    version = getattr(mod, "__version__", "unknown")
+                    mod_file = getattr(mod, "__file__", "<built-in>")
+                    _log(
+                        f"Runtime import OK: hypercoast {version} ({mod_file})",
+                        Qgis.Info,
+                    )
+                    import_ok.add("hypercoast")
+                    del import_failed["hypercoast"]
+                except Exception as exc:
+                    import_failed["hypercoast"] = exc
+
+    # Log remaining failures
+    for module_name, exc in import_failed.items():
+        is_dll_conflict = (
+            platform.system() == "Windows"
+            and module_name in ("h5py", "hypercoast")
+            and "netCDF4" in import_ok
+        )
+        if is_dll_conflict:
             _log(
-                f"Runtime import FAILED: {module_name} -> {e}",
+                f"Runtime import skipped: {module_name} "
+                f"(host DLL conflict; netCDF4 fallback available)",
+                Qgis.Info,
+            )
+        else:
+            _log(
+                f"Runtime import FAILED: {module_name} -> {exc}",
                 Qgis.Warning,
             )
 
