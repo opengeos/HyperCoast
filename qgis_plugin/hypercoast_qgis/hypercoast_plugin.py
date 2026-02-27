@@ -8,13 +8,12 @@ SPDX-License-Identifier: MIT
 
 import os
 
-from qgis.PyQt.QtCore import QCoreApplication, QTimer
+from qgis.PyQt.QtCore import QCoreApplication, Qt, QTimer
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMessageBox
 from qgis.core import QgsMessageLog, QgsProject, Qgis
 
-# Dependency installer and update checker have no heavy deps, always available
-from .dialogs.dependency_installer import DependencyInstallerDialog
+# About and update checker have no heavy deps, always available
 from .dialogs.about_dialog import AboutDialog
 from .dialogs.update_checker import UpdateCheckerDialog
 
@@ -50,14 +49,14 @@ class HyperCoastPlugin:
         self.toolbar = self.iface.addToolBar("HyperCoast")
         self.toolbar.setObjectName("HyperCoastToolbar")
 
-        # Store reference to dialogs
+        # Store reference to dialogs and dock widgets
         self.load_dialog = None
         self.band_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
         self.about_dialog = None
         self.update_dialog = None
-        self.deps_dialog = None
+        self._settings_dock = None
 
         # Track whether dependencies are available
         self._deps_available = False
@@ -157,14 +156,15 @@ class HyperCoastPlugin:
             checkable=True,
         )
 
-        # Install Dependencies action (menu only, no toolbar)
-        self.add_action(
+        # Install Dependencies action (checkable for dock toggle)
+        self.settings_action = self.add_action(
             ":/images/themes/default/mIconPythonFile.svg",
             text=self.tr("Install Dependencies..."),
-            callback=self.show_dependency_installer,
+            callback=self.toggle_settings_dock,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Install required Python packages"),
             add_to_toolbar=False,
+            checkable=True,
         )
 
         # Check for Updates action (menu only, no toolbar)
@@ -198,6 +198,12 @@ class HyperCoastPlugin:
         # Remove the toolbar
         del self.toolbar
 
+        # Clean up dock widgets
+        if self._settings_dock:
+            self.iface.removeDockWidget(self._settings_dock)
+            self._settings_dock.deleteLater()
+            self._settings_dock = None
+
         # Clean up tools
         if self.spectral_tool:
             self.spectral_tool.deactivate()
@@ -211,7 +217,10 @@ class HyperCoastPlugin:
     def _check_dependencies_on_startup(self):
         """Check if required dependencies are installed on plugin startup."""
         try:
-            from . import venv_manager
+            from .core import venv_manager
+
+            # Clean up old versioned venv directories from previous layout
+            venv_manager.cleanup_old_venv_directories()
 
             is_ready, message = venv_manager.get_venv_status(self.plugin_dir)
 
@@ -322,16 +331,47 @@ class HyperCoastPlugin:
             if i < 3:
                 action.setEnabled(enabled)
 
-    def show_dependency_installer(self):
-        """Show the dependency installer dialog."""
-        if self.deps_dialog is None:
-            self.deps_dialog = DependencyInstallerDialog(
-                self.plugin_dir, self.iface.mainWindow()
-            )
-            self.deps_dialog.deps_installed.connect(self._on_deps_installed)
-        self.deps_dialog.show()
-        self.deps_dialog.raise_()
-        self.deps_dialog.activateWindow()
+    def toggle_settings_dock(self):
+        """Toggle the Settings dock widget visibility."""
+        if self._settings_dock is None:
+            try:
+                from .dialogs.settings_dock import SettingsDockWidget
+
+                self._settings_dock = SettingsDockWidget(
+                    self.plugin_dir, self.iface, self.iface.mainWindow()
+                )
+                self._settings_dock.setObjectName("HyperCoastSettingsDock")
+                self._settings_dock.visibilityChanged.connect(
+                    self._on_settings_visibility_changed
+                )
+                self._settings_dock.deps_installed.connect(self._on_deps_installed)
+                self.iface.addDockWidget(Qt.RightDockWidgetArea, self._settings_dock)
+                self._settings_dock.show()
+                self._settings_dock.raise_()
+                return
+            except Exception as e:
+                QMessageBox.critical(
+                    self.iface.mainWindow(),
+                    "Error",
+                    f"Failed to create Settings panel:\n{str(e)}",
+                )
+                self.settings_action.setChecked(False)
+                return
+
+        # Toggle visibility
+        if self._settings_dock.isVisible():
+            self._settings_dock.hide()
+        else:
+            self._settings_dock.show()
+            self._settings_dock.raise_()
+
+    def _on_settings_visibility_changed(self, visible):
+        """Handle Settings dock visibility change.
+
+        Args:
+            visible: Whether the dock is now visible.
+        """
+        self.settings_action.setChecked(visible)
 
     def _on_deps_installed(self):
         """Handle successful dependency installation."""
@@ -403,13 +443,44 @@ class HyperCoastPlugin:
 
     def _show_deps_required_warning(self):
         """Show a warning that dependencies need to be installed."""
-        QMessageBox.warning(
+        reply = QMessageBox.warning(
             self.iface.mainWindow(),
             "Dependencies Required",
             "Required Python packages are not installed.\n\n"
-            "Please use 'Install Dependencies' from the HyperCoast menu first.",
+            "Would you like to open Settings to install them?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.Yes,
         )
-        self.show_dependency_installer()
+        if reply == QMessageBox.Yes:
+            self._open_settings_deps_tab()
+
+    def _open_settings_deps_tab(self):
+        """Open the Settings dock and refresh dependency status."""
+        if self._settings_dock is None:
+            try:
+                from .dialogs.settings_dock import SettingsDockWidget
+
+                self._settings_dock = SettingsDockWidget(
+                    self.plugin_dir, self.iface, self.iface.mainWindow()
+                )
+                self._settings_dock.setObjectName("HyperCoastSettingsDock")
+                self._settings_dock.visibilityChanged.connect(
+                    self._on_settings_visibility_changed
+                )
+                self._settings_dock.deps_installed.connect(self._on_deps_installed)
+                self.iface.addDockWidget(Qt.RightDockWidgetArea, self._settings_dock)
+            except Exception as e:
+                QMessageBox.critical(
+                    self.iface.mainWindow(),
+                    "Error",
+                    f"Failed to create Settings panel:\n{str(e)}",
+                )
+                return
+
+        self._settings_dock.show()
+        self._settings_dock.raise_()
+        self.settings_action.setChecked(True)
+        self._settings_dock.show_dependencies_tab()
 
     def show_about_dialog(self):
         """Show the About dialog."""

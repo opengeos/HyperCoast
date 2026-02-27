@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-HyperCoast QGIS Plugin - Dependency Installer Dialog
+HyperCoast QGIS Plugin - Settings Dock Widget
 
-Provides a dialog for checking and installing plugin dependencies
-into an isolated virtual environment.
+Provides a dockable settings panel for managing plugin dependencies.
 
 SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
 SPDX-License-Identifier: MIT
@@ -14,7 +13,8 @@ import traceback
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
 from qgis.PyQt.QtGui import QColor, QFont
 from qgis.PyQt.QtWidgets import (
-    QDialog,
+    QDockWidget,
+    QGroupBox,
     QHBoxLayout,
     QHeaderView,
     QLabel,
@@ -24,6 +24,7 @@ from qgis.PyQt.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
+    QWidget,
 )
 
 
@@ -64,54 +65,63 @@ class DepsInstallWorker(QThread):
             self.finished.emit(False, error_msg)
 
 
-class DependencyInstallerDialog(QDialog):
-    """Dialog for checking and installing plugin dependencies."""
+class SettingsDockWidget(QDockWidget):
+    """A dockable settings panel for managing HyperCoast plugin dependencies."""
 
+    # Emitted when dependencies are successfully installed
     deps_installed = pyqtSignal()
 
-    def __init__(self, plugin_dir, parent=None):
-        """Initialize the dialog.
+    def __init__(self, plugin_dir, iface, parent=None):
+        """Initialize the settings dock widget.
 
         Args:
             plugin_dir: Path to the plugin directory containing requirements.txt.
-            parent: Optional parent QWidget.
+            iface: QGIS interface instance.
+            parent: Parent widget.
         """
-        super().__init__(parent)
+        super().__init__("HyperCoast Settings", parent)
         self.plugin_dir = plugin_dir
-        self.install_worker = None
+        self.iface = iface
+        self._deps_worker = None
 
-        self.setWindowTitle("HyperCoast - Install Dependencies")
-        self.setMinimumWidth(600)
-        self.setMinimumHeight(500)
+        self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 
         self._setup_ui()
         self._check_packages()
 
     def _setup_ui(self):
-        """Set up the dialog UI."""
-        layout = QVBoxLayout(self)
-        layout.setSpacing(12)
+        """Set up the settings UI."""
+        main_widget = QWidget()
+        self.setWidget(main_widget)
+
+        layout = QVBoxLayout(main_widget)
+        layout.setSpacing(10)
 
         # Header
-        header_label = QLabel("HyperCoast Dependency Manager")
+        header_label = QLabel("HyperCoast Settings")
         header_font = QFont()
-        header_font.setPointSize(14)
+        header_font.setPointSize(11)
         header_font.setBold(True)
         header_label.setFont(header_font)
         header_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(header_label)
 
-        # Description
-        desc_label = QLabel(
-            "The HyperCoast plugin requires several Python packages. "
-            "These will be installed in an isolated virtual environment "
-            "so your QGIS Python environment stays clean."
+        # Info label
+        info_label = QLabel(
+            "This plugin requires additional Python packages.\n"
+            "Click 'Install Dependencies' to install them in an\n"
+            "isolated virtual environment (~/.qgis_hypercoast/).\n"
+            "A standalone Python interpreter will be downloaded\n"
+            "on first install."
         )
-        desc_label.setWordWrap(True)
-        desc_label.setAlignment(Qt.AlignCenter)
-        layout.addWidget(desc_label)
+        info_label.setWordWrap(True)
+        info_label.setStyleSheet("font-size: 10px;")
+        layout.addWidget(info_label)
 
-        # Package table
+        # Package status group
+        status_group = QGroupBox("Package Status")
+        status_layout = QVBoxLayout(status_group)
+
         self.package_table = QTableWidget()
         self.package_table.setColumnCount(4)
         self.package_table.setHorizontalHeaderLabels(
@@ -132,7 +142,9 @@ class DependencyInstallerDialog(QDialog):
         self.package_table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.package_table.setSelectionMode(QTableWidget.NoSelection)
         self.package_table.verticalHeader().setVisible(False)
-        layout.addWidget(self.package_table)
+        status_layout.addWidget(self.package_table)
+
+        layout.addWidget(status_group)
 
         # Status label
         self.status_label = QLabel("")
@@ -140,7 +152,13 @@ class DependencyInstallerDialog(QDialog):
         self.status_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.status_label)
 
-        # Progress bar
+        # Install button
+        self.install_btn = QPushButton("Install Dependencies")
+        self.install_btn.setStyleSheet("background-color: #2e7d32; color: white;")
+        self.install_btn.clicked.connect(self._on_install_clicked)
+        layout.addWidget(self.install_btn)
+
+        # Progress bar (hidden by default)
         self.progress_bar = QProgressBar()
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setVisible(False)
@@ -148,42 +166,30 @@ class DependencyInstallerDialog(QDialog):
 
         # Progress label
         self.progress_label = QLabel("")
+        self.progress_label.setWordWrap(True)
         self.progress_label.setVisible(False)
         self.progress_label.setAlignment(Qt.AlignCenter)
-        self.progress_label.setStyleSheet("font-size: 11px; color: palette(text);")
+        self.progress_label.setStyleSheet("font-size: 10px;")
         layout.addWidget(self.progress_label)
 
-        # Buttons
-        button_layout = QHBoxLayout()
-
-        self.install_btn = QPushButton("Install Dependencies")
-        self.install_btn.clicked.connect(self._on_install_clicked)
-        button_layout.addWidget(self.install_btn)
-
-        self.cancel_btn = QPushButton("Cancel Installation")
-        self.cancel_btn.clicked.connect(self._on_cancel_clicked)
+        # Cancel button (hidden by default)
+        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn.setStyleSheet("color: red;")
         self.cancel_btn.setVisible(False)
-        button_layout.addWidget(self.cancel_btn)
+        self.cancel_btn.clicked.connect(self._on_cancel_clicked)
+        layout.addWidget(self.cancel_btn)
 
-        self.recheck_btn = QPushButton("Re-check")
-        self.recheck_btn.clicked.connect(self._check_packages)
-        button_layout.addWidget(self.recheck_btn)
+        # Button row
+        btn_layout = QHBoxLayout()
 
-        self.close_btn = QPushButton("Close")
-        self.close_btn.clicked.connect(self.close)
-        button_layout.addWidget(self.close_btn)
+        self.refresh_btn = QPushButton("Refresh Status")
+        self.refresh_btn.clicked.connect(self._check_packages)
+        btn_layout.addWidget(self.refresh_btn)
 
-        layout.addLayout(button_layout)
+        layout.addLayout(btn_layout)
 
-        # Info label
-        info_label = QLabel(
-            "<small>Packages are installed in an isolated virtual environment "
-            "(~/.qgis_hypercoast/). QGIS may need to be restarted after "
-            "installation for some changes to take effect.</small>"
-        )
-        info_label.setWordWrap(True)
-        info_label.setAlignment(Qt.AlignCenter)
-        layout.addWidget(info_label)
+        # Stretch at the end
+        layout.addStretch()
 
     def _check_packages(self):
         """Check which packages are installed and update the table."""
@@ -208,7 +214,9 @@ class DependencyInstallerDialog(QDialog):
                 f"{missing_count} of {total_count} packages need to be installed."
             )
             self.status_label.setStyleSheet("color: #d32f2f; font-weight: bold;")
-            self.install_btn.setText("Install Dependencies")
+            self.install_btn.setText(
+                f"Install Dependencies ({missing_count} missing)"
+            )
 
         self.install_btn.setEnabled(True)
 
@@ -258,11 +266,15 @@ class DependencyInstallerDialog(QDialog):
 
     def _on_install_clicked(self):
         """Handle install button click."""
+        # Guard against concurrent installs
+        if self._deps_worker is not None and self._deps_worker.isRunning():
+            return
+
         reply = QMessageBox.question(
             self,
             "Install Dependencies",
-            "This will create a virtual environment and install all required "
-            "packages. This may take a few minutes.\n\n"
+            "This will download a standalone Python interpreter and install all "
+            "required packages. This may take a few minutes.\n\n"
             "Do you want to continue?",
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.Yes,
@@ -271,99 +283,74 @@ class DependencyInstallerDialog(QDialog):
         if reply != QMessageBox.Yes:
             return
 
+        # Update UI for installation mode
         self.install_btn.setEnabled(False)
-        self.recheck_btn.setEnabled(False)
-        self.close_btn.setEnabled(False)
-        self.cancel_btn.setVisible(True)
-
+        self.refresh_btn.setEnabled(False)
         self.progress_bar.setVisible(True)
         self.progress_bar.setValue(0)
         self.progress_label.setVisible(True)
         self.progress_label.setText("Starting installation...")
+        self.progress_label.setStyleSheet("font-size: 10px;")
+        self.cancel_btn.setVisible(True)
+        self.cancel_btn.setEnabled(True)
 
         self.status_label.setText("Installing dependencies...")
-        self.status_label.setStyleSheet("color: palette(text); font-weight: bold;")
+        self.status_label.setStyleSheet("font-weight: bold;")
 
-        self.install_worker = DepsInstallWorker(self.plugin_dir)
-        self.install_worker.progress.connect(self._on_install_progress)
-        self.install_worker.finished.connect(self._on_install_finished)
-        self.install_worker.start()
+        # Start worker
+        self._deps_worker = DepsInstallWorker(self.plugin_dir)
+        self._deps_worker.progress.connect(self._on_progress)
+        self._deps_worker.finished.connect(self._on_finished)
+        self._deps_worker.start()
 
     def _on_cancel_clicked(self):
         """Handle cancel button click during installation."""
-        if self.install_worker and self.install_worker.isRunning():
-            self.install_worker.cancel()
+        if self._deps_worker is not None and self._deps_worker.isRunning():
+            self._deps_worker.cancel()
             self.cancel_btn.setEnabled(False)
-            self.cancel_btn.setText("Cancelling...")
+            self.progress_label.setText("Cancelling...")
 
-    def _on_install_progress(self, percent, message):
-        """Update progress display.
+    def _on_progress(self, percent, message):
+        """Handle progress updates from the dependency install worker.
 
         Args:
-            percent: Progress percentage (0-100).
-            message: Status message.
+            percent: Installation progress percentage (0-100).
+            message: Status message describing current operation.
         """
         self.progress_bar.setValue(percent)
         self.progress_label.setText(message)
 
-    def _on_install_finished(self, success, message):
-        """Handle installation completion.
+    def _on_finished(self, success, message):
+        """Handle completion of the dependency installation.
 
         Args:
             success: Whether installation succeeded.
             message: Result message.
         """
+        # Reset UI
         self.progress_bar.setVisible(False)
-        self.progress_label.setVisible(False)
+        self.progress_label.setText(message)
+        self.progress_label.setVisible(True)
         self.cancel_btn.setVisible(False)
-        self.cancel_btn.setEnabled(True)
-        self.cancel_btn.setText("Cancel Installation")
-        self.recheck_btn.setEnabled(True)
-        self.close_btn.setEnabled(True)
-
-        # Re-check packages to update the table
-        self._check_packages()
+        self.refresh_btn.setEnabled(True)
 
         if success:
-            self.status_label.setText("Dependencies installed successfully!")
-            self.status_label.setStyleSheet("color: green; font-weight: bold;")
-            QMessageBox.information(
-                self,
-                "Installation Complete",
-                "All dependencies have been installed successfully.\n\n"
-                "You may need to restart QGIS for some changes to take effect.",
+            self.progress_label.setStyleSheet("color: green; font-size: 10px;")
+            self.iface.messageBar().pushSuccess(
+                "HyperCoast", "Dependencies installed successfully!"
             )
             self.deps_installed.emit()
         else:
-            self.status_label.setText(f"Installation issue: {message[:100]}")
-            self.status_label.setStyleSheet("color: #d32f2f; font-weight: bold;")
-            QMessageBox.warning(
-                self,
-                "Installation Issue",
-                f"There was an issue during installation:\n\n{message}\n\n"
-                "You can try clicking 'Install Dependencies' again.",
-            )
+            self.progress_label.setStyleSheet("color: red; font-size: 10px;")
             self.install_btn.setEnabled(True)
 
-    def closeEvent(self, event):
-        """Handle dialog close event.
+        # Refresh status display
+        self._check_packages()
 
-        Args:
-            event: QCloseEvent.
+    def show_dependencies_tab(self):
+        """Refresh the dependency status display.
+
+        Called externally when this dock is opened for the first time
+        or when the user needs to be prompted to install dependencies.
         """
-        if self.install_worker and self.install_worker.isRunning():
-            reply = QMessageBox.question(
-                self,
-                "Installation in Progress",
-                "An installation is in progress. "
-                "Are you sure you want to cancel and close?",
-                QMessageBox.Yes | QMessageBox.No,
-                QMessageBox.No,
-            )
-            if reply != QMessageBox.Yes:
-                event.ignore()
-                return
-            self.install_worker.cancel()
-            self.install_worker.wait(5000)
-
-        event.accept()
+        self._check_packages()
