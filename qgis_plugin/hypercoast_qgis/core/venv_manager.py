@@ -1055,7 +1055,14 @@ def ensure_venv_packages_available():
     if platform.system() == "Windows":
         _log(f"Windows runtime sys.path[0:3]: {sys.path[:3]}")
 
-    for module_name in ["numpy", "xarray", "h5py", "h5netcdf", "hypercoast"]:
+    for module_name in [
+        "numpy",
+        "xarray",
+        "h5py",
+        "h5netcdf",
+        "netCDF4",
+        "hypercoast",
+    ]:
         try:
             mod = importlib.import_module(module_name)
             version = getattr(mod, "__version__", "unknown")
@@ -1169,7 +1176,14 @@ def get_venv_status(plugin_dir):
 
     # Import smoke test in the venv runtime catches cases where metadata exists
     # but imports fail (e.g., h5py backend issues on Windows).
-    for module_name in ["numpy", "xarray", "h5py", "h5netcdf", "hypercoast"]:
+    for module_name in [
+        "numpy",
+        "xarray",
+        "h5py",
+        "h5netcdf",
+        "netCDF4",
+        "hypercoast",
+    ]:
         ok, detail = _import_check_in_venv(module_name)
         if not ok:
             return False, f"Import check failed for {module_name}: {detail[:240]}"

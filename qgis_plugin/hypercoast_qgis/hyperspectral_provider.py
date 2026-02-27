@@ -427,11 +427,16 @@ class HyperspectralDataset:
         """Fallback EMIT loader without hypercoast."""
         try:
             _log(f"Trying EMIT fallback loader: file={self.filepath}", LOG_INFO)
-            ds = xr.open_dataset(self.filepath, engine="h5netcdf")
-            wvl = xr.open_dataset(
-                self.filepath, group="sensor_band_parameters", engine="h5netcdf"
+            engine = self._select_group_engine(
+                self.filepath, required_groups=["location", "sensor_band_parameters"]
             )
-            loc = xr.open_dataset(self.filepath, group="location", engine="h5netcdf")
+            _log(f"EMIT fallback selected engine={engine}", LOG_INFO)
+
+            ds = xr.open_dataset(self.filepath, engine=engine)
+            wvl = xr.open_dataset(
+                self.filepath, group="sensor_band_parameters", engine=engine
+            )
+            loc = xr.open_dataset(self.filepath, group="location", engine=engine)
 
             ds = ds.assign_coords(
                 {
@@ -478,16 +483,26 @@ class HyperspectralDataset:
         """Fallback PACE loader without hypercoast."""
         try:
             _log(f"Trying PACE fallback loader: file={self.filepath}", LOG_INFO)
+            engine = self._select_group_engine(
+                self.filepath,
+                required_groups=[
+                    "navigation_data",
+                    "geophysical_data",
+                    "sensor_band_parameters",
+                ],
+            )
+            _log(f"PACE fallback selected engine={engine}", LOG_INFO)
+
             dataset = xr.open_dataset(
-                self.filepath, group="navigation_data", engine="h5netcdf"
+                self.filepath, group="navigation_data", engine=engine
             )
             dataset = dataset.set_coords(["latitude", "longitude"])
 
             product = xr.open_dataset(
-                self.filepath, group="geophysical_data", engine="h5netcdf"
+                self.filepath, group="geophysical_data", engine=engine
             )
             band_params = xr.open_dataset(
-                self.filepath, group="sensor_band_parameters", engine="h5netcdf"
+                self.filepath, group="sensor_band_parameters", engine=engine
             )
 
             dataset = xr.merge(
@@ -659,7 +674,11 @@ class HyperspectralDataset:
 
     def _open_dataset_with_fallback_engines(self, filepath, ext):
         """Open NetCDF/HDF datasets with multiple backend engines."""
-        engines = [None, "h5netcdf", "netcdf4", "scipy"]
+        if platform.system() == "Windows":
+            # Prefer netcdf4 on Windows to avoid h5py DLL conflicts.
+            engines = [None, "netcdf4", "h5netcdf", "scipy"]
+        else:
+            engines = [None, "h5netcdf", "netcdf4", "scipy"]
         errors = []
 
         for engine in engines:
@@ -681,6 +700,46 @@ class HyperspectralDataset:
 
         raise ValueError(
             f"Unable to open file '{filepath}' (ext={ext}) with any backend. "
+            + " | ".join(errors)
+        )
+
+    def _select_group_engine(self, filepath, required_groups):
+        """Select a backend engine that can open root + all required groups."""
+        if platform.system() == "Windows":
+            engines = ["netcdf4", "h5netcdf"]
+        else:
+            engines = ["h5netcdf", "netcdf4"]
+
+        errors = []
+        for engine in engines:
+            opened = []
+            try:
+                _log(
+                    f"Trying grouped dataset engine={engine} for file={filepath}",
+                    LOG_INFO,
+                )
+                root = xr.open_dataset(filepath, engine=engine)
+                opened.append(root)
+                for group in required_groups:
+                    ds = xr.open_dataset(filepath, group=group, engine=engine)
+                    opened.append(ds)
+
+                return engine
+            except Exception as exc:
+                errors.append(f"{engine}: {exc}")
+                _log(
+                    f"Grouped dataset engine failed engine={engine}: {exc}",
+                    LOG_WARNING,
+                )
+            finally:
+                for ds in opened:
+                    try:
+                        ds.close()
+                    except Exception:
+                        pass
+
+        raise ValueError(
+            "Unable to open grouped dataset with available backends. "
             + " | ".join(errors)
         )
 
