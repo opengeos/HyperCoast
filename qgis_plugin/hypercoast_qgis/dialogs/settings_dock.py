@@ -214,9 +214,7 @@ class SettingsDockWidget(QDockWidget):
                 f"{missing_count} of {total_count} packages need to be installed."
             )
             self.status_label.setStyleSheet("color: #d32f2f; font-weight: bold;")
-            self.install_btn.setText(
-                f"Install Dependencies ({missing_count} missing)"
-            )
+            self.install_btn.setText(f"Install Dependencies ({missing_count} missing)")
 
         self.install_btn.setEnabled(True)
 
