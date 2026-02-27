@@ -1051,8 +1051,11 @@ def _refresh_module(module_name):
     if module_name in sys.modules:
         mod = sys.modules[module_name]
         mod_file = getattr(mod, "__file__", "") or ""
-        # If the module was loaded from outside our venv, remove it
-        if site_packages and site_packages not in mod_file:
+        # If the module was loaded from outside our venv, remove it.
+        # Use normcase() so the check is case-insensitive on Windows.
+        if site_packages and os.path.normcase(site_packages) not in os.path.normcase(
+            mod_file
+        ):
             to_remove = [
                 key
                 for key in sys.modules

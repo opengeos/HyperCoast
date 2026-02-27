@@ -263,6 +263,16 @@ class HyperCoastPlugin:
         # remain marked as unavailable even after venv activation.
         # Order matters: reload hyperspectral_provider first (has HAS_XARRAY etc.),
         # then dialogs that import from it.
+
+        # Clear the hypercoast library cache so get_hypercoast() re-imports
+        # with venv packages on sys.path (instead of returning a stale ref).
+        try:
+            from . import _hypercoast_lib
+
+            _hypercoast_lib._CACHED = None
+        except Exception:
+            pass
+
         try:
             from . import hyperspectral_provider
             from .dialogs import (
@@ -275,8 +285,12 @@ class HyperCoastPlugin:
             importlib.reload(load_data_dialog)
             importlib.reload(band_combination_dialog)
             importlib.reload(spectral_plot_dialog)
-        except Exception:
-            pass
+        except Exception as e:
+            QgsMessageLog.logMessage(
+                f"Error reloading data modules: {e}",
+                "HyperCoast",
+                Qgis.Warning,
+            )
 
         # Reset cached dialog instances so they are re-created
         # with the reloaded module classes.

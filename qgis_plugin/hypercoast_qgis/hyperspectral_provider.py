@@ -41,7 +41,7 @@ try:
     hypercoast = get_hypercoast()
 
     HAS_HYPERCOAST = True
-except ImportError:
+except Exception:
     HAS_HYPERCOAST = False
 
 
@@ -206,6 +206,10 @@ class HyperspectralDataset:
                 self._extract_generic_metadata()
 
             else:
+                return self._load_generic()
+
+            # Guard against readers that return None instead of raising
+            if self.dataset is None:
                 return self._load_generic()
 
             return True
