@@ -22,6 +22,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 
 from qgis.core import QgsMessageLog, Qgis
@@ -681,8 +682,9 @@ def _run_install_subprocess(
 ):
     """Run an install command with progress polling and cancellation support.
 
-    Uses Popen to allow periodic progress updates and cancellation checks
-    while the subprocess is running.
+    Uses Popen with temporary files for stdout/stderr to avoid pipe buffer
+    deadlocks on Windows (where pipe buffers are small and can fill up when
+    installing many packages).
 
     Args:
         cmd: The command list to execute.
@@ -696,51 +698,64 @@ def _run_install_subprocess(
         A tuple of (returncode: int, stdout: str, stderr: str).
             returncode is -1 if cancelled, -2 if timed out.
     """
-    proc = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        env=env,
-        **kwargs,
-    )
-    start = time.time()
-    poll_interval = 2  # seconds
-    while True:
-        try:
-            proc.wait(timeout=poll_interval)
-            break
-        except subprocess.TimeoutExpired:
-            pass
+    # Use temporary files instead of pipes to avoid deadlock on Windows.
+    # Pipe buffers are small (~4-64KB) and fill up when uv/pip produces
+    # verbose output for many packages, causing the subprocess to block.
+    stdout_file = tempfile.TemporaryFile(mode="w+", encoding="utf-8", errors="replace")
+    stderr_file = tempfile.TemporaryFile(mode="w+", encoding="utf-8", errors="replace")
 
-        # Check cancellation
-        if cancel_check and cancel_check():
-            proc.terminate()
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            stdout=stdout_file,
+            stderr=stderr_file,
+            env=env,
+            **kwargs,
+        )
+        start = time.time()
+        poll_interval = 2  # seconds
+        while True:
             try:
-                proc.wait(timeout=10)
+                proc.wait(timeout=poll_interval)
+                break
             except subprocess.TimeoutExpired:
-                proc.kill()
-            return -1, "", "Installation cancelled by user."
+                pass
 
-        # Check overall timeout
-        elapsed = time.time() - start
-        if elapsed >= timeout:
-            proc.terminate()
-            try:
-                proc.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-            return -2, "", f"Timed out after {timeout // 60} minutes."
+            # Check cancellation
+            if cancel_check and cancel_check():
+                proc.terminate()
+                try:
+                    proc.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                return -1, "", "Installation cancelled by user."
 
-        # Emit intermediate progress (25-85% range based on elapsed time)
-        if progress_callback:
-            fraction = min(elapsed / timeout, 1.0)
-            percent = int(25 + fraction * 60)
-            progress_callback(percent, "Installing packages...")
+            # Check overall timeout
+            elapsed = time.time() - start
+            if elapsed >= timeout:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                return -2, "", f"Timed out after {timeout // 60} minutes."
 
-    stdout = proc.stdout.read() if proc.stdout else ""
-    stderr = proc.stderr.read() if proc.stderr else ""
-    return proc.returncode, stdout, stderr
+            # Emit intermediate progress (25-85% range based on elapsed time)
+            if progress_callback:
+                fraction = min(elapsed / timeout, 1.0)
+                percent = int(25 + fraction * 60)
+                progress_callback(percent, "Installing packages...")
+
+        # Read output from temporary files
+        stdout_file.seek(0)
+        stderr_file.seek(0)
+        stdout = stdout_file.read()
+        stderr = stderr_file.read()
+        return proc.returncode, stdout, stderr
+
+    finally:
+        stdout_file.close()
+        stderr_file.close()
 
 
 def _run_install(
