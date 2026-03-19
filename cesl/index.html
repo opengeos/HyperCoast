@@ -1,0 +1,3665 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A Python package for processing hyperspectral data in coastal regions">
+      
+      
+        <meta name="author" content="giswqs">
+      
+      
+        <link rel="canonical" href="https://hypercoast.org/cesl/">
+      
+      
+        <link rel="prev" href="../chla/">
+      
+      
+        <link rel="next" href="../common/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>cesl module - HyperCoast</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans:300,300i,400,400i,700,700i%7CRegular:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Google Sans";--md-code-font:"Regular"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/timeago.css">
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cesl-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="HyperCoast" class="md-header__button md-logo" aria-label="HyperCoast" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            HyperCoast
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              cesl module
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/opengeos/HyperCoast" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="HyperCoast" class="md-nav__button md-logo" aria-label="HyperCoast" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    HyperCoast
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/opengeos/HyperCoast" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/opengeos/HyperCoast/issues" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Report Issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/acolite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acolite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/acolite_emit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Acolite emit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/search_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Search data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/image_cube/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image cube
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/image_slicing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image slicing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/aviris/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aviris
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/cesl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cesl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/desis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/emit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/neon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/pace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/ecostress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ecostress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/chlorophyll_a/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chlorophyll a
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/chla_predict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chla predict
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/temperature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Temperature
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/pace_oci_l1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pace oci l1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/pace_oci_l2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pace oci l2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/pace_cyano/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pace cyano
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/multispectral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multispectral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/pca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pca
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/field_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Field data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/hypoxia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hypoxia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/tanager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tanager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/tanager_3d/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tanager 3d
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/prisma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prisma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/enmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/moe_vae_chla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moe vae chla
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/moe_vae_acdom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moe vae acdom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/moe_vae_tss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moe vae tss
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/wyvern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wyvern
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/EMIT_aCDOM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EMIT aCDOM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/EMIT_chla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EMIT chla
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/EMIT_TSS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EMIT TSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workshops
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workshops
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workshops/emit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workshops/pace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aviris/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    aviris module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    chla module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cesl module
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cesl module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hypercoast.cesl
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.cesl_to_gdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cesl_to_gdf()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.cesl_to_geojson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cesl_to_geojson()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.get_cesl_metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cesl_metadata()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.get_cesl_sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cesl_sites()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.get_cesl_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cesl_spectrum()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.plot_cesl_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        plot_cesl_spectrum()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.search_cesl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_cesl()
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    common module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    desis module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../emit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    emit module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hypercoast/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hypercoast module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    neon module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pace module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prisma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    prisma module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../enmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    enmap module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ui module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_13" id="__nav_9_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    moe_vae modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    moe_vae modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moe_vae/data_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    data_loading module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moe_vae/model_inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model_inference module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moe_vae/model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moe_vae/plot_and_save/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plot_and_save module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_14" id="__nav_9_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    emit_utils modules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    emit_utils modules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../emit_utils/data_loading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    data_loading module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../emit_utils/model_inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model_inference module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../emit_utils/moe_vae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    moe_vae module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../emit_utils/plot_and_save/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plot_and_save module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../emit_utils/preprocess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    preprocess module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hypercoast.cesl
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.cesl_to_gdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cesl_to_gdf()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.cesl_to_geojson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cesl_to_geojson()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.get_cesl_metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cesl_metadata()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.get_cesl_sites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cesl_sites()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.get_cesl_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cesl_spectrum()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.plot_cesl_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        plot_cesl_spectrum()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.cesl.search_cesl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_cesl()
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+
+                  
+
+
+  
+  
+
+
+<h1 id="cesl-module">cesl module<a class="headerlink" href="#cesl-module" title="Permanent link">&para;</a></h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="hypercoast.cesl"></a>
+    <div class="doc doc-contents first">
+
+      <p>Utilities for working with the Coastal Ecosystem Spectral Library (CESL).</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.cesl.cesl_to_gdf" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cesl_to_gdf</span><span class="p">(</span><span class="n">sample_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">skip_missing_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">search_kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.cesl.cesl_to_gdf" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert CESL site metadata to a GeoPandas GeoDataFrame.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/cesl.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cesl_to_gdf</span><span class="p">(</span>
+    <span class="n">sample_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">skip_missing_coordinates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">skip_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">search_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert CESL site metadata to a GeoPandas GeoDataFrame.&quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;geopandas is required to convert CESL sites to a GeoDataFrame.&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+<span class="w">    </span><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+    <span class="n">records</span> <span class="o">=</span> <span class="n">get_cesl_sites</span><span class="p">(</span>
+        <span class="n">sample_ids</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">,</span>
+        <span class="n">include_units</span><span class="o">=</span><span class="n">include_units</span><span class="p">,</span>
+        <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+        <span class="n">skip_missing_coordinates</span><span class="o">=</span><span class="n">skip_missing_coordinates</span><span class="p">,</span>
+        <span class="n">skip_errors</span><span class="o">=</span><span class="n">skip_errors</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">search_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">records</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="p">[],</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">)</span>
+
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
+        <span class="n">frame</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]),</span>
+        <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.cesl.cesl_to_geojson" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cesl_to_geojson</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">skip_missing_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">search_kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.cesl.cesl_to_geojson" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a GeoJSON feature collection for CESL sites.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>Output GeoJSON path. If provided, the GeoJSON is
+written to disk.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>sample_ids</code></td>
+        <td><code>Iterable[int]</code></td>
+        <td><p>CESL sample IDs to export.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>include_units</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to preserve units in properties.
+Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>max_workers</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of worker threads used to fetch
+metadata. Defaults to 8.</p></td>
+        <td><code>8</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>Request timeout in seconds. Defaults to 30.</p></td>
+        <td><code>30</code></td>
+      </tr>
+      <tr>
+        <td><code>skip_missing_coordinates</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to skip samples
+without coordinates. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>skip_errors</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to skip samples that fail for any
+reason (e.g. non-JSON API responses). Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>**search_kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional arguments passed to :func:<code>search_cesl</code> when
+<code>sample_ids</code> is not provided.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict[str, Any]</code></td>
+      <td><p>A GeoJSON FeatureCollection.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/cesl.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cesl_to_geojson</span><span class="p">(</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sample_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">skip_missing_coordinates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">skip_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">search_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a GeoJSON feature collection for CESL sites.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output (str, optional): Output GeoJSON path. If provided, the GeoJSON is</span>
+<span class="sd">            written to disk.</span>
+<span class="sd">        sample_ids (Iterable[int], optional): CESL sample IDs to export.</span>
+<span class="sd">        include_units (bool, optional): Whether to preserve units in properties.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">        max_workers (int, optional): Number of worker threads used to fetch</span>
+<span class="sd">            metadata. Defaults to 8.</span>
+<span class="sd">        timeout (int, optional): Request timeout in seconds. Defaults to 30.</span>
+<span class="sd">        skip_missing_coordinates (bool, optional): Whether to skip samples</span>
+<span class="sd">            without coordinates. Defaults to True.</span>
+<span class="sd">        skip_errors (bool, optional): Whether to skip samples that fail for any</span>
+<span class="sd">            reason (e.g. non-JSON API responses). Defaults to False.</span>
+<span class="sd">        **search_kwargs: Additional arguments passed to :func:`search_cesl` when</span>
+<span class="sd">            ``sample_ids`` is not provided.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict[str, Any]: A GeoJSON FeatureCollection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">records</span> <span class="o">=</span> <span class="n">get_cesl_sites</span><span class="p">(</span>
+        <span class="n">sample_ids</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">,</span>
+        <span class="n">include_units</span><span class="o">=</span><span class="n">include_units</span><span class="p">,</span>
+        <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+        <span class="n">skip_missing_coordinates</span><span class="o">=</span><span class="n">skip_missing_coordinates</span><span class="p">,</span>
+        <span class="n">skip_errors</span><span class="o">=</span><span class="n">skip_errors</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">search_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">feature_collection</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">_build_feature</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">feature_collection</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">feature_collection</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.cesl.get_cesl_metadata" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_cesl_metadata</span><span class="p">(</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">crosswalk</span><span class="o">=</span><span class="s1">&#39;speclib&#39;</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.cesl.get_cesl_metadata" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Retrieve metadata for a CESL sample.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sample_id</code></td>
+        <td><code>int</code></td>
+        <td><p>CESL sample ID.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>include_units</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to preserve CESL units metadata.
+Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>Request timeout in seconds. Defaults to 30.</p></td>
+        <td><code>30</code></td>
+      </tr>
+      <tr>
+        <td><code>crosswalk</code></td>
+        <td><code>str</code></td>
+        <td><p>Metadata crosswalk type. Defaults to
+<code>"speclib"</code>.</p></td>
+        <td><code>&#39;speclib&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict[str, Any]</code></td>
+      <td><p>Normalized metadata for the sample.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/cesl.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_cesl_metadata</span><span class="p">(</span>
+    <span class="n">sample_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">include_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">crosswalk</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;speclib&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve metadata for a CESL sample.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample_id (int): CESL sample ID.</span>
+<span class="sd">        include_units (bool, optional): Whether to preserve CESL units metadata.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">        timeout (int, optional): Request timeout in seconds. Defaults to 30.</span>
+<span class="sd">        crosswalk (str, optional): Metadata crosswalk type. Defaults to</span>
+<span class="sd">            ``&quot;speclib&quot;``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict[str, Any]: Normalized metadata for the sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_request_cesl</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;sample/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">/metadata&quot;</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;crosswalk&quot;</span><span class="p">:</span> <span class="n">crosswalk</span><span class="p">},</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">_get_payload</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_METADATA_KEY_CANDIDATES</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_normalize_cesl_metadata</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="n">include_units</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.cesl.get_cesl_sites" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_cesl_sites</span><span class="p">(</span><span class="n">sample_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">skip_missing_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">search_kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.cesl.get_cesl_sites" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Retrieve CESL site metadata for a set of sample IDs.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sample_ids</code></td>
+        <td><code>Iterable[int]</code></td>
+        <td><p>CESL sample IDs to retrieve.
+Defaults to the full CESL catalog or a filtered catalog search.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>include_units</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to preserve units in metadata.
+Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>max_workers</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of worker threads used to fetch
+metadata. Defaults to 8.</p></td>
+        <td><code>8</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>Request timeout in seconds. Defaults to 30.</p></td>
+        <td><code>30</code></td>
+      </tr>
+      <tr>
+        <td><code>skip_missing_coordinates</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to skip samples
+without coordinates. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>skip_errors</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to skip samples that fail for any
+reason (e.g. non-JSON API responses). A warning is emitted for each
+skipped sample. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>**search_kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional arguments passed to :func:<code>search_cesl</code> when
+<code>sample_ids</code> is not provided.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list[dict[str, Any]]</code></td>
+      <td><p>Normalized site records including coordinates.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/cesl.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_cesl_sites</span><span class="p">(</span>
+    <span class="n">sample_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">skip_missing_coordinates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">skip_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">search_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve CESL site metadata for a set of sample IDs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample_ids (Iterable[int], optional): CESL sample IDs to retrieve.</span>
+<span class="sd">            Defaults to the full CESL catalog or a filtered catalog search.</span>
+<span class="sd">        include_units (bool, optional): Whether to preserve units in metadata.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">        max_workers (int, optional): Number of worker threads used to fetch</span>
+<span class="sd">            metadata. Defaults to 8.</span>
+<span class="sd">        timeout (int, optional): Request timeout in seconds. Defaults to 30.</span>
+<span class="sd">        skip_missing_coordinates (bool, optional): Whether to skip samples</span>
+<span class="sd">            without coordinates. Defaults to True.</span>
+<span class="sd">        skip_errors (bool, optional): Whether to skip samples that fail for any</span>
+<span class="sd">            reason (e.g. non-JSON API responses). A warning is emitted for each</span>
+<span class="sd">            skipped sample. Defaults to False.</span>
+<span class="sd">        **search_kwargs: Additional arguments passed to :func:`search_cesl` when</span>
+<span class="sd">            ``sample_ids`` is not provided.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[dict[str, Any]]: Normalized site records including coordinates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">sample_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">search_cesl</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">search_kwargs</span><span class="p">)</span>
+
+    <span class="n">sample_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_site</span><span class="p">(</span><span class="n">sample_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">get_cesl_metadata</span><span class="p">(</span>
+            <span class="n">sample_id</span><span class="o">=</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="n">include_units</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+        <span class="p">)</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">_extract_coordinate</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">_LATITUDE_KEYS</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">)</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">_extract_coordinate</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">_LONGITUDE_KEYS</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="o">**</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="s2">&quot;sample_id&quot;</span><span class="p">:</span> <span class="n">sample_id</span><span class="p">,</span>
+            <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">latitude</span><span class="p">,</span>
+            <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">longitude</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="n">_BATCH_SIZE</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">records</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">batch_start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">),</span> <span class="n">_BATCH_SIZE</span><span class="p">):</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="n">sample_ids</span><span class="p">[</span><span class="n">batch_start</span> <span class="p">:</span> <span class="n">batch_start</span> <span class="o">+</span> <span class="n">_BATCH_SIZE</span><span class="p">]</span>
+            <span class="n">futures</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fetch_site</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">):</span> <span class="n">sample_id</span> <span class="k">for</span> <span class="n">sample_id</span> <span class="ow">in</span> <span class="n">batch</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+                <span class="n">sample_id</span> <span class="o">=</span> <span class="n">futures</span><span class="p">[</span><span class="n">future</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+                <span class="k">except</span> <span class="n">_MissingCoordinateError</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_missing_coordinates</span><span class="p">:</span>
+                        <span class="k">raise</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">skip_errors</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Skipping sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="ne">RuntimeWarning</span><span class="p">,</span>
+                            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Failed to retrieve CESL metadata for sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+    <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">records</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.cesl.get_cesl_spectrum" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_cesl_spectrum</span><span class="p">(</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.cesl.get_cesl_spectrum" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Retrieve the wavelength and spectrum values for a CESL sample.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sample_id</code></td>
+        <td><code>int</code></td>
+        <td><p>CESL sample ID.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>spectrum_key</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of the spectrum field to extract.
+Defaults to the first non-<code>wavelength</code> field returned by the API.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>Request timeout in seconds. Defaults to 30.</p></td>
+        <td><code>30</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>pandas.DataFrame</code></td>
+      <td><p>A DataFrame with <code>wavelength</code> and spectrum columns.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/cesl.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_cesl_spectrum</span><span class="p">(</span>
+    <span class="n">sample_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve the wavelength and spectrum values for a CESL sample.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample_id (int): CESL sample ID.</span>
+<span class="sd">        spectrum_key (str, optional): Name of the spectrum field to extract.</span>
+<span class="sd">            Defaults to the first non-``wavelength`` field returned by the API.</span>
+<span class="sd">        timeout (int, optional): Request timeout in seconds. Defaults to 30.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: A DataFrame with ``wavelength`` and spectrum columns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_request_cesl</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;sample/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">/data&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+    <span class="p">)</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">_get_payload</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_DATA_KEY_CANDIDATES</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;CESL spectrum response does not contain &#39;wavelength&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">spectrum_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">spectrum_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">payload</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">spectrum_keys</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;CESL spectrum response does not contain any spectral data.&quot;</span><span class="p">)</span>
+        <span class="n">spectrum_key</span> <span class="o">=</span> <span class="n">spectrum_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">matching_keys</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">payload</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;wavelength&quot;</span>
+        <span class="p">}</span>
+        <span class="n">resolved_key</span> <span class="o">=</span> <span class="n">matching_keys</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">spectrum_key</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">resolved_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find spectrum key &#39;</span><span class="si">{</span><span class="n">spectrum_key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="n">spectrum_key</span> <span class="o">=</span> <span class="n">resolved_key</span>
+
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">spectrum_key</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="n">spectrum_key</span><span class="p">]}</span>
+    <span class="p">)</span>
+    <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_id</span>
+    <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spectrum_key&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectrum_key</span>
+    <span class="k">return</span> <span class="n">spectrum</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.cesl.plot_cesl_spectrum" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">plot_cesl_spectrum</span><span class="p">(</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Wavelength (nm)&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.cesl.plot_cesl_spectrum" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Plot a CESL spectrum for a selected sample.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sample_id</code></td>
+        <td><code>int</code></td>
+        <td><p>CESL sample ID.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>spectrum_key</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of the spectrum field to plot.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>ax</code></td>
+        <td><code>matplotlib.axes.Axes</code></td>
+        <td><p>Existing axes to plot on.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>str</code></td>
+        <td><p>Plot title. Defaults to <code>CESL Sample &lt;id&gt;</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>xlabel</code></td>
+        <td><code>str</code></td>
+        <td><p>X-axis label. Defaults to <code>Wavelength (nm)</code>.</p></td>
+        <td><code>&#39;Wavelength (nm)&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>ylabel</code></td>
+        <td><code>str</code></td>
+        <td><p>Y-axis label. Defaults to the selected spectrum
+key.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>figsize</code></td>
+        <td><code>Sequence[float]</code></td>
+        <td><p>Figure size passed to
+<code>matplotlib.pyplot.subplots</code> when <code>ax</code> is not provided.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>x_range</code></td>
+        <td><code>Sequence[float]</code></td>
+        <td><p>Two-element x-axis range used to
+exclude wavelength outliers from the visible plot extent.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>y_range</code></td>
+        <td><code>Sequence[float]</code></td>
+        <td><p>Two-element y-axis range used to
+exclude reflectance outliers from the visible plot extent.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>Request timeout in seconds. Defaults to 30.</p></td>
+        <td><code>30</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional keyword arguments passed to <code>Axes.plot</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>matplotlib.axes.Axes</code></td>
+      <td><p>The axes containing the plot.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/cesl.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plot_cesl_spectrum</span><span class="p">(</span>
+    <span class="n">sample_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">spectrum_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">x_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">y_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a CESL spectrum for a selected sample.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample_id (int): CESL sample ID.</span>
+<span class="sd">        spectrum_key (str, optional): Name of the spectrum field to plot.</span>
+<span class="sd">        ax (matplotlib.axes.Axes, optional): Existing axes to plot on.</span>
+<span class="sd">        title (str, optional): Plot title. Defaults to ``CESL Sample &lt;id&gt;``.</span>
+<span class="sd">        xlabel (str, optional): X-axis label. Defaults to ``Wavelength (nm)``.</span>
+<span class="sd">        ylabel (str, optional): Y-axis label. Defaults to the selected spectrum</span>
+<span class="sd">            key.</span>
+<span class="sd">        figsize (Sequence[float], optional): Figure size passed to</span>
+<span class="sd">            ``matplotlib.pyplot.subplots`` when ``ax`` is not provided.</span>
+<span class="sd">        x_range (Sequence[float], optional): Two-element x-axis range used to</span>
+<span class="sd">            exclude wavelength outliers from the visible plot extent.</span>
+<span class="sd">        y_range (Sequence[float], optional): Two-element y-axis range used to</span>
+<span class="sd">            exclude reflectance outliers from the visible plot extent.</span>
+<span class="sd">        timeout (int, optional): Request timeout in seconds. Defaults to 30.</span>
+<span class="sd">        **kwargs: Additional keyword arguments passed to ``Axes.plot``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        matplotlib.axes.Axes: The axes containing the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">get_cesl_spectrum</span><span class="p">(</span>
+        <span class="n">sample_id</span><span class="o">=</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="o">=</span><span class="n">spectrum_key</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+    <span class="p">)</span>
+    <span class="n">spectrum_key</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spectrum_key&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+
+    <span class="n">label</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">spectrum</span><span class="p">[</span><span class="n">spectrum_key</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span> <span class="ow">or</span> <span class="n">spectrum_key</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;CESL Sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">y_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y_range</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">ax</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.cesl.search_cesl" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_cesl</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">circle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">publish_date_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">publish_date_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">taxonomy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">biomass</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.cesl.search_cesl" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Search the CESL catalog and return matching sample IDs.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>bbox</code></td>
+        <td><code>Sequence[float]</code></td>
+        <td><p>Bounding box formatted as
+<code>(north, south, east, west)</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>circle</code></td>
+        <td><code>Sequence[float]</code></td>
+        <td><p>Circular search formatted as
+<code>(latitude, longitude, radius_km)</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>publish_date_start</code></td>
+        <td><code>str</code></td>
+        <td><p>ISO8601 start date for published
+samples.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>publish_date_end</code></td>
+        <td><code>str</code></td>
+        <td><p>ISO8601 end date for published
+samples.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>taxonomy</code></td>
+        <td><code>str</code></td>
+        <td><p>Binomial or taxonomy path filter.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>biomass</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether biomass measurements are required.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>coverage</code></td>
+        <td><code>float</code></td>
+        <td><p>Minimum percentage coverage threshold.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>Request timeout in seconds. Defaults to 30.</p></td>
+        <td><code>30</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list[int]</code></td>
+      <td><p>Matching CESL sample IDs.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/cesl.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_cesl</span><span class="p">(</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">circle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">publish_date_start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">publish_date_end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">taxonomy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">biomass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">coverage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search the CESL catalog and return matching sample IDs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bbox (Sequence[float], optional): Bounding box formatted as</span>
+<span class="sd">            ``(north, south, east, west)``.</span>
+<span class="sd">        circle (Sequence[float], optional): Circular search formatted as</span>
+<span class="sd">            ``(latitude, longitude, radius_km)``.</span>
+<span class="sd">        publish_date_start (str, optional): ISO8601 start date for published</span>
+<span class="sd">            samples.</span>
+<span class="sd">        publish_date_end (str, optional): ISO8601 end date for published</span>
+<span class="sd">            samples.</span>
+<span class="sd">        taxonomy (str, optional): Binomial or taxonomy path filter.</span>
+<span class="sd">        biomass (bool, optional): Whether biomass measurements are required.</span>
+<span class="sd">        coverage (float, optional): Minimum percentage coverage threshold.</span>
+<span class="sd">        timeout (int, optional): Request timeout in seconds. Defaults to 30.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[int]: Matching CESL sample IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">}</span>
+    <span class="n">formatted_bbox</span> <span class="o">=</span> <span class="n">_format_catalog_param</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;bbox&quot;</span><span class="p">)</span>
+    <span class="n">formatted_circle</span> <span class="o">=</span> <span class="n">_format_catalog_param</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;circle&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">formatted_bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;bbox&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatted_bbox</span>
+    <span class="k">if</span> <span class="n">formatted_circle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;circle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatted_circle</span>
+    <span class="k">if</span> <span class="n">publish_date_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;publish_date_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">publish_date_start</span>
+    <span class="k">if</span> <span class="n">publish_date_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;publish_date_end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">publish_date_end</span>
+    <span class="k">if</span> <span class="n">taxonomy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;taxonomy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxonomy</span>
+    <span class="k">if</span> <span class="n">biomass</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;biomass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">biomass</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">coverage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;coverage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coverage</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_request_cesl</span><span class="p">(</span><span class="s2">&quot;catalog&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">_get_payload</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_CATALOG_KEY_CANDIDATES</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ids&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="March 19, 2026 02:31:33 UTC"><span class="timeago" datetime="2026-03-19T02:31:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="March 19, 2026 02:31:33 UTC">2026-03-19</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="March 19, 2026 02:31:33 UTC"><span class="timeago" datetime="2026-03-19T02:31:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="March 19, 2026 02:31:33 UTC">2026-03-19</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 - 2024 Bingqing Liu & Qiusheng Wu
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../js/timeago.min.js"></script>
+      
+        <script src="../js/timeago_mkdocs_material.js"></script>
+      
+    
+  </body>
+</html>
