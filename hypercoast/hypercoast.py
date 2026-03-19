@@ -41,6 +41,15 @@ from .pace import (
 )
 from .tanager import read_tanager, tanager_to_image, extract_tanager, grid_tanager
 from .wyvern import read_wyvern, wyvern_to_image, extract_wyvern, filter_wyvern
+from .cesl import (
+    search_cesl,
+    get_cesl_metadata,
+    get_cesl_spectrum,
+    plot_cesl_spectrum,
+    get_cesl_sites,
+    cesl_to_gdf,
+    cesl_to_geojson,
+)
 from .ui import SpectralWidget
 from .common import (
     download_file,
