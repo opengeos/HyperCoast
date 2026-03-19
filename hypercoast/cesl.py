@@ -86,6 +86,10 @@ def _normalize_cesl_metadata(
     }
 
 
+class _MissingCoordinateError(ValueError):
+    """Raised when a required coordinate cannot be found in CESL metadata."""
+
+
 def _extract_coordinate(
     metadata: Dict[str, Any], candidates: Sequence[str], label: str
 ) -> float:
@@ -98,7 +102,7 @@ def _extract_coordinate(
         if value not in (None, ""):
             return float(value)
 
-    raise ValueError(f"Could not find {label} in CESL metadata.")
+    raise _MissingCoordinateError(f"Could not find {label} in CESL metadata.")
 
 
 def _build_feature(record: Dict[str, Any]) -> Dict[str, Any]:
@@ -372,29 +376,31 @@ def get_cesl_sites(
         longitude = _extract_coordinate(metadata, _LONGITUDE_KEYS, "longitude")
 
         return {
+            **metadata,
             "sample_id": sample_id,
             "latitude": latitude,
             "longitude": longitude,
-            **metadata,
         }
 
+    _BATCH_SIZE = 50
     records: List[Dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {
-            executor.submit(fetch_site, sample_id): sample_id
-            for sample_id in sample_ids
-        }
-        for future in as_completed(futures):
-            sample_id = futures[future]
-            try:
-                records.append(future.result())
-            except ValueError:
-                if not skip_missing_coordinates:
-                    raise
-            except Exception as exc:
-                raise RuntimeError(
-                    f"Failed to retrieve CESL metadata for sample {sample_id}."
-                ) from exc
+        for batch_start in range(0, len(sample_ids), _BATCH_SIZE):
+            batch = sample_ids[batch_start : batch_start + _BATCH_SIZE]
+            futures = {
+                executor.submit(fetch_site, sample_id): sample_id for sample_id in batch
+            }
+            for future in as_completed(futures):
+                sample_id = futures[future]
+                try:
+                    records.append(future.result())
+                except _MissingCoordinateError:
+                    if not skip_missing_coordinates:
+                        raise
+                except Exception as exc:
+                    raise RuntimeError(
+                        f"Failed to retrieve CESL metadata for sample {sample_id}."
+                    ) from exc
 
     records.sort(key=lambda record: record["sample_id"])
     return records

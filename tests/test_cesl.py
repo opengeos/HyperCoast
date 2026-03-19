@@ -18,8 +18,9 @@ except ImportError:
     HAS_PANDAS = False
 
 try:
-    import matplotlib  # noqa: F401
+    import matplotlib
 
+    matplotlib.use("Agg")
     HAS_MATPLOTLIB = True
 except ImportError:
     HAS_MATPLOTLIB = False
@@ -110,7 +111,10 @@ class TestCesl(unittest.TestCase):
         self.assertEqual(ax.get_xlabel(), "Wavelength (nm)")
         self.assertEqual(ax.get_ylabel(), "Reflectance")
         self.assertEqual(len(ax.lines), 1)
-        self.assertEqual(tuple(ax.figure.get_size_inches()), (6.4, 4.8))
+        self.assertEqual(
+            tuple(ax.figure.get_size_inches()),
+            tuple(matplotlib.rcParams["figure.figsize"]),
+        )
 
     @unittest.skipUnless(
         HAS_PANDAS and HAS_MATPLOTLIB,
