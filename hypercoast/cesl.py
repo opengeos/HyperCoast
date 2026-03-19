@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Sequence
 
@@ -132,7 +133,12 @@ def _request_cesl(
     url = f"{CESL_API_BASE_URL}/{endpoint.lstrip('/')}"
     response = requests.get(url, params=params, timeout=timeout)
     response.raise_for_status()
-    data = response.json()
+    try:
+        data = response.json()
+    except Exception as exc:
+        raise ValueError(
+            f"CESL API returned non-JSON response for {url!r}: {response.text[:200]!r}"
+        ) from exc
 
     if "error" in data:
         error = data["error"]
@@ -342,6 +348,7 @@ def get_cesl_sites(
     max_workers: int = 8,
     timeout: int = 30,
     skip_missing_coordinates: bool = True,
+    skip_errors: bool = False,
     **search_kwargs: Any,
 ) -> List[Dict[str, Any]]:
     """Retrieve CESL site metadata for a set of sample IDs.
@@ -356,6 +363,9 @@ def get_cesl_sites(
         timeout (int, optional): Request timeout in seconds. Defaults to 30.
         skip_missing_coordinates (bool, optional): Whether to skip samples
             without coordinates. Defaults to True.
+        skip_errors (bool, optional): Whether to skip samples that fail for any
+            reason (e.g. non-JSON API responses). A warning is emitted for each
+            skipped sample. Defaults to False.
         **search_kwargs: Additional arguments passed to :func:`search_cesl` when
             ``sample_ids`` is not provided.
 
@@ -398,9 +408,16 @@ def get_cesl_sites(
                     if not skip_missing_coordinates:
                         raise
                 except Exception as exc:
-                    raise RuntimeError(
-                        f"Failed to retrieve CESL metadata for sample {sample_id}."
-                    ) from exc
+                    if skip_errors:
+                        warnings.warn(
+                            f"Skipping sample {sample_id}: {exc}",
+                            RuntimeWarning,
+                            stacklevel=2,
+                        )
+                    else:
+                        raise RuntimeError(
+                            f"Failed to retrieve CESL metadata for sample {sample_id}."
+                        ) from exc
 
     records.sort(key=lambda record: record["sample_id"])
     return records
@@ -412,6 +429,7 @@ def cesl_to_gdf(
     max_workers: int = 8,
     timeout: int = 30,
     skip_missing_coordinates: bool = True,
+    skip_errors: bool = False,
     **search_kwargs: Any,
 ) -> gpd.GeoDataFrame:
     """Convert CESL site metadata to a GeoPandas GeoDataFrame."""
@@ -430,6 +448,7 @@ def cesl_to_gdf(
         max_workers=max_workers,
         timeout=timeout,
         skip_missing_coordinates=skip_missing_coordinates,
+        skip_errors=skip_errors,
         **search_kwargs,
     )
 
@@ -451,6 +470,7 @@ def cesl_to_geojson(
     max_workers: int = 8,
     timeout: int = 30,
     skip_missing_coordinates: bool = True,
+    skip_errors: bool = False,
     **search_kwargs: Any,
 ) -> Dict[str, Any]:
     """Create a GeoJSON feature collection for CESL sites.
@@ -466,6 +486,8 @@ def cesl_to_geojson(
         timeout (int, optional): Request timeout in seconds. Defaults to 30.
         skip_missing_coordinates (bool, optional): Whether to skip samples
             without coordinates. Defaults to True.
+        skip_errors (bool, optional): Whether to skip samples that fail for any
+            reason (e.g. non-JSON API responses). Defaults to False.
         **search_kwargs: Additional arguments passed to :func:`search_cesl` when
             ``sample_ids`` is not provided.
 
@@ -479,6 +501,7 @@ def cesl_to_geojson(
         max_workers=max_workers,
         timeout=timeout,
         skip_missing_coordinates=skip_missing_coordinates,
+        skip_errors=skip_errors,
         **search_kwargs,
     )
     feature_collection = {
