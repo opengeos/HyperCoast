@@ -5,6 +5,7 @@
 -   [Visualize Hyperspectral Data in 3D](https://hypercoast.org/examples/image_cube)
 -   [Interactive slicing and thresholding of hyperspectral data](https://hypercoast.org/examples/image_slicing)
 -   [Visualize AVIRIS data interactively](https://hypercoast.org/examples/aviris)
+-   [Work with CESL field spectra](https://hypercoast.org/examples/cesl)
 -   [Visualize DESIS data interactively](https://hypercoast.org/examples/desis)
 -   [Visualize EMIT data interactively](https://hypercoast.org/examples/emit)
 -   [Visualize NEON AOP hyperspectral data interactively](https://hypercoast.org/examples/neon)
