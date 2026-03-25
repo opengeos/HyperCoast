@@ -4015,7 +4015,7 @@ or None if no date in 'YYYYMMDD' format is found.</p></td>
 
 
 <h2 id="hypercoast.common.image_cube" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">image_cube</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">rgb_bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rgb_cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_clim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotter_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_axes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">z_scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">image_cube</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">rgb_bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rgb_cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_clim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotter_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_axes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">z_scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.common.image_cube" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -4151,6 +4151,25 @@ the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
+        <td><code>crop</code></td>
+        <td><code>Optional[Union[int, Tuple[int, int, int, int]]]</code></td>
+        <td><p>Number
+of pixels to crop from the edges to remove nodata borders. If an int,
+the same number of pixels is cropped from all four sides. If a tuple
+of four ints, specifies (top, bottom, left, right) crop amounts.
+Defaults to None (no cropping).</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>nodata</code></td>
+        <td><code>Optional[float]</code></td>
+        <td><p>Value to treat as nodata. Pixels
+matching this value are replaced with NaN and rendered as transparent
+in the cube. Useful for masking irregular nodata borders from
+reprojected imagery. Defaults to None (no masking).</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>**kwargs</code></td>
         <td><code>Dict[str, Any]</code></td>
         <td><p>Additional arguments for the
@@ -4194,6 +4213,8 @@ the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</p></td>
     <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
     <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">z_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nodata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -4230,6 +4251,15 @@ the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</p></td>
 <span class="sd">        z_scale (Optional[float], optional): Scale factor for the z-axis spacing.</span>
 <span class="sd">            If None (default), auto-scales so the cube height is proportional to</span>
 <span class="sd">            the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</span>
+<span class="sd">        crop (Optional[Union[int, Tuple[int, int, int, int]]], optional): Number</span>
+<span class="sd">            of pixels to crop from the edges to remove nodata borders. If an int,</span>
+<span class="sd">            the same number of pixels is cropped from all four sides. If a tuple</span>
+<span class="sd">            of four ints, specifies (top, bottom, left, right) crop amounts.</span>
+<span class="sd">            Defaults to None (no cropping).</span>
+<span class="sd">        nodata (Optional[float], optional): Value to treat as nodata. Pixels</span>
+<span class="sd">            matching this value are replaced with NaN and rendered as transparent</span>
+<span class="sd">            in the cube. Useful for masking irregular nodata borders from</span>
+<span class="sd">            reprojected imagery. Defaults to None (no masking).</span>
 <span class="sd">        **kwargs (Dict[str, Any], optional): Additional arguments for the</span>
 <span class="sd">            `add_mesh` method. Defaults to {}.</span>
 
@@ -4254,6 +4284,41 @@ the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</p></td>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
+    <span class="c1"># Crop edges to remove nodata borders</span>
+    <span class="k">if</span> <span class="n">crop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_crop_err</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;crop must be a non-negative integer or a 4-tuple of &quot;</span>
+            <span class="s2">&quot;non-negative integers (top, bottom, left, right).&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">crop</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">crop</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_crop_err</span><span class="p">)</span>
+            <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">crop</span><span class="p">,</span> <span class="n">crop</span><span class="p">,</span> <span class="n">crop</span><span class="p">,</span> <span class="n">crop</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">crop</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">crop</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">crop</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">crop</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_crop_err</span><span class="p">)</span>
+            <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">crop</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_crop_err</span><span class="p">)</span>
+        <span class="n">spatial_dims</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dims</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span> <span class="s2">&quot;band&quot;</span><span class="p">}</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spatial_dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">y_dim</span><span class="p">,</span> <span class="n">x_dim</span> <span class="o">=</span> <span class="n">spatial_dims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spatial_dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">y_size</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">y_dim</span><span class="p">]</span>
+            <span class="n">x_size</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">x_dim</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">top</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">&gt;=</span> <span class="n">y_size</span> <span class="ow">or</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span> <span class="o">&gt;=</span> <span class="n">x_size</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;crop values exceed dataset dimensions &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">y_dim</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">y_size</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">x_dim</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">x_size</span><span class="si">}</span><span class="s2">).&quot;</span>
+                <span class="p">)</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="n">y_dim</span><span class="p">:</span> <span class="nb">slice</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">-</span> <span class="n">bottom</span> <span class="k">if</span> <span class="n">bottom</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">x_dim</span><span class="p">:</span> <span class="nb">slice</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">x_size</span> <span class="o">-</span> <span class="n">right</span> <span class="k">if</span> <span class="n">right</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
     <span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>  <span class="c1"># xarray DataArray</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 
@@ -4269,6 +4334,13 @@ the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</p></td>
         <span class="c1"># Move spectral dimension to the last axis</span>
         <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">spectral_idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">spectral_idx</span><span class="p">]</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+
+    <span class="c1"># Mask nodata values with NaN for transparent rendering</span>
+    <span class="k">if</span> <span class="n">nodata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="n">values</span> <span class="o">==</span> <span class="n">nodata</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="c1"># Auto-scale z-spacing for datasets with few spectral bands</span>
     <span class="k">if</span> <span class="n">z_scale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -4305,6 +4377,9 @@ the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</p></td>
 
     <span class="k">if</span> <span class="s2">&quot;show_edges&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;show_edges&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">nodata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;nan_opacity&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;nan_opacity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">if</span> <span class="n">widget</span> <span class="o">==</span> <span class="s2">&quot;box&quot;</span><span class="p">:</span>
         <span class="n">p</span><span class="o">.</span><span class="n">add_mesh_clip_box</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="n">clim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
