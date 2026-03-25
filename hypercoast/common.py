@@ -605,10 +605,20 @@ def image_cube(
 
     # Crop edges to remove nodata borders
     if crop is not None:
+        _crop_err = (
+            "crop must be a non-negative integer or a 4-tuple of "
+            "non-negative integers (top, bottom, left, right)."
+        )
         if isinstance(crop, int):
+            if crop < 0:
+                raise ValueError(_crop_err)
             top, bottom, left, right = crop, crop, crop, crop
-        else:
+        elif isinstance(crop, tuple) and len(crop) == 4:
+            if not all(isinstance(v, int) for v in crop) or any(v < 0 for v in crop):
+                raise ValueError(_crop_err)
             top, bottom, left, right = crop
+        else:
+            raise ValueError(_crop_err)
         spatial_dims = [
             d for d in dataset.dims if d not in {"wavelength", "wavelengths", "band"}
         ]
@@ -616,6 +626,11 @@ def image_cube(
             y_dim, x_dim = spatial_dims[0], spatial_dims[1]
             y_size = dataset.sizes[y_dim]
             x_size = dataset.sizes[x_dim]
+            if top + bottom >= y_size or left + right >= x_size:
+                raise ValueError(
+                    f"crop values exceed dataset dimensions "
+                    f"({y_dim}={y_size}, {x_dim}={x_size})."
+                )
             dataset = dataset.isel(
                 {
                     y_dim: slice(top, y_size - bottom if bottom else None),
