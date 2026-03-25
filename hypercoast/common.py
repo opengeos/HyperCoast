@@ -537,6 +537,7 @@ def image_cube(
     grid_origin=(0, 0, 0),
     grid_spacing=(1, 1, 1),
     z_scale: Optional[float] = None,
+    crop: Optional[Union[int, Tuple[int, int, int, int]]] = None,
     **kwargs: Any,
 ):
     """
@@ -573,6 +574,11 @@ def image_cube(
         z_scale (Optional[float], optional): Scale factor for the z-axis spacing.
             If None (default), auto-scales so the cube height is proportional to
             the smaller spatial dimension. Set to 1.0 to disable auto-scaling.
+        crop (Optional[Union[int, Tuple[int, int, int, int]]], optional): Number
+            of pixels to crop from the edges to remove nodata borders. If an int,
+            the same number of pixels is cropped from all four sides. If a tuple
+            of four ints, specifies (top, bottom, left, right) crop amounts.
+            Defaults to None (no cropping).
         **kwargs (Dict[str, Any], optional): Additional arguments for the
             `add_mesh` method. Defaults to {}.
 
@@ -596,6 +602,26 @@ def image_cube(
 
     if isinstance(dataset, str):
         dataset = xr.open_dataset(dataset)
+
+    # Crop edges to remove nodata borders
+    if crop is not None:
+        if isinstance(crop, int):
+            top, bottom, left, right = crop, crop, crop, crop
+        else:
+            top, bottom, left, right = crop
+        spatial_dims = [
+            d for d in dataset.dims if d not in {"wavelength", "wavelengths", "band"}
+        ]
+        if len(spatial_dims) >= 2:
+            y_dim, x_dim = spatial_dims[0], spatial_dims[1]
+            y_size = dataset.sizes[y_dim]
+            x_size = dataset.sizes[x_dim]
+            dataset = dataset.isel(
+                {
+                    y_dim: slice(top, y_size - bottom if bottom else None),
+                    x_dim: slice(left, x_size - right if right else None),
+                }
+            )
 
     da = dataset[variable]  # xarray DataArray
     values = da.to_numpy()
