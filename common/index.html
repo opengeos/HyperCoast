@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -4015,7 +4015,7 @@ or None if no date in 'YYYYMMDD' format is found.</p></td>
 
 
 <h2 id="hypercoast.common.image_cube" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">image_cube</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">rgb_bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rgb_cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_clim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotter_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_axes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">image_cube</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reflectance&#39;</span><span class="p">,</span> <span class="n">rgb_bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rgb_cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_clim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rgb_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotter_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_axes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">z_scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.common.image_cube" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -4143,6 +4143,14 @@ Defaults to (0, 0, 0).</p></td>
         <td><code>(1, 1, 1)</code></td>
       </tr>
       <tr>
+        <td><code>z_scale</code></td>
+        <td><code>Optional[float]</code></td>
+        <td><p>Scale factor for the z-axis spacing.
+If None (default), auto-scales so the cube height is proportional to
+the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>**kwargs</code></td>
         <td><code>Dict[str, Any]</code></td>
         <td><p>Additional arguments for the
@@ -4185,6 +4193,7 @@ Defaults to (0, 0, 0).</p></td>
     <span class="n">show_axes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">grid_origin</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
     <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">z_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -4218,6 +4227,9 @@ Defaults to (0, 0, 0).</p></td>
 <span class="sd">        grid_origin (Tuple[float, float, float], optional): The origin of the grid.</span>
 <span class="sd">            Defaults to (0, 0, 0).</span>
 <span class="sd">        grid_spacing (Tuple[float, float, float], optional): The spacing of the grid.</span>
+<span class="sd">        z_scale (Optional[float], optional): Scale factor for the z-axis spacing.</span>
+<span class="sd">            If None (default), auto-scales so the cube height is proportional to</span>
+<span class="sd">            the smaller spatial dimension. Set to 1.0 to disable auto-scaling.</span>
 <span class="sd">        **kwargs (Dict[str, Any], optional): Additional arguments for the</span>
 <span class="sd">            `add_mesh` method. Defaults to {}.</span>
 
@@ -4244,6 +4256,31 @@ Defaults to (0, 0, 0).</p></td>
 
     <span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>  <span class="c1"># xarray DataArray</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+    <span class="c1"># Ensure wavelength/spectral dimension is the last axis for proper cube rendering</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">dims</span>
+    <span class="n">spectral_dims</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span> <span class="s2">&quot;band&quot;</span><span class="p">}</span>
+    <span class="n">spectral_idx</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dims</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">spectral_dims</span><span class="p">:</span>
+            <span class="n">spectral_idx</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="n">spectral_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spectral_idx</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Move spectral dimension to the last axis</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">spectral_idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">spectral_idx</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+
+    <span class="c1"># Auto-scale z-spacing for datasets with few spectral bands</span>
+    <span class="k">if</span> <span class="n">z_scale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ny</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">if</span> <span class="n">nz</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">min_spatial</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+            <span class="n">z_scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_spatial</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">nz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">z_scale</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">if</span> <span class="n">grid_spacing</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">grid_spacing</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">z_scale</span><span class="p">)</span>
 
     <span class="c1"># Create the spatial reference for the image cube</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">ImageData</span><span class="p">()</span>
