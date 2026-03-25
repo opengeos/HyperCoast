@@ -536,6 +536,7 @@ def image_cube(
     show_axes: bool = True,
     grid_origin=(0, 0, 0),
     grid_spacing=(1, 1, 1),
+    z_scale: Optional[float] = None,
     **kwargs: Any,
 ):
     """
@@ -569,6 +570,9 @@ def image_cube(
         grid_origin (Tuple[float, float, float], optional): The origin of the grid.
             Defaults to (0, 0, 0).
         grid_spacing (Tuple[float, float, float], optional): The spacing of the grid.
+        z_scale (Optional[float], optional): Scale factor for the z-axis spacing.
+            If None (default), auto-scales so the cube height is proportional to
+            the smaller spatial dimension. Set to 1.0 to disable auto-scaling.
         **kwargs (Dict[str, Any], optional): Additional arguments for the
             `add_mesh` method. Defaults to {}.
 
@@ -595,6 +599,31 @@ def image_cube(
 
     da = dataset[variable]  # xarray DataArray
     values = da.to_numpy()
+
+    # Ensure wavelength/spectral dimension is the last axis for proper cube rendering
+    dims = da.dims
+    spectral_dims = {"wavelength", "wavelengths", "band"}
+    spectral_idx = None
+    for i, d in enumerate(dims):
+        if d in spectral_dims:
+            spectral_idx = i
+            break
+    if spectral_idx is not None and spectral_idx != len(dims) - 1:
+        # Move spectral dimension to the last axis
+        order = [i for i in range(len(dims)) if i != spectral_idx] + [spectral_idx]
+        values = values.transpose(order)
+
+    # Auto-scale z-spacing for datasets with few spectral bands
+    if z_scale is None:
+        ny, nx, nz = values.shape
+        if nz > 1:
+            min_spatial = min(nx, ny)
+            z_scale = (min_spatial - 1) / (nz - 1)
+        else:
+            z_scale = 1.0
+
+    if grid_spacing == (1, 1, 1):
+        grid_spacing = (1, 1, z_scale)
 
     # Create the spatial reference for the image cube
     grid = pv.ImageData()
