@@ -536,6 +536,7 @@ def image_cube(
     show_axes: bool = True,
     grid_origin=(0, 0, 0),
     grid_spacing=(1, 1, 1),
+    z_scale: Optional[float] = None,
     **kwargs: Any,
 ):
     """
@@ -569,6 +570,9 @@ def image_cube(
         grid_origin (Tuple[float, float, float], optional): The origin of the grid.
             Defaults to (0, 0, 0).
         grid_spacing (Tuple[float, float, float], optional): The spacing of the grid.
+        z_scale (Optional[float], optional): Scale factor for the z-axis spacing.
+            If None (default), auto-scales so the cube height is proportional to
+            the smaller spatial dimension. Set to 1.0 to disable auto-scaling.
         **kwargs (Dict[str, Any], optional): Additional arguments for the
             `add_mesh` method. Defaults to {}.
 
@@ -595,6 +599,15 @@ def image_cube(
 
     da = dataset[variable]  # xarray DataArray
     values = da.to_numpy()
+
+    # Auto-scale z-spacing for datasets with few spectral bands
+    if z_scale is None:
+        ny, nx, nz = values.shape
+        min_spatial = min(nx, ny)
+        z_scale = min_spatial / nz if nz < min_spatial else 1.0
+
+    if grid_spacing == (1, 1, 1):
+        grid_spacing = (1, 1, z_scale)
 
     # Create the spatial reference for the image cube
     grid = pv.ImageData()
