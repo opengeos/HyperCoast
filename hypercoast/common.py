@@ -538,6 +538,7 @@ def image_cube(
     grid_spacing=(1, 1, 1),
     z_scale: Optional[float] = None,
     crop: Optional[Union[int, Tuple[int, int, int, int]]] = None,
+    nodata: Optional[float] = None,
     **kwargs: Any,
 ):
     """
@@ -579,6 +580,10 @@ def image_cube(
             the same number of pixels is cropped from all four sides. If a tuple
             of four ints, specifies (top, bottom, left, right) crop amounts.
             Defaults to None (no cropping).
+        nodata (Optional[float], optional): Value to treat as nodata. Pixels
+            matching this value are replaced with NaN and rendered as transparent
+            in the cube. Useful for masking irregular nodata borders from
+            reprojected imagery. Defaults to None (no masking).
         **kwargs (Dict[str, Any], optional): Additional arguments for the
             `add_mesh` method. Defaults to {}.
 
@@ -654,6 +659,13 @@ def image_cube(
         order = [i for i in range(len(dims)) if i != spectral_idx] + [spectral_idx]
         values = values.transpose(order)
 
+    # Mask nodata values with NaN for transparent rendering
+    if nodata is not None:
+        import numpy as np
+
+        values = values.astype(np.float32, copy=True)
+        values[values == nodata] = np.nan
+
     # Auto-scale z-spacing for datasets with few spectral bands
     if z_scale is None:
         ny, nx, nz = values.shape
@@ -689,6 +701,9 @@ def image_cube(
 
     if "show_edges" not in kwargs:
         kwargs["show_edges"] = False
+
+    if nodata is not None and "nan_opacity" not in kwargs:
+        kwargs["nan_opacity"] = 0
 
     if widget == "box":
         p.add_mesh_clip_box(grid, cmap=cmap, clim=clim, **kwargs)
