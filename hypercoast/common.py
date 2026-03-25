@@ -600,11 +600,27 @@ def image_cube(
     da = dataset[variable]  # xarray DataArray
     values = da.to_numpy()
 
+    # Ensure wavelength/spectral dimension is the last axis for proper cube rendering
+    dims = da.dims
+    spectral_dims = {"wavelength", "wavelengths", "band"}
+    spectral_idx = None
+    for i, d in enumerate(dims):
+        if d in spectral_dims:
+            spectral_idx = i
+            break
+    if spectral_idx is not None and spectral_idx != len(dims) - 1:
+        # Move spectral dimension to the last axis
+        order = [i for i in range(len(dims)) if i != spectral_idx] + [spectral_idx]
+        values = values.transpose(order)
+
     # Auto-scale z-spacing for datasets with few spectral bands
     if z_scale is None:
         ny, nx, nz = values.shape
-        min_spatial = min(nx, ny)
-        z_scale = min_spatial / nz if nz < min_spatial else 1.0
+        if nz > 1:
+            min_spatial = min(nx, ny)
+            z_scale = (min_spatial - 1) / (nz - 1)
+        else:
+            z_scale = 1.0
 
     if grid_spacing == (1, 1, 1):
         grid_spacing = (1, 1, z_scale)
