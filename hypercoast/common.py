@@ -537,6 +537,8 @@ def image_cube(
     grid_origin=(0, 0, 0),
     grid_spacing=(1, 1, 1),
     z_scale: Optional[float] = None,
+    crop: Optional[Union[int, Tuple[int, int, int, int]]] = None,
+    nodata: Optional[float] = None,
     **kwargs: Any,
 ):
     """
@@ -573,6 +575,15 @@ def image_cube(
         z_scale (Optional[float], optional): Scale factor for the z-axis spacing.
             If None (default), auto-scales so the cube height is proportional to
             the smaller spatial dimension. Set to 1.0 to disable auto-scaling.
+        crop (Optional[Union[int, Tuple[int, int, int, int]]], optional): Number
+            of pixels to crop from the edges to remove nodata borders. If an int,
+            the same number of pixels is cropped from all four sides. If a tuple
+            of four ints, specifies (top, bottom, left, right) crop amounts.
+            Defaults to None (no cropping).
+        nodata (Optional[float], optional): Value to treat as nodata. Pixels
+            matching this value are replaced with NaN and rendered as transparent
+            in the cube. Useful for masking irregular nodata borders from
+            reprojected imagery. Defaults to None (no masking).
         **kwargs (Dict[str, Any], optional): Additional arguments for the
             `add_mesh` method. Defaults to {}.
 
@@ -597,6 +608,41 @@ def image_cube(
     if isinstance(dataset, str):
         dataset = xr.open_dataset(dataset)
 
+    # Crop edges to remove nodata borders
+    if crop is not None:
+        _crop_err = (
+            "crop must be a non-negative integer or a 4-tuple of "
+            "non-negative integers (top, bottom, left, right)."
+        )
+        if isinstance(crop, int):
+            if crop < 0:
+                raise ValueError(_crop_err)
+            top, bottom, left, right = crop, crop, crop, crop
+        elif isinstance(crop, tuple) and len(crop) == 4:
+            if not all(isinstance(v, int) for v in crop) or any(v < 0 for v in crop):
+                raise ValueError(_crop_err)
+            top, bottom, left, right = crop
+        else:
+            raise ValueError(_crop_err)
+        spatial_dims = [
+            d for d in dataset.dims if d not in {"wavelength", "wavelengths", "band"}
+        ]
+        if len(spatial_dims) >= 2:
+            y_dim, x_dim = spatial_dims[0], spatial_dims[1]
+            y_size = dataset.sizes[y_dim]
+            x_size = dataset.sizes[x_dim]
+            if top + bottom >= y_size or left + right >= x_size:
+                raise ValueError(
+                    f"crop values exceed dataset dimensions "
+                    f"({y_dim}={y_size}, {x_dim}={x_size})."
+                )
+            dataset = dataset.isel(
+                {
+                    y_dim: slice(top, y_size - bottom if bottom else None),
+                    x_dim: slice(left, x_size - right if right else None),
+                }
+            )
+
     da = dataset[variable]  # xarray DataArray
     values = da.to_numpy()
 
@@ -612,6 +658,13 @@ def image_cube(
         # Move spectral dimension to the last axis
         order = [i for i in range(len(dims)) if i != spectral_idx] + [spectral_idx]
         values = values.transpose(order)
+
+    # Mask nodata values with NaN for transparent rendering
+    if nodata is not None:
+        import numpy as np
+
+        values = values.astype(np.float32, copy=True)
+        values[values == nodata] = np.nan
 
     # Auto-scale z-spacing for datasets with few spectral bands
     if z_scale is None:
@@ -648,6 +701,9 @@ def image_cube(
 
     if "show_edges" not in kwargs:
         kwargs["show_edges"] = False
+
+    if nodata is not None and "nan_opacity" not in kwargs:
+        kwargs["nan_opacity"] = 0
 
     if widget == "box":
         p.add_mesh_clip_box(grid, cmap=cmap, clim=clim, **kwargs)
