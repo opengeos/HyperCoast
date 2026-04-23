@@ -194,6 +194,7 @@ class HyperspectralDataset:
             raise ImportError("xarray is required to load hyperspectral data")
 
         self.last_error = None
+        self._reader_error = None
         _log(
             f"Starting dataset load: type={self.data_type}, file={self.filepath}",
             LOG_INFO,
@@ -640,6 +641,7 @@ class HyperspectralDataset:
             ValueError: If the export fails after a successful load.
         """
         self.last_error = None
+        self._reader_error = None
 
         # On Windows without in-process hypercoast, combine load + export
         # into a single subprocess to avoid reading the file twice.

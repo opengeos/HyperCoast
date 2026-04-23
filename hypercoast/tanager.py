@@ -129,6 +129,12 @@ def _discover_tanager_layout(h5_file, product=None):
                 data_path = path
                 cube_name = candidate
                 break
+        if data_path is None:
+            expected = [f"{df_root}/{c}" for c in candidate_names_by_product[product]]
+            raise ValueError(
+                f"Forced product '{product}' requires one of {expected} "
+                f"in the HDF5 file but none were found."
+            )
 
     if data_path is None:
         for candidate in (
@@ -365,7 +371,8 @@ def read_tanager(
         stac_url (str, optional): STAC item URL to source wavelength metadata
             from when the file does not contain it.
         wavelengths (array-like, optional): Wavelengths in nanometers to use
-            directly; must match the number of bands being read.
+            directly. Must have either the full cube band count or, when
+            ``bands`` is also supplied, the number of selected bands.
         product (str, optional): Force a specific product variant. One of
             ``basic_radiance``, ``ortho_radiance``, ``basic_sr``, ``ortho_sr``.
         **kwargs: Extra keyword arguments forwarded to ``xr.Dataset``.
@@ -385,11 +392,27 @@ def read_tanager(
     with h5py.File(filepath, "r") as f:
         layout = _discover_tanager_layout(f, product=product)
 
-        cube_shape = f[layout["data_path"]].shape
+        cube = f[layout["data_path"]]
+        cube_shape = cube.shape
         band_axis = layout["band_axis"]
         n_bands_total = cube_shape[band_axis]
 
-        data = f[layout["data_path"]][()]
+        # Read only the requested bands from disk so large Tanager scenes do
+        # not blow up memory. Fall back to a full read if h5py rejects the
+        # index expression (for example, unsorted integer lists).
+        if bands is not None:
+            index = [slice(None)] * cube.ndim
+            index[band_axis] = bands
+            try:
+                data = cube[tuple(index)]
+            except (TypeError, ValueError):
+                data = cube[()]
+                slicer = [slice(None)] * cube.ndim
+                slicer[band_axis] = bands
+                data = data[tuple(slicer)]
+        else:
+            data = cube[()]
+
         if band_axis != 0:
             data = np.moveaxis(data, band_axis, 0)
 
@@ -402,29 +425,57 @@ def read_tanager(
         lat = f[lat_path][()]
         lon = f[lon_path][()]
 
-        wl_nm, fwhm_nm = _read_wavelengths_from_hdf5(f, layout, n_bands_total)
+        wl_nm_full, fwhm_nm_full = _read_wavelengths_from_hdf5(f, layout, n_bands_total)
+
+    n_bands_selected = data.shape[0]
 
     if layout["fill_value"] is not None:
         data = np.where(data == layout["fill_value"], np.nan, data.astype(float))
     if layout["scale_factor"] != 1.0 or layout["add_offset"] != 0.0:
         data = data.astype(float) * layout["scale_factor"] + layout["add_offset"]
 
+    def _apply_band_slice(values, expected):
+        """Slice a full-length band-aligned array to the selected bands.
+
+        Args:
+            values (array-like or None): Values indexed along the band axis.
+            expected (int): Expected length before slicing.
+
+        Returns:
+            numpy.ndarray or None: Sliced values, or ``None`` if ``values`` is
+            ``None``.
+        """
+        if values is None:
+            return None
+        arr = np.asarray(values)
+        if arr.size == expected and bands is not None:
+            arr = arr[bands]
+        return arr
+
+    wl_nm = _apply_band_slice(wl_nm_full, n_bands_total)
+    fwhm_nm = _apply_band_slice(fwhm_nm_full, n_bands_total)
+
     if wavelengths is not None:
         wl_nm = np.asarray(wavelengths, dtype=float).ravel()
-        if wl_nm.size != n_bands_total:
+        if wl_nm.size == n_bands_total and bands is not None:
+            wl_nm = wl_nm[bands]
+        if wl_nm.size != n_bands_selected:
             raise ValueError(
-                f"`wavelengths` has length {wl_nm.size} but the data cube has "
-                f"{n_bands_total} bands."
+                f"`wavelengths` has length {wl_nm.size} but {n_bands_selected} "
+                f"bands are being read."
             )
-        fwhm_nm = fwhm_nm if fwhm_nm is not None else np.full(n_bands_total, np.nan)
 
     if wl_nm is None and stac_url is not None:
-        wl_nm, fwhm_nm = _read_wavelengths_from_stac(stac_url, layout["stac_asset_key"])
-        if wl_nm.size != n_bands_total:
+        wl_stac, fwhm_stac = _read_wavelengths_from_stac(
+            stac_url, layout["stac_asset_key"]
+        )
+        if wl_stac.size != n_bands_total:
             raise ValueError(
-                f"STAC item reports {wl_nm.size} bands but the data cube has "
+                f"STAC item reports {wl_stac.size} bands but the data cube has "
                 f"{n_bands_total} bands."
             )
+        wl_nm = _apply_band_slice(wl_stac, n_bands_total)
+        fwhm_nm = _apply_band_slice(fwhm_stac, n_bands_total)
 
     if wl_nm is None:
         warnings.warn(
@@ -435,16 +486,10 @@ def read_tanager(
             UserWarning,
             stacklevel=2,
         )
-        wl_nm = np.arange(n_bands_total, dtype=float)
-        fwhm_nm = np.full(n_bands_total, np.nan)
+        wl_nm = np.arange(n_bands_selected, dtype=float)
 
     if fwhm_nm is None:
-        fwhm_nm = np.full(n_bands_total, np.nan)
-
-    if bands is not None:
-        data = data[bands]
-        wl_nm = wl_nm[bands]
-        fwhm_nm = fwhm_nm[bands]
+        fwhm_nm = np.full(n_bands_selected, np.nan)
 
     data_var_name = layout["data_var_name"]
 
