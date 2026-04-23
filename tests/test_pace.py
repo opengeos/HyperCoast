@@ -30,6 +30,26 @@ class TestHypercoast(unittest.TestCase):
         dataset = hypercoast.read_pace(self.filepath)
         self.assertIsNotNone(dataset)
 
+    def test_read_pace_populated(self):
+        """Regression check: read_pace must not return an empty-root shell.
+
+        When the PACE reader silently degrades to the empty root group the
+        QGIS plugin downstream reports ``Variables: []`` and ``No data
+        variable found``; see issue #241.
+        """
+        dataset = hypercoast.read_pace(self.filepath)
+        self.assertGreater(
+            len(dataset.data_vars),
+            0,
+            "PACE dataset must expose at least one data variable",
+        )
+        self.assertIn("wavelength", dataset.coords)
+        self.assertGreater(
+            len(dataset.coords["wavelength"]),
+            100,
+            "PACE OCI L2 AOP typically has ~170 wavelength bands",
+        )
+
     def test_map(self):
         m = hypercoast.Map()
         m.add_basemap("Hybrid")

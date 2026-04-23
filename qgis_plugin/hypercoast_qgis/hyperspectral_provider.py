@@ -146,6 +146,7 @@ class HyperspectralDataset:
         self.nodata = np.nan
         self._is_swath = False  # True for non-gridded data like PACE
         self.last_error = None
+        self._reader_error = None
 
     def _detect_type(self):
         """Auto-detect the data type based on file extension and content."""
@@ -245,7 +246,8 @@ class HyperspectralDataset:
             elif self.data_type == "PACE":
                 self.dataset = hypercoast.read_pace(self.filepath)
                 self._is_swath = True
-                self._extract_pace_metadata()
+                if not self._extract_pace_metadata():
+                    return False
 
             elif self.data_type == "DESIS":
                 self.dataset = hypercoast.read_desis(self.filepath)
@@ -269,7 +271,8 @@ class HyperspectralDataset:
 
             elif self.data_type == "Tanager":
                 self.dataset = hypercoast.read_tanager(self.filepath)
-                self._extract_tanager_metadata()
+                if not self._extract_tanager_metadata():
+                    return False
 
             elif self.data_type == "Wyvern":
                 self.dataset = hypercoast.read_wyvern(self.filepath)
@@ -294,6 +297,7 @@ class HyperspectralDataset:
 
         except Exception as e:
             self.last_error = f"Error loading with hypercoast: {e}"
+            self._reader_error = self.last_error
             _log(self.last_error, LOG_WARNING)
             _log(traceback.format_exc(limit=2), LOG_WARNING)
             # Try type-specific fallback first, then generic.
@@ -680,8 +684,22 @@ class HyperspectralDataset:
         self.crs = "EPSG:4326"
 
     def _extract_pace_metadata(self):
-        """Extract metadata from PACE dataset."""
+        """Extract metadata from PACE dataset.
+
+        Returns:
+            bool: ``True`` on success, ``False`` if the dataset is missing or
+            has no data variables, in which case ``self.dataset`` is cleared
+            and ``self.last_error`` describes the upstream reader failure.
+        """
         ds = self.dataset
+        if ds is None or len(ds.data_vars) == 0:
+            self.last_error = (
+                "PACE reader returned a dataset with no data variables. "
+                f"Upstream reader error: {self._reader_error or 'n/a'}"
+            )
+            _log(self.last_error, LOG_WARNING)
+            self.dataset = None
+            return False
 
         if "wavelength" in ds.coords:
             self.wavelengths = ds.coords["wavelength"].values
@@ -698,6 +716,7 @@ class HyperspectralDataset:
             )
 
         self.crs = "EPSG:4326"
+        return True
 
     def _extract_desis_metadata(self):
         """Extract metadata from DESIS dataset."""
@@ -734,8 +753,21 @@ class HyperspectralDataset:
             )
 
     def _extract_tanager_metadata(self):
-        """Extract metadata from Tanager dataset."""
+        """Extract metadata from Tanager dataset.
+
+        Returns:
+            bool: ``True`` on success, ``False`` if the dataset is missing or
+            has no data variables.
+        """
         ds = self.dataset
+        if ds is None or len(ds.data_vars) == 0:
+            self.last_error = (
+                "Tanager reader returned a dataset with no data variables. "
+                f"Upstream reader error: {self._reader_error or 'n/a'}"
+            )
+            _log(self.last_error, LOG_WARNING)
+            self.dataset = None
+            return False
 
         if "wavelength" in ds.coords:
             self.wavelengths = ds.coords["wavelength"].values
@@ -752,6 +784,7 @@ class HyperspectralDataset:
 
         self.crs = "EPSG:4326"
         self._is_swath = True
+        return True
 
     def _extract_generic_metadata(self):
         """Extract metadata from generic dataset."""
@@ -1031,6 +1064,16 @@ class HyperspectralDataset:
                 self.crs = "EPSG:4326"
 
             self.dataset = ds
+
+            if len(ds.data_vars) == 0:
+                self.last_error = (
+                    f"Generic loader opened {self.filepath} but the root has "
+                    f"no data variables (likely a grouped NetCDF/HDF5 file). "
+                    f"Upstream reader error: {self._reader_error or 'n/a'}"
+                )
+                _log(self.last_error, LOG_WARNING)
+                self.dataset = None
+                return False
 
             for coord_name in ["wavelength", "wavelengths", "band", "bands"]:
                 if coord_name in ds.coords:
