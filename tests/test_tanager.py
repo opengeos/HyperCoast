@@ -59,9 +59,7 @@ def _write_hdfeos_cube(
                 "Wavelength",
                 data=np.linspace(400.0, 2500.0, n_bands, dtype=np.float32),
             )
-            df.create_dataset(
-                "FWHM", data=np.full(n_bands, 10.0, dtype=np.float32)
-            )
+            df.create_dataset("FWHM", data=np.full(n_bands, 10.0, dtype=np.float32))
         gf = f.create_group("HDFEOS/SWATHS/HYP/Geolocation Fields")
         lat = np.tile(np.linspace(0.0, 1.0, height, dtype=np.float32), (width, 1)).T
         lon = np.tile(np.linspace(10.0, 11.0, width, dtype=np.float32), (height, 1))
@@ -128,9 +126,7 @@ class TestReadTanager(unittest.TestCase):
 
     def test_missing_wavelength_warns_and_indexes(self):
         path = os.path.join(self.tmpdir, "no_wavelength.h5")
-        _write_hdfeos_cube(
-            path, "toa_radiance", n_bands=120, include_wavelength=False
-        )
+        _write_hdfeos_cube(path, "toa_radiance", n_bands=120, include_wavelength=False)
 
         with mock.patch("hypercoast.tanager.requests.get") as mocked_get:
             with warnings.catch_warnings(record=True) as caught:
@@ -147,9 +143,7 @@ class TestReadTanager(unittest.TestCase):
 
     def test_explicit_wavelengths_kwarg_skips_network(self):
         path = os.path.join(self.tmpdir, "no_wavelength.h5")
-        _write_hdfeos_cube(
-            path, "toa_radiance", n_bands=100, include_wavelength=False
-        )
+        _write_hdfeos_cube(path, "toa_radiance", n_bands=100, include_wavelength=False)
         supplied = np.linspace(450.0, 2400.0, 100)
 
         with mock.patch("hypercoast.tanager.requests.get") as mocked_get:
