@@ -247,7 +247,7 @@ def download_nasa_data(
     out_dir: Optional[str] = None,
     provider: Optional[str] = None,
     threads: int = 8,
-) -> None:
+) -> List[str]:
     """Downloads NASA Earthdata granules.
 
     Args:
@@ -255,10 +255,17 @@ def download_nasa_data(
         out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).
         provider (str, optional): The provider of the granules.
         threads (int, optional): The number of threads to use for downloading. Defaults to 8.
-    """
 
-    leafmap.nasa_data_download(
-        granules=granules, out_dir=out_dir, provider=provider, threads=threads
+    Returns:
+        List[str]: The local paths of the downloaded files.
+    """
+    import earthaccess
+
+    if os.environ.get("USE_MKDOCS") is not None:
+        return []
+
+    return earthaccess.download(
+        granules, local_path=out_dir, provider=provider, threads=threads
     )
 
 
@@ -424,7 +431,7 @@ def download_pace(
     out_dir: Optional[str] = None,
     provider: Optional[str] = None,
     threads: int = 8,
-) -> None:
+) -> List[str]:
     """Downloads NASA PACE granules.
 
     Args:
@@ -434,9 +441,12 @@ def download_pace(
         provider (str, optional): The provider of the granules.
         threads (int, optional): The number of threads to use for downloading.
             Defaults to 8.
+
+    Returns:
+        List[str]: The local paths of the downloaded files.
     """
 
-    download_nasa_data(
+    return download_nasa_data(
         granules=granules, out_dir=out_dir, provider=provider, threads=threads
     )
 
@@ -445,7 +455,7 @@ def download_emit(
     granules: List[dict],
     out_dir: Optional[str] = None,
     threads: int = 8,
-) -> None:
+) -> List[str]:
     """Downloads NASA EMIT granules.
 
     Args:
@@ -454,16 +464,19 @@ def download_emit(
             downloaded. Defaults to None (current directory).
         threads (int, optional): The number of threads to use for downloading.
             Defaults to 8.
+
+    Returns:
+        List[str]: The local paths of the downloaded files.
     """
 
-    download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
+    return download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
 
 
 def download_ecostress(
     granules: List[dict],
     out_dir: Optional[str] = None,
     threads: int = 8,
-) -> None:
+) -> List[str]:
     """Downloads NASA ECOSTRESS granules.
 
     Args:
@@ -472,9 +485,12 @@ def download_ecostress(
             downloaded. Defaults to None (current directory).
         threads (int, optional): The number of threads to use for downloading.
             Defaults to 8.
+
+    Returns:
+        List[str]: The local paths of the downloaded files.
     """
 
-    download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
+    return download_nasa_data(granules=granules, out_dir=out_dir, threads=threads)
 
 
 def nasa_earth_login(strategy: str = "all", persist: bool = True, **kwargs) -> None:
