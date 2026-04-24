@@ -6,7 +6,7 @@
 
 __author__ = """Qiusheng Wu"""
 __email__ = "giswqs@gmail.com"
-__version__ = "0.20.2"
+__version__ = "0.21.0"
 
 
 from .hypercoast import *
