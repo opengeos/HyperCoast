@@ -259,10 +259,10 @@ def download_nasa_data(
     Returns:
         List[str]: The local paths of the downloaded files.
     """
-    import earthaccess
-
     if os.environ.get("USE_MKDOCS") is not None:
         return []
+
+    import earthaccess
 
     return earthaccess.download(
         granules, local_path=out_dir, provider=provider, threads=threads
