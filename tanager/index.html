@@ -2413,6 +2413,12 @@
 <a id="hypercoast.tanager"></a>
     <div class="doc doc-contents first">
 
+      <p>Reader and helpers for Planet Tanager hyperspectral HDF5 products.</p>
+<p>Supports all four published product variants via :func:<code>read_tanager</code>:
+<code>basic_radiance_hdf5</code>, <code>ortho_radiance_hdf5</code>, <code>basic_sr_hdf5</code>, and
+<code>ortho_sr_hdf5</code>. The reader auto-detects the HDF5 layout and sources
+wavelength metadata from inside the file when available, falling back to a
+caller-supplied STAC URL only when necessary.</p>
 
 
 
@@ -3004,7 +3010,7 @@ Defaults to "nearest".</p></td>
 
 
 <h2 id="hypercoast.tanager.read_tanager" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_tanager</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_tanager</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.tanager.read_tanager" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3012,6 +3018,17 @@ Defaults to "nearest".</p></td>
     <div class="doc doc-contents ">
 
       <p>Read Planet Tanager HDF5 hyperspectral data and return an xarray.Dataset.</p>
+<p>Auto-detects the Tanager product variant from the file contents and sources
+wavelength metadata from inside the file when available. Supports all four
+Planet Tanager product variants: <code>basic_radiance</code>, <code>ortho_radiance</code>,
+<code>basic_sr</code>, and <code>ortho_sr</code>. Surface reflectance products expose their
+data as <code>surface_reflectance</code> with a <code>toa_radiance</code> alias retained for
+backward compatibility with the rest of the HyperCoast Tanager helpers;
+the alias may be removed in a future major release.</p>
+<p>Wavelengths are sourced in this precedence: (1) the <code>wavelengths</code> kwarg,
+(2) a wavelength dataset or attribute inside the HDF5 file, (3) the
+<code>stac_url</code> kwarg parsed for <code>eo:bands</code> metadata, (4) a synthesized
+integer index with a <code>UserWarning</code>. No hardcoded STAC URL is used.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -3026,26 +3043,43 @@ Defaults to "nearest".</p></td>
   <tbody>
       <tr>
         <td><code>filepath</code></td>
-        <td><code>str or Path</code></td>
-        <td><p>Local file path or HTTPS URL to the .h5 file.</p></td>
+        <td><code>str or os.PathLike</code></td>
+        <td><p>Local file path or HTTPS URL to the
+Tanager <code>.h5</code> file.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>bands</code></td>
-        <td><code>list or slice</code></td>
-        <td><p>Indices of spectral bands to read.</p></td>
+        <td><code>array-like</code></td>
+        <td><p>Indices of spectral bands to keep.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>stac_url</code></td>
         <td><code>str</code></td>
-        <td><p>STAC item URL containing wavelength metadata.</p></td>
+        <td><p>STAC item URL to source wavelength metadata
+from when the file does not contain it.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Wavelengths in nanometers to use
+directly. Must have either the full cube band count or, when
+<code>bands</code> is also supplied, the number of selected bands.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>product</code></td>
+        <td><code>str</code></td>
+        <td><p>Force a specific product variant. One of
+<code>basic_radiance</code>, <code>ortho_radiance</code>, <code>basic_sr</code>, <code>ortho_sr</code>.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>**kwargs</code></td>
         <td></td>
-        <td><p>Additional arguments (reserved for future use).</p></td>
+        <td><p>Extra keyword arguments forwarded to <code>xr.Dataset</code>.</p></td>
         <td><code>{}</code></td>
       </tr>
   </tbody>
@@ -3061,79 +3095,212 @@ Defaults to "nearest".</p></td>
   <tbody>
     <tr>
       <td><code>xr.Dataset</code></td>
-      <td><p>Dataset with georeferenced radiance and band metadata.</p></td>
+      <td><p>Dataset with dims <code>(wavelength, y, x)</code>, a canonical data
+variable (<code>toa_radiance</code> for radiance products, <code>surface_reflectance</code>
+for SR products, plus a <code>toa_radiance</code> alias), and <code>latitude</code> /
+<code>longitude</code> coordinates on <code>(y, x)</code>.</p></td>
     </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ValueError</code></td>
+        <td><p>If no 3-D hyperspectral cube can be located in the file.</p></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/tanager.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_tanager</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Read Planet Tanager HDF5 hyperspectral data and return an xarray.Dataset.</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_tanager</span><span class="p">(</span>
+    <span class="n">filepath</span><span class="p">,</span>
+    <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">product</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read Planet Tanager HDF5 hyperspectral data and return an xarray.Dataset.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        filepath (str or Path): Local file path or HTTPS URL to the .h5 file.</span>
-<span class="sd">        bands (list or slice, optional): Indices of spectral bands to read.</span>
-<span class="sd">        stac_url (str, optional): STAC item URL containing wavelength metadata.</span>
-<span class="sd">        **kwargs: Additional arguments (reserved for future use).</span>
+<span class="sd">    Auto-detects the Tanager product variant from the file contents and sources</span>
+<span class="sd">    wavelength metadata from inside the file when available. Supports all four</span>
+<span class="sd">    Planet Tanager product variants: ``basic_radiance``, ``ortho_radiance``,</span>
+<span class="sd">    ``basic_sr``, and ``ortho_sr``. Surface reflectance products expose their</span>
+<span class="sd">    data as ``surface_reflectance`` with a ``toa_radiance`` alias retained for</span>
+<span class="sd">    backward compatibility with the rest of the HyperCoast Tanager helpers;</span>
+<span class="sd">    the alias may be removed in a future major release.</span>
+
+<span class="sd">    Wavelengths are sourced in this precedence: (1) the ``wavelengths`` kwarg,</span>
+<span class="sd">    (2) a wavelength dataset or attribute inside the HDF5 file, (3) the</span>
+<span class="sd">    ``stac_url`` kwarg parsed for ``eo:bands`` metadata, (4) a synthesized</span>
+<span class="sd">    integer index with a ``UserWarning``. No hardcoded STAC URL is used.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filepath (str or os.PathLike): Local file path or HTTPS URL to the</span>
+<span class="sd">            Tanager ``.h5`` file.</span>
+<span class="sd">        bands (array-like, optional): Indices of spectral bands to keep.</span>
+<span class="sd">        stac_url (str, optional): STAC item URL to source wavelength metadata</span>
+<span class="sd">            from when the file does not contain it.</span>
+<span class="sd">        wavelengths (array-like, optional): Wavelengths in nanometers to use</span>
+<span class="sd">            directly. Must have either the full cube band count or, when</span>
+<span class="sd">            ``bands`` is also supplied, the number of selected bands.</span>
+<span class="sd">        product (str, optional): Force a specific product variant. One of</span>
+<span class="sd">            ``basic_radiance``, ``ortho_radiance``, ``basic_sr``, ``ortho_sr``.</span>
+<span class="sd">        **kwargs: Extra keyword arguments forwarded to ``xr.Dataset``.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        xr.Dataset: Dataset with georeferenced radiance and band metadata.</span>
+<span class="sd">        xr.Dataset: Dataset with dims ``(wavelength, y, x)``, a canonical data</span>
+<span class="sd">        variable (``toa_radiance`` for radiance products, ``surface_reflectance``</span>
+<span class="sd">        for SR products, plus a ``toa_radiance`` alias), and ``latitude`` /</span>
+<span class="sd">        ``longitude`` coordinates on ``(y, x)``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If no 3-D hyperspectral cube can be located in the file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">filepath</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span><span class="p">):</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>  <span class="c1"># You must define this if needed</span>
-
-    <span class="k">if</span> <span class="n">stac_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Example static fallback STAC URL; update as needed</span>
-        <span class="n">stac_url</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;https://www.planet.com/data/stac/tanager-core-imagery/coastal-water-bodies/&quot;</span>
-            <span class="s2">&quot;20250514_193937_64_4001/20250514_193937_64_4001.json&quot;</span>
-        <span class="p">)</span>
-
-    <span class="c1"># Parse STAC metadata</span>
-    <span class="n">stac_item</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stac_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-    <span class="n">bands_meta</span> <span class="o">=</span> <span class="n">stac_item</span><span class="p">[</span><span class="s2">&quot;assets&quot;</span><span class="p">][</span><span class="s2">&quot;basic_radiance_hdf5&quot;</span><span class="p">][</span><span class="s2">&quot;eo:bands&quot;</span><span class="p">]</span>
-
-    <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="p">[</span><span class="s2">&quot;center_wavelength&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bands_meta</span><span class="p">])</span>
-    <span class="n">fwhm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;full_width_half_max&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bands_meta</span><span class="p">])</span>
-
-    <span class="k">if</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">wavelengths</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
-        <span class="n">fwhm</span> <span class="o">=</span> <span class="n">fwhm</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;HDFEOS/SWATHS/HYP/Data Fields/toa_radiance&quot;</span><span class="p">][()]</span>
-        <span class="n">lat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;HDFEOS/SWATHS/HYP/Geolocation Fields/Latitude&quot;</span><span class="p">][()]</span>
-        <span class="n">lon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;HDFEOS/SWATHS/HYP/Geolocation Fields/Longitude&quot;</span><span class="p">][()]</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">_discover_tanager_layout</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+        <span class="n">cube</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">layout</span><span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">]]</span>
+        <span class="n">cube_shape</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">band_axis</span> <span class="o">=</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;band_axis&quot;</span><span class="p">]</span>
+        <span class="n">n_bands_total</span> <span class="o">=</span> <span class="n">cube_shape</span><span class="p">[</span><span class="n">band_axis</span><span class="p">]</span>
+
+        <span class="c1"># Read only the requested bands from disk so large Tanager scenes do</span>
+        <span class="c1"># not blow up memory. Fall back to a full read if h5py rejects the</span>
+        <span class="c1"># index expression (for example, unsorted integer lists).</span>
+        <span class="k">if</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">cube</span><span class="o">.</span><span class="n">ndim</span>
+            <span class="n">index</span><span class="p">[</span><span class="n">band_axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">bands</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">cube</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">cube</span><span class="p">[()]</span>
+                <span class="n">slicer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">cube</span><span class="o">.</span><span class="n">ndim</span>
+                <span class="n">slicer</span><span class="p">[</span><span class="n">band_axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">bands</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slicer</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">cube</span><span class="p">[()]</span>
+
+        <span class="k">if</span> <span class="n">band_axis</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">band_axis</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">lat_path</span> <span class="o">=</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;lat_path&quot;</span><span class="p">]</span>
+        <span class="n">lon_path</span> <span class="o">=</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;lon_path&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">lat_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">lon_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Could not locate Latitude/Longitude datasets in the Tanager HDF5 file.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">lat_path</span><span class="p">][()]</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">lon_path</span><span class="p">][()]</span>
+
+        <span class="n">wl_nm_full</span><span class="p">,</span> <span class="n">fwhm_nm_full</span> <span class="o">=</span> <span class="n">_read_wavelengths_from_hdf5</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">layout</span><span class="p">,</span> <span class="n">n_bands_total</span><span class="p">)</span>
+
+    <span class="n">n_bands_selected</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;fill_value&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;fill_value&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;scale_factor&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;add_offset&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;scale_factor&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;add_offset&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_band_slice</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Slice a full-length band-aligned array to the selected bands.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            values (array-like or None): Values indexed along the band axis.</span>
+<span class="sd">            expected (int): Expected length before slicing.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray or None: Sliced values, or ``None`` if ``values`` is</span>
+<span class="sd">            ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">expected</span> <span class="ow">and</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">arr</span>
+
+    <span class="n">wl_nm</span> <span class="o">=</span> <span class="n">_apply_band_slice</span><span class="p">(</span><span class="n">wl_nm_full</span><span class="p">,</span> <span class="n">n_bands_total</span><span class="p">)</span>
+    <span class="n">fwhm_nm</span> <span class="o">=</span> <span class="n">_apply_band_slice</span><span class="p">(</span><span class="n">fwhm_nm_full</span><span class="p">,</span> <span class="n">n_bands_total</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wl_nm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">wl_nm</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n_bands_total</span> <span class="ow">and</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wl_nm</span> <span class="o">=</span> <span class="n">wl_nm</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">wl_nm</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">n_bands_selected</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`wavelengths` has length </span><span class="si">{</span><span class="n">wl_nm</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> but </span><span class="si">{</span><span class="n">n_bands_selected</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;bands are being read.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">wl_nm</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">stac_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wl_stac</span><span class="p">,</span> <span class="n">fwhm_stac</span> <span class="o">=</span> <span class="n">_read_wavelengths_from_stac</span><span class="p">(</span>
+            <span class="n">stac_url</span><span class="p">,</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;stac_asset_key&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">wl_stac</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">n_bands_total</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;STAC item reports </span><span class="si">{</span><span class="n">wl_stac</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> bands but the data cube has &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_bands_total</span><span class="si">}</span><span class="s2"> bands.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">wl_nm</span> <span class="o">=</span> <span class="n">_apply_band_slice</span><span class="p">(</span><span class="n">wl_stac</span><span class="p">,</span> <span class="n">n_bands_total</span><span class="p">)</span>
+        <span class="n">fwhm_nm</span> <span class="o">=</span> <span class="n">_apply_band_slice</span><span class="p">(</span><span class="n">fwhm_stac</span><span class="p">,</span> <span class="n">n_bands_total</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">wl_nm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;No wavelength metadata found in the Tanager HDF5 file and no &quot;</span>
+            <span class="s2">&quot;`stac_url` or `wavelengths` supplied; falling back to integer &quot;</span>
+            <span class="s2">&quot;band indices. Pass `wavelengths` or `stac_url` for physical nm &quot;</span>
+            <span class="s2">&quot;values.&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">wl_nm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_bands_selected</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fwhm_nm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fwhm_nm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_bands_selected</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="n">data_var_name</span> <span class="o">=</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;data_var_name&quot;</span><span class="p">]</span>
 
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">wavelengths</span><span class="p">,</span>
-        <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">fwhm</span><span class="p">),</span>
+        <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">wl_nm</span><span class="p">,</span>
+        <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">fwhm_nm</span><span class="p">),</span>
         <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lat</span><span class="p">),</span>
         <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lon</span><span class="p">),</span>
     <span class="p">}</span>
 
     <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-        <span class="n">data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;toa_radiance&quot;</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">data_var_name</span>
     <span class="p">)</span>
 
     <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-        <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">:</span> <span class="n">da</span><span class="p">},</span>
+        <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span><span class="n">data_var_name</span><span class="p">:</span> <span class="n">da</span><span class="p">},</span>
         <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
-            <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">fwhm</span><span class="p">),</span>
+            <span class="s2">&quot;fwhm&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">fwhm_nm</span><span class="p">),</span>
             <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lat</span><span class="p">),</span>
             <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">((</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">lon</span><span class="p">),</span>
         <span class="p">},</span>
         <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;Planet Tanager HDF5&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;stac_item&quot;</span><span class="p">:</span> <span class="n">stac_url</span><span class="p">,</span>
+            <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;stac_item&quot;</span><span class="p">:</span> <span class="n">stac_url</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data_var&quot;</span><span class="p">:</span> <span class="n">data_var_name</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_var_name</span> <span class="o">==</span> <span class="s2">&quot;surface_reflectance&quot;</span> <span class="ow">and</span> <span class="s2">&quot;toa_radiance&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;surface_reflectance&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">ds</span>
 </code></pre></div>
