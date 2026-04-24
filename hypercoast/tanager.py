@@ -1,3 +1,14 @@
+"""Reader and helpers for Planet Tanager hyperspectral HDF5 products.
+
+Supports all four published product variants via :func:`read_tanager`:
+``basic_radiance_hdf5``, ``ortho_radiance_hdf5``, ``basic_sr_hdf5``, and
+``ortho_sr_hdf5``. The reader auto-detects the HDF5 layout and sources
+wavelength metadata from inside the file when available, falling back to a
+caller-supplied STAC URL only when necessary.
+"""
+
+import warnings
+
 import h5py
 import xarray as xr
 import numpy as np
@@ -6,74 +17,512 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple, Union, Optional, Any, Callable
 from .common import download_file
 
+# Recognized Planet Tanager products and their canonical output var names.
+_PRODUCT_VAR_NAME = {
+    "basic_radiance": "toa_radiance",
+    "ortho_radiance": "toa_radiance",
+    "basic_sr": "surface_reflectance",
+    "ortho_sr": "surface_reflectance",
+}
 
-def read_tanager(filepath, bands=None, stac_url=None, **kwargs):
-    """
-    Read Planet Tanager HDF5 hyperspectral data and return an xarray.Dataset.
+_PRODUCT_STAC_ASSET = {
+    "basic_radiance": "basic_radiance_hdf5",
+    "ortho_radiance": "ortho_radiance_hdf5",
+    "basic_sr": "basic_sr_hdf5",
+    "ortho_sr": "ortho_sr_hdf5",
+}
 
-    Parameters:
-        filepath (str or Path): Local file path or HTTPS URL to the .h5 file.
-        bands (list or slice, optional): Indices of spectral bands to read.
-        stac_url (str, optional): STAC item URL containing wavelength metadata.
-        **kwargs: Additional arguments (reserved for future use).
+
+def _ensure_nm(values):
+    """Return a wavelength array in nanometers.
+
+    Planet STAC expresses center wavelengths in micrometers while Tanager HDF5
+    files typically store them in nanometers. This helper uses a magnitude
+    heuristic: values with a maximum below 10 are assumed to be in micrometers
+    and are scaled by 1000.
+
+    Args:
+        values (array-like): Wavelength values in either nm or um.
 
     Returns:
-        xr.Dataset: Dataset with georeferenced radiance and band metadata.
+        numpy.ndarray: Wavelength values in nanometers.
+    """
+    arr = np.asarray(values, dtype=float)
+    if arr.size and np.nanmax(arr) < 10:
+        arr = arr * 1000.0
+    return arr
+
+
+def _cube_name_to_product(name):
+    """Map an HDF5 cube dataset name to a Tanager product identifier.
+
+    Args:
+        name (str): HDF5 dataset name such as ``toa_radiance`` or
+            ``ortho_surface_reflectance``.
+
+    Returns:
+        str or None: One of ``basic_radiance``, ``ortho_radiance``,
+        ``basic_sr``, ``ortho_sr``, or ``None`` if the name is not recognized.
+    """
+    lname = name.lower()
+    if "ortho" in lname and ("reflect" in lname or "_sr" in lname):
+        return "ortho_sr"
+    if "ortho" in lname and "radiance" in lname:
+        return "ortho_radiance"
+    if "reflect" in lname or lname.endswith("_sr"):
+        return "basic_sr"
+    if "radiance" in lname:
+        return "basic_radiance"
+    return None
+
+
+def _discover_tanager_layout(h5_file, product=None):
+    """Inspect a Tanager HDF5 file and return its layout.
+
+    Detection cascades through (1) the canonical HDFEOS SWATHS layout used by
+    the ``basic_radiance_hdf5`` and ``basic_sr_hdf5`` products, and (2) a
+    generic sweep with ``h5py.visititems`` that picks the largest 3-D float
+    cube whose band axis length falls in the Tanager-plausible range. Latitude
+    and longitude are resolved similarly, with a preference for
+    ``Geolocation Fields``.
+
+    Args:
+        h5_file (h5py.File): An open HDF5 file handle.
+        product (str, optional): If supplied, forces the product variant to one
+            of ``basic_radiance``, ``ortho_radiance``, ``basic_sr``, or
+            ``ortho_sr``. When forced, the corresponding data-field name
+            (``toa_radiance`` or ``surface_reflectance``) is required at the
+            canonical HDFEOS path.
+
+    Returns:
+        dict: A layout descriptor with keys ``product``, ``data_path``,
+        ``data_var_name``, ``lat_path``, ``lon_path``, ``wavelength_path``,
+        ``fwhm_path``, ``scale_factor``, ``add_offset``, ``fill_value``,
+        ``band_axis``, and ``stac_asset_key``.
+
+    Raises:
+        ValueError: If no 3-D data cube can be located in the file.
+    """
+    hdfeos_root = "HDFEOS/SWATHS/HYP"
+    df_root = f"{hdfeos_root}/Data Fields"
+    gf_root = f"{hdfeos_root}/Geolocation Fields"
+
+    data_path = None
+    cube_name = None
+
+    candidate_names_by_product = {
+        "basic_radiance": ["toa_radiance"],
+        "ortho_radiance": ["toa_radiance", "ortho_radiance"],
+        "basic_sr": ["surface_reflectance"],
+        "ortho_sr": ["surface_reflectance", "ortho_surface_reflectance"],
+    }
+
+    if product is not None:
+        if product not in _PRODUCT_VAR_NAME:
+            raise ValueError(
+                f"Unknown Tanager product '{product}'. Expected one of "
+                f"{sorted(_PRODUCT_VAR_NAME)}."
+            )
+        for candidate in candidate_names_by_product[product]:
+            path = f"{df_root}/{candidate}"
+            if path in h5_file:
+                data_path = path
+                cube_name = candidate
+                break
+        if data_path is None:
+            expected = [f"{df_root}/{c}" for c in candidate_names_by_product[product]]
+            raise ValueError(
+                f"Forced product '{product}' requires one of {expected} "
+                f"in the HDF5 file but none were found."
+            )
+
+    if data_path is None:
+        for candidate in (
+            "toa_radiance",
+            "surface_reflectance",
+            "ortho_radiance",
+            "ortho_surface_reflectance",
+        ):
+            path = f"{df_root}/{candidate}"
+            if path in h5_file:
+                data_path = path
+                cube_name = candidate
+                break
+
+    if data_path is None:
+        best = {"size": -1, "path": None, "name": None, "shape": None}
+
+        def _visitor(name, obj):
+            if not isinstance(obj, h5py.Dataset):
+                return
+            if obj.ndim != 3 or not np.issubdtype(obj.dtype, np.floating):
+                return
+            band_axis = int(np.argmin(obj.shape))
+            n_bands = obj.shape[band_axis]
+            if not (100 <= n_bands <= 600):
+                return
+            if obj.size > best["size"]:
+                best["size"] = obj.size
+                best["path"] = name
+                best["name"] = name.rsplit("/", 1)[-1]
+                best["shape"] = obj.shape
+
+        h5_file.visititems(_visitor)
+        if best["path"] is None:
+            raise ValueError(
+                "No 3-D hyperspectral cube found in the Tanager HDF5 file."
+            )
+        data_path = best["path"]
+        cube_name = best["name"]
+
+    if product is None:
+        product = _cube_name_to_product(cube_name) or "basic_radiance"
+
+    data_var_name = _PRODUCT_VAR_NAME[product]
+
+    cube = h5_file[data_path]
+    if data_path.startswith(f"{hdfeos_root}/"):
+        # HDFEOS SWATHS products store cubes in (band, y, x) order.
+        band_axis = 0
+    else:
+        band_axis = int(np.argmin(cube.shape))
+
+    lat_path = f"{gf_root}/Latitude" if f"{gf_root}/Latitude" in h5_file else None
+    lon_path = f"{gf_root}/Longitude" if f"{gf_root}/Longitude" in h5_file else None
+    if lat_path is None or lon_path is None:
+        found_lat = []
+        found_lon = []
+
+        def _geo_visitor(name, obj):
+            if not isinstance(obj, h5py.Dataset) or obj.ndim != 2:
+                return
+            leaf = name.rsplit("/", 1)[-1].lower()
+            if leaf in ("latitude", "lat"):
+                found_lat.append(name)
+            elif leaf in ("longitude", "lon"):
+                found_lon.append(name)
+
+        h5_file.visititems(_geo_visitor)
+        lat_path = lat_path or (found_lat[0] if found_lat else None)
+        lon_path = lon_path or (found_lon[0] if found_lon else None)
+
+    wl_path = None
+    fwhm_path = None
+    for candidate in (
+        f"{df_root}/Wavelength",
+        f"{df_root}/Wavelengths",
+        f"{df_root}/wavelength",
+        f"{df_root}/wavelengths",
+        f"{hdfeos_root}/Wavelength",
+        "Wavelengths",
+        "Wavelength",
+    ):
+        if candidate in h5_file:
+            wl_path = candidate
+            break
+    for candidate in (
+        f"{df_root}/FWHM",
+        f"{df_root}/fwhm",
+        f"{hdfeos_root}/FWHM",
+        "FWHM",
+    ):
+        if candidate in h5_file:
+            fwhm_path = candidate
+            break
+
+    def _attr(obj, *names, default=None):
+        for n in names:
+            if n in obj.attrs:
+                return obj.attrs[n]
+        return default
+
+    scale_factor = float(_attr(cube, "scale_factor", default=1.0))
+    add_offset = float(_attr(cube, "add_offset", default=0.0))
+    fill_value = _attr(cube, "_FillValue", "FillValue", "missing_value", default=None)
+    if fill_value is not None:
+        try:
+            fill_value = float(fill_value)
+        except (TypeError, ValueError):
+            fill_value = None
+
+    return {
+        "product": product,
+        "data_path": data_path,
+        "data_var_name": data_var_name,
+        "lat_path": lat_path,
+        "lon_path": lon_path,
+        "wavelength_path": wl_path,
+        "fwhm_path": fwhm_path,
+        "scale_factor": scale_factor,
+        "add_offset": add_offset,
+        "fill_value": fill_value,
+        "band_axis": band_axis,
+        "stac_asset_key": _PRODUCT_STAC_ASSET[product],
+    }
+
+
+def _read_wavelengths_from_hdf5(h5_file, layout, n_bands):
+    """Read wavelengths and FWHM from inside the HDF5 file.
+
+    Args:
+        h5_file (h5py.File): An open HDF5 file handle.
+        layout (dict): Layout descriptor from ``_discover_tanager_layout``.
+        n_bands (int): Expected number of bands; a match is required.
+
+    Returns:
+        tuple: ``(wavelengths_nm, fwhm_nm)`` as numpy arrays, or ``(None, None)``
+        if no matching in-file metadata is found.
+    """
+    wl_nm = None
+    fwhm_nm = None
+
+    wl_path = layout.get("wavelength_path")
+    if wl_path and wl_path in h5_file:
+        vals = np.asarray(h5_file[wl_path][()], dtype=float).ravel()
+        if vals.size == n_bands:
+            wl_nm = _ensure_nm(vals)
+
+    if wl_nm is None:
+        cube = h5_file[layout["data_path"]]
+        for attr_name in (
+            "wavelengths",
+            "center_wavelengths",
+            "band_center_wavelengths",
+        ):
+            if attr_name in cube.attrs:
+                vals = np.asarray(cube.attrs[attr_name], dtype=float).ravel()
+                if vals.size == n_bands:
+                    wl_nm = _ensure_nm(vals)
+                    break
+
+    fwhm_path = layout.get("fwhm_path")
+    if fwhm_path and fwhm_path in h5_file:
+        vals = np.asarray(h5_file[fwhm_path][()], dtype=float).ravel()
+        if vals.size == n_bands:
+            fwhm_nm = _ensure_nm(vals)
+    if fwhm_nm is None:
+        cube = h5_file[layout["data_path"]]
+        for attr_name in ("fwhm", "full_width_half_max"):
+            if attr_name in cube.attrs:
+                vals = np.asarray(cube.attrs[attr_name], dtype=float).ravel()
+                if vals.size == n_bands:
+                    fwhm_nm = _ensure_nm(vals)
+                    break
+
+    return wl_nm, fwhm_nm
+
+
+def _read_wavelengths_from_stac(stac_url, asset_key):
+    """Fetch wavelengths and FWHM from a Planet STAC item.
+
+    Args:
+        stac_url (str): URL to the STAC item JSON.
+        asset_key (str): Asset key whose ``eo:bands`` describes the product,
+            e.g. ``basic_radiance_hdf5`` or ``ortho_sr_hdf5``.
+
+    Returns:
+        tuple: ``(wavelengths_nm, fwhm_nm)`` as numpy arrays.
+
+    Raises:
+        KeyError: If the asset key or ``eo:bands`` block is absent.
+    """
+    stac_item = requests.get(stac_url, timeout=10).json()
+    assets = stac_item.get("assets", {})
+    if asset_key not in assets:
+        available = sorted(assets.keys())
+        raise KeyError(
+            f"STAC item has no asset '{asset_key}'. Available assets: {available}"
+        )
+    bands_meta = assets[asset_key]["eo:bands"]
+    wl = np.array([b["center_wavelength"] for b in bands_meta], dtype=float)
+    fwhm = np.array(
+        [b.get("full_width_half_max", np.nan) for b in bands_meta], dtype=float
+    )
+    return _ensure_nm(wl), _ensure_nm(fwhm)
+
+
+def read_tanager(
+    filepath,
+    bands=None,
+    stac_url=None,
+    wavelengths=None,
+    product=None,
+    **kwargs,
+):
+    """Read Planet Tanager HDF5 hyperspectral data and return an xarray.Dataset.
+
+    Auto-detects the Tanager product variant from the file contents and sources
+    wavelength metadata from inside the file when available. Supports all four
+    Planet Tanager product variants: ``basic_radiance``, ``ortho_radiance``,
+    ``basic_sr``, and ``ortho_sr``. Surface reflectance products expose their
+    data as ``surface_reflectance`` with a ``toa_radiance`` alias retained for
+    backward compatibility with the rest of the HyperCoast Tanager helpers;
+    the alias may be removed in a future major release.
+
+    Wavelengths are sourced in this precedence: (1) the ``wavelengths`` kwarg,
+    (2) a wavelength dataset or attribute inside the HDF5 file, (3) the
+    ``stac_url`` kwarg parsed for ``eo:bands`` metadata, (4) a synthesized
+    integer index with a ``UserWarning``. No hardcoded STAC URL is used.
+
+    Args:
+        filepath (str or os.PathLike): Local file path or HTTPS URL to the
+            Tanager ``.h5`` file.
+        bands (array-like, optional): Indices of spectral bands to keep.
+        stac_url (str, optional): STAC item URL to source wavelength metadata
+            from when the file does not contain it.
+        wavelengths (array-like, optional): Wavelengths in nanometers to use
+            directly. Must have either the full cube band count or, when
+            ``bands`` is also supplied, the number of selected bands.
+        product (str, optional): Force a specific product variant. One of
+            ``basic_radiance``, ``ortho_radiance``, ``basic_sr``, ``ortho_sr``.
+        **kwargs: Extra keyword arguments forwarded to ``xr.Dataset``.
+
+    Returns:
+        xr.Dataset: Dataset with dims ``(wavelength, y, x)``, a canonical data
+        variable (``toa_radiance`` for radiance products, ``surface_reflectance``
+        for SR products, plus a ``toa_radiance`` alias), and ``latitude`` /
+        ``longitude`` coordinates on ``(y, x)``.
+
+    Raises:
+        ValueError: If no 3-D hyperspectral cube can be located in the file.
     """
     if isinstance(filepath, str) and filepath.startswith("https://"):
-        filepath = download_file(filepath)  # You must define this if needed
-
-    if stac_url is None:
-        # Example static fallback STAC URL; update as needed
-        stac_url = (
-            "https://www.planet.com/data/stac/tanager-core-imagery/coastal-water-bodies/"
-            "20250514_193937_64_4001/20250514_193937_64_4001.json"
-        )
-
-    # Parse STAC metadata
-    stac_item = requests.get(stac_url, timeout=10).json()
-    bands_meta = stac_item["assets"]["basic_radiance_hdf5"]["eo:bands"]
-
-    wavelengths = np.array([b["center_wavelength"] * 1000 for b in bands_meta])
-    fwhm = np.array([b.get("full_width_half_max", np.nan) * 1000 for b in bands_meta])
-
-    if bands is not None:
-        wavelengths = wavelengths[bands]
-        fwhm = fwhm[bands]
+        filepath = download_file(filepath)
 
     with h5py.File(filepath, "r") as f:
-        data = f["HDFEOS/SWATHS/HYP/Data Fields/toa_radiance"][()]
-        lat = f["HDFEOS/SWATHS/HYP/Geolocation Fields/Latitude"][()]
-        lon = f["HDFEOS/SWATHS/HYP/Geolocation Fields/Longitude"][()]
+        layout = _discover_tanager_layout(f, product=product)
 
-    if bands is not None:
-        data = data[bands]
+        cube = f[layout["data_path"]]
+        cube_shape = cube.shape
+        band_axis = layout["band_axis"]
+        n_bands_total = cube_shape[band_axis]
+
+        # Read only the requested bands from disk so large Tanager scenes do
+        # not blow up memory. Fall back to a full read if h5py rejects the
+        # index expression (for example, unsorted integer lists).
+        if bands is not None:
+            index = [slice(None)] * cube.ndim
+            index[band_axis] = bands
+            try:
+                data = cube[tuple(index)]
+            except (TypeError, ValueError):
+                data = cube[()]
+                slicer = [slice(None)] * cube.ndim
+                slicer[band_axis] = bands
+                data = data[tuple(slicer)]
+        else:
+            data = cube[()]
+
+        if band_axis != 0:
+            data = np.moveaxis(data, band_axis, 0)
+
+        lat_path = layout["lat_path"]
+        lon_path = layout["lon_path"]
+        if lat_path is None or lon_path is None:
+            raise ValueError(
+                "Could not locate Latitude/Longitude datasets in the Tanager HDF5 file."
+            )
+        lat = f[lat_path][()]
+        lon = f[lon_path][()]
+
+        wl_nm_full, fwhm_nm_full = _read_wavelengths_from_hdf5(f, layout, n_bands_total)
+
+    n_bands_selected = data.shape[0]
+
+    if layout["fill_value"] is not None:
+        data = np.where(data == layout["fill_value"], np.nan, data.astype(float))
+    if layout["scale_factor"] != 1.0 or layout["add_offset"] != 0.0:
+        data = data.astype(float) * layout["scale_factor"] + layout["add_offset"]
+
+    def _apply_band_slice(values, expected):
+        """Slice a full-length band-aligned array to the selected bands.
+
+        Args:
+            values (array-like or None): Values indexed along the band axis.
+            expected (int): Expected length before slicing.
+
+        Returns:
+            numpy.ndarray or None: Sliced values, or ``None`` if ``values`` is
+            ``None``.
+        """
+        if values is None:
+            return None
+        arr = np.asarray(values)
+        if arr.size == expected and bands is not None:
+            arr = arr[bands]
+        return arr
+
+    wl_nm = _apply_band_slice(wl_nm_full, n_bands_total)
+    fwhm_nm = _apply_band_slice(fwhm_nm_full, n_bands_total)
+
+    if wavelengths is not None:
+        wl_nm = np.asarray(wavelengths, dtype=float).ravel()
+        if wl_nm.size == n_bands_total and bands is not None:
+            wl_nm = wl_nm[bands]
+        if wl_nm.size != n_bands_selected:
+            raise ValueError(
+                f"`wavelengths` has length {wl_nm.size} but {n_bands_selected} "
+                f"bands are being read."
+            )
+
+    if wl_nm is None and stac_url is not None:
+        wl_stac, fwhm_stac = _read_wavelengths_from_stac(
+            stac_url, layout["stac_asset_key"]
+        )
+        if wl_stac.size != n_bands_total:
+            raise ValueError(
+                f"STAC item reports {wl_stac.size} bands but the data cube has "
+                f"{n_bands_total} bands."
+            )
+        wl_nm = _apply_band_slice(wl_stac, n_bands_total)
+        fwhm_nm = _apply_band_slice(fwhm_stac, n_bands_total)
+
+    if wl_nm is None:
+        warnings.warn(
+            "No wavelength metadata found in the Tanager HDF5 file and no "
+            "`stac_url` or `wavelengths` supplied; falling back to integer "
+            "band indices. Pass `wavelengths` or `stac_url` for physical nm "
+            "values.",
+            UserWarning,
+            stacklevel=2,
+        )
+        wl_nm = np.arange(n_bands_selected, dtype=float)
+
+    if fwhm_nm is None:
+        fwhm_nm = np.full(n_bands_selected, np.nan)
+
+    data_var_name = layout["data_var_name"]
 
     coords = {
-        "wavelength": wavelengths,
-        "fwhm": ("wavelength", fwhm),
+        "wavelength": wl_nm,
+        "fwhm": ("wavelength", fwhm_nm),
         "latitude": (("y", "x"), lat),
         "longitude": (("y", "x"), lon),
     }
 
     da = xr.DataArray(
-        data, dims=("wavelength", "y", "x"), coords=coords, name="toa_radiance"
+        data, dims=("wavelength", "y", "x"), coords=coords, name=data_var_name
     )
 
     ds = xr.Dataset(
-        data_vars={"toa_radiance": da},
+        data_vars={data_var_name: da},
         coords={
             "wavelength": da.wavelength,
-            "fwhm": ("wavelength", fwhm),
+            "fwhm": ("wavelength", fwhm_nm),
             "latitude": (("y", "x"), lat),
             "longitude": (("y", "x"), lon),
         },
         attrs={
             "source": "Planet Tanager HDF5",
-            "stac_item": stac_url,
+            "product": layout["product"],
+            "stac_item": stac_url or "",
+            "data_var": data_var_name,
         },
         **kwargs,
     )
+
+    if data_var_name == "surface_reflectance" and "toa_radiance" not in ds.data_vars:
+        ds["toa_radiance"] = ds["surface_reflectance"]
 
     return ds
 
