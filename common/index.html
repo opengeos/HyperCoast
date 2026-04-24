@@ -3249,13 +3249,28 @@ Defaults to 8.</p></td>
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[str]</code></td>
+      <td><p>The local paths of the downloaded files.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_ecostress</span><span class="p">(</span>
     <span class="n">granules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Downloads NASA ECOSTRESS granules.</span>
 
 <span class="sd">    Args:</span>
@@ -3264,9 +3279,12 @@ Defaults to 8.</p></td>
 <span class="sd">            downloaded. Defaults to None (current directory).</span>
 <span class="sd">        threads (int, optional): The number of threads to use for downloading.</span>
 <span class="sd">            Defaults to 8.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[str]: The local paths of the downloaded files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -3322,13 +3340,28 @@ Defaults to 8.</p></td>
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[str]</code></td>
+      <td><p>The local paths of the downloaded files.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_emit</span><span class="p">(</span>
     <span class="n">granules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Downloads NASA EMIT granules.</span>
 
 <span class="sd">    Args:</span>
@@ -3337,9 +3370,12 @@ Defaults to 8.</p></td>
 <span class="sd">            downloaded. Defaults to None (current directory).</span>
 <span class="sd">        threads (int, optional): The number of threads to use for downloading.</span>
 <span class="sd">            Defaults to 8.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[str]: The local paths of the downloaded files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">download_nasa_data</span><span class="p">(</span><span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -3633,6 +3669,21 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[str]</code></td>
+      <td><p>The local paths of the downloaded files.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_nasa_data</span><span class="p">(</span>
@@ -3640,7 +3691,7 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Downloads NASA Earthdata granules.</span>
 
 <span class="sd">    Args:</span>
@@ -3648,10 +3699,17 @@ in which case it must be a path to a CA bundle to use. Default is True.. Default
 <span class="sd">        out_dir (str, optional): The output directory where the granules will be downloaded. Defaults to None (current directory).</span>
 <span class="sd">        provider (str, optional): The provider of the granules.</span>
 <span class="sd">        threads (int, optional): The number of threads to use for downloading. Defaults to 8.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">leafmap</span><span class="o">.</span><span class="n">nasa_data_download</span><span class="p">(</span>
-        <span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List[str]: The local paths of the downloaded files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;USE_MKDOCS&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">earthaccess</span>
+
+    <span class="k">return</span> <span class="n">earthaccess</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+        <span class="n">granules</span><span class="p">,</span> <span class="n">local_path</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3714,6 +3772,21 @@ Defaults to 8.</p></td>
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[str]</code></td>
+      <td><p>The local paths of the downloaded files.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>hypercoast/common.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_pace</span><span class="p">(</span>
@@ -3721,7 +3794,7 @@ Defaults to 8.</p></td>
     <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Downloads NASA PACE granules.</span>
 
 <span class="sd">    Args:</span>
@@ -3731,9 +3804,12 @@ Defaults to 8.</p></td>
 <span class="sd">        provider (str, optional): The provider of the granules.</span>
 <span class="sd">        threads (int, optional): The number of threads to use for downloading.</span>
 <span class="sd">            Defaults to 8.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[str]: The local paths of the downloaded files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">download_nasa_data</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">download_nasa_data</span><span class="p">(</span>
         <span class="n">granules</span><span class="o">=</span><span class="n">granules</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span>
     <span class="p">)</span>
 </code></pre></div>
