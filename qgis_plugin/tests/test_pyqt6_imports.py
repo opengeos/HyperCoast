@@ -11,6 +11,7 @@ so this file does not need to be edited per-plugin.
 
 import importlib
 import pathlib
+import sys
 
 import pytest
 
@@ -36,6 +37,12 @@ def _find_plugin_root() -> pathlib.Path:
 
 
 PLUGIN_ROOT = _find_plugin_root()
+
+# Mirror how QGIS adds the plugin's parent directory to sys.path so the plugin
+# package can be imported by its dotted name regardless of pytest's rootdir.
+_PLUGIN_PARENT = str(PLUGIN_ROOT.parent)
+if _PLUGIN_PARENT not in sys.path:
+    sys.path.insert(0, _PLUGIN_PARENT)
 
 
 def _module_names():

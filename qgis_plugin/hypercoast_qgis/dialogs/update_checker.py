@@ -63,9 +63,9 @@ class VersionCheckWorker(QThread):
         """Fetch the latest metadata from GitHub."""
         try:
             _require_https(METADATA_URL)
-            with urlopen(
+            with urlopen(  # nosec B310 - hardcoded https GitHub URL guarded by _require_https
                 METADATA_URL, timeout=15
-            ) as response:  # nosec B310 - hardcoded https GitHub URL guarded by _require_https
+            ) as response:
                 content = response.read().decode("utf-8")
 
             # Parse version from metadata
@@ -127,9 +127,9 @@ class DownloadWorker(QThread):
                     self.progress.emit(10 + percent, "Downloading...")
 
             _require_https(ZIP_URL)
-            urlretrieve(
+            urlretrieve(  # nosec B310 - hardcoded https GitHub URL guarded by _require_https
                 ZIP_URL, zip_path, reporthook
-            )  # nosec B310 - hardcoded https GitHub URL guarded by _require_https
+            )
 
             self.progress.emit(60, "Extracting files...")
 
