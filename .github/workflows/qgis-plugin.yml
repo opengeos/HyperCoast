@@ -49,4 +49,4 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install PyQt6 PyQt6-QScintilla pytest numpy Pillow
             - name: Run import smoke tests
-              run: pytest qgis_plugin/tests -v
+              run: pytest qgis_plugin/qt6_tests -v
