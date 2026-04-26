@@ -243,12 +243,8 @@ def _get_qgis_site_packages():
 # Conda environment detection
 # ---------------------------------------------------------------------------
 
-# Cached result of using_conda_env_with_deps() for the current process.
-# None means "not yet computed".
-_CONDA_ENV_WITH_DEPS_CACHE = None
 
-
-def _is_conda_env():
+def is_conda_env():
     """Check whether the current Python process is running inside a Conda env.
 
     Detection prefers the ``CONDA_PREFIX`` environment variable that ``conda
@@ -335,8 +331,10 @@ def using_conda_env_with_deps(plugin_dir):
     ``matplotlib`` out from under modules that QGIS pre-loaded from the Conda
     env, producing the ``RecursionError`` reported in issue #247.
 
-    The result is cached for the lifetime of the process because the answer
-    cannot change without restarting QGIS.
+    Recomputed on every call so that the Settings dock's ``Refresh Status``
+    button (and any in-process ``conda install`` the user runs alongside QGIS)
+    immediately picks up the new state. The check is just a handful of
+    ``importlib.metadata`` lookups, so the cost is negligible.
 
     Args:
         plugin_dir: Path to the plugin directory containing requirements.txt.
@@ -345,24 +343,16 @@ def using_conda_env_with_deps(plugin_dir):
         bool: True only if a Conda env is active AND every requirement in
         requirements.txt resolves to an installed, version-satisfying package.
     """
-    global _CONDA_ENV_WITH_DEPS_CACHE
-    if _CONDA_ENV_WITH_DEPS_CACHE is not None:
-        return _CONDA_ENV_WITH_DEPS_CACHE
-
-    if not _is_conda_env():
-        _CONDA_ENV_WITH_DEPS_CACHE = False
+    if not is_conda_env():
         return False
 
     statuses = _check_requirements_in_current_env(plugin_dir)
     if not statuses:
         # No requirements parsed; treat as "not satisfied" so we do not
         # silently skip venv setup based on an empty requirements file.
-        _CONDA_ENV_WITH_DEPS_CACHE = False
         return False
 
-    all_ok = all(s["status"] == "ok" for s in statuses)
-    _CONDA_ENV_WITH_DEPS_CACHE = all_ok
-    return all_ok
+    return all(s["status"] == "ok" for s in statuses)
 
 
 def _try_qgis_h5py_fallback():
@@ -922,10 +912,12 @@ def _version_satisfies(installed, operator, required):
 def check_packages(plugin_dir):
     """Check which packages from requirements.txt are installed in the venv.
 
-    When the plugin is running inside a Conda env that already provides every
-    requirement, the lookup is delegated to the current Python environment
-    instead of the venv site-packages. This keeps the settings dock display in
-    sync with what the plugin actually imports at runtime.
+    When the plugin is running inside any Conda environment, the lookup is
+    delegated to the current Python environment instead of the venv
+    site-packages. This keeps the settings dock display in sync with what the
+    plugin actually imports at runtime, even when only some requirements are
+    satisfied by Conda (in which case the venv may not exist yet, and the
+    venv-based lookup would otherwise report every package as missing).
 
     Args:
         plugin_dir: Path to the plugin directory containing requirements.txt.
@@ -934,7 +926,7 @@ def check_packages(plugin_dir):
         list: List of dicts with keys: package, required, installed, status, spec.
             status is one of: "ok", "missing", "outdated".
     """
-    if using_conda_env_with_deps(plugin_dir):
+    if is_conda_env():
         return _check_requirements_in_current_env(plugin_dir)
 
     requirements = _parse_requirements(plugin_dir)

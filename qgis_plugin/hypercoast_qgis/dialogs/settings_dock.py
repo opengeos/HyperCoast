@@ -194,8 +194,8 @@ class SettingsDockWidget(QDockWidget):
     def _check_packages(self):
         """Check which packages are installed and update the table."""
         from ..core.venv_manager import (
-            _is_conda_env,
             check_packages,
+            is_conda_env,
             using_conda_env_with_deps,
         )
 
@@ -206,7 +206,7 @@ class SettingsDockWidget(QDockWidget):
             1 for p in packages if p["status"] in ("missing", "outdated")
         )
         total_count = len(packages)
-        in_conda = _is_conda_env()
+        in_conda = is_conda_env()
         conda_with_deps = in_conda and using_conda_env_with_deps(self.plugin_dir)
 
         if conda_with_deps:
