@@ -225,12 +225,19 @@ class HyperCoastPlugin:
             is_ready, message = venv_manager.get_venv_status(self.plugin_dir)
 
             if is_ready:
+                if venv_manager.using_conda_env_with_deps(self.plugin_dir):
+                    startup_msg = (
+                        "Conda environment detected; using Conda-provided "
+                        "packages (skipping venv activation)"
+                    )
+                else:
+                    startup_msg = "Dependencies ready, activating venv packages..."
                 QgsMessageLog.logMessage(
-                    "Dependencies ready, activating venv packages...",
+                    startup_msg,
                     "HyperCoast",
                     Qgis.Info,
                 )
-                venv_manager.ensure_venv_packages_available()
+                venv_manager.ensure_venv_packages_available(self.plugin_dir)
                 self._try_enable_data_dialogs()
             else:
                 QgsMessageLog.logMessage(

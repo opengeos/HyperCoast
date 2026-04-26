@@ -193,7 +193,11 @@ class SettingsDockWidget(QDockWidget):
 
     def _check_packages(self):
         """Check which packages are installed and update the table."""
-        from ..core.venv_manager import check_packages
+        from ..core.venv_manager import (
+            check_packages,
+            is_conda_env,
+            using_conda_env_with_deps,
+        )
 
         packages = check_packages(self.plugin_dir)
         self._populate_table(packages)
@@ -202,21 +206,47 @@ class SettingsDockWidget(QDockWidget):
             1 for p in packages if p["status"] in ("missing", "outdated")
         )
         total_count = len(packages)
+        in_conda = is_conda_env()
+        conda_with_deps = in_conda and using_conda_env_with_deps(self.plugin_dir)
 
-        if missing_count == 0:
+        if conda_with_deps:
+            # Conda env already provides every requirement. Disable the
+            # bundled venv flow entirely to avoid the numpy/matplotlib
+            # double-import bug from issue #247.
+            self.status_label.setText(
+                f"Conda environment detected. Using {total_count} package(s) "
+                "from the active Conda env."
+            )
+            self.status_label.setStyleSheet("color: green; font-weight: bold;")
+            self.install_btn.setText("Conda Environment - No Install Needed")
+            self.install_btn.setEnabled(False)
+        elif in_conda and missing_count > 0:
+            # In a Conda env but some packages missing. Recommend installing
+            # via conda rather than the bundled venv (which would re-trigger
+            # the issue #247 RecursionError).
+            self.status_label.setText(
+                f"{missing_count} of {total_count} package(s) missing. "
+                "In Conda, prefer:  conda install -c conda-forge hypercoast"
+            )
+            self.status_label.setStyleSheet("color: #ef6c00; font-weight: bold;")
+            self.install_btn.setText(
+                "Install Dependencies Anyway (not recommended in Conda)"
+            )
+            self.install_btn.setEnabled(True)
+        elif missing_count == 0:
             self.status_label.setText(
                 f"All {total_count} packages are installed and up to date."
             )
             self.status_label.setStyleSheet("color: green; font-weight: bold;")
             self.install_btn.setText("Re-install Dependencies")
+            self.install_btn.setEnabled(True)
         else:
             self.status_label.setText(
                 f"{missing_count} of {total_count} packages need to be installed."
             )
             self.status_label.setStyleSheet("color: #d32f2f; font-weight: bold;")
             self.install_btn.setText(f"Install Dependencies ({missing_count} missing)")
-
-        self.install_btn.setEnabled(True)
+            self.install_btn.setEnabled(True)
 
     def _populate_table(self, packages):
         """Populate the package table with check results.
