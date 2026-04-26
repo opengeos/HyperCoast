@@ -41,7 +41,7 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
         self.rubber_bands = []
 
         # Set cursor
-        self.setCursor(QCursor(Qt.CrossCursor))
+        self.setCursor(QCursor(Qt.CursorShape.CrossCursor))
 
     def activate(self):
         """Activate the tool."""
@@ -49,7 +49,7 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
         QgsMessageLog.logMessage(
             "Spectral Inspector activated - click on map to extract spectra",
             "HyperCoast",
-            Qgis.Info,
+            Qgis.MessageLevel.Info,
         )
 
     def deactivate(self):
@@ -81,7 +81,9 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
 
         if not hyper_layers:
             QgsMessageLog.logMessage(
-                "No hyperspectral layers loaded", "HyperCoast", Qgis.Warning
+                "No hyperspectral layers loaded",
+                "HyperCoast",
+                Qgis.MessageLevel.Warning,
             )
             return
 
@@ -158,12 +160,14 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
                     QgsMessageLog.logMessage(
                         f"Extracted spectrum at ({lat:.4f}, {lon:.4f}) from {layer.name()}",
                         "HyperCoast",
-                        Qgis.Info,
+                        Qgis.MessageLevel.Info,
                     )
 
             except Exception as e:
                 QgsMessageLog.logMessage(
-                    f"Error extracting spectrum: {str(e)}", "HyperCoast", Qgis.Warning
+                    f"Error extracting spectrum: {str(e)}",
+                    "HyperCoast",
+                    Qgis.MessageLevel.Warning,
                 )
 
     def _add_point_marker(self, point):
@@ -174,7 +178,7 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
         from qgis.PyQt.QtCore import Qt
         from qgis.PyQt.QtGui import QColor
 
-        rb = QgsRubberBand(self.canvas, QgsWkbTypes.PointGeometry)
+        rb = QgsRubberBand(self.canvas, QgsWkbTypes.GeometryType.PointGeometry)
         rb.setColor(QColor(255, 0, 0, 200))
         rb.setWidth(3)
         rb.setIcon(QgsRubberBand.ICON_CIRCLE)

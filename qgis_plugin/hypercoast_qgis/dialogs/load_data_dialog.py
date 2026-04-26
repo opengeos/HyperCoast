@@ -199,7 +199,7 @@ class LoadDataDialog(QDialog):
 
         for name, r, g, b in presets:
             item = QListWidgetItem(f"{name}: R={r}nm, G={g}nm, B={b}nm")
-            item.setData(Qt.UserRole, (r, g, b))
+            item.setData(Qt.ItemDataRole.UserRole, (r, g, b))
             self.presets_list.addItem(item)
 
         self.presets_list.itemDoubleClicked.connect(self.apply_preset)
@@ -268,7 +268,7 @@ class LoadDataDialog(QDialog):
             QgsMessageLog.logMessage(
                 f"Preview dataset requested: file={filepath}, selected_type={data_type}",
                 "HyperCoast",
-                Qgis.Info,
+                Qgis.MessageLevel.Info,
             )
             self.dataset = HyperspectralDataset(filepath, data_type)
 
@@ -311,7 +311,7 @@ class LoadDataDialog(QDialog):
                 QgsMessageLog.logMessage(
                     f"Preview dataset succeeded: resolved_type={self.dataset.data_type}",
                     "HyperCoast",
-                    Qgis.Info,
+                    Qgis.MessageLevel.Info,
                 )
             else:
                 # Ensure failed preview does not leave a half-initialized dataset
@@ -321,7 +321,7 @@ class LoadDataDialog(QDialog):
                     f"Preview dataset failed: file={filepath}, "
                     f"selected_type={data_type}, details={error_detail}",
                     "HyperCoast",
-                    Qgis.Warning,
+                    Qgis.MessageLevel.Warning,
                 )
                 self.dataset = None
                 QMessageBox.warning(
@@ -335,7 +335,7 @@ class LoadDataDialog(QDialog):
             QgsMessageLog.logMessage(
                 f"Preview dataset exception: file={filepath}, error={e}",
                 "HyperCoast",
-                Qgis.Critical,
+                Qgis.MessageLevel.Critical,
             )
             QMessageBox.critical(self, "Error", f"Error loading dataset: {str(e)}")
 
@@ -344,7 +344,7 @@ class LoadDataDialog(QDialog):
 
     def apply_preset(self, item):
         """Apply a wavelength preset."""
-        r, g, b = item.data(Qt.UserRole)
+        r, g, b = item.data(Qt.ItemDataRole.UserRole)
         self.red_spin.setValue(r)
         self.green_spin.setValue(g)
         self.blue_spin.setValue(b)
@@ -370,7 +370,7 @@ class LoadDataDialog(QDialog):
             QgsMessageLog.logMessage(
                 f"Load dataset requested: file={filepath}, selected_type={requested_type}",
                 "HyperCoast",
-                Qgis.Info,
+                Qgis.MessageLevel.Info,
             )
             type_changed = (
                 self.dataset is not None
@@ -418,7 +418,7 @@ class LoadDataDialog(QDialog):
                         f"Load dataset failed during read: file={filepath}, "
                         f"selected_type={requested_type}, details={detail}",
                         "HyperCoast",
-                        Qgis.Warning,
+                        Qgis.MessageLevel.Warning,
                     )
                     raise ValueError(f"Failed to load dataset. Details: {detail}")
             else:
@@ -451,7 +451,7 @@ class LoadDataDialog(QDialog):
                     QgsMessageLog.logMessage(
                         f"Assigned layer CRS from dataset metadata: {self.dataset.crs}",
                         "HyperCoast",
-                        Qgis.Info,
+                        Qgis.MessageLevel.Info,
                     )
 
             # Set value range for better visualization
@@ -528,7 +528,9 @@ class LoadDataDialog(QDialog):
             self.iface.setActiveLayer(raster_layer)
 
             QgsMessageLog.logMessage(
-                f"Loaded hyperspectral layer: {layer_name}", "HyperCoast", Qgis.Info
+                f"Loaded hyperspectral layer: {layer_name}",
+                "HyperCoast",
+                Qgis.MessageLevel.Info,
             )
 
         except Exception as e:
@@ -536,7 +538,7 @@ class LoadDataDialog(QDialog):
             QgsMessageLog.logMessage(
                 f"Error loading hyperspectral data: {str(e)}",
                 "HyperCoast",
-                Qgis.Critical,
+                Qgis.MessageLevel.Critical,
             )
 
         finally:

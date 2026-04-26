@@ -98,7 +98,7 @@ class DependencyInstallerDialog(QDialog):
         header_font.setPointSize(14)
         header_font.setBold(True)
         header_label.setFont(header_font)
-        header_label.setAlignment(Qt.AlignCenter)
+        header_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(header_label)
 
         # Description
@@ -108,7 +108,7 @@ class DependencyInstallerDialog(QDialog):
             "so your QGIS Python environment stays clean."
         )
         desc_label.setWordWrap(True)
-        desc_label.setAlignment(Qt.AlignCenter)
+        desc_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(desc_label)
 
         # Package table
@@ -118,26 +118,26 @@ class DependencyInstallerDialog(QDialog):
             ["Package", "Required", "Installed", "Status"]
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            0, QHeaderView.Stretch
+            0, QHeaderView.ResizeMode.Stretch
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            1, QHeaderView.ResizeToContents
+            1, QHeaderView.ResizeMode.ResizeToContents
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            2, QHeaderView.ResizeToContents
+            2, QHeaderView.ResizeMode.ResizeToContents
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            3, QHeaderView.ResizeToContents
+            3, QHeaderView.ResizeMode.ResizeToContents
         )
-        self.package_table.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.package_table.setSelectionMode(QTableWidget.NoSelection)
+        self.package_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.package_table.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
         self.package_table.verticalHeader().setVisible(False)
         layout.addWidget(self.package_table)
 
         # Status label
         self.status_label = QLabel("")
         self.status_label.setWordWrap(True)
-        self.status_label.setAlignment(Qt.AlignCenter)
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
 
         # Progress bar
@@ -149,7 +149,7 @@ class DependencyInstallerDialog(QDialog):
         # Progress label
         self.progress_label = QLabel("")
         self.progress_label.setVisible(False)
-        self.progress_label.setAlignment(Qt.AlignCenter)
+        self.progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progress_label.setStyleSheet("font-size: 11px; color: palette(text);")
         layout.addWidget(self.progress_label)
 
@@ -182,7 +182,7 @@ class DependencyInstallerDialog(QDialog):
             "installation for some changes to take effect.</small>"
         )
         info_label.setWordWrap(True)
-        info_label.setAlignment(Qt.AlignCenter)
+        info_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(info_label)
 
     def _check_packages(self):
@@ -227,13 +227,13 @@ class DependencyInstallerDialog(QDialog):
 
             # Required version
             req_item = QTableWidgetItem(pkg["required"])
-            req_item.setTextAlignment(Qt.AlignCenter)
+            req_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.package_table.setItem(row, 1, req_item)
 
             # Installed version
             installed = pkg["installed"] or "Not installed"
             inst_item = QTableWidgetItem(installed)
-            inst_item.setTextAlignment(Qt.AlignCenter)
+            inst_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.package_table.setItem(row, 2, inst_item)
 
             # Status
@@ -249,7 +249,7 @@ class DependencyInstallerDialog(QDialog):
                 color = QColor(211, 47, 47)  # Red
 
             status_item = QTableWidgetItem(status_text)
-            status_item.setTextAlignment(Qt.AlignCenter)
+            status_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             status_item.setForeground(color)
             font = status_item.font()
             font.setBold(True)
@@ -264,11 +264,11 @@ class DependencyInstallerDialog(QDialog):
             "This will create a virtual environment and install all required "
             "packages. This may take a few minutes.\n\n"
             "Do you want to continue?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.Yes,
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes,
         )
 
-        if reply != QMessageBox.Yes:
+        if reply != QMessageBox.StandardButton.Yes:
             return
 
         self.install_btn.setEnabled(False)
@@ -357,10 +357,10 @@ class DependencyInstallerDialog(QDialog):
                 "Installation in Progress",
                 "An installation is in progress. "
                 "Are you sure you want to cancel and close?",
-                QMessageBox.Yes | QMessageBox.No,
-                QMessageBox.No,
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No,
             )
-            if reply != QMessageBox.Yes:
+            if reply != QMessageBox.StandardButton.Yes:
                 event.ignore()
                 return
             self.install_worker.cancel()

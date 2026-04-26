@@ -33,12 +33,12 @@ _DLL_DIR_HANDLES = []
 _ADDED_DLL_DIRS = set()
 
 
-def _log(message, level=Qgis.Info):
+def _log(message, level=Qgis.MessageLevel.Info):
     """Log a message to the QGIS message log.
 
     Args:
         message: The message to log.
-        level: The log level (Qgis.Info, Qgis.Warning, Qgis.Critical).
+        level: The log level (Qgis.MessageLevel.Info, Qgis.MessageLevel.Warning, Qgis.MessageLevel.Critical).
     """
     QgsMessageLog.logMessage(str(message), "HyperCoast", level=level)
 
@@ -94,7 +94,10 @@ def _configure_windows_dll_paths(site_packages):
             _ADDED_DLL_DIRS.add(norm_dir)
             _log(f"Added DLL directory: {directory}")
         except Exception as e:
-            _log(f"Failed to add DLL directory {directory}: {e}", Qgis.Warning)
+            _log(
+                f"Failed to add DLL directory {directory}: {e}",
+                Qgis.MessageLevel.Warning,
+            )
 
     if prepend:
         os.environ["PATH"] = os.pathsep.join(prepend + path_entries)
@@ -157,7 +160,7 @@ def _preload_venv_dlls(site_packages):
         names = ", ".join(f[0] for f in failed[:5])
         _log(
             f"Could not pre-load {len(failed)} DLL(s): {names}",
-            Qgis.Warning,
+            Qgis.MessageLevel.Warning,
         )
 
 
@@ -210,7 +213,7 @@ def _configure_proj_data(site_packages):
             _log(f"Set PROJ_DATA={candidate} (system fallback)")
             return
 
-    _log("Could not locate proj.db for PROJ_DATA", Qgis.Warning)
+    _log("Could not locate proj.db for PROJ_DATA", Qgis.MessageLevel.Warning)
 
 
 def _get_qgis_site_packages():
@@ -370,12 +373,12 @@ def _try_qgis_h5py_fallback():
 
     qgis_sp = _get_qgis_site_packages()
     if qgis_sp is None:
-        _log("QGIS site-packages not found for h5py fallback", Qgis.Info)
+        _log("QGIS site-packages not found for h5py fallback", Qgis.MessageLevel.Info)
         return False
 
     h5py_dir = os.path.join(qgis_sp, "h5py")
     if not os.path.isdir(h5py_dir):
-        _log(f"No h5py in QGIS site-packages: {qgis_sp}", Qgis.Info)
+        _log(f"No h5py in QGIS site-packages: {qgis_sp}", Qgis.MessageLevel.Info)
         return False
 
     # Remove any failed h5py entries from sys.modules
@@ -395,11 +398,11 @@ def _try_qgis_h5py_fallback():
         mod_file = getattr(mod, "__file__", "<unknown>")
         _log(
             f"h5py imported from QGIS environment: {version} ({mod_file})",
-            Qgis.Info,
+            Qgis.MessageLevel.Info,
         )
         return True
     except Exception as exc:
-        _log(f"QGIS h5py fallback also failed: {exc}", Qgis.Info)
+        _log(f"QGIS h5py fallback also failed: {exc}", Qgis.MessageLevel.Info)
         # Clean up failed import
         to_remove = [k for k in sys.modules if k == "h5py" or k.startswith("h5py.")]
         for k in to_remove:
@@ -680,7 +683,7 @@ def _get_system_python():
     if python_path and os.path.isfile(python_path):
         _log(
             f"Standalone Python unavailable, using system Python: {python_path}",
-            Qgis.Warning,
+            Qgis.MessageLevel.Warning,
         )
         return python_path
 
@@ -706,7 +709,10 @@ def _cleanup_partial_venv(venv_dir):
             shutil.rmtree(venv_dir, ignore_errors=True)
             _log(f"Cleaned up partial venv: {venv_dir}")
         except Exception:
-            _log(f"Could not clean up partial venv: {venv_dir}", Qgis.Warning)
+            _log(
+                f"Could not clean up partial venv: {venv_dir}",
+                Qgis.MessageLevel.Warning,
+            )
 
 
 def create_venv(venv_dir=None, progress_callback=None):
@@ -760,7 +766,7 @@ def create_venv(venv_dir=None, progress_callback=None):
         )
 
         if result.returncode == 0:
-            _log("Virtual environment created successfully", Qgis.Success)
+            _log("Virtual environment created successfully", Qgis.MessageLevel.Success)
 
             # When using stdlib venv, ensure pip is available
             if not use_uv:
@@ -784,14 +790,20 @@ def create_venv(venv_dir=None, progress_callback=None):
                             **kwargs,
                         )
                         if ensurepip_result.returncode == 0:
-                            _log("pip bootstrapped via ensurepip", Qgis.Success)
+                            _log(
+                                "pip bootstrapped via ensurepip",
+                                Qgis.MessageLevel.Success,
+                            )
                         else:
                             err = ensurepip_result.stderr or ensurepip_result.stdout
-                            _log(f"ensurepip failed: {err[:200]}", Qgis.Warning)
+                            _log(
+                                f"ensurepip failed: {err[:200]}",
+                                Qgis.MessageLevel.Warning,
+                            )
                             _cleanup_partial_venv(venv_dir)
                             return False, f"Failed to bootstrap pip: {err[:200]}"
                     except Exception as e:
-                        _log(f"ensurepip exception: {e}", Qgis.Warning)
+                        _log(f"ensurepip exception: {e}", Qgis.MessageLevel.Warning)
                         _cleanup_partial_venv(venv_dir)
                         return False, f"Failed to bootstrap pip: {str(e)[:200]}"
 
@@ -802,19 +814,21 @@ def create_venv(venv_dir=None, progress_callback=None):
             error_msg = (
                 result.stderr or result.stdout or f"Return code {result.returncode}"
             )
-            _log(f"Failed to create venv: {error_msg}", Qgis.Critical)
+            _log(f"Failed to create venv: {error_msg}", Qgis.MessageLevel.Critical)
             _cleanup_partial_venv(venv_dir)
             return False, f"Failed to create venv: {error_msg[:200]}"
 
     except subprocess.TimeoutExpired:
-        _log("Virtual environment creation timed out", Qgis.Critical)
+        _log("Virtual environment creation timed out", Qgis.MessageLevel.Critical)
         _cleanup_partial_venv(venv_dir)
         return False, "Virtual environment creation timed out"
     except FileNotFoundError:
-        _log(f"Python executable not found: {system_python}", Qgis.Critical)
+        _log(
+            f"Python executable not found: {system_python}", Qgis.MessageLevel.Critical
+        )
         return False, f"Python not found: {system_python}"
     except Exception as e:
-        _log(f"Exception during venv creation: {str(e)}", Qgis.Critical)
+        _log(f"Exception during venv creation: {str(e)}", Qgis.MessageLevel.Critical)
         _cleanup_partial_venv(venv_dir)
         return False, f"Error: {str(e)[:200]}"
 
@@ -1238,7 +1252,7 @@ def _run_install(
             _log(
                 f"SSL error installing dependencies via {installer}, "
                 f"retrying with trusted hosts",
-                Qgis.Warning,
+                Qgis.MessageLevel.Warning,
             )
             retry_cmd = cmd + ssl_flags
             returncode, stdout, retry_stderr = _run_install_subprocess(
@@ -1260,7 +1274,7 @@ def _run_install(
             _log(
                 f"Network error installing dependencies via {installer}, "
                 f"retrying in 5s...",
-                Qgis.Warning,
+                Qgis.MessageLevel.Warning,
             )
             time.sleep(5)
             returncode, stdout, retry_stderr = _run_install_subprocess(
@@ -1365,7 +1379,7 @@ def install_dependencies(plugin_dir, progress_callback=None, cancel_check=None):
                 ]
                 _log(
                     "Skipping h5py venv install (QGIS host h5py available)",
-                    Qgis.Info,
+                    Qgis.MessageLevel.Info,
                 )
 
     # Build the full list of package specs for batch installation
@@ -1424,7 +1438,7 @@ def install_dependencies(plugin_dir, progress_callback=None, cancel_check=None):
     if not success:
         return False, error_msg
 
-    _log(f"Installed {total} package(s)", Qgis.Success)
+    _log(f"Installed {total} package(s)", Qgis.MessageLevel.Success)
 
     if progress_callback:
         progress_callback(90, "All packages installed")
@@ -1466,13 +1480,13 @@ def ensure_venv_packages_available(plugin_dir=None):
         python_path = get_venv_python_path()
         _log(
             f"Venv does not exist: expected Python at {python_path}",
-            Qgis.Warning,
+            Qgis.MessageLevel.Warning,
         )
         return False
 
     site_packages = get_venv_site_packages()
     if site_packages is None:
-        _log(f"Venv site-packages not found in: {VENV_DIR}", Qgis.Warning)
+        _log(f"Venv site-packages not found in: {VENV_DIR}", Qgis.MessageLevel.Warning)
         return False
 
     _configure_windows_dll_paths(site_packages)
@@ -1546,7 +1560,7 @@ def ensure_venv_packages_available(plugin_dir=None):
             mod_file = getattr(mod, "__file__", "<built-in>")
             _log(
                 f"Runtime import OK: {module_name} {version} ({mod_file})",
-                Qgis.Info,
+                Qgis.MessageLevel.Info,
             )
             import_ok.add(module_name)
         except Exception as e:
@@ -1557,7 +1571,7 @@ def ensure_venv_packages_available(plugin_dir=None):
     if "h5py" in import_failed and platform.system() == "Windows":
         _log(
             f"Venv h5py failed ({import_failed['h5py']}); " "trying QGIS host h5py...",
-            Qgis.Info,
+            Qgis.MessageLevel.Info,
         )
         if _try_qgis_h5py_fallback():
             import_ok.add("h5py")
@@ -1579,7 +1593,7 @@ def ensure_venv_packages_available(plugin_dir=None):
                     mod_file = getattr(mod, "__file__", "<built-in>")
                     _log(
                         f"Runtime import OK: hypercoast {version} ({mod_file})",
-                        Qgis.Info,
+                        Qgis.MessageLevel.Info,
                     )
                     import_ok.add("hypercoast")
                     del import_failed["hypercoast"]
@@ -1597,12 +1611,12 @@ def ensure_venv_packages_available(plugin_dir=None):
             _log(
                 f"Runtime import skipped: {module_name} "
                 f"(host DLL conflict; netCDF4 fallback available)",
-                Qgis.Info,
+                Qgis.MessageLevel.Info,
             )
         else:
             _log(
                 f"Runtime import FAILED: {module_name} -> {exc}",
-                Qgis.Warning,
+                Qgis.MessageLevel.Warning,
             )
 
     return True
@@ -1734,7 +1748,7 @@ def get_venv_status(plugin_dir):
         ok, detail = _import_check_in_venv(module_name)
         if not ok:
             return False, f"Import check failed for {module_name}: {detail[:240]}"
-        _log(f"Venv import OK: {detail}", Qgis.Info)
+        _log(f"Venv import OK: {detail}", Qgis.MessageLevel.Info)
 
     return True, "Ready"
 
@@ -1767,7 +1781,7 @@ def create_venv_and_install(plugin_dir, progress_callback=None, cancel_check=Non
 
     if using_conda_env_with_deps(plugin_dir):
         msg = "Using Conda environment, no venv needed."
-        _log(msg, Qgis.Success)
+        _log(msg, Qgis.MessageLevel.Success)
         if progress_callback:
             progress_callback(100, msg)
         return True, msg
@@ -1793,7 +1807,7 @@ def create_venv_and_install(plugin_dir, progress_callback=None, cancel_check=Non
             if fallback and os.path.isfile(fallback):
                 _log(
                     f"Standalone download failed, using system Python: {fallback}",
-                    Qgis.Warning,
+                    Qgis.MessageLevel.Warning,
                 )
             else:
                 return False, f"Failed to download Python: {msg}"
@@ -1822,7 +1836,7 @@ def create_venv_and_install(plugin_dir, progress_callback=None, cancel_check=Non
             # Non-fatal: fall back to pip
             _log(
                 f"uv download failed ({msg}), will use pip instead",
-                Qgis.Warning,
+                Qgis.MessageLevel.Warning,
             )
         else:
             _log("uv package installer ready")
@@ -1891,7 +1905,10 @@ def create_venv_and_install(plugin_dir, progress_callback=None, cancel_check=Non
     if progress_callback:
         progress_callback(100, f"All dependencies installed in {elapsed_str}")
 
-    _log(f"All dependencies installed and verified in {elapsed_str}", Qgis.Success)
+    _log(
+        f"All dependencies installed and verified in {elapsed_str}",
+        Qgis.MessageLevel.Success,
+    )
     return True, f"All dependencies installed successfully in {elapsed_str}"
 
 
@@ -1943,9 +1960,9 @@ def cleanup_old_venv_directories():
                     except Exception as e:
                         _log(
                             f"Failed to remove old venv {old_path}: {e}",
-                            Qgis.Warning,
+                            Qgis.MessageLevel.Warning,
                         )
     except Exception as e:
-        _log(f"Error scanning for old venvs: {e}", Qgis.Warning)
+        _log(f"Error scanning for old venvs: {e}", Qgis.MessageLevel.Warning)
 
     return removed
