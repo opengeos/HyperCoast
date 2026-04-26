@@ -104,7 +104,7 @@ class BandCombinationDialog(QDialog):
         self.red_spin.valueChanged.connect(self.update_red_slider)
         red_layout.addWidget(self.red_spin)
 
-        self.red_slider = QSlider(Qt.Horizontal)
+        self.red_slider = QSlider(Qt.Orientation.Horizontal)
         self.red_slider.setRange(0, 5000)
         self.red_slider.setValue(650)
         self.red_slider.valueChanged.connect(lambda v: self.red_spin.setValue(v))
@@ -121,7 +121,7 @@ class BandCombinationDialog(QDialog):
         self.green_spin.valueChanged.connect(self.update_green_slider)
         green_layout.addWidget(self.green_spin)
 
-        self.green_slider = QSlider(Qt.Horizontal)
+        self.green_slider = QSlider(Qt.Orientation.Horizontal)
         self.green_slider.setRange(0, 5000)
         self.green_slider.setValue(550)
         self.green_slider.valueChanged.connect(lambda v: self.green_spin.setValue(v))
@@ -138,7 +138,7 @@ class BandCombinationDialog(QDialog):
         self.blue_spin.valueChanged.connect(self.update_blue_slider)
         blue_layout.addWidget(self.blue_spin)
 
-        self.blue_slider = QSlider(Qt.Horizontal)
+        self.blue_slider = QSlider(Qt.Orientation.Horizontal)
         self.blue_slider.setRange(0, 5000)
         self.blue_slider.setValue(450)
         self.blue_slider.valueChanged.connect(lambda v: self.blue_spin.setValue(v))
@@ -160,7 +160,7 @@ class BandCombinationDialog(QDialog):
         self.single_spin.setSuffix(" nm")
         single_wl_layout.addWidget(self.single_spin)
 
-        self.single_slider = QSlider(Qt.Horizontal)
+        self.single_slider = QSlider(Qt.Orientation.Horizontal)
         self.single_slider.setRange(0, 5000)
         self.single_slider.setValue(550)
         self.single_slider.valueChanged.connect(lambda v: self.single_spin.setValue(v))

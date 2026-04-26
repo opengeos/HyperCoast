@@ -82,7 +82,7 @@ class SpectralPlotDialog(QDialog):
             return
 
         # Main splitter
-        splitter = QSplitter(Qt.Vertical)
+        splitter = QSplitter(Qt.Orientation.Vertical)
 
         # Top: Plot area
         plot_widget = QWidget()
@@ -213,8 +213,10 @@ class SpectralPlotDialog(QDialog):
         self.data_table.setHorizontalHeaderLabels(
             ["Latitude", "Longitude", "Layer", "# Bands"]
         )
-        self.data_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.data_table.setSelectionBehavior(QTableWidget.SelectRows)
+        self.data_table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Stretch
+        )
+        self.data_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         data_layout.addWidget(self.data_table)
 
         table_buttons = QHBoxLayout()

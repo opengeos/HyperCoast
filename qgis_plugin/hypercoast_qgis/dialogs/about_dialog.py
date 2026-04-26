@@ -48,7 +48,10 @@ class AboutDialog(QDialog):
         icon_path = os.path.join(plugin_dir, "icons", "hypercoast.png")
         if os.path.exists(icon_path):
             pixmap = QPixmap(icon_path).scaled(
-                64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation
+                64,
+                64,
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
             )
             icon_label.setPixmap(pixmap)
         header_layout.addWidget(icon_label)
@@ -67,8 +70,8 @@ class AboutDialog(QDialog):
 
         # Separator
         separator = QFrame()
-        separator.setFrameShape(QFrame.HLine)
-        separator.setFrameShadow(QFrame.Sunken)
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setFrameShadow(QFrame.Shadow.Sunken)
         layout.addWidget(separator)
 
         # Description
@@ -82,7 +85,7 @@ class AboutDialog(QDialog):
             "• Export spectral profiles to CSV"
         )
         description.setWordWrap(True)
-        description.setTextFormat(Qt.RichText)
+        description.setTextFormat(Qt.TextFormat.RichText)
         layout.addWidget(description)
 
         # Author info
@@ -91,7 +94,7 @@ class AboutDialog(QDialog):
             "<b>License:</b> MIT"
         )
         author_label.setWordWrap(True)
-        author_label.setTextFormat(Qt.RichText)
+        author_label.setTextFormat(Qt.TextFormat.RichText)
         author_label.setOpenExternalLinks(True)
         layout.addWidget(author_label)
 

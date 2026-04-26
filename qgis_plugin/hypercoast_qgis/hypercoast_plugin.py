@@ -235,7 +235,7 @@ class HyperCoastPlugin:
                 QgsMessageLog.logMessage(
                     startup_msg,
                     "HyperCoast",
-                    Qgis.Info,
+                    Qgis.MessageLevel.Info,
                 )
                 venv_manager.ensure_venv_packages_available(self.plugin_dir)
                 self._try_enable_data_dialogs()
@@ -243,7 +243,7 @@ class HyperCoastPlugin:
                 QgsMessageLog.logMessage(
                     f"Dependencies not ready: {message}",
                     "HyperCoast",
-                    Qgis.Info,
+                    Qgis.MessageLevel.Info,
                 )
                 self._deps_available = False
 
@@ -251,7 +251,7 @@ class HyperCoastPlugin:
             QgsMessageLog.logMessage(
                 f"Error checking dependencies: {e}",
                 "HyperCoast",
-                Qgis.Warning,
+                Qgis.MessageLevel.Warning,
             )
 
     def _try_enable_data_dialogs(self):
@@ -296,7 +296,7 @@ class HyperCoastPlugin:
             QgsMessageLog.logMessage(
                 f"Error reloading data modules: {e}",
                 "HyperCoast",
-                Qgis.Warning,
+                Qgis.MessageLevel.Warning,
             )
 
         # Reset cached dialog instances so they are re-created
@@ -325,7 +325,7 @@ class HyperCoastPlugin:
                 QgsMessageLog.logMessage(
                     f"Data dialogs still unavailable after venv activation: {e}",
                     "HyperCoast",
-                    Qgis.Warning,
+                    Qgis.MessageLevel.Warning,
                 )
 
         if _DATA_DIALOGS_AVAILABLE:
@@ -334,7 +334,7 @@ class HyperCoastPlugin:
             QgsMessageLog.logMessage(
                 "All data features enabled",
                 "HyperCoast",
-                Qgis.Success,
+                Qgis.MessageLevel.Success,
             )
         else:
             self._deps_available = False
@@ -366,7 +366,9 @@ class HyperCoastPlugin:
                     self._on_settings_visibility_changed
                 )
                 self._settings_dock.deps_installed.connect(self._on_deps_installed)
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self._settings_dock)
+                self.iface.addDockWidget(
+                    Qt.DockWidgetArea.RightDockWidgetArea, self._settings_dock
+                )
                 self._settings_dock.show()
                 self._settings_dock.raise_()
                 return
@@ -399,7 +401,7 @@ class HyperCoastPlugin:
         QgsMessageLog.logMessage(
             "Dependencies installed, activating...",
             "HyperCoast",
-            Qgis.Info,
+            Qgis.MessageLevel.Info,
         )
         self._try_enable_data_dialogs()
 
@@ -469,10 +471,10 @@ class HyperCoastPlugin:
             "Dependencies Required",
             "Required Python packages are not installed.\n\n"
             "Would you like to open Settings to install them?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.Yes,
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes,
         )
-        if reply == QMessageBox.Yes:
+        if reply == QMessageBox.StandardButton.Yes:
             self._open_settings_deps_tab()
 
     def _open_settings_deps_tab(self):
@@ -489,7 +491,9 @@ class HyperCoastPlugin:
                     self._on_settings_visibility_changed
                 )
                 self._settings_dock.deps_installed.connect(self._on_deps_installed)
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self._settings_dock)
+                self.iface.addDockWidget(
+                    Qt.DockWidgetArea.RightDockWidgetArea, self._settings_dock
+                )
             except Exception as e:
                 QMessageBox.critical(
                     self.iface.mainWindow(),

@@ -84,7 +84,9 @@ class SettingsDockWidget(QDockWidget):
         self.iface = iface
         self._deps_worker = None
 
-        self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+        self.setAllowedAreas(
+            Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea
+        )
 
         self._setup_ui()
         self._check_packages()
@@ -103,7 +105,7 @@ class SettingsDockWidget(QDockWidget):
         header_font.setPointSize(11)
         header_font.setBold(True)
         header_label.setFont(header_font)
-        header_label.setAlignment(Qt.AlignCenter)
+        header_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(header_label)
 
         # Info label
@@ -128,19 +130,19 @@ class SettingsDockWidget(QDockWidget):
             ["Package", "Required", "Installed", "Status"]
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            0, QHeaderView.Stretch
+            0, QHeaderView.ResizeMode.Stretch
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            1, QHeaderView.ResizeToContents
+            1, QHeaderView.ResizeMode.ResizeToContents
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            2, QHeaderView.ResizeToContents
+            2, QHeaderView.ResizeMode.ResizeToContents
         )
         self.package_table.horizontalHeader().setSectionResizeMode(
-            3, QHeaderView.ResizeToContents
+            3, QHeaderView.ResizeMode.ResizeToContents
         )
-        self.package_table.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.package_table.setSelectionMode(QTableWidget.NoSelection)
+        self.package_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.package_table.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
         self.package_table.verticalHeader().setVisible(False)
         status_layout.addWidget(self.package_table)
 
@@ -149,7 +151,7 @@ class SettingsDockWidget(QDockWidget):
         # Status label
         self.status_label = QLabel("")
         self.status_label.setWordWrap(True)
-        self.status_label.setAlignment(Qt.AlignCenter)
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
 
         # Install button
@@ -168,7 +170,7 @@ class SettingsDockWidget(QDockWidget):
         self.progress_label = QLabel("")
         self.progress_label.setWordWrap(True)
         self.progress_label.setVisible(False)
-        self.progress_label.setAlignment(Qt.AlignCenter)
+        self.progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progress_label.setStyleSheet("font-size: 10px;")
         layout.addWidget(self.progress_label)
 
@@ -263,13 +265,13 @@ class SettingsDockWidget(QDockWidget):
 
             # Required version
             req_item = QTableWidgetItem(pkg["required"])
-            req_item.setTextAlignment(Qt.AlignCenter)
+            req_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.package_table.setItem(row, 1, req_item)
 
             # Installed version
             installed = pkg["installed"] or "Not installed"
             inst_item = QTableWidgetItem(installed)
-            inst_item.setTextAlignment(Qt.AlignCenter)
+            inst_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.package_table.setItem(row, 2, inst_item)
 
             # Status
@@ -285,7 +287,7 @@ class SettingsDockWidget(QDockWidget):
                 color = QColor(211, 47, 47)  # Red
 
             status_item = QTableWidgetItem(status_text)
-            status_item.setTextAlignment(Qt.AlignCenter)
+            status_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             status_item.setForeground(color)
             font = status_item.font()
             font.setBold(True)
@@ -304,11 +306,11 @@ class SettingsDockWidget(QDockWidget):
             "This will download a standalone Python interpreter and install all "
             "required packages. This may take a few minutes.\n\n"
             "Do you want to continue?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.Yes,
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes,
         )
 
-        if reply != QMessageBox.Yes:
+        if reply != QMessageBox.StandardButton.Yes:
             return
 
         # Update UI for installation mode

@@ -41,9 +41,9 @@ try:
     from qgis.core import QgsMessageLog, Qgis
 
     HAS_QGIS = True
-    LOG_INFO = Qgis.Info
-    LOG_WARNING = Qgis.Warning
-    LOG_CRITICAL = Qgis.Critical
+    LOG_INFO = Qgis.MessageLevel.Info
+    LOG_WARNING = Qgis.MessageLevel.Warning
+    LOG_CRITICAL = Qgis.MessageLevel.Critical
 except Exception:
     HAS_QGIS = False
     LOG_INFO = None
