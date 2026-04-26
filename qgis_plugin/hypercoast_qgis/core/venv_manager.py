@@ -239,6 +239,132 @@ def _get_qgis_site_packages():
     return None
 
 
+# ---------------------------------------------------------------------------
+# Conda environment detection
+# ---------------------------------------------------------------------------
+
+# Cached result of using_conda_env_with_deps() for the current process.
+# None means "not yet computed".
+_CONDA_ENV_WITH_DEPS_CACHE = None
+
+
+def _is_conda_env():
+    """Check whether the current Python process is running inside a Conda env.
+
+    Detection prefers the ``CONDA_PREFIX`` environment variable that ``conda
+    activate`` sets, then falls back to looking for the ``conda-meta``
+    directory under ``sys.prefix`` (which Conda creates for every environment
+    it manages). Either signal is sufficient.
+
+    Returns:
+        bool: True if a Conda environment is detected.
+    """
+    if os.environ.get("CONDA_PREFIX"):
+        return True
+    if os.path.isdir(os.path.join(sys.prefix, "conda-meta")):
+        return True
+    return False
+
+
+def _get_package_version_from_current_env(package_name):
+    """Get a package version from the currently active Python environment.
+
+    Uses ``importlib.metadata`` so any package installed into the running
+    interpreter (Conda env, system site-packages, etc.) is detected without
+    needing the venv site-packages on ``sys.path``.
+
+    Args:
+        package_name: Distribution name (e.g. ``"numpy"``).
+
+    Returns:
+        str or None: Version string, or None if the distribution is missing.
+    """
+    try:
+        return importlib.metadata.version(package_name)
+    except importlib.metadata.PackageNotFoundError:
+        return None
+    except Exception:
+        return None
+
+
+def _check_requirements_in_current_env(plugin_dir):
+    """Check requirements.txt against packages in the current Python env.
+
+    Mirrors the dict shape returned by :func:`check_packages` so the settings
+    dock can render Conda-env results with the same table renderer.
+
+    Args:
+        plugin_dir: Path to the plugin directory containing requirements.txt.
+
+    Returns:
+        list: List of dicts with keys ``package``, ``required``, ``installed``,
+        ``status`` (``"ok"``, ``"missing"``, or ``"outdated"``), and ``spec``.
+    """
+    requirements = _parse_requirements(plugin_dir)
+    results = []
+
+    for req in requirements:
+        pkg_name = req["package"]
+        installed_ver = _get_package_version_from_current_env(pkg_name)
+
+        if installed_ver is None:
+            status = "missing"
+        elif _version_satisfies(installed_ver, req["operator"], req["version"]):
+            status = "ok"
+        else:
+            status = "outdated"
+
+        results.append(
+            {
+                "package": pkg_name,
+                "required": f"{req['operator']}{req['version']}",
+                "installed": installed_ver,
+                "status": status,
+                "spec": req["spec"],
+            }
+        )
+
+    return results
+
+
+def using_conda_env_with_deps(plugin_dir):
+    """Return True when running in a Conda env that already provides all deps.
+
+    When this is True, the plugin must skip its bundled venv entirely. Doing
+    otherwise causes ``ensure_venv_packages_available`` to swap ``numpy`` /
+    ``matplotlib`` out from under modules that QGIS pre-loaded from the Conda
+    env, producing the ``RecursionError`` reported in issue #247.
+
+    The result is cached for the lifetime of the process because the answer
+    cannot change without restarting QGIS.
+
+    Args:
+        plugin_dir: Path to the plugin directory containing requirements.txt.
+
+    Returns:
+        bool: True only if a Conda env is active AND every requirement in
+        requirements.txt resolves to an installed, version-satisfying package.
+    """
+    global _CONDA_ENV_WITH_DEPS_CACHE
+    if _CONDA_ENV_WITH_DEPS_CACHE is not None:
+        return _CONDA_ENV_WITH_DEPS_CACHE
+
+    if not _is_conda_env():
+        _CONDA_ENV_WITH_DEPS_CACHE = False
+        return False
+
+    statuses = _check_requirements_in_current_env(plugin_dir)
+    if not statuses:
+        # No requirements parsed; treat as "not satisfied" so we do not
+        # silently skip venv setup based on an empty requirements file.
+        _CONDA_ENV_WITH_DEPS_CACHE = False
+        return False
+
+    all_ok = all(s["status"] == "ok" for s in statuses)
+    _CONDA_ENV_WITH_DEPS_CACHE = all_ok
+    return all_ok
+
+
 def _try_qgis_h5py_fallback():
     """Try importing h5py from QGIS's host environment on Windows.
 
@@ -796,6 +922,11 @@ def _version_satisfies(installed, operator, required):
 def check_packages(plugin_dir):
     """Check which packages from requirements.txt are installed in the venv.
 
+    When the plugin is running inside a Conda env that already provides every
+    requirement, the lookup is delegated to the current Python environment
+    instead of the venv site-packages. This keeps the settings dock display in
+    sync with what the plugin actually imports at runtime.
+
     Args:
         plugin_dir: Path to the plugin directory containing requirements.txt.
 
@@ -803,6 +934,9 @@ def check_packages(plugin_dir):
         list: List of dicts with keys: package, required, installed, status, spec.
             status is one of: "ok", "missing", "outdated".
     """
+    if using_conda_env_with_deps(plugin_dir):
+        return _check_requirements_in_current_env(plugin_dir)
+
     requirements = _parse_requirements(plugin_dir)
     site_packages = get_venv_site_packages()
     results = []
@@ -1311,16 +1445,31 @@ def install_dependencies(plugin_dir, progress_callback=None, cancel_check=None):
 # ---------------------------------------------------------------------------
 
 
-def ensure_venv_packages_available():
+def ensure_venv_packages_available(plugin_dir=None):
     """Make venv packages importable by adding site-packages to sys.path.
 
     This prepends the venv's site-packages to sys.path, giving it priority
     over QGIS's bundled packages. Also clears stale entries from sys.modules
     for packages that QGIS may bundle (like numpy).
 
+    When the plugin is running inside a Conda env that already provides every
+    requirement, this is a no-op: the function returns True without touching
+    ``sys.path`` or ``sys.modules``. Mutating either would invalidate the
+    ``numpy`` and ``matplotlib`` instances QGIS pre-loaded from the Conda env,
+    causing the ``RecursionError`` reported in issue #247.
+
+    Args:
+        plugin_dir: Optional path to the plugin directory containing
+            requirements.txt, used for the Conda short-circuit. When omitted,
+            the short-circuit is skipped and the venv flow runs as before.
+
     Returns:
-        True if venv packages are available, False otherwise.
+        True if venv packages (or Conda env packages) are available.
     """
+    if plugin_dir is not None and using_conda_env_with_deps(plugin_dir):
+        _log("Conda environment detected; skipping venv activation")
+        return True
+
     if not venv_exists():
         python_path = get_venv_python_path()
         _log(
@@ -1540,12 +1689,19 @@ def _refresh_module(module_name):
 def get_venv_status(plugin_dir):
     """Check the overall status of the virtual environment.
 
+    When the plugin is running inside a Conda env that already provides every
+    requirement, the venv is unnecessary and is reported as ready without
+    inspection.
+
     Args:
         plugin_dir: Path to the plugin directory containing requirements.txt.
 
     Returns:
         tuple: (is_ready: bool, message: str)
     """
+    if using_conda_env_with_deps(plugin_dir):
+        return True, "Using Conda environment"
+
     if not venv_exists():
         return False, "Dependencies not installed"
 
@@ -1616,6 +1772,13 @@ def create_venv_and_install(plugin_dir, progress_callback=None, cancel_check=Non
     """
     from .python_manager import standalone_python_exists, download_python_standalone
     from .uv_manager import uv_exists as _uv_exists, download_uv
+
+    if using_conda_env_with_deps(plugin_dir):
+        msg = "Using Conda environment, no venv needed."
+        _log(msg, Qgis.Success)
+        if progress_callback:
+            progress_callback(100, msg)
+        return True, msg
 
     start_time = time.time()
 
@@ -1724,7 +1887,7 @@ def create_venv_and_install(plugin_dir, progress_callback=None, cancel_check=Non
         return False, f"Verification failed: {status_msg}"
 
     # Make packages available
-    ensure_venv_packages_available()
+    ensure_venv_packages_available(plugin_dir)
 
     elapsed = time.time() - start_time
     if elapsed >= 60:

@@ -230,7 +230,7 @@ class HyperCoastPlugin:
                     "HyperCoast",
                     Qgis.Info,
                 )
-                venv_manager.ensure_venv_packages_available()
+                venv_manager.ensure_venv_packages_available(self.plugin_dir)
                 self._try_enable_data_dialogs()
             else:
                 QgsMessageLog.logMessage(

@@ -39,6 +39,8 @@ After the installation, you can start QGIS by running the following command:
 conda run qgis
 ```
 
+When QGIS is launched from this Conda environment, the plugin automatically detects that all required packages are already provided by `conda-forge` and uses them directly. The "Install Dependencies" button is not needed in this setup, and the plugin will not create its own virtual environment. This avoids known dependency conflicts between Conda-managed and venv-managed copies of `numpy` / `matplotlib`.
+
 ### QGIS Version
 
 -   QGIS 3.22 or later
