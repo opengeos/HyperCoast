@@ -14,8 +14,8 @@ livereload
 mkdocs
 mkdocs-git-revision-date-localized-plugin
 mkdocs-git-revision-date-plugin
-mkdocs-jupyter>=0.25.1
 mkdocs-material>=9.7.6
+mkdocs-jupyter>=0.26.3
 mkdocs-pdf-export-plugin
 mkdocstrings
 mkdocstrings-crystal
@@ -29,7 +29,7 @@ pymdown-extensions
 pytest
 pytest-runner
 pyvista
-reuse>=4.0.3
+reuse>=5.1.1
 scikit-learn
 seaborn
 sphinx
