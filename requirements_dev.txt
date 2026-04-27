@@ -29,7 +29,7 @@ pymdown-extensions
 pytest
 pytest-runner
 pyvista
-reuse>=4.0.3
+reuse>=5.1.1
 scikit-learn
 seaborn
 sphinx
