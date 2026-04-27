@@ -14,8 +14,8 @@ livereload
 mkdocs
 mkdocs-git-revision-date-localized-plugin
 mkdocs-git-revision-date-plugin
-mkdocs-material>=9.7.6
 mkdocs-jupyter>=0.26.3
+mkdocs-material>=9.7.6
 mkdocs-pdf-export-plugin
 mkdocstrings
 mkdocstrings-crystal
