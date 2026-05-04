@@ -4,7 +4,7 @@ geopandas
 h5netcdf
 h5py
 hvplot
-leafmap>=0.61.1
+leafmap>=0.62.0
 localtileserver
 mapclassify
 netcdf4
