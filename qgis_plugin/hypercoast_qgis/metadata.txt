@@ -30,7 +30,9 @@ deprecated=False
 
 hasProcessingProvider=no
 
-changelog=Fix macOS QGIS installer dependency installation and bump patch version.
+changelog=
+    0.7.1
+        - Fix macOS QGIS installer dependency installation
     0.7.0
         - Compatible with QGIS 4.0 (Qt6) while keeping QGIS 3.28+ support
     0.6.0
