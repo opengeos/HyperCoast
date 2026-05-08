@@ -592,6 +592,19 @@ def venv_exists(venv_dir=None):
 # ---------------------------------------------------------------------------
 
 
+def _is_macos_qgis_app_bundle_python(path):
+    """Return True for Python binaries inside a QGIS macOS .app bundle."""
+    if not (platform.system() == "Darwin" or sys.platform == "darwin"):
+        return False
+    parts = os.path.abspath(path).split(os.sep)
+    for idx, part in enumerate(parts):
+        lower = part.lower()
+        if not (lower.startswith("qgis") and lower.endswith(".app")):
+            continue
+        return idx + 1 < len(parts) and parts[idx + 1] == "Contents"
+    return False
+
+
 def _find_python_executable():
     """Find a working Python executable for venv creation.
 
@@ -603,6 +616,11 @@ def _find_python_executable():
         Path to a Python executable, or sys.executable as fallback.
     """
     if platform.system() != "Windows":
+        if _is_macos_qgis_app_bundle_python(sys.executable):
+            raise RuntimeError(
+                "QGIS app-bundle Python is not safe for creating virtual "
+                "environments; use uv-managed Python instead."
+            )
         return sys.executable
 
     # Strategy 1: Check if sys.executable is already Python
@@ -737,8 +755,14 @@ def create_venv(venv_dir=None, progress_callback=None):
     if progress_callback:
         progress_callback(10, "Creating virtual environment...")
 
-    system_python = _get_system_python()
-    _log(f"Using Python: {system_python}")
+    system_python = None
+    python_lookup_error = ""
+    try:
+        system_python = _get_system_python()
+    except RuntimeError as exc:
+        python_lookup_error = str(exc)
+    if system_python:
+        _log(f"Using Python: {system_python}")
 
     from .uv_manager import uv_exists, get_uv_path
 
@@ -746,9 +770,15 @@ def create_venv(venv_dir=None, progress_callback=None):
 
     if use_uv:
         uv_path = get_uv_path()
-        cmd = [uv_path, "venv", "--python", system_python, venv_dir]
+        uv_python = system_python or f"{sys.version_info.major}.{sys.version_info.minor}"
+        cmd = [uv_path, "venv"]
+        if system_python is None:
+            cmd.append("--managed-python")
+        cmd += ["--python", uv_python, venv_dir]
         _log("Creating venv with uv")
     else:
+        if system_python is None:
+            return False, python_lookup_error
         cmd = [system_python, "-m", "venv", venv_dir]
         _log("Creating venv with stdlib venv")
 

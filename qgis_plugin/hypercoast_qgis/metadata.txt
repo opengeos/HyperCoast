@@ -5,7 +5,7 @@ name=HyperCoast
 qgisMinimumVersion=3.28
 qgisMaximumVersion=4.99
 description=Visualize and analyze hyperspectral data including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets
-version=0.7.0
+version=0.7.1
 author=Qiusheng Wu
 email=giswqs@gmail.com
 
