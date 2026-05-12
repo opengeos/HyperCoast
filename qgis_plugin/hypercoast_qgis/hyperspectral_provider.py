@@ -1444,6 +1444,7 @@ class HyperspectralDataset:
 
     def _export_with_hypercoast(self, output_path, wavelengths):
         """Export using hypercoast library."""
+        image = None
         try:
             if wavelengths is None:
                 wavelengths = [650, 550, 450]  # Default RGB
@@ -1492,14 +1493,18 @@ class HyperspectralDataset:
         except Exception as e:
             msg = str(e)
             # If PROJ can't find its database, try configuring PROJ_DATA and retry
-            if "no database context" in msg or "proj_create" in msg:
+            if image is not None and (
+                "no database context" in msg or "proj_create" in msg
+            ):
                 proj_data = self._find_and_set_proj_data()
                 if proj_data:
                     try:
+                        from leafmap import image_to_geotiff
+
                         image_to_geotiff(image, output_path, dtype="float32")
                         return output_path
                     except Exception:
-                        pass
+                        pass  # nosec B110
             _log(f"Error in hypercoast export: {e}", LOG_WARNING)
             return self._export_fallback(output_path, wavelengths, None)
 

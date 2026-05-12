@@ -808,4 +808,30 @@ class LoadDataDialog(QDockWidget):
             try:
                 provider.setNoDataValue(band_idx, -9999.0)
             except Exception:
-                pass
+                pass  # nosec B110
+
+    def _stop_worker(self, worker):
+        """Request a worker thread to stop and wait for it to finish.
+
+        Args:
+            worker: QThread instance, or None.
+        """
+        if worker is None:
+            return
+        try:
+            if worker.isRunning():
+                worker.requestInterruption()
+                worker.quit()
+                worker.wait(5000)
+        except RuntimeError:
+            pass  # nosec B110
+
+    def closeEvent(self, event):
+        """Stop background workers before the dock closes.
+
+        Args:
+            event: Qt close event.
+        """
+        self._stop_worker(self._preview_worker)
+        self._stop_worker(self._load_worker)
+        super().closeEvent(event)

@@ -192,6 +192,7 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
         count, height, width = arr.shape
         bounds = dataset.bounds or (0, 0, width, height)
         transform = from_bounds(*bounds, width, height)
+        nodata_value = -9999.0
         with rasterio.open(
             output_path,
             "w",
@@ -202,8 +203,9 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
             dtype="float32",
             crs=dataset.crs or "EPSG:4326",
             transform=transform,
+            nodata=nodata_value,
         ) as dst:
-            dst.write(np.nan_to_num(arr, nan=0.0).astype("float32"))
+            dst.write(np.nan_to_num(arr, nan=nodata_value).astype("float32"))
         return output_path
 
 
@@ -469,17 +471,50 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
 
         pixels = arr.reshape(bands, height * width).T
         valid = np.all(np.isfinite(pixels), axis=1)
-        if not np.any(valid):
+        n_valid = int(np.count_nonzero(valid))
+        if n_valid == 0:
             raise QgsProcessingException("No finite pixels available for PCA")
 
-        x = pixels[valid]
-        x = x - np.nanmean(x, axis=0)
-        _, singular_values, vt = np.linalg.svd(x, full_matrices=False)
+        # Cap fitting set to keep memory bounded; project full cube in chunks.
+        max_fit_pixels = 500_000
+        max_total_pixels = 50_000_000
+        if pixels.shape[0] > max_total_pixels:
+            raise QgsProcessingException(
+                f"Raster has {pixels.shape[0]:,} pixels which exceeds the "
+                f"PCA limit of {max_total_pixels:,}. Crop or downsample the "
+                "input before running PCA."
+            )
+
+        valid_indices = np.flatnonzero(valid)
+        if n_valid > max_fit_pixels:
+            rng = np.random.default_rng(0)
+            fit_indices = rng.choice(valid_indices, size=max_fit_pixels, replace=False)
+        else:
+            fit_indices = valid_indices
+
+        fit_pixels = pixels[fit_indices].astype(np.float64, copy=False)
+        mean = fit_pixels.mean(axis=0)
+        fit_centered = fit_pixels - mean
+        # Covariance-based PCA: eigendecompose a (bands x bands) matrix.
+        cov = np.cov(fit_centered, rowvar=False)
+        eigenvalues, eigenvectors = np.linalg.eigh(cov)
+        order = np.argsort(eigenvalues)[::-1]
+        components_matrix = eigenvectors[:, order[:n_components]]
+        eig_top = eigenvalues[order[:n_components]]
+        scales = np.sqrt(np.maximum(eig_top, 0.0))
+
         scores = np.zeros((pixels.shape[0], n_components), dtype="float32")
-        scores[valid] = np.dot(x, vt[:n_components].T)
-        for i in range(n_components):
-            if singular_values[i] > 0:
-                scores[valid, i] = scores[valid, i] / singular_values[i]
+        chunk = 200_000
+        for start in range(0, valid_indices.size, chunk):
+            stop = min(start + chunk, valid_indices.size)
+            idx = valid_indices[start:stop]
+            block = (
+                pixels[idx].astype(np.float64, copy=False) - mean
+            ) @ components_matrix
+            for i, scale in enumerate(scales):
+                if scale > 0:
+                    block[:, i] /= scale
+            scores[idx] = block.astype("float32")
 
         components = scores.T.reshape(n_components, height, width)
         self._write_raster(dataset, output_path, components)

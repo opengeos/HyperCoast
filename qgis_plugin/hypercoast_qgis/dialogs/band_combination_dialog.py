@@ -710,3 +710,20 @@ class BandCombinationDialog(QDockWidget):
             QgsColorRampShader.ColorRampItem(vmin + i * step, QColor(color), color)
             for i, color in enumerate(colors)
         ]
+
+    def closeEvent(self, event):
+        """Stop the background export worker before the dock closes.
+
+        Args:
+            event: Qt close event.
+        """
+        worker = self._export_worker
+        if worker is not None:
+            try:
+                if worker.isRunning():
+                    worker.requestInterruption()
+                    worker.quit()
+                    worker.wait(5000)
+            except RuntimeError:
+                pass  # nosec B110
+        super().closeEvent(event)
