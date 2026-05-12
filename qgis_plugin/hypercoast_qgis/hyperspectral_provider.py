@@ -127,6 +127,17 @@ DATA_TYPES = {
 }
 
 
+PACE_BGC_VARIABLES = [
+    "chlor_a",
+    "carbon_phyto",
+    "pic",
+    "poc",
+    "chlor_a_unc",
+    "carbon_phyto_unc",
+    "l2_flags",
+]
+
+
 class HyperspectralDataset:
     """Class to represent a hyperspectral dataset."""
 
@@ -147,6 +158,7 @@ class HyperspectralDataset:
         self._is_swath = False  # True for non-gridded data like PACE
         self.last_error = None
         self._reader_error = None
+        self.selected_variable = None
 
     def _detect_type(self):
         """Auto-detect the data type based on file extension and content."""
@@ -1163,24 +1175,71 @@ class HyperspectralDataset:
         if self.dataset is None:
             return None
 
+        if self.selected_variable in self.dataset.data_vars:
+            data_var = self.dataset[self.selected_variable]
+            if self._is_exportable_data_variable(data_var):
+                return data_var
+
         var_name = DATA_TYPES.get(self.data_type, {}).get("variable", "data")
 
-        for name in [
+        preferred_names = [
             var_name,
             "reflectance",
             "Rrs",
+            *PACE_BGC_VARIABLES,
             "toa_radiance",
             "data",
             "band_data",
-        ]:
+        ]
+        for name in preferred_names:
             if name in self.dataset.data_vars:
-                return self.dataset[name]
+                data_var = self.dataset[name]
+                if self._is_exportable_data_variable(data_var):
+                    return data_var
 
-        data_vars = list(self.dataset.data_vars)
+        for data_var in self.dataset.data_vars.values():
+            if self._is_exportable_data_variable(data_var):
+                return data_var
+
+        data_vars = list(self.dataset.data_vars.values())
         if data_vars:
-            return self.dataset[data_vars[0]]
+            return data_vars[0]
 
         return None
+
+    def list_data_variables(self):
+        """Return exportable data variable names for the loaded dataset.
+
+        Returns:
+            List of variable names that can be exported as rasters.
+        """
+        if self.dataset is None:
+            return []
+
+        return [
+            name
+            for name, data_var in self.dataset.data_vars.items()
+            if self._is_exportable_data_variable(data_var)
+        ]
+
+    def set_selected_variable(self, variable_name):
+        """Set the preferred data variable for export.
+
+        Args:
+            variable_name: Dataset variable name, or None to use the default.
+        """
+        self.selected_variable = variable_name or None
+
+    def _is_exportable_data_variable(self, data_var):
+        """Return whether a data variable can be exported as a raster.
+
+        Args:
+            data_var: Xarray DataArray candidate.
+
+        Returns:
+            True if the variable has at least two dimensions.
+        """
+        return getattr(data_var, "ndim", 0) >= 2
 
     def extract_spectral_signature(self, x, y, crs="EPSG:4326"):
         """Extract spectral signature at a given location.
@@ -1211,7 +1270,7 @@ class HyperspectralDataset:
             else:
                 return None, None
 
-            return self.wavelengths, values
+            return self._filter_good_wavelengths(self.wavelengths, values)
 
         except Exception as e:
             _log(f"Error extracting spectral signature: {e}", LOG_WARNING)
@@ -1226,19 +1285,25 @@ class HyperspectralDataset:
                     .sel(latitude=lat, longitude=lon, method="nearest")
                     .values
                 )
-                return self.wavelengths, values
+                return self._filter_good_wavelengths(self.wavelengths, values)
 
             elif self.data_type == "PACE":
                 da = hypercoast.extract_pace(self.dataset, lat, lon)
-                return da.coords["wavelength"].values, da.values
+                return self._filter_good_wavelengths(
+                    da.coords["wavelength"].values, da.values
+                )
 
             elif self.data_type == "DESIS":
                 da = hypercoast.extract_desis(self.dataset, lat, lon)
-                return da.coords["wavelength"].values, da.values
+                return self._filter_good_wavelengths(
+                    da.coords["wavelength"].values, da.values
+                )
 
             elif self.data_type == "NEON":
                 da = hypercoast.extract_neon(self.dataset, lat, lon)
-                return da.coords["wavelength"].values, da.values
+                return self._filter_good_wavelengths(
+                    da.coords["wavelength"].values, da.values
+                )
 
             else:
                 data_var = self.get_data_variable()
@@ -1248,11 +1313,46 @@ class HyperspectralDataset:
                     values = data_var.sel(
                         latitude=lat, longitude=lon, method="nearest"
                     ).values
-                return self.wavelengths, values
+                return self._filter_good_wavelengths(self.wavelengths, values)
 
         except Exception as e:
             _log(f"Error in hypercoast extraction: {e}", LOG_WARNING)
             return None, None
+
+    def _filter_good_wavelengths(self, wavelengths, values):
+        """Filter spectral values using dataset good-wavelength metadata.
+
+        Args:
+            wavelengths: Spectral wavelength array.
+            values: Spectral value array.
+
+        Returns:
+            Tuple of filtered wavelength and value arrays.
+        """
+        if wavelengths is None or values is None:
+            return wavelengths, values
+
+        wavelengths = np.asarray(wavelengths)
+        values = np.asarray(values)
+        if values.ndim != 1 or wavelengths.ndim != 1:
+            return wavelengths, values
+        if len(values) != len(wavelengths):
+            return wavelengths, values
+
+        good = None
+        try:
+            if self.dataset is not None and "good_wavelengths" in self.dataset.coords:
+                good = np.asarray(self.dataset.coords["good_wavelengths"].values)
+            elif self.dataset is not None and "good_wavelengths" in self.dataset:
+                good = np.asarray(self.dataset["good_wavelengths"].values)
+        except Exception:
+            good = None
+
+        mask = np.isfinite(wavelengths) & np.isfinite(values)
+        if good is not None and good.ndim == 1 and len(good) == len(wavelengths):
+            mask &= good.astype(float) > 0
+
+        return wavelengths[mask], values[mask]
 
     @staticmethod
     def _find_and_set_proj_data():
@@ -1320,6 +1420,15 @@ class HyperspectralDataset:
             LOG_INFO,
         )
 
+        # EMIT exports must use HyperCoast's orthorectified writer when
+        # available. If the module-level HAS_HYPERCOAST flag is stale because
+        # dependencies were activated after import, retry the runtime import
+        # here before falling back to generic xarray dimension handling.
+        if self.data_type == "EMIT":
+            result = self._export_emit_with_runtime_hypercoast(output_path, wavelengths)
+            if result:
+                return result
+
         # Use hypercoast's export functions if available
         if HAS_HYPERCOAST:
             return self._export_with_hypercoast(output_path, wavelengths)
@@ -1336,16 +1445,25 @@ class HyperspectralDataset:
     def _export_with_hypercoast(self, output_path, wavelengths):
         """Export using hypercoast library."""
         try:
-            from leafmap import array_to_image
-
             if wavelengths is None:
                 wavelengths = [650, 550, 450]  # Default RGB
 
             if self.data_type == "EMIT":
+                result = self._export_emit_with_runtime_hypercoast(
+                    output_path, wavelengths
+                )
+                if result:
+                    return result
                 image = hypercoast.emit_to_image(self.dataset, wavelengths=wavelengths)
 
             elif self.data_type == "PACE":
-                # PACE needs gridding first
+                if "Rrs" not in self.dataset.data_vars:
+                    result = self._export_pace_bgc_with_hypercoast(output_path)
+                    if result:
+                        return result
+                    return self._export_fallback(output_path, wavelengths, None)
+
+                # PACE AOP needs gridding first
                 image = hypercoast.pace_to_image(
                     self.dataset, wavelengths=wavelengths, method="nearest"
                 )
@@ -1385,6 +1503,279 @@ class HyperspectralDataset:
             _log(f"Error in hypercoast export: {e}", LOG_WARNING)
             return self._export_fallback(output_path, wavelengths, None)
 
+    def _export_pace_bgc_with_hypercoast(self, output_path, method="linear"):
+        """Export a PACE BGC 2D product after gridding swath coordinates.
+
+        Args:
+            output_path: Output GeoTIFF file path.
+            method: Interpolation method passed to HyperCoast gridding.
+
+        Returns:
+            Output path on success, otherwise None.
+        """
+        variable = self._pace_bgc_variable_name()
+        if variable is None:
+            return None
+
+        try:
+            method = self._pace_bgc_interpolation_method(variable, method)
+            grid = hypercoast.grid_pace_bgc(
+                self.dataset, variable=variable, method=method
+            )
+            data = np.asarray(grid.values, dtype="float32")
+            if data.ndim != 2:
+                raise ValueError(f"Expected 2D PACE BGC grid, got {data.shape}")
+
+            y_values = np.asarray(grid.coords["latitude"].values, dtype="float64")
+            x_values = np.asarray(grid.coords["longitude"].values, dtype="float64")
+            data = self._orient_array_north_up(data, y_values, y_axis=0)
+            height, width = data.shape
+            transform = from_bounds(
+                float(np.nanmin(x_values)),
+                float(np.nanmin(y_values)),
+                float(np.nanmax(x_values)),
+                float(np.nanmax(y_values)),
+                width,
+                height,
+            )
+            nodata = -9999.0
+            data = np.where(np.isfinite(data), data, nodata).astype("float32")
+
+            with rasterio.open(
+                output_path,
+                "w",
+                driver="GTiff",
+                height=height,
+                width=width,
+                count=1,
+                dtype="float32",
+                crs=self.crs or "EPSG:4326",
+                transform=transform,
+                nodata=nodata,
+                tiled=True,
+                compress="deflate",
+            ) as dst:
+                dst.write(data, 1)
+                dst.set_band_description(1, variable)
+
+            _log(
+                f"PACE BGC GeoTIFF export succeeded: variable={variable}, "
+                f"output={output_path}",
+                LOG_INFO,
+            )
+            return output_path
+        except Exception as exc:
+            _log(f"PACE BGC HyperCoast export failed: {exc}", LOG_WARNING)
+            return None
+
+    def _pace_bgc_variable_name(self):
+        """Return the preferred PACE BGC product variable name.
+
+        Returns:
+            Variable name, or None when the dataset has no BGC raster product.
+        """
+        if self.dataset is None:
+            return None
+        if self.selected_variable in self.dataset.data_vars:
+            data_var = self.dataset[self.selected_variable]
+            if self._is_exportable_data_variable(data_var):
+                return self.selected_variable
+        for name in PACE_BGC_VARIABLES:
+            if name in self.dataset.data_vars and self._is_exportable_data_variable(
+                self.dataset[name]
+            ):
+                return name
+        return None
+
+    def _pace_bgc_interpolation_method(self, variable, default_method):
+        """Return the interpolation method for a PACE BGC variable.
+
+        Args:
+            variable: PACE BGC variable name.
+            default_method: Default interpolation method.
+
+        Returns:
+            Interpolation method name.
+        """
+        data_var = self.dataset[variable]
+        if np.issubdtype(data_var.dtype, np.integer):
+            return "nearest"
+        return default_method
+
+    def _orient_array_north_up(self, data, y_values, y_axis):
+        """Flip raster data when y coordinates are stored south-to-north.
+
+        Args:
+            data: Raster data array.
+            y_values: One-dimensional y coordinate values.
+            y_axis: Axis in ``data`` that corresponds to y rows.
+
+        Returns:
+            Raster data array with row 0 representing the northern edge.
+        """
+        if len(y_values) > 1 and y_values[0] < y_values[-1]:
+            return np.flip(data, axis=y_axis)
+        return data
+
+    def _export_emit_with_runtime_hypercoast(self, output_path, wavelengths):
+        """Export EMIT RGB using HyperCoast's orthorectified writer.
+
+        Args:
+            output_path: Output GeoTIFF file path.
+            wavelengths: RGB wavelengths.
+
+        Returns:
+            Output path on success, otherwise None.
+        """
+        if wavelengths is None:
+            wavelengths = [650, 550, 450]
+        try:
+            try:
+                hc = hypercoast if HAS_HYPERCOAST else None
+            except NameError:
+                hc = None
+            if hc is None:
+                from ._hypercoast_lib import get_hypercoast
+
+                hc = get_hypercoast()
+            result = hc.emit_to_image(
+                self.filepath,
+                wavelengths=wavelengths,
+                output=output_path,
+            )
+            if result and os.path.isfile(output_path):
+                _log(f"HyperCoast EMIT export succeeded: {output_path}", LOG_INFO)
+                return output_path
+        except Exception as exc:
+            _log(f"Runtime HyperCoast EMIT export failed: {exc}", LOG_WARNING)
+        return None
+
+    def _export_rectilinear_geotiff(self, output_path, wavelengths=None, bands=None):
+        """Export a rectilinear hyperspectral cube directly to GeoTIFF.
+
+        This path preserves float reflectance values, CRS, transform, band order,
+        and no-data metadata. It avoids routing orthorectified EMIT cubes through
+        PIL image conversion, which can produce visually misleading striping in
+        QGIS and does not reliably preserve no-data transparency.
+
+        Args:
+            output_path: Output GeoTIFF file path.
+            wavelengths: Wavelengths to select.
+            bands: Band indexes to select when wavelengths are unavailable.
+
+        Returns:
+            Output GeoTIFF file path.
+
+        Raises:
+            ValueError: If the dataset is not a rectilinear raster cube.
+        """
+        data_var = self.get_data_variable()
+        if data_var is None:
+            raise ValueError("No data variable found")
+
+        spatial_dims = self._get_spatial_dims(data_var)
+        if spatial_dims is None:
+            raise ValueError(f"Cannot identify spatial dimensions: {data_var.dims}")
+        y_dim, x_dim = spatial_dims
+
+        if wavelengths is not None and "wavelength" in data_var.dims:
+            data = data_var.sel(wavelength=wavelengths, method="nearest")
+        elif bands is not None:
+            spectral_dim = self._get_spectral_dim(data_var, y_dim, x_dim)
+            data = data_var.isel({spectral_dim: bands})
+        else:
+            spectral_dim = self._get_spectral_dim(data_var, y_dim, x_dim)
+            data = data_var.isel({spectral_dim: slice(0, 3)})
+
+        arr = np.asarray(data.values, dtype="float32")
+        if arr.ndim == 2:
+            arr = arr[np.newaxis, :, :]
+        elif arr.ndim == 3:
+            dims = list(data.dims)
+            spectral_dim = self._get_spectral_dim(data, y_dim, x_dim)
+            spectral_axis = dims.index(spectral_dim)
+            if spectral_axis != 0:
+                arr = np.moveaxis(arr, spectral_axis, 0)
+        else:
+            raise ValueError(f"Cannot export array with shape {arr.shape}")
+
+        y_values = np.asarray(data_var.coords[y_dim].values, dtype="float64")
+        x_values = np.asarray(data_var.coords[x_dim].values, dtype="float64")
+        bounds = (
+            float(np.nanmin(x_values)),
+            float(np.nanmin(y_values)),
+            float(np.nanmax(x_values)),
+            float(np.nanmax(y_values)),
+        )
+        height = arr.shape[1]
+        width = arr.shape[2]
+        transform = from_bounds(*bounds, width, height)
+
+        nodata = -9999.0
+        arr = np.where(np.isfinite(arr), arr, nodata).astype("float32")
+
+        with rasterio.open(
+            output_path,
+            "w",
+            driver="GTiff",
+            height=height,
+            width=width,
+            count=arr.shape[0],
+            dtype="float32",
+            crs=self.crs or "EPSG:4326",
+            transform=transform,
+            nodata=nodata,
+            tiled=True,
+            compress="deflate",
+        ) as dst:
+            dst.write(arr)
+            if "wavelength" in data.coords:
+                selected_wavelengths = np.atleast_1d(data.coords["wavelength"].values)
+                for idx, wavelength in enumerate(selected_wavelengths, start=1):
+                    dst.set_band_description(idx, f"{float(wavelength):.2f} nm")
+
+        _log(f"Rectilinear GeoTIFF export succeeded: {output_path}", LOG_INFO)
+        return output_path
+
+    def _get_spatial_dims(self, data_var):
+        """Return y/x dimension names for a raster-like DataArray.
+
+        Args:
+            data_var: Xarray DataArray.
+
+        Returns:
+            Tuple of ``(y_dim, x_dim)`` or None.
+        """
+        dims = set(data_var.dims)
+        for y_dim, x_dim in (
+            ("latitude", "longitude"),
+            ("y", "x"),
+            ("northing", "easting"),
+            ("downtrack", "crosstrack"),
+        ):
+            if y_dim in dims and x_dim in dims:
+                return y_dim, x_dim
+        return None
+
+    def _get_spectral_dim(self, data_var, y_dim, x_dim):
+        """Return the spectral dimension name for a DataArray.
+
+        Args:
+            data_var: Xarray DataArray.
+            y_dim: Spatial y dimension name.
+            x_dim: Spatial x dimension name.
+
+        Returns:
+            Spectral dimension name.
+
+        Raises:
+            ValueError: If no spectral dimension can be found.
+        """
+        for dim in data_var.dims:
+            if dim not in (y_dim, x_dim):
+                return dim
+        raise ValueError(f"No spectral dimension found: {data_var.dims}")
+
     def _export_fallback(self, output_path, wavelengths, bands):
         """Fallback export without hypercoast."""
         _log("Using fallback GeoTIFF export path", LOG_INFO)
@@ -1421,16 +1812,28 @@ class HyperspectralDataset:
         elif arr.ndim == 2:
             arr = arr[np.newaxis, :, :]
         elif arr.ndim == 3:
-            # Find wavelength dimension and move to first
-            dims = list(data.dims)
-            for i, d in enumerate(dims):
-                if d not in ["x", "y", "latitude", "longitude"]:
-                    if i != 0:
-                        arr = np.moveaxis(arr, i, 0)
-                    break
+            spatial_dims = self._get_spatial_dims(data)
+            if spatial_dims is not None:
+                y_dim, x_dim = spatial_dims
+                spectral_dim = self._get_spectral_dim(data, y_dim, x_dim)
+                dims = list(data.dims)
+                axis_order = [
+                    dims.index(spectral_dim),
+                    dims.index(y_dim),
+                    dims.index(x_dim),
+                ]
+                arr = np.transpose(arr, axis_order)
+            else:
+                # Last-resort behavior for unusual datasets.
+                dims = list(data.dims)
+                for i, d in enumerate(dims):
+                    if d not in ["x", "y", "latitude", "longitude"]:
+                        if i != 0:
+                            arr = np.moveaxis(arr, i, 0)
+                        break
 
-        # Handle NaN values
-        arr = np.nan_to_num(arr, nan=0.0)
+        nodata = -9999.0
+        arr = np.where(np.isfinite(arr), arr, nodata)
 
         if arr.ndim < 3:
             raise ValueError(
@@ -1455,6 +1858,7 @@ class HyperspectralDataset:
                 dtype="float32",
                 crs=crs_value,
                 transform=transform,
+                nodata=nodata,
             ) as dst:
                 dst.write(arr.astype("float32"))
 

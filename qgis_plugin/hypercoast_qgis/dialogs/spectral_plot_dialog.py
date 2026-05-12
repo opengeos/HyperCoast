@@ -8,9 +8,9 @@ SPDX-License-Identifier: MIT
 
 import csv
 import numpy as np
-from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtCore import Qt, QTimer
 from qgis.PyQt.QtWidgets import (
-    QDialog,
+    QDockWidget,
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
@@ -18,7 +18,6 @@ from qgis.PyQt.QtWidgets import (
     QComboBox,
     QGroupBox,
     QCheckBox,
-    QSpinBox,
     QDoubleSpinBox,
     QFormLayout,
     QTableWidget,
@@ -32,10 +31,16 @@ from qgis.PyQt.QtWidgets import (
 )
 
 try:
-    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt5agg import (
-        NavigationToolbar2QT as NavigationToolbar,
-    )
+    try:
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+        from matplotlib.backends.backend_qtagg import (
+            NavigationToolbar2QT as NavigationToolbar,
+        )
+    except ImportError:
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        from matplotlib.backends.backend_qt5agg import (
+            NavigationToolbar2QT as NavigationToolbar,
+        )
     from matplotlib.figure import Figure
     import matplotlib.pyplot as plt
 
@@ -44,8 +49,8 @@ except ImportError:
     HAS_MATPLOTLIB = False
 
 
-class SpectralPlotDialog(QDialog):
-    """Dialog for displaying spectral plots."""
+class SpectralPlotDialog(QDockWidget):
+    """Dockable panel for displaying spectral plots."""
 
     def __init__(self, iface, plugin, parent=None):
         """Initialize the dialog.
@@ -59,6 +64,7 @@ class SpectralPlotDialog(QDialog):
         self.plugin = plugin
 
         self.setWindowTitle("Spectral Plot")
+        self.setObjectName("HyperCoastSpectralPlotDock")
         self.setMinimumWidth(800)
         self.setMinimumHeight(600)
 
@@ -70,7 +76,9 @@ class SpectralPlotDialog(QDialog):
 
     def setup_ui(self):
         """Set up the user interface."""
-        layout = QVBoxLayout(self)
+        content = QWidget(self)
+        self.setWidget(content)
+        layout = QVBoxLayout(content)
 
         if not HAS_MATPLOTLIB:
             layout.addWidget(
@@ -116,7 +124,7 @@ class SpectralPlotDialog(QDialog):
         options_form = QFormLayout()
 
         self.stack_check = QCheckBox("Stack Spectra")
-        self.stack_check.setChecked(True)
+        self.stack_check.setChecked(False)
         self.stack_check.stateChanged.connect(self.update_plot)
         options_form.addRow("", self.stack_check)
 
@@ -261,8 +269,8 @@ class SpectralPlotDialog(QDialog):
 
         layout.addWidget(splitter)
 
-        # Initialize empty plot
-        self.update_plot()
+        # Defer the first draw until Qt has assigned the dock/canvas geometry.
+        QTimer.singleShot(0, self.update_plot)
 
     def add_spectrum(self, lat, lon, wavelengths, values, layer_name):
         """Add a new spectrum to the plot.
@@ -316,7 +324,7 @@ class SpectralPlotDialog(QDialog):
                 fontsize=12,
                 color="gray",
             )
-            self.canvas.draw()
+            self._draw_canvas()
             return
 
         # Plot each spectrum
@@ -324,14 +332,20 @@ class SpectralPlotDialog(QDialog):
             color = self.colors[i % len(self.colors)]
 
             wavelengths = spectrum["wavelengths"]
-            values = spectrum["values"]
+            values = self._transform_values(spectrum["values"])
+            x_values = self._transform_x_values(wavelengths)
 
             # Filter negative values (often used as nodata)
             mask = ~np.isnan(values) & (values > -0.1)
             if np.any(mask):
+                plot_values = values[mask]
+                if self.stack_check.isChecked():
+                    span = np.nanmax(plot_values) - np.nanmin(plot_values)
+                    offset = (span if span > 0 else 0.1) * i
+                    plot_values = plot_values + offset
                 self.ax.plot(
-                    wavelengths[mask],
-                    values[mask],
+                    x_values[mask],
+                    plot_values,
                     color=color,
                     label=spectrum["label"],
                     linewidth=1.5,
@@ -339,8 +353,13 @@ class SpectralPlotDialog(QDialog):
 
         # Set labels
         self.ax.set_xlabel(self.xlabel_combo.currentText())
-        self.ax.set_ylabel(self.ylabel_combo.currentText())
-        self.ax.set_title("Spectral Signatures")
+        ylabel = self.ylabel_combo.currentText()
+        title = "Spectral Signatures"
+        if self.stack_check.isChecked():
+            ylabel = f"{ylabel} + display offset"
+            title = "Spectral Signatures (Stacked)"
+        self.ax.set_ylabel(ylabel)
+        self.ax.set_title(title)
 
         # Grid
         if self.grid_check.isChecked():
@@ -356,12 +375,65 @@ class SpectralPlotDialog(QDialog):
             self.ax.set_ylim(self.ymin_spin.value(), self.ymax_spin.value())
 
         self.figure.tight_layout()
-        self.canvas.draw()
+        self._draw_canvas()
 
     def apply_axis_range(self):
         """Apply custom axis range."""
         self.auto_scale.setChecked(False)
         self.update_plot()
+
+    def _transform_x_values(self, wavelengths):
+        """Return x-axis values for the selected axis mode.
+
+        Args:
+            wavelengths: Wavelength array in nanometers.
+
+        Returns:
+            Numpy array for plotting.
+        """
+        mode = self.xlabel_combo.currentText()
+        wavelengths = np.array(wavelengths, dtype=float)
+        if mode == "Band Number":
+            return np.arange(1, len(wavelengths) + 1)
+        if mode == "Frequency (THz)":
+            with np.errstate(divide="ignore", invalid="ignore"):
+                return 299792.458 / wavelengths
+        return wavelengths
+
+    def _draw_canvas(self):
+        """Draw the matplotlib canvas when its Qt geometry is valid."""
+        if not HAS_MATPLOTLIB:
+            return
+        if self.canvas.width() <= 0 or self.canvas.height() <= 0:
+            QTimer.singleShot(50, self.update_plot)
+            return
+        try:
+            self.canvas.draw_idle()
+        except ValueError as exc:
+            if "Invalid affine transformation matrix" not in str(exc):
+                raise
+            QTimer.singleShot(50, self.update_plot)
+
+    def _transform_values(self, values):
+        """Return y-axis values for the selected value mode.
+
+        Args:
+            values: Raw spectral values.
+
+        Returns:
+            Numpy array for plotting.
+        """
+        values = np.array(values, dtype=float)
+        if self.ylabel_combo.currentText() != "Normalized Reflectance":
+            return values
+        valid = values[~np.isnan(values)]
+        if valid.size == 0:
+            return values
+        vmin = np.nanmin(valid)
+        vmax = np.nanmax(valid)
+        if vmax <= vmin:
+            return values * 0
+        return (values - vmin) / (vmax - vmin)
 
     def remove_selected_spectrum(self):
         """Remove the selected spectrum from the plot."""

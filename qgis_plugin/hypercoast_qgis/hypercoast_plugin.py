@@ -10,8 +10,8 @@ import os
 
 from qgis.PyQt.QtCore import QCoreApplication, Qt, QTimer
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QMessageBox, QToolBar
-from qgis.core import QgsMessageLog, QgsProject, Qgis
+from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox, QToolBar
+from qgis.core import QgsApplication, QgsMessageLog, QgsProject, Qgis
 
 # About and update checker have no heavy deps, always available
 from .dialogs.about_dialog import AboutDialog
@@ -33,6 +33,15 @@ except ImportError:
 
 TOOLBAR_OBJECT_NAME = "HyperCoastToolbar"
 MENU_TITLE = "&HyperCoast"
+DOCK_OBJECT_NAMES = {
+    "HyperCoastSettingsDock",
+    "HyperCoastLoadDataDock",
+    "HyperCoastBandCombinationDock",
+    "HyperCoastSpectralPlotDock",
+    "HyperCoastAboutDock",
+    "HyperCoastUpdateDock",
+    "HyperCoastDependencyInstallerDock",
+}
 
 
 class HyperCoastPlugin:
@@ -52,6 +61,7 @@ class HyperCoastPlugin:
         self.menu = self.tr("&HyperCoast")
         self._remove_toolbars_by_object_name()
         self._remove_menus_by_title()
+        self._remove_docks_by_object_name()
         self.toolbar = self.iface.addToolBar("HyperCoast")
         self.toolbar.setObjectName(TOOLBAR_OBJECT_NAME)
 
@@ -63,6 +73,9 @@ class HyperCoastPlugin:
         self.about_dialog = None
         self.update_dialog = None
         self._settings_dock = None
+        self._dock_actions = {}
+        self._registered_docks = []
+        self.processing_provider = None
 
         # Track whether dependencies are available
         self._deps_available = False
@@ -135,25 +148,27 @@ class HyperCoastPlugin:
         icons_dir = os.path.join(self.plugin_dir, "icons")
 
         # Load Hyperspectral Data action
-        self.add_action(
+        self.load_action = self.add_action(
             os.path.join(icons_dir, "load_data.png"),
             text=self.tr("Load Hyperspectral Data"),
             callback=self.show_load_dialog,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Load hyperspectral data (EMIT, PACE, DESIS, etc.)"),
+            checkable=True,
         )
 
         # Band Combination action
-        self.add_action(
+        self.band_action = self.add_action(
             os.path.join(icons_dir, "band_combination.png"),
             text=self.tr("Band Combination"),
             callback=self.show_band_dialog,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Change band combination for visualization"),
+            checkable=True,
         )
 
         # Spectral Inspector action
-        self.add_action(
+        self.spectral_action = self.add_action(
             os.path.join(icons_dir, "hypercoast.png"),
             text=self.tr("Spectral Inspector"),
             callback=self.toggle_spectral_inspector,
@@ -174,22 +189,24 @@ class HyperCoastPlugin:
         )
 
         # Check for Updates action (menu only, no toolbar)
-        self.add_action(
+        self.update_action = self.add_action(
             ":/images/themes/default/mActionRefresh.svg",
             text=self.tr("Check for Updates..."),
             callback=self.show_update_checker,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Check for plugin updates from GitHub"),
             add_to_toolbar=False,
+            checkable=True,
         )
 
         # About action
-        self.add_action(
+        self.about_action = self.add_action(
             os.path.join(icons_dir, "about.svg"),
             text=self.tr("About"),
             callback=self.show_about_dialog,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("About HyperCoast plugin"),
+            checkable=True,
         )
 
         # Auto-check dependencies after GUI is initialized
@@ -281,6 +298,114 @@ class HyperCoastPlugin:
             if menu is not None and menu.title() in titles:
                 self._remove_menu(menu)
 
+    def _remove_dock(self, dock):
+        """Detach and schedule deletion of a plugin dock widget."""
+        if dock is None:
+            return
+        try:
+            self.iface.removeDockWidget(dock)
+        except Exception:
+            pass  # nosec B110
+        try:
+            dock.hide()
+        except Exception:
+            pass  # nosec B110
+        try:
+            dock.setParent(None)
+        except Exception:
+            pass  # nosec B110
+        try:
+            dock.deleteLater()
+        except Exception:
+            pass  # nosec B110
+
+    def _remove_docks_by_object_name(self):
+        """Remove current or stale plugin dock widgets from QGIS."""
+        main_window = self.iface.mainWindow()
+        for dock in main_window.findChildren(QDockWidget):
+            if dock.objectName() in DOCK_OBJECT_NAMES:
+                self._remove_dock(dock)
+
+    def _register_dock(self, dock, action):
+        """Register a dock widget and sync it with a checkable action.
+
+        Args:
+            dock: Dock widget to manage.
+            action: QAction that toggles dock visibility.
+        """
+        dock.setAllowedAreas(
+            Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea
+        )
+        dock.visibilityChanged.connect(
+            lambda visible, dock=dock, action=action: self._on_dock_visibility_changed(
+                dock, action, visible
+            )
+        )
+        self.iface.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
+        for existing in self._registered_docks:
+            if existing is not dock:
+                try:
+                    self.iface.mainWindow().tabifyDockWidget(existing, dock)
+                    break
+                except Exception:
+                    pass  # nosec B110
+        self._registered_docks.append(dock)
+        self._dock_actions[dock.objectName()] = action
+
+    def _on_dock_visibility_changed(self, dock, action, visible):
+        """Keep dock action checked state aligned with dock visibility.
+
+        Args:
+            dock: Dock widget whose visibility changed.
+            action: QAction associated with the dock.
+            visible: Whether the dock is visible.
+        """
+        action.blockSignals(True)
+        action.setChecked(visible)
+        action.blockSignals(False)
+
+    def _show_dock(self, attr_name, factory, action, before_show=None):
+        """Create if needed, then show and raise a dock widget.
+
+        Args:
+            attr_name: Plugin attribute that stores the dock instance.
+            factory: Callable that creates the dock widget.
+            action: QAction associated with the dock.
+            before_show: Optional callable invoked before showing the dock.
+
+        Returns:
+            The dock widget.
+        """
+        dock = getattr(self, attr_name, None)
+        if dock is None:
+            dock = factory()
+            setattr(self, attr_name, dock)
+            self._register_dock(dock, action)
+        if before_show is not None:
+            before_show(dock)
+        dock.show()
+        dock.raise_()
+        action.setChecked(True)
+        return dock
+
+    def _toggle_dock(self, attr_name, factory, action, before_show=None):
+        """Toggle a dock widget's visibility.
+
+        Args:
+            attr_name: Plugin attribute that stores the dock instance.
+            factory: Callable that creates the dock widget.
+            action: QAction associated with the dock.
+            before_show: Optional callable invoked before showing the dock.
+
+        Returns:
+            The dock widget.
+        """
+        dock = getattr(self, attr_name, None)
+        if dock is not None and dock.isVisible():
+            dock.hide()
+            return dock
+        return self._show_dock(attr_name, factory, action, before_show)
+
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
@@ -290,11 +415,23 @@ class HyperCoastPlugin:
         # Remove the toolbar
         del self.toolbar
 
+        self._remove_processing_provider()
+
         # Clean up dock widgets
-        if self._settings_dock:
-            self.iface.removeDockWidget(self._settings_dock)
-            self._settings_dock.deleteLater()
-            self._settings_dock = None
+        for attr_name in (
+            "_settings_dock",
+            "load_dialog",
+            "band_dialog",
+            "spectral_plot_dialog",
+            "about_dialog",
+            "update_dialog",
+        ):
+            dock = getattr(self, attr_name, None)
+            if dock is not None:
+                self._remove_dock(dock)
+                setattr(self, attr_name, None)
+        self._registered_docks.clear()
+        self._dock_actions.clear()
 
         # Clean up tools
         if self.spectral_tool:
@@ -308,6 +445,7 @@ class HyperCoastPlugin:
 
         self._remove_toolbars_by_object_name()
         self._remove_menus_by_title()
+        self._remove_docks_by_object_name()
 
     def _check_dependencies_on_startup(self):
         """Check if required dependencies are installed on plugin startup."""
@@ -426,6 +564,7 @@ class HyperCoastPlugin:
         if _DATA_DIALOGS_AVAILABLE:
             self._deps_available = True
             self._set_data_actions_enabled(True)
+            self._ensure_processing_provider()
             QgsMessageLog.logMessage(
                 "All data features enabled",
                 "HyperCoast",
@@ -434,6 +573,39 @@ class HyperCoastPlugin:
         else:
             self._deps_available = False
             self._set_data_actions_enabled(False)
+            self._remove_processing_provider()
+
+    def _ensure_processing_provider(self):
+        """Register the HyperCoast Processing provider if available."""
+        if self.processing_provider is not None:
+            return
+        try:
+            from .processing_provider import HyperCoastProcessingProvider
+
+            self.processing_provider = HyperCoastProcessingProvider(self.plugin_dir)
+            QgsApplication.processingRegistry().addProvider(self.processing_provider)
+            QgsMessageLog.logMessage(
+                "HyperCoast Processing provider registered",
+                "HyperCoast",
+                Qgis.MessageLevel.Info,
+            )
+        except Exception as e:
+            self.processing_provider = None
+            QgsMessageLog.logMessage(
+                f"Could not register Processing provider: {e}",
+                "HyperCoast",
+                Qgis.MessageLevel.Warning,
+            )
+
+    def _remove_processing_provider(self):
+        """Remove the HyperCoast Processing provider if registered."""
+        if self.processing_provider is None:
+            return
+        try:
+            QgsApplication.processingRegistry().removeProvider(self.processing_provider)
+        except Exception:
+            pass  # nosec B110
+        self.processing_provider = None
 
     def _set_data_actions_enabled(self, enabled):
         """Enable or disable data-related actions.
@@ -449,39 +621,35 @@ class HyperCoastPlugin:
 
     def toggle_settings_dock(self):
         """Toggle the Settings dock widget visibility."""
-        if self._settings_dock is None:
-            try:
-                from .dialogs.settings_dock import SettingsDockWidget
+        try:
+            from .dialogs.settings_dock import SettingsDockWidget
 
-                self._settings_dock = SettingsDockWidget(
-                    self.plugin_dir, self.iface, self.iface.mainWindow()
-                )
-                self._settings_dock.setObjectName("HyperCoastSettingsDock")
-                self._settings_dock.visibilityChanged.connect(
-                    self._on_settings_visibility_changed
-                )
-                self._settings_dock.deps_installed.connect(self._on_deps_installed)
-                self.iface.addDockWidget(
-                    Qt.DockWidgetArea.RightDockWidgetArea, self._settings_dock
-                )
-                self._settings_dock.show()
-                self._settings_dock.raise_()
-                return
-            except Exception as e:
-                QMessageBox.critical(
-                    self.iface.mainWindow(),
-                    "Error",
-                    f"Failed to create Settings panel:\n{str(e)}",
-                )
-                self.settings_action.setChecked(False)
-                return
+            self._toggle_dock(
+                "_settings_dock",
+                lambda: self._create_settings_dock(SettingsDockWidget),
+                self.settings_action,
+            )
+        except Exception as e:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                "Error",
+                f"Failed to create Settings panel:\n{str(e)}",
+            )
+            self.settings_action.setChecked(False)
 
-        # Toggle visibility
-        if self._settings_dock.isVisible():
-            self._settings_dock.hide()
-        else:
-            self._settings_dock.show()
-            self._settings_dock.raise_()
+    def _create_settings_dock(self, dock_class):
+        """Create the Settings dock and connect dependency signals.
+
+        Args:
+            dock_class: Settings dock widget class.
+
+        Returns:
+            Settings dock widget.
+        """
+        dock = dock_class(self.plugin_dir, self.iface, self.iface.mainWindow())
+        dock.setObjectName("HyperCoastSettingsDock")
+        dock.deps_installed.connect(self._on_deps_installed)
+        return dock
 
     def _on_settings_visibility_changed(self, visible):
         """Handle Settings dock visibility change.
@@ -504,33 +672,36 @@ class HyperCoastPlugin:
         """Show the load hyperspectral data dialog."""
         if not self._deps_available:
             self._show_deps_required_warning()
+            self.load_action.setChecked(False)
             return
         from .dialogs.load_data_dialog import LoadDataDialog
 
-        if self.load_dialog is None:
-            self.load_dialog = LoadDataDialog(self.iface, self)
-        self.load_dialog.show()
-        self.load_dialog.raise_()
-        self.load_dialog.activateWindow()
+        self._toggle_dock(
+            "load_dialog",
+            lambda: LoadDataDialog(self.iface, self, self.iface.mainWindow()),
+            self.load_action,
+        )
 
     def show_band_dialog(self):
         """Show the band combination dialog."""
         if not self._deps_available:
             self._show_deps_required_warning()
+            self.band_action.setChecked(False)
             return
         from .dialogs.band_combination_dialog import BandCombinationDialog
 
-        if self.band_dialog is None:
-            self.band_dialog = BandCombinationDialog(self.iface, self)
-        self.band_dialog.refresh_layers()
-        self.band_dialog.show()
-        self.band_dialog.raise_()
-        self.band_dialog.activateWindow()
+        self._toggle_dock(
+            "band_dialog",
+            lambda: BandCombinationDialog(self.iface, self, self.iface.mainWindow()),
+            self.band_action,
+            before_show=lambda dock: dock.refresh_layers(),
+        )
 
     def toggle_spectral_inspector(self):
         """Toggle the spectral inspector tool."""
         if not self._deps_available:
             self._show_deps_required_warning()
+            self.spectral_action.setChecked(False)
             return
         from .dialogs.spectral_inspector_tool import SpectralInspectorTool
 
@@ -540,6 +711,8 @@ class HyperCoastPlugin:
         if self.spectral_tool.is_active:
             self.spectral_tool.deactivate()
             self.iface.mapCanvas().unsetMapTool(self.spectral_tool)
+            if self.spectral_plot_dialog is not None:
+                self.spectral_plot_dialog.hide()
         else:
             self.spectral_tool.activate()
             self.iface.mapCanvas().setMapTool(self.spectral_tool)
@@ -550,14 +723,15 @@ class HyperCoastPlugin:
         """Show the spectral plot dialog."""
         if not self._deps_available:
             self._show_deps_required_warning()
+            self.spectral_action.setChecked(False)
             return
         from .dialogs.spectral_plot_dialog import SpectralPlotDialog
 
-        if self.spectral_plot_dialog is None:
-            self.spectral_plot_dialog = SpectralPlotDialog(self.iface, self)
-        self.spectral_plot_dialog.show()
-        self.spectral_plot_dialog.raise_()
-        self.spectral_plot_dialog.activateWindow()
+        self._show_dock(
+            "spectral_plot_dialog",
+            lambda: SpectralPlotDialog(self.iface, self, self.iface.mainWindow()),
+            self.spectral_action,
+        )
 
     def _show_deps_required_warning(self):
         """Show a warning that dependencies need to be installed."""
@@ -578,17 +752,8 @@ class HyperCoastPlugin:
             try:
                 from .dialogs.settings_dock import SettingsDockWidget
 
-                self._settings_dock = SettingsDockWidget(
-                    self.plugin_dir, self.iface, self.iface.mainWindow()
-                )
-                self._settings_dock.setObjectName("HyperCoastSettingsDock")
-                self._settings_dock.visibilityChanged.connect(
-                    self._on_settings_visibility_changed
-                )
-                self._settings_dock.deps_installed.connect(self._on_deps_installed)
-                self.iface.addDockWidget(
-                    Qt.DockWidgetArea.RightDockWidgetArea, self._settings_dock
-                )
+                self._settings_dock = self._create_settings_dock(SettingsDockWidget)
+                self._register_dock(self._settings_dock, self.settings_action)
             except Exception as e:
                 QMessageBox.critical(
                     self.iface.mainWindow(),
@@ -597,34 +762,34 @@ class HyperCoastPlugin:
                 )
                 return
 
-        self._settings_dock.show()
-        self._settings_dock.raise_()
-        self.settings_action.setChecked(True)
+        self._show_dock(
+            "_settings_dock",
+            lambda: self._settings_dock,
+            self.settings_action,
+        )
         self._settings_dock.show_dependencies_tab()
 
     def show_about_dialog(self):
         """Show the About dialog."""
-        if self.about_dialog is None:
-            self.about_dialog = AboutDialog(self.iface.mainWindow())
-        self.about_dialog.show()
-        self.about_dialog.raise_()
-        self.about_dialog.activateWindow()
+        self._toggle_dock(
+            "about_dialog",
+            lambda: AboutDialog(self.iface.mainWindow()),
+            self.about_action,
+        )
 
     def show_update_checker(self):
         """Show the update checker dialog."""
-        if self.update_dialog is None:
-            self.update_dialog = UpdateCheckerDialog(
-                self.plugin_dir, self.iface.mainWindow()
-            )
-        self.update_dialog.show()
-        self.update_dialog.raise_()
-        self.update_dialog.activateWindow()
+        self._toggle_dock(
+            "update_dialog",
+            lambda: UpdateCheckerDialog(self.plugin_dir, self.iface.mainWindow()),
+            self.update_action,
+        )
 
     def register_hyperspectral_layer(self, layer_id, data_info):
         """Register a hyperspectral layer with its metadata.
 
         :param layer_id: The QGIS layer ID
-        :param data_info: Dictionary containing dataset info (xarray dataset, type, wavelengths, etc.)
+        :param data_info: Dictionary containing dataset info.
         """
         self.hyperspectral_data[layer_id] = data_info
 

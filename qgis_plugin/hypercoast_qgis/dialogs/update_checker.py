@@ -19,7 +19,7 @@ from urllib.error import URLError, HTTPError
 
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
 from qgis.PyQt.QtWidgets import (
-    QDialog,
+    QDockWidget,
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
@@ -29,6 +29,7 @@ from qgis.PyQt.QtWidgets import (
     QGroupBox,
     QFormLayout,
     QTextEdit,
+    QWidget,
 )
 from qgis.PyQt.QtGui import QFont
 
@@ -215,8 +216,8 @@ class DownloadWorker(QThread):
                     pass
 
 
-class UpdateCheckerDialog(QDialog):
-    """Dialog for checking and installing plugin updates."""
+class UpdateCheckerDialog(QDockWidget):
+    """Dockable panel for checking and installing plugin updates."""
 
     def __init__(self, plugin_dir, parent=None):
         super().__init__(parent)
@@ -228,6 +229,7 @@ class UpdateCheckerDialog(QDialog):
         self.download_worker = None
 
         self.setWindowTitle("HyperCoast Plugin Update")
+        self.setObjectName("HyperCoastUpdateDock")
         self.setMinimumWidth(500)
         self.setMinimumHeight(400)
 
@@ -247,8 +249,10 @@ class UpdateCheckerDialog(QDialog):
         return "Unknown"
 
     def _setup_ui(self):
-        """Set up the dialog UI."""
-        layout = QVBoxLayout(self)
+        """Set up the panel UI."""
+        content = QWidget(self)
+        self.setWidget(content)
+        layout = QVBoxLayout(content)
         layout.setSpacing(15)
 
         # Header
