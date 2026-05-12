@@ -23,6 +23,10 @@ Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video 
     -   Geology
     -   Chlorophyll-a
 
+-   **Dockable QGIS Panels**: Open HyperCoast tools as dockable panels that can be tabbed with the QGIS interface.
+
+-   **Processing Tools**: Run batch-friendly Processing algorithms for RGB composites, single-band exports, spectral indices, and PCA components.
+
 Before using the plugin, please create a new conda environment to install QGIS and HyperCoast:
 
 ```bash
@@ -43,7 +47,7 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 
 ### QGIS Version
 
--   QGIS 3.22 or later
+-   QGIS 3.28 or later
 
 ## Installation
 
@@ -93,6 +97,10 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 4. Click multiple locations to compare spectra
 5. Export data to CSV or save the plot image
 
+### Running Processing Tools
+
+Open **Processing** → **Toolbox** → **HyperCoast** to run batch tools for RGB composites, single-band export, spectral index rasters, and PCA components.
+
 ## Supported File Formats
 
 | Sensor  | Extensions      | Description               |
@@ -107,10 +115,6 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 | Tanager | .h5             | Planet Tanager            |
 | Wyvern  | .tif, .tiff     | Wyvern Hyperspectral      |
 | Generic | .tif, .nc       | Multi-band GeoTIFF/NetCDF |
-
-## Screenshots
-
-_Coming soon_
 
 ## Development
 

@@ -48,6 +48,8 @@ if _PLUGIN_PARENT not in sys.path:
 def _module_names():
     """Yield dotted module names for every .py file under the plugin package."""
     for path in sorted(PLUGIN_ROOT.rglob("*.py")):
+        if path.parent.name == "icons" and path.stem.startswith("create_icon"):
+            continue
         rel = path.relative_to(PLUGIN_ROOT.parent).with_suffix("")
         parts = rel.parts
         if parts[-1] == "__init__":

@@ -14,7 +14,7 @@ import traceback
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
 from qgis.PyQt.QtGui import QColor, QFont
 from qgis.PyQt.QtWidgets import (
-    QDialog,
+    QDockWidget,
     QHBoxLayout,
     QHeaderView,
     QLabel,
@@ -24,6 +24,7 @@ from qgis.PyQt.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
+    QWidget,
 )
 
 
@@ -64,13 +65,13 @@ class DepsInstallWorker(QThread):
             self.finished.emit(False, error_msg)
 
 
-class DependencyInstallerDialog(QDialog):
-    """Dialog for checking and installing plugin dependencies."""
+class DependencyInstallerDialog(QDockWidget):
+    """Dockable panel for checking and installing plugin dependencies."""
 
     deps_installed = pyqtSignal()
 
     def __init__(self, plugin_dir, parent=None):
-        """Initialize the dialog.
+        """Initialize the panel.
 
         Args:
             plugin_dir: Path to the plugin directory containing requirements.txt.
@@ -81,6 +82,7 @@ class DependencyInstallerDialog(QDialog):
         self.install_worker = None
 
         self.setWindowTitle("HyperCoast - Install Dependencies")
+        self.setObjectName("HyperCoastDependencyInstallerDock")
         self.setMinimumWidth(600)
         self.setMinimumHeight(500)
 
@@ -88,8 +90,10 @@ class DependencyInstallerDialog(QDialog):
         self._check_packages()
 
     def _setup_ui(self):
-        """Set up the dialog UI."""
-        layout = QVBoxLayout(self)
+        """Set up the panel UI."""
+        content = QWidget(self)
+        self.setWidget(content)
+        layout = QVBoxLayout(content)
         layout.setSpacing(12)
 
         # Header
