@@ -34,6 +34,7 @@ except ImportError:
 TOOLBAR_OBJECT_NAME = "HyperCoastToolbar"
 MENU_TITLE = "&HyperCoast"
 
+
 class HyperCoastPlugin:
     """Main HyperCoast QGIS Plugin class."""
 
@@ -193,7 +194,6 @@ class HyperCoastPlugin:
 
         # Auto-check dependencies after GUI is initialized
         QTimer.singleShot(1000, self._check_dependencies_on_startup)
-
 
     def _remove_toolbar(self, toolbar):
         """Detach and schedule deletion of a plugin toolbar widget."""
