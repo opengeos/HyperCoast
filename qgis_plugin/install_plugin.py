@@ -141,9 +141,14 @@ def prompt_response(message):
         message: Prompt shown to the user.
 
     Returns:
-        Lowercase stripped response text.
+        Lowercase stripped response text. Returns an empty string when
+        standard input is closed (for example, during non-interactive runs)
+        so callers do not need to guard against ``EOFError``.
     """
-    return input(message).strip().lower()
+    try:
+        return input(message).strip().lower()
+    except EOFError:
+        return ""
 
 
 def copy_plugin_files(src_dir, dst_dir, exclude_patterns):
@@ -259,10 +264,7 @@ def install_plugin(zip_path=None, force=False):
         print("Please ensure QGIS is installed.")
         print("Run QGIS at least once before installing the plugin.")
         while True:
-            try:
-                create = prompt_response("Create directory anyway? [y/N]: ")
-            except EOFError:
-                create = ""
+            create = prompt_response("Create directory anyway? [y/N]: ")
             if create in ("y", "n", ""):
                 break
             print("Please enter 'y' to create the directory or 'n' to cancel.")

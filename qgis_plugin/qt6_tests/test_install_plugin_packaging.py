@@ -4,9 +4,9 @@ import sys
 import zipfile
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
+PLUGIN_ROOT = Path(__file__).resolve().parents[1]
+if str(PLUGIN_ROOT) not in sys.path:
+    sys.path.insert(0, str(PLUGIN_ROOT))
 
 import install_plugin  # noqa: E402
 
@@ -45,7 +45,7 @@ def test_install_plugin_installs_to_hypercoast_folder(tmp_path, monkeypatch):
 
 def test_readme_advertises_hypercoast_install_folder():
     """README should document hypercoast as the QGIS plugin folder name."""
-    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (PLUGIN_ROOT / "README.md").read_text(encoding="utf-8")
 
     assert "name the copied folder `hypercoast`" in readme
     assert "Copy the `hypercoast_qgis` folder" not in readme
