@@ -125,7 +125,7 @@ The recommended way to package and install the plugin:
 ```bash
 cd qgis_plugin
 
-# Package the plugin (creates dist/hypercoast_qgis_0.1.0.zip)
+# Package the plugin (creates dist/hypercoast_qgis_0.8.0.zip)
 python install_plugin.py
 
 # Package and install directly to QGIS
@@ -163,7 +163,7 @@ zip -r hypercoast_qgis.zip hypercoast_qgis -x "*.pyc" -x "__pycache__/*"
 
 ```bash
 cd qgis_plugin
-python -m pytest tests/
+python -m pytest qt6_tests/
 ```
 
 ## License

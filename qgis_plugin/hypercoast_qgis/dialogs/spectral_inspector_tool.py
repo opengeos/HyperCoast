@@ -104,12 +104,16 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
         self._add_point_marker(point)
 
         # Extract from each layer
+        selected_layer_id = self._selected_layer_id()
         for layer_id, data_info in hyper_layers.items():
+            if selected_layer_id and layer_id != selected_layer_id:
+                continue
+
             layer = QgsProject.instance().mapLayer(layer_id)
             if not layer:
                 continue
 
-            dataset = data_info.get("dataset")
+            dataset = self.plugin.ensure_hyperspectral_dataset(layer_id)
             if dataset is None:
                 continue
 
@@ -132,7 +136,14 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
 
             try:
                 # Extract spectral signature
-                wavelengths, values = dataset.extract_spectral_signature(lon, lat)
+                layer_crs_authid = self._crs_authid(layer_crs)
+                wavelengths, values = dataset.extract_spectral_signature(
+                    layer_point.x(),
+                    layer_point.y(),
+                    crs=layer_crs_authid,
+                    lon=lon,
+                    lat=lat,
+                )
 
                 if wavelengths is not None and values is not None:
                     # Emit signal for plot update
@@ -187,6 +198,37 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
         rb.addPoint(point, True)
 
         self.rubber_bands.append(rb)
+
+    def _crs_authid(self, crs):
+        """Return a CRS auth ID for a QGIS CRS object.
+
+        Args:
+            crs: QgsCoordinateReferenceSystem-like object.
+
+        Returns:
+            CRS auth ID, or EPSG:4326 when unavailable.
+        """
+        authid = getattr(crs, "authid", None)
+        if callable(authid):
+            try:
+                value = authid()
+                if value:
+                    return value
+            except Exception:
+                pass
+        return "EPSG:4326"
+
+    def _selected_layer_id(self):
+        """Return the spectral plot's selected layer ID.
+
+        Returns:
+            QGIS layer ID, or None to sample all HyperCoast layers.
+        """
+        plot_dialog = getattr(self.plugin, "spectral_plot_dialog", None)
+        selected_layer_id = getattr(plot_dialog, "selected_layer_id", None)
+        if callable(selected_layer_id):
+            return selected_layer_id()
+        return None
 
     def clear_points(self):
         """Clear all extracted points and markers."""

@@ -7,7 +7,6 @@ SPDX-License-Identifier: MIT
 """
 
 import os
-import tempfile
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
 from qgis.PyQt.QtWidgets import (
     QDockWidget,
@@ -46,6 +45,7 @@ from ..hyperspectral_provider import (
     DATA_TYPES,
     create_file_filter,
 )
+from ..cache_manager import create_generated_raster_path
 
 
 class DatasetPreviewWorker(QThread):
@@ -760,19 +760,11 @@ class LoadDataDialog(QDockWidget):
             suffix: Short output kind, such as ``"rgb"``.
 
         Returns:
-            Path to a unique temporary GeoTIFF.
+            Path to a unique persistent cache GeoTIFF.
         """
-        safe_name = "".join(
-            c if c.isalnum() or c in ("-", "_") else "_" for c in layer_name
+        return create_generated_raster_path(
+            layer_name, suffix, project=QgsProject.instance()
         )
-        safe_name = safe_name.strip("_") or "hypercoast"
-        fd, path = tempfile.mkstemp(prefix=f"{safe_name}_{suffix}_", suffix=".tif")
-        os.close(fd)
-        try:
-            os.remove(path)
-        except OSError:
-            pass
-        return path
 
     def _set_layer_custom_properties(
         self, raster_layer, filepath, wavelengths, selected_variable=None

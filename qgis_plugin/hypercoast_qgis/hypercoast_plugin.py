@@ -211,6 +211,17 @@ class HyperCoastPlugin:
 
         # Auto-check dependencies after GUI is initialized
         QTimer.singleShot(1000, self._check_dependencies_on_startup)
+        self._connect_project_signals()
+
+    def _connect_project_signals(self):
+        """Connect project lifecycle signals used for layer rehydration."""
+        try:
+            project = QgsProject.instance()
+            signal = getattr(project, "readProject", None)
+            if signal is not None and hasattr(signal, "connect"):
+                signal.connect(self.rehydrate_hyperspectral_layers)
+        except Exception:
+            pass  # nosec B110
 
     def _remove_toolbar(self, toolbar):
         """Detach and schedule deletion of a plugin toolbar widget."""
@@ -409,11 +420,23 @@ class HyperCoastPlugin:
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
-            self.iface.removePluginRasterMenu(self.tr("&HyperCoast"), action)
-            self.iface.removeToolBarIcon(action)
+            try:
+                self.iface.removePluginRasterMenu(self.tr("&HyperCoast"), action)
+            except RuntimeError:
+                pass  # nosec B110
+            try:
+                self.iface.removeToolBarIcon(action)
+            except RuntimeError:
+                pass  # nosec B110
 
         # Remove the toolbar
-        del self.toolbar
+        toolbar = getattr(self, "toolbar", None)
+        if toolbar is not None:
+            try:
+                self._remove_toolbar(toolbar)
+            except Exception:
+                pass  # nosec B110
+        self.toolbar = None
 
         self._remove_processing_provider()
 
@@ -565,6 +588,7 @@ class HyperCoastPlugin:
             self._deps_available = True
             self._set_data_actions_enabled(True)
             self._ensure_processing_provider()
+            self.rehydrate_hyperspectral_layers()
             QgsMessageLog.logMessage(
                 "All data features enabled",
                 "HyperCoast",
@@ -731,6 +755,7 @@ class HyperCoastPlugin:
             "spectral_plot_dialog",
             lambda: SpectralPlotDialog(self.iface, self, self.iface.mainWindow()),
             self.spectral_action,
+            before_show=lambda dock: dock.refresh_layer_combo(),
         )
 
     def _show_deps_required_warning(self):
@@ -792,6 +817,163 @@ class HyperCoastPlugin:
         :param data_info: Dictionary containing dataset info.
         """
         self.hyperspectral_data[layer_id] = data_info
+        if self.spectral_plot_dialog is not None:
+            self.spectral_plot_dialog.refresh_layer_combo()
+
+    def rehydrate_hyperspectral_layers(self):
+        """Restore HyperCoast layer registrations from QGIS custom properties."""
+        try:
+            project = QgsProject.instance()
+            map_layers = getattr(project, "mapLayers", None)
+            layers = map_layers() if callable(map_layers) else {}
+        except Exception as exc:
+            QgsMessageLog.logMessage(
+                f"Could not scan project layers for HyperCoast metadata: {exc}",
+                "HyperCoast",
+                Qgis.MessageLevel.Warning,
+            )
+            return
+
+        for layer_id, layer in getattr(layers, "items", lambda: [])():
+            source_path = self._layer_custom_property(
+                layer, "hypercoast/source_path", ""
+            )
+            if not source_path:
+                continue
+            if not os.path.exists(source_path):
+                QgsMessageLog.logMessage(
+                    f"Skipping HyperCoast layer with missing source file: {source_path}",
+                    "HyperCoast",
+                    Qgis.MessageLevel.Warning,
+                )
+                continue
+
+            existing = self.hyperspectral_data.get(layer_id, {})
+            data_info = {
+                "dataset": existing.get("dataset"),
+                "filepath": source_path,
+                "data_type": self._layer_custom_property(
+                    layer, "hypercoast/data_type", "auto"
+                ),
+                "wavelengths": existing.get("wavelengths"),
+                "rgb_wavelengths": self._parse_wavelengths(
+                    self._layer_custom_property(layer, "hypercoast/rgb_wavelengths", "")
+                ),
+                "selected_variable": self._layer_custom_property(
+                    layer, "hypercoast/selected_variable", None
+                ),
+                "bounds": existing.get("bounds"),
+                "crs": self._layer_custom_property(layer, "hypercoast/crs", None),
+            }
+            self.hyperspectral_data[layer_id] = data_info
+
+    def ensure_hyperspectral_dataset(self, layer_id):
+        """Return a loaded dataset for a registered HyperCoast layer.
+
+        Args:
+            layer_id: QGIS layer ID.
+
+        Returns:
+            Loaded HyperspectralDataset, or None when the dataset cannot be
+            loaded.
+        """
+        data_info = self.get_hyperspectral_data(layer_id)
+        if not data_info:
+            return None
+
+        dataset = data_info.get("dataset")
+        if dataset is not None and getattr(dataset, "dataset", None) is not None:
+            return dataset
+
+        filepath = data_info.get("filepath", "")
+        if not filepath or not os.path.exists(filepath):
+            QgsMessageLog.logMessage(
+                f"Cannot load HyperCoast source file: {filepath}",
+                "HyperCoast",
+                Qgis.MessageLevel.Warning,
+            )
+            return None
+
+        try:
+            from .hyperspectral_provider import HyperspectralDataset
+
+            dataset = HyperspectralDataset(filepath, data_info.get("data_type", "auto"))
+            dataset.set_selected_variable(data_info.get("selected_variable"))
+            if not dataset.load():
+                QgsMessageLog.logMessage(
+                    dataset.last_error or f"Failed to load {filepath}",
+                    "HyperCoast",
+                    Qgis.MessageLevel.Warning,
+                )
+                return None
+
+            data_info.update(
+                {
+                    "dataset": dataset,
+                    "data_type": dataset.data_type,
+                    "wavelengths": dataset.wavelengths,
+                    "bounds": dataset.bounds,
+                    "crs": dataset.crs,
+                }
+            )
+            return dataset
+        except Exception as exc:
+            QgsMessageLog.logMessage(
+                f"Could not load HyperCoast dataset for layer {layer_id}: {exc}",
+                "HyperCoast",
+                Qgis.MessageLevel.Warning,
+            )
+            return None
+
+    def _layer_custom_property(self, layer, key, default=None):
+        """Read a QGIS layer custom property as a plain Python value.
+
+        Args:
+            layer: QGIS layer-like object.
+            key: Custom property key.
+            default: Value returned when the property is missing.
+
+        Returns:
+            Custom property value or ``default``.
+        """
+        custom_property = getattr(layer, "customProperty", None)
+        if not callable(custom_property):
+            return default
+        try:
+            value = custom_property(key, default)
+        except TypeError:
+            try:
+                value = custom_property(key)
+            except Exception:
+                return default
+        except Exception:
+            return default
+        if value in ("", None):
+            return default
+        return value
+
+    def _parse_wavelengths(self, value):
+        """Parse a comma-separated wavelength custom property.
+
+        Args:
+            value: Custom property value.
+
+        Returns:
+            List of wavelength values.
+        """
+        if not value:
+            return []
+        if isinstance(value, (list, tuple)):
+            candidates = value
+        else:
+            candidates = str(value).split(",")
+        wavelengths = []
+        for candidate in candidates:
+            try:
+                wavelengths.append(float(candidate))
+            except (TypeError, ValueError):
+                pass
+        return wavelengths
 
     def get_hyperspectral_data(self, layer_id):
         """Get hyperspectral data for a layer.
