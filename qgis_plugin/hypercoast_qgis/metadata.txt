@@ -5,7 +5,7 @@ name=HyperCoast
 qgisMinimumVersion=3.28
 qgisMaximumVersion=4.99
 description=Visualize and analyze hyperspectral data including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets
-version=0.8.0
+version=0.23.0
 author=Qiusheng Wu
 email=giswqs@gmail.com
 
@@ -31,6 +31,8 @@ deprecated=False
 hasProcessingProvider=yes
 
 changelog=
+    0.23.0
+        - Align QGIS plugin metadata with the HyperCoast package release
     0.8.0
         - Convert plugin windows to dockable QGIS panels
         - Add HyperCoast Processing provider with RGB, single-band, spectral index, and PCA tools
