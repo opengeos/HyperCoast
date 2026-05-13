@@ -61,7 +61,7 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 
 ### Manual Installation
 
-1. Copy the `hypercoast_qgis` folder to your QGIS plugins directory:
+1. Copy the `hypercoast_qgis` source folder to your QGIS plugins directory and name the copied folder `hypercoast`:
 
     - **Linux**: `~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/`
     - **Windows**: `%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins\`
@@ -125,7 +125,7 @@ The recommended way to package and install the plugin:
 ```bash
 cd qgis_plugin
 
-# Package the plugin (creates dist/hypercoast_qgis_0.8.0.zip)
+# Package the plugin (creates dist/hypercoast_0.8.0.zip)
 python install_plugin.py
 
 # Package and install directly to QGIS
@@ -152,11 +152,11 @@ cd qgis_plugin
 
 ### Manual Packaging
 
-To create a distributable ZIP file manually:
+To create a distributable ZIP file manually, keep `hypercoast` as the top-level folder in the archive:
 
 ```bash
 cd qgis_plugin
-zip -r hypercoast_qgis.zip hypercoast_qgis -x "*.pyc" -x "__pycache__/*"
+python package_plugin.py
 ```
 
 ### Running Tests

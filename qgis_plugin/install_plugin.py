@@ -19,7 +19,9 @@ import platform
 from pathlib import Path
 
 # Plugin configuration
-PLUGIN_NAME = "hypercoast_qgis"
+SOURCE_PLUGIN_NAME = "hypercoast_qgis"
+QGIS_PLUGIN_NAME = "hypercoast"
+PLUGIN_NAME = QGIS_PLUGIN_NAME
 
 
 def get_script_dir():
@@ -30,7 +32,7 @@ def get_script_dir():
 def get_version_from_metadata():
     """Read the version from metadata.txt."""
     script_dir = get_script_dir()
-    metadata_path = script_dir / PLUGIN_NAME / "metadata.txt"
+    metadata_path = script_dir / SOURCE_PLUGIN_NAME / "metadata.txt"
     with open(metadata_path, encoding="utf-8") as f:
         for line in f:
             if line.strip().lower().startswith("version"):
@@ -88,7 +90,8 @@ def get_qgis_plugins_dir():
             )
 
     elif system == "Darwin":
-        # macOS: ~/Library/Application Support/QGIS/QGIS3/profiles/default/python/plugins
+        # macOS: ~/Library/Application Support/QGIS/QGIS3/profiles/default/
+        # python/plugins
         return (
             home
             / "Library"
@@ -131,6 +134,18 @@ def should_exclude(path, patterns):
     return False
 
 
+def prompt_response(message):
+    """Read a normalized response from standard input.
+
+    Args:
+        message: Prompt shown to the user.
+
+    Returns:
+        Lowercase stripped response text.
+    """
+    return input(message).strip().lower()
+
+
 def copy_plugin_files(src_dir, dst_dir, exclude_patterns):
     """Copy plugin files to destination, excluding certain patterns."""
     if dst_dir.exists():
@@ -154,8 +169,11 @@ def create_zip_package(source_dir, output_path, plugin_name):
     """Create a ZIP package of the plugin."""
     with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(source_dir):
-            # Filter out excluded directories
-            dirs[:] = [d for d in dirs if not should_exclude(Path(d), EXCLUDE_PATTERNS)]
+            filtered_dirs = []
+            for directory in dirs:
+                if not should_exclude(Path(directory), EXCLUDE_PATTERNS):
+                    filtered_dirs.append(directory)
+            dirs[:] = filtered_dirs
 
             for file in files:
                 if should_exclude(Path(file), EXCLUDE_PATTERNS):
@@ -163,8 +181,9 @@ def create_zip_package(source_dir, output_path, plugin_name):
 
                 file_path = Path(root) / file
                 # Create archive path with plugin name as root
-                rel_path = file_path.relative_to(source_dir.parent)
-                zipf.write(file_path, rel_path)
+                rel_path = file_path.relative_to(source_dir)
+                archive_path = Path(plugin_name) / rel_path
+                zipf.write(file_path, archive_path)
 
     return output_path
 
@@ -173,13 +192,14 @@ def package_plugin(output_dir=None):
     """Package the plugin into a ZIP file.
 
     Args:
-        output_dir: Optional output directory. Defaults to 'dist' in script directory.
+        output_dir: Optional output directory. Defaults to 'dist' in script
+            directory.
 
     Returns:
         Path to the created ZIP file.
     """
     script_dir = get_script_dir()
-    plugin_dir = script_dir / PLUGIN_NAME
+    plugin_dir = script_dir / SOURCE_PLUGIN_NAME
 
     if not plugin_dir.exists():
         raise FileNotFoundError(f"Plugin directory not found: {plugin_dir}")
@@ -194,18 +214,18 @@ def package_plugin(output_dir=None):
 
     # Create temporary directory for clean copy
     with tempfile.TemporaryDirectory() as temp_dir:
-        temp_plugin_dir = Path(temp_dir) / PLUGIN_NAME
+        temp_plugin_dir = Path(temp_dir) / QGIS_PLUGIN_NAME
 
         # Copy files
-        print(f"Copying plugin files...")
+        print("Copying plugin files...")
         copy_plugin_files(plugin_dir, temp_plugin_dir, EXCLUDE_PATTERNS)
 
         # Create ZIP archive
-        zip_name = f"{PLUGIN_NAME}_{VERSION}.zip"
+        zip_name = f"{QGIS_PLUGIN_NAME}_{VERSION}.zip"
         zip_path = output_dir / zip_name
 
-        print(f"Creating ZIP archive...")
-        create_zip_package(temp_plugin_dir, zip_path, PLUGIN_NAME)
+        print("Creating ZIP archive...")
+        create_zip_package(temp_plugin_dir, zip_path, QGIS_PLUGIN_NAME)
 
     print(f"\nPlugin packaged successfully: {zip_path}")
     return zip_path
@@ -234,11 +254,13 @@ def install_plugin(zip_path=None, force=False):
 
     # Check if plugins directory exists
     if not plugins_dir.parent.exists():
-        print(f"\nWarning: QGIS profile directory not found: {plugins_dir.parent}")
-        print("Please ensure QGIS is installed and has been run at least once.")
+        print("\nWarning: QGIS profile directory not found:")
+        print(f"  {plugins_dir.parent}")
+        print("Please ensure QGIS is installed.")
+        print("Run QGIS at least once before installing the plugin.")
         while True:
             try:
-                create = input("Create directory anyway? [y/N]: ").strip().lower()
+                create = prompt_response("Create directory anyway? [y/N]: ")
             except EOFError:
                 create = ""
             if create in ("y", "n", ""):
@@ -256,14 +278,13 @@ def install_plugin(zip_path=None, force=False):
     if install_path.exists():
         if not force:
             print(f"\nPlugin already installed at: {install_path}")
-            overwrite = (
-                input("Overwrite existing installation? [y/N]: ").strip().lower()
-            )
+            prompt = "Overwrite existing installation? [y/N]: "
+            overwrite = prompt_response(prompt)
             if overwrite != "y":
                 print("Installation cancelled.")
                 return None
 
-        print(f"Removing existing installation...")
+        print("Removing existing installation...")
         shutil.rmtree(install_path)
 
     # Extract ZIP to plugins directory
@@ -272,12 +293,12 @@ def install_plugin(zip_path=None, force=False):
     with zipfile.ZipFile(zip_path, "r") as zipf:
         zipf.extractall(plugins_dir)
 
-    print(f"\nPlugin installed successfully!")
-    print(f"\nTo enable the plugin:")
-    print(f"  1. Open QGIS")
-    print(f"  2. Go to Plugins -> Manage and Install Plugins")
-    print(f"  3. Find 'HyperCoast' in the list")
-    print(f"  4. Check the box to enable it")
+    print("\nPlugin installed successfully!")
+    print("\nTo enable the plugin:")
+    print("  1. Open QGIS")
+    print("  2. Go to Plugins -> Manage and Install Plugins")
+    print("  3. Find 'HyperCoast' in the list")
+    print("  4. Check the box to enable it")
 
     return install_path
 
@@ -291,7 +312,8 @@ def uninstall_plugin():
         print(f"Plugin not found at: {install_path}")
         return False
 
-    confirm = input(f"Remove plugin from {install_path}? [y/N]: ").strip().lower()
+    prompt = f"Remove plugin from {install_path}? [y/N]: "
+    confirm = prompt_response(prompt)
     if confirm != "y":
         print("Uninstallation cancelled.")
         return False
@@ -308,24 +330,25 @@ def show_info():
     install_path = plugins_dir / PLUGIN_NAME
 
     print(f"\n{'=' * 60}")
-    print(f"HyperCoast QGIS Plugin Information")
+    print("HyperCoast QGIS Plugin Information")
     print(f"{'=' * 60}")
-    print(f"Plugin Name:     {PLUGIN_NAME}")
+    print(f"Plugin Name:     {QGIS_PLUGIN_NAME}")
+    print(f"Source Folder:   {SOURCE_PLUGIN_NAME}")
     print(f"Version:         {VERSION}")
     print(f"Script Location: {script_dir}")
     print(f"{'=' * 60}")
     print(f"System:          {platform.system()} {platform.release()}")
     print(f"Python:          {sys.version.split()[0]}")
     print(f"{'=' * 60}")
-    print(f"QGIS Plugins Directory:")
+    print("QGIS Plugins Directory:")
     print(f"  {plugins_dir}")
     print(f"  Exists: {plugins_dir.exists()}")
     print(f"{'=' * 60}")
-    print(f"Installation Status:")
+    print("Installation Status:")
     if install_path.exists():
         print(f"  Installed at: {install_path}")
     else:
-        print(f"  Not installed")
+        print("  Not installed")
     print(f"{'=' * 60}\n")
 
 
@@ -352,7 +375,10 @@ Examples:
     )
 
     parser.add_argument(
-        "--uninstall", "-u", action="store_true", help="Uninstall the plugin from QGIS"
+        "--uninstall",
+        "-u",
+        action="store_true",
+        help="Uninstall the plugin from QGIS",
     )
 
     parser.add_argument(
@@ -371,7 +397,9 @@ Examples:
     )
 
     parser.add_argument(
-        "--info", action="store_true", help="Show plugin and system information"
+        "--info",
+        action="store_true",
+        help="Show plugin and system information",
     )
 
     args = parser.parse_args()
@@ -389,14 +417,14 @@ Examples:
             install_plugin(force=args.force)
         else:
             zip_path = package_plugin(args.output)
-            print(f"\nTo install the plugin:")
+            print("\nTo install the plugin:")
             print(f"  python {Path(__file__).name} --install")
-            print(f"\nOr manually:")
-            print(f"  1. Open QGIS")
-            print(f"  2. Go to Plugins -> Manage and Install Plugins")
-            print(f"  3. Click 'Install from ZIP'")
+            print("\nOr manually:")
+            print("  1. Open QGIS")
+            print("  2. Go to Plugins -> Manage and Install Plugins")
+            print("  3. Click 'Install from ZIP'")
             print(f"  4. Select: {zip_path}")
-            print(f"  5. Click 'Install Plugin'")
+            print("  5. Click 'Install Plugin'")
 
         return 0
 
