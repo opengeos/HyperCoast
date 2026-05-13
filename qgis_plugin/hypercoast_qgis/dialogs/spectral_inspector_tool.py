@@ -104,7 +104,11 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
         self._add_point_marker(point)
 
         # Extract from each layer
+        selected_layer_id = self._selected_layer_id()
         for layer_id, data_info in hyper_layers.items():
+            if selected_layer_id and layer_id != selected_layer_id:
+                continue
+
             layer = QgsProject.instance().mapLayer(layer_id)
             if not layer:
                 continue
@@ -213,6 +217,18 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
             except Exception:
                 pass
         return "EPSG:4326"
+
+    def _selected_layer_id(self):
+        """Return the spectral plot's selected layer ID.
+
+        Returns:
+            QGIS layer ID, or None to sample all HyperCoast layers.
+        """
+        plot_dialog = getattr(self.plugin, "spectral_plot_dialog", None)
+        selected_layer_id = getattr(plot_dialog, "selected_layer_id", None)
+        if callable(selected_layer_id):
+            return selected_layer_id()
+        return None
 
     def clear_points(self):
         """Clear all extracted points and markers."""

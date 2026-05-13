@@ -23,6 +23,7 @@ from qgis.PyQt.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QHeaderView,
+    QSizePolicy,
     QFileDialog,
     QMessageBox,
     QSplitter,
@@ -65,8 +66,8 @@ class SpectralPlotDialog(QDockWidget):
 
         self.setWindowTitle("Spectral Plot")
         self.setObjectName("HyperCoastSpectralPlotDock")
-        self.setMinimumWidth(800)
-        self.setMinimumHeight(600)
+        self.setMinimumWidth(560)
+        self.setMinimumHeight(480)
 
         # Store spectra
         self.spectra = []
@@ -117,7 +118,34 @@ class SpectralPlotDialog(QDockWidget):
 
         # Tab 1: Plot options
         options_tab = QWidget()
-        options_layout = QHBoxLayout(options_tab)
+        options_layout = QVBoxLayout(options_tab)
+        policy = getattr(QSizePolicy, "Policy", QSizePolicy)
+
+        # Sampling options
+        sampling_group = QGroupBox("Sampling")
+        sampling_group.setSizePolicy(policy.Expanding, policy.Maximum)
+        sampling_layout = QHBoxLayout()
+        sampling_layout.setContentsMargins(8, 6, 8, 6)
+        sampling_layout.setSpacing(6)
+
+        self.layer_combo = QComboBox()
+        self.layer_combo.setMinimumWidth(180)
+        self.layer_combo.setSizeAdjustPolicy(
+            QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon
+        )
+        self.layer_combo.setSizePolicy(policy.Expanding, policy.Fixed)
+        sampling_layout.addWidget(QLabel("Layer:"))
+        sampling_layout.addWidget(self.layer_combo, 1)
+
+        refresh_layers_btn = QPushButton("Refresh Layers")
+        refresh_layers_btn.clicked.connect(self.refresh_layer_combo)
+        sampling_layout.addWidget(refresh_layers_btn)
+
+        sampling_group.setLayout(sampling_layout)
+        sampling_group.setMaximumHeight(sampling_group.sizeHint().height())
+        options_layout.addWidget(sampling_group)
+
+        option_groups_layout = QHBoxLayout()
 
         # Plot options
         options_group = QGroupBox("Plot Options")
@@ -139,7 +167,7 @@ class SpectralPlotDialog(QDockWidget):
         options_form.addRow("", self.grid_check)
 
         options_group.setLayout(options_form)
-        options_layout.addWidget(options_group)
+        option_groups_layout.addWidget(options_group, 1)
 
         # Axis options
         axis_group = QGroupBox("Axis Range")
@@ -181,7 +209,7 @@ class SpectralPlotDialog(QDockWidget):
         axis_form.addRow("", apply_range_btn)
 
         axis_group.setLayout(axis_form)
-        options_layout.addWidget(axis_group)
+        option_groups_layout.addWidget(axis_group, 2)
 
         # Labels
         labels_group = QGroupBox("Labels")
@@ -208,7 +236,8 @@ class SpectralPlotDialog(QDockWidget):
         labels_form.addRow("Y Label:", self.ylabel_combo)
 
         labels_group.setLayout(labels_form)
-        options_layout.addWidget(labels_group)
+        option_groups_layout.addWidget(labels_group, 2)
+        options_layout.addLayout(option_groups_layout)
 
         tab_widget.addTab(options_tab, "Options")
 
@@ -269,8 +298,58 @@ class SpectralPlotDialog(QDockWidget):
 
         layout.addWidget(splitter)
 
+        self.refresh_layer_combo()
+
         # Defer the first draw until Qt has assigned the dock/canvas geometry.
         QTimer.singleShot(0, self.update_plot)
+
+    def refresh_layer_combo(self):
+        """Refresh the spectral sampling layer selector."""
+        if not hasattr(self, "layer_combo"):
+            return
+
+        current_layer_id = self.selected_layer_id()
+        self.layer_combo.blockSignals(True)
+        self.layer_combo.clear()
+        self.layer_combo.addItem("All HyperCoast layers", None)
+
+        for layer_id in self.plugin.get_all_hyperspectral_layers():
+            layer = self._project_layer(layer_id)
+            if layer is not None:
+                self.layer_combo.addItem(layer.name(), layer_id)
+
+        if current_layer_id:
+            index = self.layer_combo.findData(current_layer_id)
+            if index >= 0:
+                self.layer_combo.setCurrentIndex(index)
+
+        self.layer_combo.blockSignals(False)
+
+    def selected_layer_id(self):
+        """Return the selected sampling layer ID.
+
+        Returns:
+            QGIS layer ID, or None to sample every HyperCoast layer.
+        """
+        if not hasattr(self, "layer_combo"):
+            return None
+        return self.layer_combo.currentData()
+
+    def _project_layer(self, layer_id):
+        """Return a QGIS project layer by ID.
+
+        Args:
+            layer_id: QGIS layer ID.
+
+        Returns:
+            QGIS layer object, or None.
+        """
+        try:
+            from qgis.core import QgsProject
+
+            return QgsProject.instance().mapLayer(layer_id)
+        except Exception:
+            return None
 
     def add_spectrum(self, lat, lon, wavelengths, values, layer_name):
         """Add a new spectrum to the plot.
