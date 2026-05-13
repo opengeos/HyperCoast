@@ -109,7 +109,7 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
             if not layer:
                 continue
 
-            dataset = data_info.get("dataset")
+            dataset = self.plugin.ensure_hyperspectral_dataset(layer_id)
             if dataset is None:
                 continue
 
@@ -132,7 +132,14 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
 
             try:
                 # Extract spectral signature
-                wavelengths, values = dataset.extract_spectral_signature(lon, lat)
+                layer_crs_authid = self._crs_authid(layer_crs)
+                wavelengths, values = dataset.extract_spectral_signature(
+                    layer_point.x(),
+                    layer_point.y(),
+                    crs=layer_crs_authid,
+                    lon=lon,
+                    lat=lat,
+                )
 
                 if wavelengths is not None and values is not None:
                     # Emit signal for plot update
@@ -187,6 +194,25 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
         rb.addPoint(point, True)
 
         self.rubber_bands.append(rb)
+
+    def _crs_authid(self, crs):
+        """Return a CRS auth ID for a QGIS CRS object.
+
+        Args:
+            crs: QgsCoordinateReferenceSystem-like object.
+
+        Returns:
+            CRS auth ID, or EPSG:4326 when unavailable.
+        """
+        authid = getattr(crs, "authid", None)
+        if callable(authid):
+            try:
+                value = authid()
+                if value:
+                    return value
+            except Exception:
+                pass
+        return "EPSG:4326"
 
     def clear_points(self):
         """Clear all extracted points and markers."""

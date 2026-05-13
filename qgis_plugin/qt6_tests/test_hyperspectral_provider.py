@@ -91,3 +91,130 @@ def test_north_up_orientation_flips_ascending_latitude():
     oriented = provider._orient_array_north_up(data, y_values, y_axis=0)
 
     np.testing.assert_array_equal(oriented, np.array([[3, 4], [1, 2]]))
+
+
+def test_projected_xy_spectral_extraction_uses_dataset_crs(monkeypatch):
+    """Projected x/y datasets should use projected click coordinates."""
+    import hypercoast_qgis.hyperspectral_provider as provider_module
+
+    monkeypatch.setattr(provider_module, "HAS_HYPERCOAST", False)
+    dataset = xr.Dataset(
+        {
+            "reflectance": (
+                ("wavelength", "y", "x"),
+                np.array(
+                    [
+                        [[1.0, 2.0], [3.0, 4.0]],
+                        [[10.0, 20.0], [30.0, 40.0]],
+                    ],
+                    dtype="float32",
+                ),
+            )
+        },
+        coords={
+            "wavelength": np.array([500.0, 600.0]),
+            "y": np.array([0.0, 100.0]),
+            "x": np.array([0.0, 1000.0]),
+        },
+    )
+    provider = HyperspectralDataset("generic.tif", "Generic")
+    provider.dataset = dataset
+    provider.wavelengths = dataset.coords["wavelength"].values
+    provider.crs = "EPSG:32618"
+
+    wavelengths, values = provider.extract_spectral_signature(
+        510.0, 90.0, crs="EPSG:32618"
+    )
+
+    np.testing.assert_array_equal(wavelengths, np.array([500.0, 600.0]))
+    np.testing.assert_array_equal(values, np.array([4.0, 40.0], dtype="float32"))
+
+
+def test_lat_lon_spectral_extraction_uses_geographic_coordinates(monkeypatch):
+    """Latitude/longitude datasets should still extract with EPSG:4326 input."""
+    import hypercoast_qgis.hyperspectral_provider as provider_module
+
+    monkeypatch.setattr(provider_module, "HAS_HYPERCOAST", False)
+    dataset = xr.Dataset(
+        {
+            "reflectance": (
+                ("wavelength", "latitude", "longitude"),
+                np.array(
+                    [
+                        [[1.0, 2.0], [3.0, 4.0]],
+                        [[10.0, 20.0], [30.0, 40.0]],
+                    ],
+                    dtype="float32",
+                ),
+            )
+        },
+        coords={
+            "wavelength": np.array([500.0, 600.0]),
+            "latitude": np.array([30.0, 31.0]),
+            "longitude": np.array([-91.0, -90.0]),
+        },
+    )
+    provider = HyperspectralDataset("generic.nc", "Generic")
+    provider.dataset = dataset
+    provider.wavelengths = dataset.coords["wavelength"].values
+    provider.crs = "EPSG:4326"
+
+    wavelengths, values = provider.extract_spectral_signature(
+        -90.9, 30.1, crs="EPSG:4326"
+    )
+
+    np.testing.assert_array_equal(wavelengths, np.array([500.0, 600.0]))
+    np.testing.assert_array_equal(values, np.array([1.0, 10.0], dtype="float32"))
+
+
+def test_emit_runtime_export_accepts_written_file_when_return_is_none(
+    tmp_path, monkeypatch
+):
+    """HyperCoast writers may signal success by writing the requested file."""
+    import hypercoast_qgis.hyperspectral_provider as provider_module
+
+    output_path = tmp_path / "emit.tif"
+
+    class _HyperCoast:
+        """Fake HyperCoast module."""
+
+        def emit_to_image(self, filepath, wavelengths, output):
+            """Write the output file and return None."""
+            with open(output, "wb") as fp:
+                fp.write(b"fake geotiff")
+            return None
+
+    monkeypatch.setattr(provider_module, "HAS_HYPERCOAST", True)
+    monkeypatch.setattr(provider_module, "hypercoast", _HyperCoast(), raising=False)
+    provider = HyperspectralDataset("EMIT_test.nc", "EMIT")
+
+    result = provider._export_emit_with_runtime_hypercoast(
+        str(output_path), [650, 550, 450]
+    )
+
+    assert result == str(output_path)
+
+
+def test_per_pixel_geolocation_requires_geolocation_export():
+    """Datasets with 2D lat/lon coordinates should not use bbox fallback."""
+    dataset = xr.Dataset(
+        {
+            "reflectance": (
+                ("wavelength", "downtrack", "crosstrack"),
+                np.ones((2, 2, 2), dtype="float32"),
+            ),
+            "latitude": (
+                ("downtrack", "crosstrack"),
+                np.array([[30.0, 30.1], [31.0, 31.1]]),
+            ),
+            "longitude": (
+                ("downtrack", "crosstrack"),
+                np.array([[-91.0, -90.9], [-91.1, -90.8]]),
+            ),
+        },
+        coords={"wavelength": np.array([500.0, 600.0])},
+    )
+    provider = HyperspectralDataset("EMIT_test.nc", "EMIT")
+    provider.dataset = dataset
+
+    assert provider._requires_geolocation_export()

@@ -30,7 +30,7 @@ def get_script_dir():
 def get_version_from_metadata():
     """Read the version from metadata.txt."""
     script_dir = get_script_dir()
-    metadata_path = script_dir / "hypercoast_qgis/metadata.txt"
+    metadata_path = script_dir / PLUGIN_NAME / "metadata.txt"
     with open(metadata_path, encoding="utf-8") as f:
         for line in f:
             if line.strip().lower().startswith("version"):

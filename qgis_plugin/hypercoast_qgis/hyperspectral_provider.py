@@ -38,7 +38,13 @@ except ImportError:
     HAS_H5PY = False
 
 try:
-    from qgis.core import QgsMessageLog, Qgis
+    from qgis.core import (
+        QgsCoordinateReferenceSystem,
+        QgsCoordinateTransform,
+        QgsMessageLog,
+        QgsProject,
+        Qgis,
+    )
 
     HAS_QGIS = True
     LOG_INFO = Qgis.MessageLevel.Info
@@ -1241,32 +1247,42 @@ class HyperspectralDataset:
         """
         return getattr(data_var, "ndim", 0) >= 2
 
-    def extract_spectral_signature(self, x, y, crs="EPSG:4326"):
+    def extract_spectral_signature(self, x, y, crs="EPSG:4326", lon=None, lat=None):
         """Extract spectral signature at a given location.
 
-        :param x: X coordinate (longitude)
-        :param y: Y coordinate (latitude)
-        :param crs: Coordinate reference system
-        :returns: Tuple of (wavelengths, values) or (None, None)
+        Args:
+            x: X coordinate in the CRS supplied by ``crs``.
+            y: Y coordinate in the CRS supplied by ``crs``.
+            crs: Coordinate reference system for ``x`` and ``y``.
+            lon: Optional longitude in EPSG:4326.
+            lat: Optional latitude in EPSG:4326.
+
+        Returns:
+            Tuple of wavelength and value arrays, or ``(None, None)``.
         """
         if self.dataset is None or self.wavelengths is None:
             return None, None
 
         try:
-            # Use hypercoast extraction functions if available
-            if HAS_HYPERCOAST:
-                return self._extract_with_hypercoast(x, y)
-
-            # Fallback extraction
             data_var = self.get_data_variable()
             if data_var is None:
                 return None, None
 
+            # Use HyperCoast's sensor-specific extractors when they accept
+            # geographic coordinates. Generic rectilinear rasters are handled
+            # below so projected x/y coordinates remain correct.
+            if HAS_HYPERCOAST and self.data_type in {"EMIT", "PACE", "DESIS", "NEON"}:
+                lon_value, lat_value = self._as_lon_lat(x, y, crs, lon, lat)
+                return self._extract_with_hypercoast(lon_value, lat_value)
+
             if "latitude" in data_var.dims and "longitude" in data_var.dims:
-                values = data_var.sel(latitude=y, longitude=x, method="nearest").values
+                lon_value, lat_value = self._as_lon_lat(x, y, crs, lon, lat)
+                values = data_var.sel(
+                    latitude=lat_value, longitude=lon_value, method="nearest"
+                ).values
             elif "y" in data_var.dims and "x" in data_var.dims:
-                # May need coordinate transformation
-                values = data_var.sel(y=y, x=x, method="nearest").values
+                x_value, y_value = self._as_dataset_xy(x, y, crs)
+                values = data_var.sel(y=y_value, x=x_value, method="nearest").values
             else:
                 return None, None
 
@@ -1275,6 +1291,98 @@ class HyperspectralDataset:
         except Exception as e:
             _log(f"Error extracting spectral signature: {e}", LOG_WARNING)
             return None, None
+
+    def _as_lon_lat(self, x, y, crs, lon=None, lat=None):
+        """Return coordinates in EPSG:4326.
+
+        Args:
+            x: X coordinate in ``crs``.
+            y: Y coordinate in ``crs``.
+            crs: Source coordinate reference system.
+            lon: Optional precomputed longitude.
+            lat: Optional precomputed latitude.
+
+        Returns:
+            Tuple of ``(lon, lat)``.
+        """
+        if lon is not None and lat is not None:
+            return lon, lat
+        return self._transform_xy(x, y, crs, "EPSG:4326")
+
+    def _as_dataset_xy(self, x, y, crs):
+        """Return coordinates in the dataset's raster CRS.
+
+        Args:
+            x: X coordinate in ``crs``.
+            y: Y coordinate in ``crs``.
+            crs: Source coordinate reference system.
+
+        Returns:
+            Tuple of transformed ``(x, y)`` coordinates.
+        """
+        target_crs = self.crs or crs
+        return self._transform_xy(x, y, crs, target_crs)
+
+    def _transform_xy(self, x, y, source_crs, target_crs):
+        """Transform coordinates between two CRS values when possible.
+
+        Args:
+            x: Source x coordinate.
+            y: Source y coordinate.
+            source_crs: Source CRS string or QGIS CRS object.
+            target_crs: Target CRS string or QGIS CRS object.
+
+        Returns:
+            Tuple of transformed coordinates, or the original coordinates if
+            transformation is unavailable.
+        """
+        if self._crs_equal(source_crs, target_crs):
+            return x, y
+        if not HAS_QGIS:
+            return x, y
+
+        try:
+            src = QgsCoordinateReferenceSystem(str(source_crs))
+            dst = QgsCoordinateReferenceSystem(str(target_crs))
+            transform = QgsCoordinateTransform(src, dst, QgsProject.instance())
+            point = transform.transform(float(x), float(y))
+            return point.x(), point.y()
+        except Exception as exc:
+            _log(f"Could not transform spectral point coordinates: {exc}", LOG_WARNING)
+            return x, y
+
+    def _crs_equal(self, source_crs, target_crs):
+        """Return whether two CRS values represent the same CRS.
+
+        Args:
+            source_crs: Source CRS value.
+            target_crs: Target CRS value.
+
+        Returns:
+            True if the CRS strings or auth IDs match.
+        """
+        return self._crs_text(source_crs).lower() == self._crs_text(target_crs).lower()
+
+    def _crs_text(self, crs):
+        """Return a comparable CRS text value.
+
+        Args:
+            crs: CRS string or QGIS CRS object.
+
+        Returns:
+            CRS text suitable for equality checks.
+        """
+        if crs is None:
+            return ""
+        authid = getattr(crs, "authid", None)
+        if callable(authid):
+            try:
+                value = authid()
+                if value:
+                    return str(value)
+            except Exception:
+                pass
+        return str(crs)
 
     def _extract_with_hypercoast(self, lon, lat):
         """Extract spectral signature using hypercoast."""
@@ -1440,6 +1548,13 @@ class HyperspectralDataset:
             if result:
                 return result
 
+        if self._requires_geolocation_export():
+            raise ValueError(
+                f"{self.data_type} uses per-pixel geolocation and cannot be "
+                "safely exported with the generic bounding-box writer. Install "
+                "or activate HyperCoast dependencies, then reload the dataset."
+            )
+
         return self._export_fallback(output_path, wavelengths, bands)
 
     def _export_with_hypercoast(self, output_path, wavelengths):
@@ -1462,6 +1577,11 @@ class HyperspectralDataset:
                     result = self._export_pace_bgc_with_hypercoast(output_path)
                     if result:
                         return result
+                    if self._requires_geolocation_export():
+                        raise ValueError(
+                            "PACE BGC export requires successful HyperCoast "
+                            "geolocation gridding."
+                        )
                     return self._export_fallback(output_path, wavelengths, None)
 
                 # PACE AOP needs gridding first
@@ -1481,6 +1601,10 @@ class HyperspectralDataset:
                 )
 
             else:
+                if self._requires_geolocation_export():
+                    raise ValueError(
+                        f"{self.data_type} requires a geolocation-aware export path."
+                    )
                 return self._export_fallback(output_path, wavelengths, None)
 
             # Save the image to the output path
@@ -1506,7 +1630,30 @@ class HyperspectralDataset:
                     except Exception:
                         pass  # nosec B110
             _log(f"Error in hypercoast export: {e}", LOG_WARNING)
+            if self._requires_geolocation_export():
+                raise
             return self._export_fallback(output_path, wavelengths, None)
+
+    def _requires_geolocation_export(self):
+        """Return whether generic bounding-box export would misplace the raster.
+
+        Returns:
+            True for swath or per-pixel geolocated datasets.
+        """
+        if self._is_swath:
+            return True
+        if self.dataset is None:
+            return False
+
+        for name in ("latitude", "longitude"):
+            if name not in self.dataset:
+                return False
+        try:
+            lat = self.dataset["latitude"]
+            lon = self.dataset["longitude"]
+            return getattr(lat, "ndim", 0) == 2 or getattr(lon, "ndim", 0) == 2
+        except Exception:
+            return False
 
     def _export_pace_bgc_with_hypercoast(self, output_path, method="linear"):
         """Export a PACE BGC 2D product after gridding swath coordinates.
@@ -1648,7 +1795,7 @@ class HyperspectralDataset:
                 wavelengths=wavelengths,
                 output=output_path,
             )
-            if result and os.path.isfile(output_path):
+            if os.path.isfile(output_path) and os.path.getsize(output_path) > 0:
                 _log(f"HyperCoast EMIT export succeeded: {output_path}", LOG_INFO)
                 return output_path
         except Exception as exc:

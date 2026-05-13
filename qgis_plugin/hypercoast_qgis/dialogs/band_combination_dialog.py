@@ -6,8 +6,6 @@ SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
 SPDX-License-Identifier: MIT
 """
 
-import os
-import tempfile
 import numpy as np
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
 from qgis.PyQt.QtGui import QColor
@@ -40,6 +38,8 @@ from qgis.core import (
     QgsRasterShader,
     QgsSingleBandPseudoColorRenderer,
 )
+
+from ..cache_manager import create_generated_raster_path
 
 
 class BandExportWorker(QThread):
@@ -451,7 +451,7 @@ class BandCombinationDialog(QDockWidget):
         self.apply_btn.setEnabled(False)
 
         try:
-            dataset = data_info.get("dataset")
+            dataset = self.plugin.ensure_hyperspectral_dataset(layer_id)
             if dataset is None:
                 raise ValueError("Dataset not available")
 
@@ -600,19 +600,11 @@ class BandCombinationDialog(QDockWidget):
             suffix: Short output kind.
 
         Returns:
-            Path to a unique temporary GeoTIFF.
+            Path to a unique persistent cache GeoTIFF.
         """
-        safe_name = "".join(
-            c if c.isalnum() or c in ("-", "_") else "_" for c in layer_name
+        return create_generated_raster_path(
+            layer_name, suffix, project=QgsProject.instance()
         )
-        safe_name = safe_name.strip("_") or "hypercoast"
-        fd, path = tempfile.mkstemp(prefix=f"{safe_name}_{suffix}_", suffix=".tif")
-        os.close(fd)
-        try:
-            os.remove(path)
-        except OSError:
-            pass
-        return path
 
     def _set_layer_custom_properties(self, layer, data_info, wavelengths):
         """Persist HyperCoast metadata on a replacement layer.
@@ -624,6 +616,10 @@ class BandCombinationDialog(QDockWidget):
         """
         layer.setCustomProperty("hypercoast/source_path", data_info.get("filepath", ""))
         layer.setCustomProperty("hypercoast/data_type", data_info.get("data_type", ""))
+        if data_info.get("selected_variable"):
+            layer.setCustomProperty(
+                "hypercoast/selected_variable", data_info["selected_variable"]
+            )
         layer.setCustomProperty(
             "hypercoast/rgb_wavelengths", ",".join(str(v) for v in wavelengths)
         )

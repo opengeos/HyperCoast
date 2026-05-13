@@ -62,5 +62,103 @@ def _install_qgis_stub() -> None:
         sys.modules[f"qgis.{name}"] = stub
         setattr(qgis, name, stub)
 
+    core = sys.modules["qgis.core"]
+
+    class QgsProcessingException(Exception):
+        """Minimal Processing exception stub."""
+
+    class QgsProcessingAlgorithm:
+        """Minimal Processing algorithm stub."""
+
+        def __init__(self) -> None:
+            """Initialize stored parameters."""
+            self.parameters = []
+
+        def addParameter(self, parameter) -> None:
+            """Store an algorithm parameter.
+
+            Args:
+                parameter: Parameter object.
+            """
+            self.parameters.append(parameter)
+
+        def parameterAsFile(self, parameters, name, context):
+            """Return a file parameter value."""
+            return parameters.get(name, "")
+
+        def parameterAsEnum(self, parameters, name, context):
+            """Return an enum parameter value."""
+            return int(parameters.get(name, 0))
+
+        def parameterAsString(self, parameters, name, context):
+            """Return a string parameter value."""
+            return parameters.get(name, "")
+
+        def parameterAsDouble(self, parameters, name, context):
+            """Return a double parameter value."""
+            return float(parameters.get(name, 0.0))
+
+        def parameterAsInt(self, parameters, name, context):
+            """Return an integer parameter value."""
+            return int(parameters.get(name, 0))
+
+        def parameterAsOutputLayer(self, parameters, name, context):
+            """Return an output layer parameter value."""
+            return parameters.get(name, "")
+
+    class QgsProcessingProvider:
+        """Minimal Processing provider stub."""
+
+        def __init__(self) -> None:
+            """Initialize stored algorithms."""
+            self.algorithms = []
+
+        def addAlgorithm(self, algorithm) -> None:
+            """Store a provider algorithm.
+
+            Args:
+                algorithm: Algorithm instance.
+            """
+            self.algorithms.append(algorithm)
+
+    class _Parameter:
+        """Minimal Processing parameter stub."""
+
+        def __init__(self, *args, **kwargs) -> None:
+            """Store parameter construction arguments."""
+            self.args = args
+            self.kwargs = kwargs
+
+    class QgsProcessingParameterFile(_Parameter):
+        """Minimal file parameter stub."""
+
+        File = 0
+
+        class Behavior:
+            """Minimal file behavior enum."""
+
+            File = 0
+
+    class QgsProcessingParameterNumber(_Parameter):
+        """Minimal number parameter stub."""
+
+        Double = 0
+        Integer = 1
+
+        class Type:
+            """Minimal number type enum."""
+
+            Double = 0
+            Integer = 1
+
+    core.QgsProcessingException = QgsProcessingException
+    core.QgsProcessingAlgorithm = QgsProcessingAlgorithm
+    core.QgsProcessingProvider = QgsProcessingProvider
+    core.QgsProcessingParameterEnum = _Parameter
+    core.QgsProcessingParameterFile = QgsProcessingParameterFile
+    core.QgsProcessingParameterNumber = QgsProcessingParameterNumber
+    core.QgsProcessingParameterRasterDestination = _Parameter
+    core.QgsProcessingParameterString = _Parameter
+
 
 _install_qgis_stub()

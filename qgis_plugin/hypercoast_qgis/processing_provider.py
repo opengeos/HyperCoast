@@ -17,6 +17,7 @@ from qgis.core import (
     QgsProcessingParameterFile,
     QgsProcessingParameterNumber,
     QgsProcessingParameterRasterDestination,
+    QgsProcessingParameterString,
     QgsProcessingProvider,
 )
 
@@ -90,6 +91,7 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
 
     INPUT = "INPUT"
     DATA_TYPE = "DATA_TYPE"
+    VARIABLE = "VARIABLE"
     OUTPUT = "OUTPUT"
 
     def group(self):
@@ -117,6 +119,14 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
                 defaultValue=0,
             )
         )
+        self.addParameter(
+            QgsProcessingParameterString(
+                self.VARIABLE,
+                "Data variable (optional)",
+                defaultValue="",
+                optional=True,
+            )
+        )
 
     def _load_dataset(self, parameters, context):
         """Load the requested HyperCoast dataset.
@@ -135,9 +145,49 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
         data_type_index = self.parameterAsEnum(parameters, self.DATA_TYPE, context)
         data_type = DATA_TYPE_OPTIONS[data_type_index]
         dataset = HyperspectralDataset(input_path, data_type)
+        dataset.set_selected_variable(self._selected_variable(parameters, context))
         if not dataset.load():
             raise QgsProcessingException(dataset.last_error or "Failed to load dataset")
+        self._validate_selected_variable(dataset)
         return dataset
+
+    def _selected_variable(self, parameters, context):
+        """Return the optional Processing data variable parameter.
+
+        Args:
+            parameters: Processing parameter dict.
+            context: Processing context.
+
+        Returns:
+            Selected variable name, or None.
+        """
+        try:
+            value = self.parameterAsString(parameters, self.VARIABLE, context)
+        except Exception:
+            value = parameters.get(self.VARIABLE, "") if parameters else ""
+        value = str(value).strip() if value is not None else ""
+        return value or None
+
+    def _validate_selected_variable(self, dataset):
+        """Validate the explicitly selected data variable.
+
+        Args:
+            dataset: Loaded HyperspectralDataset.
+
+        Raises:
+            QgsProcessingException: If the requested variable cannot be used
+                as raster data.
+        """
+        variable = dataset.selected_variable
+        if not variable:
+            return
+        if dataset.dataset is None or variable not in dataset.dataset.data_vars:
+            raise QgsProcessingException(f"Data variable not found: {variable}")
+        data_var = dataset.dataset[variable]
+        if not dataset._is_exportable_data_variable(data_var):
+            raise QgsProcessingException(
+                f"Data variable is not raster-like: {variable}"
+            )
 
     def _data_cube(self, dataset):
         """Return a data cube arranged as bands, rows, columns.
@@ -261,17 +311,14 @@ class RGBCompositeAlgorithm(BaseHyperCoastAlgorithm):
 
     def processAlgorithm(self, parameters, context, feedback):
         """Run RGB composite export."""
-        input_path = self.parameterAsFile(parameters, self.INPUT, context)
-        data_type_index = self.parameterAsEnum(parameters, self.DATA_TYPE, context)
-        data_type = DATA_TYPE_OPTIONS[data_type_index]
         wavelengths = [
             self.parameterAsDouble(parameters, self.RED, context),
             self.parameterAsDouble(parameters, self.GREEN, context),
             self.parameterAsDouble(parameters, self.BLUE, context),
         ]
         output_path = self.parameterAsOutputLayer(parameters, self.OUTPUT, context)
-        dataset = HyperspectralDataset(input_path, data_type)
-        result = dataset.load_and_export(output_path, wavelengths=wavelengths)
+        dataset = self._load_dataset(parameters, context)
+        result = dataset.export_to_geotiff(output_path, wavelengths=wavelengths)
         if result is None:
             raise QgsProcessingException(dataset.last_error or "Failed to export RGB")
         return {self.OUTPUT: result}
@@ -465,9 +512,38 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
         dataset = self._load_dataset(parameters, context)
         output_path = self.parameterAsOutputLayer(parameters, self.OUTPUT, context)
         n_components = self.parameterAsInt(parameters, self.COMPONENTS, context)
+        data_var = dataset.get_data_variable()
+        if data_var is None:
+            raise QgsProcessingException("No data variable found")
+        if data_var.ndim != 3:
+            raise QgsProcessingException(
+                f"Expected a 3D hyperspectral cube, got shape {data_var.shape}"
+            )
+        dims = list(data_var.dims)
+        spatial_axes = [
+            i
+            for i, dim in enumerate(dims)
+            if dim in ("x", "y", "latitude", "longitude")
+        ]
+        if len(spatial_axes) < 2:
+            raise QgsProcessingException("Could not identify spatial dimensions")
+        height, width = [data_var.shape[i] for i in spatial_axes[:2]]
+        total_pixels = height * width
+        max_total_pixels = 50_000_000
+        if total_pixels > max_total_pixels:
+            raise QgsProcessingException(
+                f"Raster has {total_pixels:,} pixels which exceeds the "
+                f"PCA limit of {max_total_pixels:,}. Crop or downsample the "
+                "input before running PCA."
+            )
+        if feedback and feedback.isCanceled():
+            return {self.OUTPUT: output_path}
+
         arr, height, width = self._data_cube(dataset)
         bands, _, _ = arr.shape
         n_components = min(n_components, bands)
+        if feedback:
+            feedback.setProgress(20)
 
         pixels = arr.reshape(bands, height * width).T
         valid = np.all(np.isfinite(pixels), axis=1)
@@ -477,20 +553,16 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
 
         # Cap fitting set to keep memory bounded; project full cube in chunks.
         max_fit_pixels = 500_000
-        max_total_pixels = 50_000_000
-        if pixels.shape[0] > max_total_pixels:
-            raise QgsProcessingException(
-                f"Raster has {pixels.shape[0]:,} pixels which exceeds the "
-                f"PCA limit of {max_total_pixels:,}. Crop or downsample the "
-                "input before running PCA."
-            )
-
         valid_indices = np.flatnonzero(valid)
         if n_valid > max_fit_pixels:
             rng = np.random.default_rng(0)
             fit_indices = rng.choice(valid_indices, size=max_fit_pixels, replace=False)
         else:
             fit_indices = valid_indices
+        if feedback and feedback.isCanceled():
+            return {self.OUTPUT: output_path}
+        if feedback:
+            feedback.setProgress(40)
 
         fit_pixels = pixels[fit_indices].astype(np.float64, copy=False)
         mean = fit_pixels.mean(axis=0)
@@ -506,6 +578,8 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
         scores = np.zeros((pixels.shape[0], n_components), dtype="float32")
         chunk = 200_000
         for start in range(0, valid_indices.size, chunk):
+            if feedback and feedback.isCanceled():
+                return {self.OUTPUT: output_path}
             stop = min(start + chunk, valid_indices.size)
             idx = valid_indices[start:stop]
             block = (
@@ -515,9 +589,14 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
                 if scale > 0:
                     block[:, i] /= scale
             scores[idx] = block.astype("float32")
+            if feedback:
+                progress = 50 + int(40 * stop / max(valid_indices.size, 1))
+                feedback.setProgress(progress)
 
         components = scores.T.reshape(n_components, height, width)
         self._write_raster(dataset, output_path, components)
+        if feedback:
+            feedback.setProgress(100)
         return {self.OUTPUT: output_path}
 
     def createInstance(self):
