@@ -430,10 +430,12 @@ class HyperCoastPlugin:
                 pass  # nosec B110
 
         # Remove the toolbar
-        try:
-            self._remove_toolbar(self.toolbar)
-        except RuntimeError:
-            pass  # nosec B110
+        toolbar = getattr(self, "toolbar", None)
+        if toolbar is not None:
+            try:
+                self._remove_toolbar(toolbar)
+            except Exception:
+                pass  # nosec B110
         self.toolbar = None
 
         self._remove_processing_provider()
@@ -753,6 +755,7 @@ class HyperCoastPlugin:
             "spectral_plot_dialog",
             lambda: SpectralPlotDialog(self.iface, self, self.iface.mainWindow()),
             self.spectral_action,
+            before_show=lambda dock: dock.refresh_layer_combo(),
         )
 
     def _show_deps_required_warning(self):
@@ -814,6 +817,8 @@ class HyperCoastPlugin:
         :param data_info: Dictionary containing dataset info.
         """
         self.hyperspectral_data[layer_id] = data_info
+        if self.spectral_plot_dialog is not None:
+            self.spectral_plot_dialog.refresh_layer_combo()
 
     def rehydrate_hyperspectral_layers(self):
         """Restore HyperCoast layer registrations from QGIS custom properties."""

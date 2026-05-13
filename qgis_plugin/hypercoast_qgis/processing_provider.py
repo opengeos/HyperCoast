@@ -183,8 +183,7 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
             return
         if dataset.dataset is None or variable not in dataset.dataset.data_vars:
             raise QgsProcessingException(f"Data variable not found: {variable}")
-        data_var = dataset.dataset[variable]
-        if not dataset._is_exportable_data_variable(data_var):
+        if not dataset.is_exportable_variable(variable):
             raise QgsProcessingException(
                 f"Data variable is not raster-like: {variable}"
             )
@@ -537,7 +536,7 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
                 "input before running PCA."
             )
         if feedback and feedback.isCanceled():
-            return {self.OUTPUT: output_path}
+            raise QgsProcessingException("PCA cancelled by user")
 
         arr, height, width = self._data_cube(dataset)
         bands, _, _ = arr.shape
@@ -560,7 +559,7 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
         else:
             fit_indices = valid_indices
         if feedback and feedback.isCanceled():
-            return {self.OUTPUT: output_path}
+            raise QgsProcessingException("PCA cancelled by user")
         if feedback:
             feedback.setProgress(40)
 

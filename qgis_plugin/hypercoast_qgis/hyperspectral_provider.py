@@ -1247,6 +1247,22 @@ class HyperspectralDataset:
         """
         return getattr(data_var, "ndim", 0) >= 2
 
+    def is_exportable_variable(self, name):
+        """Return whether a named data variable exists and is raster-like.
+
+        Args:
+            name: Data variable name.
+
+        Returns:
+            True when the dataset is loaded, contains ``name``, and the
+            variable has at least two dimensions.
+        """
+        if not name or self.dataset is None:
+            return False
+        if name not in self.dataset.data_vars:
+            return False
+        return self._is_exportable_data_variable(self.dataset[name])
+
     def extract_spectral_signature(self, x, y, crs="EPSG:4326", lon=None, lat=None):
         """Extract spectral signature at a given location.
 
@@ -1549,11 +1565,13 @@ class HyperspectralDataset:
                 return result
 
         if self._requires_geolocation_export():
-            raise ValueError(
+            self.last_error = (
                 f"{self.data_type} uses per-pixel geolocation and cannot be "
                 "safely exported with the generic bounding-box writer. Install "
                 "or activate HyperCoast dependencies, then reload the dataset."
             )
+            _log(self.last_error, LOG_WARNING)
+            return None
 
         return self._export_fallback(output_path, wavelengths, bands)
 
@@ -1578,10 +1596,12 @@ class HyperspectralDataset:
                     if result:
                         return result
                     if self._requires_geolocation_export():
-                        raise ValueError(
+                        self.last_error = (
                             "PACE BGC export requires successful HyperCoast "
                             "geolocation gridding."
                         )
+                        _log(self.last_error, LOG_WARNING)
+                        return None
                     return self._export_fallback(output_path, wavelengths, None)
 
                 # PACE AOP needs gridding first
@@ -1790,11 +1810,24 @@ class HyperspectralDataset:
                 from ._hypercoast_lib import get_hypercoast
 
                 hc = get_hypercoast()
-            result = hc.emit_to_image(
+            # Remove any stale file so we can use a fresh-write check below.
+            try:
+                if os.path.isfile(output_path):
+                    os.remove(output_path)
+            except OSError as exc:
+                _log(
+                    f"Could not clear stale EMIT output {output_path}: {exc}",
+                    LOG_WARNING,
+                )
+                return None
+            hc.emit_to_image(
                 self.filepath,
                 wavelengths=wavelengths,
                 output=output_path,
             )
+            # The stale file was removed above, so a fresh non-empty file at
+            # ``output_path`` is the explicit success signal even when the
+            # HyperCoast writer returns ``None``.
             if os.path.isfile(output_path) and os.path.getsize(output_path) > 0:
                 _log(f"HyperCoast EMIT export succeeded: {output_path}", LOG_INFO)
                 return output_path
