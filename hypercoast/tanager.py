@@ -209,7 +209,71 @@ def _stac_items_to_gdf(items, crs="EPSG:4326"):
     """Convert STAC items to a GeoDataFrame."""
     import geopandas as gpd
 
-    return gpd.GeoDataFrame.from_features(items, crs=crs)
+    features = []
+    for item in items:
+        props = dict(item.get("properties", {}))
+        props["id"] = item.get("id")
+        props["stac_url"] = _get_stac_item_url(item)
+        if item.get("_collection_title"):
+            props["collection_title"] = item["_collection_title"]
+        if item.get("_collection_url"):
+            props["collection_url"] = item["_collection_url"]
+        if item.get("collection"):
+            props["collection"] = item["collection"]
+
+        collection_ids = item.get("_collection_ids")
+        collection_titles = item.get("_collection_titles")
+        if collection_ids:
+            props["collections"] = ", ".join(collection_ids)
+        if collection_titles:
+            props["collection_titles"] = ", ".join(collection_titles)
+
+        assets = item.get("assets", {})
+        for asset_key in (
+            "ortho_visual",
+            "ortho_radiance_hdf5",
+            "basic_radiance_hdf5",
+            "ortho_sr_hdf5",
+            "basic_sr_hdf5",
+        ):
+            if asset_key in assets:
+                props[f"{asset_key}_url"] = assets[asset_key].get("href")
+
+        features.append(
+            {
+                "type": "Feature",
+                "id": item.get("id"),
+                "geometry": item.get("geometry"),
+                "properties": props,
+            }
+        )
+
+    return gpd.GeoDataFrame.from_features(features, crs=crs)
+
+
+def _dedupe_tanager_items(items):
+    """Deduplicate STAC items and track all matching Tanager collections."""
+    deduped = {}
+    for item in items:
+        key = item.get("id") or _get_stac_item_url(item)
+        if key not in deduped:
+            copy = dict(item)
+            copy["_collection_ids"] = []
+            copy["_collection_titles"] = []
+            deduped[key] = copy
+
+        target = deduped[key]
+        collection_id = item.get("collection")
+        if not collection_id and item.get("_collection_url"):
+            collection_id = item["_collection_url"].rstrip("/").split("/")[-2]
+        collection_title = item.get("_collection_title")
+
+        if collection_id and collection_id not in target["_collection_ids"]:
+            target["_collection_ids"].append(collection_id)
+        if collection_title and collection_title not in target["_collection_titles"]:
+            target["_collection_titles"].append(collection_title)
+
+    return list(deduped.values())
 
 
 def _spectral_bands_from_asset(asset):
@@ -415,6 +479,75 @@ def search_tanager(
             gdf.to_file(output)
         return results, gdf
     return results
+
+
+def tanager_footprints(
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[Union[str, Tuple[str, str]]] = None,
+    collections: Optional[Union[str, List[str]]] = None,
+    count: int = -1,
+    query: Optional[str] = None,
+    cloud_percent: Optional[float] = None,
+    catalog_url: str = TANAGER_STAC_CATALOG_URL,
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    unique: bool = True,
+    return_items: bool = False,
+    timeout: int = 30,
+    **kwargs,
+):
+    """Return Tanager STAC item footprints as a GeoDataFrame.
+
+    Args:
+        bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in
+            EPSG:4326.
+        temporal (str or tuple, optional): Date/time range as
+            ``"start/end"``, ``"start,end"``, or ``(start, end)``.
+        collections (str or list, optional): Tanager collection ids or titles.
+            Defaults to all collections in the Tanager STAC catalog.
+        count (int, optional): Maximum number of matching STAC item records to
+            inspect. ``-1`` means all. Defaults to ``-1``.
+        query (str, optional): Case-insensitive text search against item id,
+            title, description, and location description.
+        cloud_percent (float, optional): Maximum item ``cloud_percent``.
+        catalog_url (str, optional): Tanager STAC catalog URL. Planet browser
+            URLs are accepted and normalized to raw JSON URLs.
+        output (str, optional): File path to save the GeoDataFrame.
+        crs (str, optional): CRS for GeoDataFrame output. Defaults to
+            ``"EPSG:4326"``.
+        unique (bool, optional): Deduplicate scenes that appear in more than
+            one thematic collection. Defaults to True.
+        return_items (bool, optional): Return ``(items, gdf)`` instead of only
+            the GeoDataFrame. Defaults to False.
+        timeout (int, optional): HTTP request timeout in seconds.
+        **kwargs: Additional exact-match filters against STAC item properties.
+
+    Returns:
+        geopandas.GeoDataFrame or tuple: Footprint GeoDataFrame, or
+            ``(items, gdf)`` when ``return_items=True``.
+    """
+    items = search_tanager(
+        bbox=bbox,
+        temporal=temporal,
+        collections=collections,
+        count=count,
+        query=query,
+        cloud_percent=cloud_percent,
+        catalog_url=catalog_url,
+        return_gdf=False,
+        timeout=timeout,
+        **kwargs,
+    )
+    if unique:
+        items = _dedupe_tanager_items(items)
+
+    gdf = _stac_items_to_gdf(items, crs=crs)
+    if output is not None:
+        gdf.to_file(output)
+
+    if return_items:
+        return items, gdf
+    return gdf
 
 
 def download_tanager(

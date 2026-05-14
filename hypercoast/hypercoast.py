@@ -43,6 +43,7 @@ from .tanager import (
     read_tanager,
     read_tanager_stac,
     search_tanager,
+    tanager_footprints,
     download_tanager,
     get_tanager_asset_url,
     tanager_to_image,
@@ -1193,6 +1194,129 @@ class Map(leafmap.Map):
             self._update_band_names(layer_name, selected_wavelengths)
         except Exception as e:
             print(e)
+
+    def add_tanager_footprints(
+        self,
+        bbox=None,
+        temporal=None,
+        collections=None,
+        count=-1,
+        query=None,
+        cloud_percent=None,
+        catalog_url=None,
+        output=None,
+        crs="EPSG:4326",
+        unique=True,
+        timeout=30,
+        layer_name="Tanager footprints",
+        style=None,
+        hover_style=None,
+        style_callback=None,
+        fill_colors=None,
+        info_mode="on_hover",
+        zoom_to_layer=True,
+        **kwargs,
+    ):
+        """Add Tanager STAC item footprints to the map.
+
+        Args:
+            bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in
+                EPSG:4326.
+            temporal (str or tuple, optional): Date/time range as
+                ``"start/end"``, ``"start,end"``, or ``(start, end)``.
+            collections (str or list, optional): Tanager collection ids or
+                titles. Defaults to all collections.
+            count (int, optional): Maximum number of matching STAC item records
+                to inspect. ``-1`` means all. Defaults to ``-1``.
+            query (str, optional): Case-insensitive text search against item id,
+                title, description, and location description.
+            cloud_percent (float, optional): Maximum item ``cloud_percent``.
+            catalog_url (str, optional): Tanager STAC catalog URL.
+            output (str, optional): File path to save the footprint
+                GeoDataFrame.
+            crs (str, optional): CRS for the returned GeoDataFrame. Defaults to
+                ``"EPSG:4326"``.
+            unique (bool, optional): Deduplicate scenes that appear in multiple
+                thematic collections. Defaults to True.
+            timeout (int, optional): HTTP request timeout in seconds. Defaults
+                to 30.
+            layer_name (str, optional): Map layer name. Defaults to
+                ``"Tanager footprints"``.
+            style (dict, optional): Polygon style dictionary.
+            hover_style (dict, optional): Polygon hover style dictionary.
+            style_callback (callable, optional): Per-feature style callback.
+            fill_colors (list, optional): Random fill colors passed to leafmap.
+            info_mode (str, optional): ``"on_hover"`` or ``"on_click"``.
+                Defaults to ``"on_hover"``.
+            zoom_to_layer (bool, optional): Whether to zoom to the footprints.
+                Defaults to True.
+            **kwargs: Additional exact-match STAC property filters and keyword
+                arguments passed to ``leafmap.Map.add_gdf``.
+
+        Returns:
+            geopandas.GeoDataFrame: The footprint GeoDataFrame added to the map.
+        """
+        if style is None:
+            style = {
+                "color": "#00A6D6",
+                "weight": 2,
+                "fillColor": "#00A6D6",
+                "fillOpacity": 0.08,
+            }
+        if hover_style is None:
+            hover_style = {"weight": 4, "fillOpacity": 0.18}
+
+        search_kwargs = {}
+        add_gdf_kwargs = {}
+        add_gdf_keys = {"encoding", "marker", "marker_cluster"}
+        for key, value in kwargs.items():
+            if key in add_gdf_keys:
+                add_gdf_kwargs[key] = value
+            else:
+                search_kwargs[key] = value
+
+        if catalog_url is None:
+            gdf = tanager_footprints(
+                bbox=bbox,
+                temporal=temporal,
+                collections=collections,
+                count=count,
+                query=query,
+                cloud_percent=cloud_percent,
+                output=output,
+                crs=crs,
+                unique=unique,
+                timeout=timeout,
+                **search_kwargs,
+            )
+        else:
+            gdf = tanager_footprints(
+                bbox=bbox,
+                temporal=temporal,
+                collections=collections,
+                count=count,
+                query=query,
+                cloud_percent=cloud_percent,
+                catalog_url=catalog_url,
+                output=output,
+                crs=crs,
+                unique=unique,
+                timeout=timeout,
+                **search_kwargs,
+            )
+
+        self.add_gdf(
+            gdf,
+            layer_name=layer_name,
+            style=style,
+            hover_style=hover_style,
+            style_callback=style_callback,
+            fill_colors=fill_colors,
+            info_mode=info_mode,
+            zoom_to_layer=zoom_to_layer,
+            **add_gdf_kwargs,
+        )
+        return gdf
 
     def add_hyper(self, xds, dtype, wvl_indexes=None, **kwargs):
         """Add a hyperspectral dataset to the map.

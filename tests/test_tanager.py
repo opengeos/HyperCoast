@@ -339,6 +339,59 @@ class TestTanagerStac(unittest.TestCase):
             unzip=False,
         )
 
+    def test_tanager_footprints_deduplicates_collections(self):
+        pytest.importorskip("geopandas")
+        catalog = {
+            "links": [
+                {"rel": "child", "href": "https://example.com/a/collection.json"},
+                {"rel": "child", "href": "https://example.com/b/collection.json"},
+            ]
+        }
+        collection_a = {
+            "id": "a",
+            "title": "Collection A",
+            "links": [{"rel": "item", "href": "https://example.com/a/scene.json"}],
+        }
+        collection_b = {
+            "id": "b",
+            "title": "Collection B",
+            "links": [{"rel": "item", "href": "https://example.com/b/scene.json"}],
+        }
+        item = {
+            "id": "scene",
+            "type": "Feature",
+            "bbox": [0, 0, 1, 1],
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]],
+                ],
+            },
+            "properties": {
+                "datetime": "2025-01-15T00:00:00Z",
+                "title": "Shared scene",
+            },
+            "assets": {
+                "ortho_visual": {"href": "https://example.com/visual.tif"},
+                "ortho_radiance_hdf5": {"href": "https://example.com/rad.h5"},
+            },
+        }
+
+        responses = [
+            _MockResponse(obj)
+            for obj in (catalog, collection_a, item, collection_b, item)
+        ]
+        with mock.patch("hypercoast.tanager.requests.get", side_effect=responses):
+            gdf = hypercoast.tanager_footprints()
+
+        self.assertEqual(len(gdf), 1)
+        self.assertEqual(gdf.iloc[0]["id"], "scene")
+        self.assertEqual(gdf.iloc[0]["collections"], "a, b")
+        self.assertEqual(gdf.iloc[0]["collection_titles"], "Collection A, Collection B")
+        self.assertEqual(
+            gdf.iloc[0]["ortho_visual_url"], "https://example.com/visual.tif"
+        )
+
     def test_read_tanager_stac_does_not_force_asset_product(self):
         item = {
             "id": "item-1",
