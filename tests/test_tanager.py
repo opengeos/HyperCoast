@@ -14,6 +14,7 @@ from unittest import mock
 
 import h5py
 import numpy as np
+import pytest
 
 import hypercoast
 
@@ -151,6 +152,228 @@ class TestReadTanager(unittest.TestCase):
 
         mocked_get.assert_not_called()
         np.testing.assert_allclose(ds.coords["wavelength"].values, supplied)
+
+    def test_fwhm_attribute_in_nm_is_not_scaled(self):
+        path = os.path.join(self.tmpdir, "fwhm_attr.h5")
+        _write_hdfeos_cube(path, "toa_radiance", n_bands=100, include_wavelength=True)
+        with h5py.File(path, "a") as f:
+            cube = f["HDFEOS/SWATHS/HYP/Data Fields/toa_radiance"]
+            del f["HDFEOS/SWATHS/HYP/Data Fields/FWHM"]
+            cube.attrs["fwhm"] = np.full(100, 6.5, dtype=np.float32)
+            cube.attrs["fwhm_units"] = "nm"
+
+        ds = hypercoast.read_tanager(path)
+
+        np.testing.assert_allclose(ds.coords["fwhm"].values, np.full(100, 6.5))
+
+    def test_ortho_grid_product_builds_lat_lon(self):
+        pytest.importorskip("pyproj")
+
+        path = os.path.join(self.tmpdir, "ortho_grid.h5")
+        n_bands = 100
+        height = 4
+        width = 3
+        with h5py.File(path, "w") as f:
+            df = f.create_group("HDFEOS/GRIDS/HYP/Data Fields")
+            cube = df.create_dataset(
+                "toa_radiance",
+                data=np.ones((n_bands, height, width), dtype=np.float32),
+            )
+            cube.attrs["wavelengths"] = np.linspace(400, 900, n_bands)
+            cube.attrs["fwhm"] = np.full(n_bands, 6.0, dtype=np.float32)
+            cube.attrs["fwhm_units"] = "nm"
+            grid = f["HDFEOS/GRIDS/HYP"]
+            grid.attrs["epsg_code"] = 32610
+            info = f.create_group("HDFEOS INFORMATION")
+            info.create_dataset(
+                "StructMetadata.0",
+                data=(
+                    b"GROUP=GridStructure\n"
+                    b"GROUP=GRID_1\n"
+                    b"XDim=3\n"
+                    b"YDim=4\n"
+                    b"UpperLeftPointMtrs=(548580.00,4207350.00)\n"
+                    b"LowerRightMtrs=(574140.00,4181340.00)\n"
+                    b"Projection=HE5_GCTP_UTM\n"
+                    b"ZoneCode=10\n"
+                    b"END_GROUP=GRID_1\n"
+                    b"END_GROUP=GridStructure\n"
+                ),
+            )
+
+        ds = hypercoast.read_tanager(path, bands=[0, 1, 2])
+
+        self.assertEqual(ds.attrs["product"], "ortho_radiance")
+        self.assertEqual(ds.latitude.shape, (height, width))
+        self.assertEqual(ds.longitude.shape, (height, width))
+        self.assertTrue(np.isfinite(ds.latitude.values).all())
+        self.assertTrue(np.isfinite(ds.longitude.values).all())
+        np.testing.assert_allclose(ds.coords["fwhm"].values, np.full(3, 6.0))
+
+
+class _MockResponse:
+    """Minimal requests response for mocked STAC calls."""
+
+    def __init__(self, payload):
+        self.payload = payload
+
+    def raise_for_status(self):
+        return None
+
+    def json(self):
+        return self.payload
+
+
+class TestTanagerStac(unittest.TestCase):
+    """Exercise Tanager STAC search and download helpers without network I/O."""
+
+    def test_stac_wavelengths_ignore_non_spectral_bands(self):
+        item = {
+            "assets": {
+                "basic_radiance_hdf5": {
+                    "eo:bands": [
+                        {"name": "beta_cloud_mask"},
+                        {
+                            "name": "toa_radiance_B000",
+                            "center_wavelength": 0.4,
+                            "full_width_half_max": 0.006,
+                        },
+                        {
+                            "name": "toa_radiance_B001",
+                            "center_wavelength": 0.405,
+                            "full_width_half_max": 0.0061,
+                        },
+                        {"name": "Latitude"},
+                    ]
+                }
+            }
+        }
+
+        with mock.patch(
+            "hypercoast.tanager.requests.get", return_value=_MockResponse(item)
+        ):
+            wl, fwhm = hypercoast.tanager._read_wavelengths_from_stac(
+                "https://example.com/item.json", "basic_radiance_hdf5"
+            )
+
+        np.testing.assert_allclose(wl, [400.0, 405.0])
+        np.testing.assert_allclose(fwhm, [6.0, 6.1])
+
+    def test_search_tanager_filters_catalog_items(self):
+        catalog = {
+            "links": [
+                {
+                    "rel": "child",
+                    "href": "https://www.planet.com/data/stac/tanager-core-imagery/coastal-water-bodies/collection.json",
+                }
+            ]
+        }
+        collection = {
+            "id": "coastal-water-bodies",
+            "title": "Coastal and Water Bodies",
+            "links": [
+                {"rel": "item", "href": "https://example.com/item-1.json"},
+                {"rel": "item", "href": "https://example.com/item-2.json"},
+            ],
+        }
+        item_1 = {
+            "id": "item-1",
+            "bbox": [0, 0, 1, 1],
+            "properties": {
+                "datetime": "2025-01-15T00:00:00Z",
+                "title": "Cloudy Bay scene",
+                "cloud_percent": 80,
+            },
+        }
+        item_2 = {
+            "id": "item-2",
+            "bbox": [0, 0, 1, 1],
+            "properties": {
+                "datetime": "2025-01-20T00:00:00Z",
+                "title": "Clear Bay scene",
+                "cloud_percent": 5,
+            },
+        }
+
+        responses = [
+            _MockResponse(obj) for obj in (catalog, collection, item_1, item_2)
+        ]
+        with mock.patch("hypercoast.tanager.requests.get", side_effect=responses):
+            results = hypercoast.search_tanager(
+                bbox=[0.5, 0.5, 2, 2],
+                temporal=("2025-01-01", "2025-01-31"),
+                collections="coastal-water-bodies",
+                query="Bay",
+                cloud_percent=10,
+                count=1,
+            )
+
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["id"], "item-2")
+        self.assertEqual(results[0]["_stac_url"], "https://example.com/item-2.json")
+        self.assertEqual(results[0]["_collection_title"], "Coastal and Water Bodies")
+
+    def test_download_tanager_downloads_selected_asset(self):
+        item = {
+            "id": "item-1",
+            "assets": {
+                "ortho_radiance_hdf5": {
+                    "href": "https://example.com/20250101_ortho_radiance_hdf5.h5"
+                }
+            },
+        }
+
+        with mock.patch(
+            "hypercoast.tanager.download_file", return_value="/tmp/out.h5"
+        ) as mocked_download:
+            result = hypercoast.download_tanager(
+                item, out_dir="/tmp", quiet=True, overwrite=True
+            )
+
+        self.assertEqual(result, ["/tmp/out.h5"])
+        mocked_download.assert_called_once_with(
+            "https://example.com/20250101_ortho_radiance_hdf5.h5",
+            output="/tmp/20250101_ortho_radiance_hdf5.h5",
+            quiet=True,
+            overwrite=True,
+            unzip=False,
+        )
+
+    def test_read_tanager_stac_does_not_force_asset_product(self):
+        item = {
+            "id": "item-1",
+            "_stac_url": "https://example.com/item-1.json",
+            "assets": {
+                "ortho_radiance_hdf5": {
+                    "href": "https://example.com/ortho.h5",
+                    "eo:bands": [
+                        {
+                            "center_wavelength": 0.4,
+                            "full_width_half_max": 0.006,
+                            "name": "toa_radiance_B000",
+                        }
+                    ],
+                }
+            },
+        }
+        fake_ds = mock.MagicMock()
+        fake_ds.attrs = {}
+
+        with (
+            mock.patch(
+                "hypercoast.tanager.download_tanager", return_value=["/tmp/ortho.h5"]
+            ),
+            mock.patch(
+                "hypercoast.tanager.read_tanager", return_value=fake_ds
+            ) as mocked,
+        ):
+            result = hypercoast.read_tanager_stac(item)
+
+        self.assertIs(result, fake_ds)
+        _, kwargs = mocked.call_args
+        self.assertIsNone(kwargs["product"])
+        np.testing.assert_allclose(kwargs["wavelengths"], [400.0])
+        self.assertEqual(result.attrs["product"], "ortho_radiance")
 
 
 if __name__ == "__main__":

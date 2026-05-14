@@ -39,7 +39,16 @@ from .pace import (
     pace_to_image,
     pace_chla_to_image,
 )
-from .tanager import read_tanager, tanager_to_image, extract_tanager, grid_tanager
+from .tanager import (
+    read_tanager,
+    read_tanager_stac,
+    search_tanager,
+    download_tanager,
+    get_tanager_asset_url,
+    tanager_to_image,
+    extract_tanager,
+    grid_tanager,
+)
 from .wyvern import read_wyvern, wyvern_to_image, extract_wyvern, filter_wyvern
 from .cesl import (
     search_cesl,
@@ -1059,6 +1068,8 @@ class Map(leafmap.Map):
         zoom_to_layer=True,
         visible=True,
         method="nearest",
+        asset="ortho_radiance_hdf5",
+        visual_asset="ortho_visual",
         array_args=None,
         **kwargs,
     ):
@@ -1074,8 +1085,15 @@ class Map(leafmap.Map):
             os.environ['LOCALTILESERVER_CLIENT_PREFIX'] = 'proxy/{port}'
 
         Args:
-            source (str): The path to the GeoTIFF file or the URL of the Cloud
-                Optimized GeoTIFF.
+            source (str or dict): The path to a Tanager HDF5 file, a Tanager
+                STAC item URL, a Planet STAC browser item URL, a STAC item
+                dictionary, or an xarray.Dataset.
+            asset (str, optional): HDF5 STAC asset key to download when
+                ``source`` is a STAC item. Defaults to
+                ``"ortho_radiance_hdf5"``.
+            visual_asset (str, optional): STAC COG asset key used for the map
+                layer when ``source`` is a STAC item. Defaults to
+                ``"ortho_visual"``. Set to None to render from the HDF5 data.
             bands (list, optional): The band indices to select. Defaults to None.
             wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.
             colormap (str, optional): The name of the colormap from `matplotlib`
@@ -1101,8 +1119,16 @@ class Map(leafmap.Map):
         if array_args is None:
             array_args = {}
 
-        if isinstance(source, str):
-
+        stac_source = None
+        if isinstance(source, dict) or (
+            isinstance(source, str)
+            and source.startswith("http")
+            and "/data/stac/" in source
+            and ".json" in source
+        ):
+            stac_source = source
+            source = read_tanager_stac(source, asset=asset)
+        elif isinstance(source, str):
             source = read_tanager(source)
 
         selected_wavelengths = []
@@ -1123,28 +1149,42 @@ class Map(leafmap.Map):
 
         else:
             selected_wavelengths = [876.3, 675.88, 625.83]
+
+        if isinstance(selected_wavelengths, list) and len(selected_wavelengths) > 1:
+            colormap = None
+
         try:
-            image = tanager_to_image(
-                source, wavelengths=selected_wavelengths, method=method
-            )
-
-            if isinstance(selected_wavelengths, list) and len(selected_wavelengths) > 1:
-                colormap = None
-
-            self.add_raster(
-                image,
-                indexes=indexes,
-                colormap=colormap,
-                vmin=vmin,
-                vmax=vmax,
-                nodata=nodata,
-                attribution=attribution,
-                layer_name=layer_name,
-                zoom_to_layer=zoom_to_layer,
-                visible=visible,
-                array_args=array_args,
-                **kwargs,
-            )
+            if stac_source is not None and visual_asset is not None:
+                image = get_tanager_asset_url(stac_source, asset=visual_asset)
+                cog_kwargs = kwargs.copy()
+                if indexes is not None:
+                    cog_kwargs["bidx"] = indexes
+                self.add_cog_layer(
+                    image,
+                    name=layer_name,
+                    attribution=attribution or "",
+                    shown=visible,
+                    zoom_to_layer=zoom_to_layer,
+                    **cog_kwargs,
+                )
+            else:
+                image = tanager_to_image(
+                    source, wavelengths=selected_wavelengths, method=method
+                )
+                self.add_raster(
+                    image,
+                    indexes=indexes,
+                    colormap=colormap,
+                    vmin=vmin,
+                    vmax=vmax,
+                    nodata=nodata,
+                    attribution=attribution,
+                    layer_name=layer_name,
+                    zoom_to_layer=zoom_to_layer,
+                    visible=visible,
+                    array_args=array_args,
+                    **kwargs,
+                )
 
             self.cog_layer_dict[layer_name]["xds"] = source
             self.cog_layer_dict[layer_name]["vmax"] = vmax
