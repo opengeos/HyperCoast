@@ -1148,6 +1148,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/tanager_stac/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tanager stac
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/tanager_3d/" class="md-nav__link">
         
   
@@ -2328,6 +2356,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.tanager.download_tanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        download_tanager()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.tanager.extract_tanager" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2350,6 +2389,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.tanager.get_tanager_asset_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_tanager_asset_url()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.tanager.grid_tanager" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2365,6 +2415,39 @@
     <span class="md-ellipsis">
       
         read_tanager()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.tanager.read_tanager_stac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_tanager_stac()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.tanager.search_tanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_tanager()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.tanager.tanager_footprints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tanager_footprints()
       
     </span>
   </a>
@@ -2428,6 +2511,147 @@ caller-supplied STAC URL only when necessary.</p>
 
 
 
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.tanager.download_tanager" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">download_tanager</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s1">&#39;ortho_radiance_hdf5&#39;</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.tanager.download_tanager" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Download a Tanager asset from one or more STAC items.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>dict, str, or list</code></td>
+        <td><p>STAC item dictionary, STAC item URL, or a
+sequence of either.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>asset</code></td>
+        <td><code>str</code></td>
+        <td><p>STAC asset key to download. Defaults to
+<code>"ortho_radiance_hdf5"</code>.</p></td>
+        <td><code>&#39;ortho_radiance_hdf5&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>out_dir</code></td>
+        <td><code>str</code></td>
+        <td><p>Output directory. Defaults to the current
+directory.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>quiet</code></td>
+        <td><code>bool</code></td>
+        <td><p>Suppress download output. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>overwrite</code></td>
+        <td><code>bool</code></td>
+        <td><p>Overwrite existing files. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Extra keyword arguments passed to :func:<code>download_file</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>Local file paths for the downloaded assets.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/tanager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_tanager</span><span class="p">(</span>
+    <span class="n">items</span><span class="p">,</span>
+    <span class="n">asset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ortho_radiance_hdf5&quot;</span><span class="p">,</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download a Tanager asset from one or more STAC items.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        items (dict, str, or list): STAC item dictionary, STAC item URL, or a</span>
+<span class="sd">            sequence of either.</span>
+<span class="sd">        asset (str, optional): STAC asset key to download. Defaults to</span>
+<span class="sd">            ``&quot;ortho_radiance_hdf5&quot;``.</span>
+<span class="sd">        out_dir (str, optional): Output directory. Defaults to the current</span>
+<span class="sd">            directory.</span>
+<span class="sd">        quiet (bool, optional): Suppress download output. Defaults to True.</span>
+<span class="sd">        overwrite (bool, optional): Overwrite existing files. Defaults to False.</span>
+<span class="sd">        **kwargs: Extra keyword arguments passed to :func:`download_file`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Local file paths for the downloaded assets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">_coerce_tanager_items</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+        <span class="n">assets</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">assets</span><span class="p">:</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">assets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;STAC item has no asset &#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39;. Available assets: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="n">assets</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">href</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;STAC item asset &#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39; has no href.&quot;</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">out_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">href</span><span class="p">))</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">download_file</span><span class="p">(</span>
+                <span class="n">href</span><span class="p">,</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+                <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">,</span>
+                <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span>
+                <span class="n">unzip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">paths</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
 
 
 
@@ -2676,6 +2900,91 @@ longitude if they are not ranges. Defaults to 0.01.</p></td>
         <span class="n">rrs_stack</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;pixel&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">da_filtered</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.tanager.get_tanager_asset_url" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_tanager_asset_url</span><span class="p">(</span><span class="n">stac_item</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s1">&#39;ortho_visual&#39;</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.tanager.get_tanager_asset_url" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Return an asset URL from a Tanager STAC item.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>stac_item</code></td>
+        <td><code>dict or str</code></td>
+        <td><p>STAC item dictionary or item JSON URL.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>asset</code></td>
+        <td><code>str</code></td>
+        <td><p>STAC asset key. Defaults to <code>"ortho_visual"</code>.</p></td>
+        <td><code>&#39;ortho_visual&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>The asset href.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/tanager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_tanager_asset_url</span><span class="p">(</span><span class="n">stac_item</span><span class="p">,</span> <span class="n">asset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ortho_visual&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an asset URL from a Tanager STAC item.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        stac_item (dict or str): STAC item dictionary or item JSON URL.</span>
+<span class="sd">        asset (str, optional): STAC asset key. Defaults to ``&quot;ortho_visual&quot;``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The asset href.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">_load_stac_item</span><span class="p">(</span><span class="n">stac_item</span><span class="p">)</span>
+    <span class="n">assets</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">if</span> <span class="n">asset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">assets</span><span class="p">:</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">assets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;STAC item has no asset &#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39;. Available assets: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="n">href</span> <span class="o">=</span> <span class="n">assets</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">href</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;STAC item asset &#39;</span><span class="si">{</span><span class="n">asset</span><span class="si">}</span><span class="s2">&#39; has no href.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">href</span>
 </code></pre></div>
         </details>
     </div>
@@ -3010,7 +3319,7 @@ Defaults to "nearest".</p></td>
 
 
 <h2 id="hypercoast.tanager.read_tanager" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_tanager</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_tanager</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fwhm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.tanager.read_tanager" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3070,6 +3379,13 @@ directly. Must have either the full cube band count or, when
         <td><code>None</code></td>
       </tr>
       <tr>
+        <td><code>fwhm</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Full width at half maximum in nanometers
+to use directly. Same length rules as <code>wavelengths</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
         <td><code>product</code></td>
         <td><code>str</code></td>
         <td><p>Force a specific product variant. One of
@@ -3124,6 +3440,7 @@ for SR products, plus a <code>toa_radiance</code> alias), and <code>latitude</co
     <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">stac_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fwhm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">product</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
@@ -3151,6 +3468,8 @@ for SR products, plus a <code>toa_radiance</code> alias), and <code>latitude</co
 <span class="sd">        wavelengths (array-like, optional): Wavelengths in nanometers to use</span>
 <span class="sd">            directly. Must have either the full cube band count or, when</span>
 <span class="sd">            ``bands`` is also supplied, the number of selected bands.</span>
+<span class="sd">        fwhm (array-like, optional): Full width at half maximum in nanometers</span>
+<span class="sd">            to use directly. Same length rules as ``wavelengths``.</span>
 <span class="sd">        product (str, optional): Force a specific product variant. One of</span>
 <span class="sd">            ``basic_radiance``, ``ortho_radiance``, ``basic_sr``, ``ortho_sr``.</span>
 <span class="sd">        **kwargs: Extra keyword arguments forwarded to ``xr.Dataset``.</span>
@@ -3196,12 +3515,15 @@ for SR products, plus a <code>toa_radiance</code> alias), and <code>latitude</co
 
         <span class="n">lat_path</span> <span class="o">=</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;lat_path&quot;</span><span class="p">]</span>
         <span class="n">lon_path</span> <span class="o">=</span> <span class="n">layout</span><span class="p">[</span><span class="s2">&quot;lon_path&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">lat_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">lon_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">lat_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lon_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">lat_path</span><span class="p">][()]</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">lon_path</span><span class="p">][()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">_grid_latlon</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lat</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">lon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;Could not locate Latitude/Longitude datasets in the Tanager HDF5 file.&quot;</span>
             <span class="p">)</span>
-        <span class="n">lat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">lat_path</span><span class="p">][()]</span>
-        <span class="n">lon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">lon_path</span><span class="p">][()]</span>
 
         <span class="n">wl_nm_full</span><span class="p">,</span> <span class="n">fwhm_nm_full</span> <span class="o">=</span> <span class="n">_read_wavelengths_from_hdf5</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">layout</span><span class="p">,</span> <span class="n">n_bands_total</span><span class="p">)</span>
 
@@ -3242,6 +3564,17 @@ for SR products, plus a <code>toa_radiance</code> alias), and <code>latitude</co
                 <span class="sa">f</span><span class="s2">&quot;`wavelengths` has length </span><span class="si">{</span><span class="n">wl_nm</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> but </span><span class="si">{</span><span class="n">n_bands_selected</span><span class="si">}</span><span class="s2"> &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;bands are being read.&quot;</span>
             <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fwhm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fwhm_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">fwhm</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fwhm_arr</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n_bands_total</span> <span class="ow">and</span> <span class="n">bands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fwhm_arr</span> <span class="o">=</span> <span class="n">fwhm_arr</span><span class="p">[</span><span class="n">bands</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">fwhm_arr</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">n_bands_selected</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`fwhm` has length </span><span class="si">{</span><span class="n">fwhm_arr</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> but </span><span class="si">{</span><span class="n">n_bands_selected</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;bands are being read.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">fwhm_nm</span> <span class="o">=</span> <span class="n">fwhm_arr</span>
 
     <span class="k">if</span> <span class="n">wl_nm</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">stac_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">wl_stac</span><span class="p">,</span> <span class="n">fwhm_stac</span> <span class="o">=</span> <span class="n">_read_wavelengths_from_stac</span><span class="p">(</span>
@@ -3303,6 +3636,620 @@ for SR products, plus a <code>toa_radiance</code> alias), and <code>latitude</co
         <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;toa_radiance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;surface_reflectance&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">ds</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.tanager.read_tanager_stac" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_tanager_stac</span><span class="p">(</span><span class="n">stac_item</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s1">&#39;ortho_radiance_hdf5&#39;</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fwhm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.tanager.read_tanager_stac" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Download and read a Tanager HDF5 asset from a STAC item.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>stac_item</code></td>
+        <td><code>dict or str</code></td>
+        <td><p>STAC item dictionary or item JSON URL.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>asset</code></td>
+        <td><code>str</code></td>
+        <td><p>HDF5 STAC asset key. Defaults to
+<code>"ortho_radiance_hdf5"</code>.</p></td>
+        <td><code>&#39;ortho_radiance_hdf5&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>out_dir</code></td>
+        <td><code>str</code></td>
+        <td><p>Directory for the downloaded HDF5 file.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>bands</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Spectral band indices to keep.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Explicit wavelength values in nm.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>fwhm</code></td>
+        <td><code>array-like</code></td>
+        <td><p>Explicit FWHM values in nm.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>product</code></td>
+        <td><code>str</code></td>
+        <td><p>Force a Tanager product variant.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>quiet</code></td>
+        <td><code>bool</code></td>
+        <td><p>Suppress download output. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>overwrite</code></td>
+        <td><code>bool</code></td>
+        <td><p>Overwrite existing files. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Extra keyword arguments passed to :func:<code>read_tanager</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xarray.Dataset</code></td>
+      <td><p>Tanager dataset read from the selected STAC asset.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/tanager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_tanager_stac</span><span class="p">(</span>
+    <span class="n">stac_item</span><span class="p">,</span>
+    <span class="n">asset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ortho_radiance_hdf5&quot;</span><span class="p">,</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fwhm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">product</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download and read a Tanager HDF5 asset from a STAC item.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        stac_item (dict or str): STAC item dictionary or item JSON URL.</span>
+<span class="sd">        asset (str, optional): HDF5 STAC asset key. Defaults to</span>
+<span class="sd">            ``&quot;ortho_radiance_hdf5&quot;``.</span>
+<span class="sd">        out_dir (str, optional): Directory for the downloaded HDF5 file.</span>
+<span class="sd">        bands (array-like, optional): Spectral band indices to keep.</span>
+<span class="sd">        wavelengths (array-like, optional): Explicit wavelength values in nm.</span>
+<span class="sd">        fwhm (array-like, optional): Explicit FWHM values in nm.</span>
+<span class="sd">        product (str, optional): Force a Tanager product variant.</span>
+<span class="sd">        quiet (bool, optional): Suppress download output. Defaults to True.</span>
+<span class="sd">        overwrite (bool, optional): Overwrite existing files. Defaults to False.</span>
+<span class="sd">        **kwargs: Extra keyword arguments passed to :func:`read_tanager`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xarray.Dataset: Tanager dataset read from the selected STAC asset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">_load_stac_item</span><span class="p">(</span><span class="n">stac_item</span><span class="p">)</span>
+    <span class="n">stac_url</span> <span class="o">=</span> <span class="n">_get_stac_item_url</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">download_tanager</span><span class="p">(</span>
+        <span class="n">item</span><span class="p">,</span>
+        <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span>
+        <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
+        <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">,</span>
+        <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fwhm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stac_wl</span><span class="p">,</span> <span class="n">stac_fwhm</span> <span class="o">=</span> <span class="n">_read_wavelengths_from_stac_item</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">asset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wavelengths</span> <span class="o">=</span> <span class="n">stac_wl</span>
+        <span class="k">if</span> <span class="n">fwhm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fwhm</span> <span class="o">=</span> <span class="n">stac_fwhm</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span>
+        <span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span>
+        <span class="n">stac_url</span><span class="o">=</span><span class="n">stac_url</span><span class="p">,</span>
+        <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span>
+        <span class="n">fwhm</span><span class="o">=</span><span class="n">fwhm</span><span class="p">,</span>
+        <span class="n">product</span><span class="o">=</span><span class="n">product</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">product</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">asset</span> <span class="ow">in</span> <span class="n">_STAC_ASSET_PRODUCT</span><span class="p">:</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_STAC_ASSET_PRODUCT</span><span class="p">[</span><span class="n">asset</span><span class="p">]</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;stac_asset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;stac_item&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stac_url</span> <span class="ow">or</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stac_item&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.tanager.search_tanager" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_tanager</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cloud_percent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">catalog_url</span><span class="o">=</span><span class="s1">&#39;https://www.planet.com/data/stac/tanager-core-imagery/catalog.json&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">return_gdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.tanager.search_tanager" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Search Planet Tanager STAC sample imagery.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>bbox</code></td>
+        <td><code>list</code></td>
+        <td><p>Bounding box <code>[xmin, ymin, xmax, ymax]</code> in
+EPSG:4326.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>temporal</code></td>
+        <td><code>str or tuple</code></td>
+        <td><p>Date/time range as
+<code>"start/end"</code>, <code>"start,end"</code>, or <code>(start, end)</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>collections</code></td>
+        <td><code>str or list</code></td>
+        <td><p>Tanager collection ids or titles,
+such as <code>"coastal-water-bodies"</code> or <code>"GHG Plumes"</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>int</code></td>
+        <td><p>Maximum number of items to return. <code>-1</code> means
+all matching items. Defaults to <code>-1</code>.</p></td>
+        <td><code>-1</code></td>
+      </tr>
+      <tr>
+        <td><code>query</code></td>
+        <td><code>str</code></td>
+        <td><p>Case-insensitive text search against item id,
+title, description, and location description.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>cloud_percent</code></td>
+        <td><code>float</code></td>
+        <td><p>Maximum item <code>cloud_percent</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>catalog_url</code></td>
+        <td><code>str</code></td>
+        <td><p>Tanager STAC catalog URL. Planet browser
+URLs are accepted and normalized to raw JSON URLs.</p></td>
+        <td><code>&#39;https://www.planet.com/data/stac/tanager-core-imagery/catalog.json&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>File path to save a GeoDataFrame when
+<code>return_gdf</code> is True.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>crs</code></td>
+        <td><code>str</code></td>
+        <td><p>CRS for GeoDataFrame output. Defaults to
+<code>"EPSG:4326"</code>.</p></td>
+        <td><code>&#39;EPSG:4326&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>return_gdf</code></td>
+        <td><code>bool</code></td>
+        <td><p>Return <code>(items, gdf)</code> instead of only
+the item list. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>HTTP request timeout in seconds.</p></td>
+        <td><code>30</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional exact-match filters against STAC item properties,
+for example <code>quality_category="test"</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list or tuple</code></td>
+      <td><p>STAC item dictionaries, or <code>(items, gdf)</code> when
+    <code>return_gdf=True</code>.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/tanager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_tanager</span><span class="p">(</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">collections</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cloud_percent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">catalog_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TANAGER_STAC_CATALOG_URL</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+    <span class="n">return_gdf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search Planet Tanager STAC sample imagery.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in</span>
+<span class="sd">            EPSG:4326.</span>
+<span class="sd">        temporal (str or tuple, optional): Date/time range as</span>
+<span class="sd">            ``&quot;start/end&quot;``, ``&quot;start,end&quot;``, or ``(start, end)``.</span>
+<span class="sd">        collections (str or list, optional): Tanager collection ids or titles,</span>
+<span class="sd">            such as ``&quot;coastal-water-bodies&quot;`` or ``&quot;GHG Plumes&quot;``.</span>
+<span class="sd">        count (int, optional): Maximum number of items to return. ``-1`` means</span>
+<span class="sd">            all matching items. Defaults to ``-1``.</span>
+<span class="sd">        query (str, optional): Case-insensitive text search against item id,</span>
+<span class="sd">            title, description, and location description.</span>
+<span class="sd">        cloud_percent (float, optional): Maximum item ``cloud_percent``.</span>
+<span class="sd">        catalog_url (str, optional): Tanager STAC catalog URL. Planet browser</span>
+<span class="sd">            URLs are accepted and normalized to raw JSON URLs.</span>
+<span class="sd">        output (str, optional): File path to save a GeoDataFrame when</span>
+<span class="sd">            ``return_gdf`` is True.</span>
+<span class="sd">        crs (str, optional): CRS for GeoDataFrame output. Defaults to</span>
+<span class="sd">            ``&quot;EPSG:4326&quot;``.</span>
+<span class="sd">        return_gdf (bool, optional): Return ``(items, gdf)`` instead of only</span>
+<span class="sd">            the item list. Defaults to False.</span>
+<span class="sd">        timeout (int, optional): HTTP request timeout in seconds.</span>
+<span class="sd">        **kwargs: Additional exact-match filters against STAC item properties,</span>
+<span class="sd">            for example ``quality_category=&quot;test&quot;``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list or tuple: STAC item dictionaries, or ``(items, gdf)`` when</span>
+<span class="sd">            ``return_gdf=True``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">catalog_url</span> <span class="o">=</span> <span class="n">_normalize_stac_url</span><span class="p">(</span><span class="n">catalog_url</span><span class="p">)</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span> <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">selected_collections</span> <span class="o">=</span> <span class="n">_as_list</span><span class="p">(</span><span class="n">collections</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">selected_collections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">selected_collections</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">selected_collections</span><span class="p">}</span>
+
+    <span class="n">has_limit</span> <span class="o">=</span> <span class="n">count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">has_limit</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">return_gdf</span><span class="p">:</span>
+            <span class="n">gdf</span> <span class="o">=</span> <span class="n">_stac_items_to_gdf</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">gdf</span>
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="n">catalog</span> <span class="o">=</span> <span class="n">_fetch_json</span><span class="p">(</span><span class="n">catalog_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">_stac_links</span><span class="p">(</span><span class="n">catalog</span><span class="p">,</span> <span class="s2">&quot;child&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">has_limit</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">count</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">collection_url</span> <span class="o">=</span> <span class="n">_normalize_stac_url</span><span class="p">(</span><span class="n">link</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+        <span class="n">collection</span> <span class="o">=</span> <span class="n">_fetch_json</span><span class="p">(</span><span class="n">collection_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="n">collection_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">collection_title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selected_collections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="n">collection_id</span> <span class="ow">in</span> <span class="n">selected_collections</span>
+            <span class="ow">or</span> <span class="n">collection_title</span> <span class="ow">in</span> <span class="n">selected_collections</span>
+        <span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="k">for</span> <span class="n">item_link</span> <span class="ow">in</span> <span class="n">_stac_links</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="s2">&quot;item&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">has_limit</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">count</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">item_url</span> <span class="o">=</span> <span class="n">_normalize_stac_url</span><span class="p">(</span><span class="n">item_link</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_fetch_json</span><span class="p">(</span><span class="n">item_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">))</span>
+            <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_stac_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_url</span>
+            <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_collection_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collection_url</span>
+            <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_collection_title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_item_matches_filters</span><span class="p">(</span>
+                <span class="n">item</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+                <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+                <span class="n">cloud_percent</span><span class="o">=</span><span class="n">cloud_percent</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_gdf</span><span class="p">:</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">_stac_items_to_gdf</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">gdf</span>
+    <span class="k">return</span> <span class="n">results</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.tanager.tanager_footprints" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">tanager_footprints</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cloud_percent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">catalog_url</span><span class="o">=</span><span class="s1">&#39;https://www.planet.com/data/stac/tanager-core-imagery/catalog.json&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_items</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.tanager.tanager_footprints" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Return Tanager STAC item footprints as a GeoDataFrame.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>bbox</code></td>
+        <td><code>list</code></td>
+        <td><p>Bounding box <code>[xmin, ymin, xmax, ymax]</code> in
+EPSG:4326.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>temporal</code></td>
+        <td><code>str or tuple</code></td>
+        <td><p>Date/time range as
+<code>"start/end"</code>, <code>"start,end"</code>, or <code>(start, end)</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>collections</code></td>
+        <td><code>str or list</code></td>
+        <td><p>Tanager collection ids or titles.
+Defaults to all collections in the Tanager STAC catalog.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>int</code></td>
+        <td><p>Maximum number of matching STAC item records to
+inspect. <code>-1</code> means all. Defaults to <code>-1</code>.</p></td>
+        <td><code>-1</code></td>
+      </tr>
+      <tr>
+        <td><code>query</code></td>
+        <td><code>str</code></td>
+        <td><p>Case-insensitive text search against item id,
+title, description, and location description.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>cloud_percent</code></td>
+        <td><code>float</code></td>
+        <td><p>Maximum item <code>cloud_percent</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>catalog_url</code></td>
+        <td><code>str</code></td>
+        <td><p>Tanager STAC catalog URL. Planet browser
+URLs are accepted and normalized to raw JSON URLs.</p></td>
+        <td><code>&#39;https://www.planet.com/data/stac/tanager-core-imagery/catalog.json&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>File path to save the GeoDataFrame.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>crs</code></td>
+        <td><code>str</code></td>
+        <td><p>CRS for GeoDataFrame output. Defaults to
+<code>"EPSG:4326"</code>.</p></td>
+        <td><code>&#39;EPSG:4326&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>unique</code></td>
+        <td><code>bool</code></td>
+        <td><p>Deduplicate scenes that appear in more than
+one thematic collection. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>return_items</code></td>
+        <td><code>bool</code></td>
+        <td><p>Return <code>(items, gdf)</code> instead of only
+the GeoDataFrame. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>HTTP request timeout in seconds.</p></td>
+        <td><code>30</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional exact-match filters against STAC item properties.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>geopandas.GeoDataFrame or tuple</code></td>
+      <td><p>Footprint GeoDataFrame, or
+    <code>(items, gdf)</code> when <code>return_items=True</code>.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/tanager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">tanager_footprints</span><span class="p">(</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">temporal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">collections</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cloud_percent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">catalog_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TANAGER_STAC_CATALOG_URL</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+    <span class="n">unique</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">return_items</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return Tanager STAC item footprints as a GeoDataFrame.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in</span>
+<span class="sd">            EPSG:4326.</span>
+<span class="sd">        temporal (str or tuple, optional): Date/time range as</span>
+<span class="sd">            ``&quot;start/end&quot;``, ``&quot;start,end&quot;``, or ``(start, end)``.</span>
+<span class="sd">        collections (str or list, optional): Tanager collection ids or titles.</span>
+<span class="sd">            Defaults to all collections in the Tanager STAC catalog.</span>
+<span class="sd">        count (int, optional): Maximum number of matching STAC item records to</span>
+<span class="sd">            inspect. ``-1`` means all. Defaults to ``-1``.</span>
+<span class="sd">        query (str, optional): Case-insensitive text search against item id,</span>
+<span class="sd">            title, description, and location description.</span>
+<span class="sd">        cloud_percent (float, optional): Maximum item ``cloud_percent``.</span>
+<span class="sd">        catalog_url (str, optional): Tanager STAC catalog URL. Planet browser</span>
+<span class="sd">            URLs are accepted and normalized to raw JSON URLs.</span>
+<span class="sd">        output (str, optional): File path to save the GeoDataFrame.</span>
+<span class="sd">        crs (str, optional): CRS for GeoDataFrame output. Defaults to</span>
+<span class="sd">            ``&quot;EPSG:4326&quot;``.</span>
+<span class="sd">        unique (bool, optional): Deduplicate scenes that appear in more than</span>
+<span class="sd">            one thematic collection. Defaults to True.</span>
+<span class="sd">        return_items (bool, optional): Return ``(items, gdf)`` instead of only</span>
+<span class="sd">            the GeoDataFrame. Defaults to False.</span>
+<span class="sd">        timeout (int, optional): HTTP request timeout in seconds.</span>
+<span class="sd">        **kwargs: Additional exact-match filters against STAC item properties.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        geopandas.GeoDataFrame or tuple: Footprint GeoDataFrame, or</span>
+<span class="sd">            ``(items, gdf)`` when ``return_items=True``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">search_tanager</span><span class="p">(</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+        <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+        <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">,</span>
+        <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+        <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+        <span class="n">cloud_percent</span><span class="o">=</span><span class="n">cloud_percent</span><span class="p">,</span>
+        <span class="n">catalog_url</span><span class="o">=</span><span class="n">catalog_url</span><span class="p">,</span>
+        <span class="n">return_gdf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">unique</span><span class="p">:</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">_dedupe_tanager_items</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+    <span class="n">gdf</span> <span class="o">=</span> <span class="n">_stac_items_to_gdf</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_items</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">items</span><span class="p">,</span> <span class="n">gdf</span>
+    <span class="k">return</span> <span class="n">gdf</span>
 </code></pre></div>
         </details>
     </div>

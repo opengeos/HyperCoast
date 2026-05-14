@@ -1152,6 +1152,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/tanager_stac/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tanager stac
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/tanager_3d/" class="md-nav__link">
         
   
@@ -1992,6 +2020,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_tanager_footprints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_tanager_footprints()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.add_wyvern" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2788,6 +2827,17 @@
     <span class="md-ellipsis">
       
         add_tanager()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.add_tanager_footprints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_tanager_footprints()
       
     </span>
   </a>
@@ -3940,6 +3990,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="n">asset</span><span class="o">=</span><span class="s2">&quot;ortho_radiance_hdf5&quot;</span><span class="p">,</span>
+        <span class="n">visual_asset</span><span class="o">=</span><span class="s2">&quot;ortho_visual&quot;</span><span class="p">,</span>
         <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
@@ -3955,8 +4007,15 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
-<span class="sd">                Optimized GeoTIFF.</span>
+<span class="sd">            source (str or dict): The path to a Tanager HDF5 file, a Tanager</span>
+<span class="sd">                STAC item URL, a Planet STAC browser item URL, a STAC item</span>
+<span class="sd">                dictionary, or an xarray.Dataset.</span>
+<span class="sd">            asset (str, optional): HDF5 STAC asset key to download when</span>
+<span class="sd">                ``source`` is a STAC item. Defaults to</span>
+<span class="sd">                ``&quot;ortho_radiance_hdf5&quot;``.</span>
+<span class="sd">            visual_asset (str, optional): STAC COG asset key used for the map</span>
+<span class="sd">                layer when ``source`` is a STAC item. Defaults to</span>
+<span class="sd">                ``&quot;ortho_visual&quot;``. Set to None to render from the HDF5 data.</span>
 <span class="sd">            bands (list, optional): The band indices to select. Defaults to None.</span>
 <span class="sd">            wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
@@ -3982,8 +4041,16 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-
+        <span class="n">stac_source</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="s2">&quot;/data/stac/&quot;</span> <span class="ow">in</span> <span class="n">source</span>
+            <span class="ow">and</span> <span class="s2">&quot;.json&quot;</span> <span class="ow">in</span> <span class="n">source</span>
+        <span class="p">):</span>
+            <span class="n">stac_source</span> <span class="o">=</span> <span class="n">source</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">read_tanager_stac</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">source</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
         <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
@@ -4004,28 +4071,42 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">876.3</span><span class="p">,</span> <span class="mf">675.88</span><span class="p">,</span> <span class="mf">625.83</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span>
-                <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
-            <span class="p">)</span>
-
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
-                <span class="n">image</span><span class="p">,</span>
-                <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
-                <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-                <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
-                <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
-                <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
-                <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
-                <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
-                <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
-                <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
-                <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">stac_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">visual_asset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">get_tanager_asset_url</span><span class="p">(</span><span class="n">stac_source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">)</span>
+                <span class="n">cog_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">cog_kwargs</span><span class="p">[</span><span class="s2">&quot;bidx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">indexes</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_cog_layer</span><span class="p">(</span>
+                    <span class="n">image</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                    <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">shown</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                    <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">cog_kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span>
+                    <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+                    <span class="n">image</span><span class="p">,</span>
+                    <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+                    <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+                    <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+                    <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+                    <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+                    <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+                    <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                    <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                    <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                    <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vmax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmax</span>
@@ -4034,6 +4115,129 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_tanager_footprints</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">collections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cloud_percent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">catalog_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+        <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;Tanager footprints&quot;</span><span class="p">,</span>
+        <span class="n">style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">hover_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">style_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">fill_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">info_mode</span><span class="o">=</span><span class="s2">&quot;on_hover&quot;</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Tanager STAC item footprints to the map.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in</span>
+<span class="sd">                EPSG:4326.</span>
+<span class="sd">            temporal (str or tuple, optional): Date/time range as</span>
+<span class="sd">                ``&quot;start/end&quot;``, ``&quot;start,end&quot;``, or ``(start, end)``.</span>
+<span class="sd">            collections (str or list, optional): Tanager collection ids or</span>
+<span class="sd">                titles. Defaults to all collections.</span>
+<span class="sd">            count (int, optional): Maximum number of matching STAC item records</span>
+<span class="sd">                to inspect. ``-1`` means all. Defaults to ``-1``.</span>
+<span class="sd">            query (str, optional): Case-insensitive text search against item id,</span>
+<span class="sd">                title, description, and location description.</span>
+<span class="sd">            cloud_percent (float, optional): Maximum item ``cloud_percent``.</span>
+<span class="sd">            catalog_url (str, optional): Tanager STAC catalog URL.</span>
+<span class="sd">            output (str, optional): File path to save the footprint</span>
+<span class="sd">                GeoDataFrame.</span>
+<span class="sd">            crs (str, optional): CRS for the returned GeoDataFrame. Defaults to</span>
+<span class="sd">                ``&quot;EPSG:4326&quot;``.</span>
+<span class="sd">            unique (bool, optional): Deduplicate scenes that appear in multiple</span>
+<span class="sd">                thematic collections. Defaults to True.</span>
+<span class="sd">            timeout (int, optional): HTTP request timeout in seconds. Defaults</span>
+<span class="sd">                to 30.</span>
+<span class="sd">            layer_name (str, optional): Map layer name. Defaults to</span>
+<span class="sd">                ``&quot;Tanager footprints&quot;``.</span>
+<span class="sd">            style (dict, optional): Polygon style dictionary.</span>
+<span class="sd">            hover_style (dict, optional): Polygon hover style dictionary.</span>
+<span class="sd">            style_callback (callable, optional): Per-feature style callback.</span>
+<span class="sd">            fill_colors (list, optional): Random fill colors passed to leafmap.</span>
+<span class="sd">            info_mode (str, optional): ``&quot;on_hover&quot;`` or ``&quot;on_click&quot;``.</span>
+<span class="sd">                Defaults to ``&quot;on_hover&quot;``.</span>
+<span class="sd">            zoom_to_layer (bool, optional): Whether to zoom to the footprints.</span>
+<span class="sd">                Defaults to True.</span>
+<span class="sd">            **kwargs: Additional exact-match STAC property filters and keyword</span>
+<span class="sd">                arguments passed to ``leafmap.Map.add_gdf``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            geopandas.GeoDataFrame: The footprint GeoDataFrame added to the map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#00A6D6&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;fillColor&quot;</span><span class="p">:</span> <span class="s2">&quot;#00A6D6&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fillOpacity&quot;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">if</span> <span class="n">hover_style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">hover_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;fillOpacity&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">}</span>
+
+        <span class="n">search_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">add_gdf_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">add_gdf_keys</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="s2">&quot;marker&quot;</span><span class="p">,</span> <span class="s2">&quot;marker_cluster&quot;</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">add_gdf_keys</span><span class="p">:</span>
+                <span class="n">add_gdf_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">search_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">if</span> <span class="n">catalog_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gdf</span> <span class="o">=</span> <span class="n">tanager_footprints</span><span class="p">(</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+                <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+                <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">,</span>
+                <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+                <span class="n">cloud_percent</span><span class="o">=</span><span class="n">cloud_percent</span><span class="p">,</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+                <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+                <span class="n">unique</span><span class="o">=</span><span class="n">unique</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">search_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gdf</span> <span class="o">=</span> <span class="n">tanager_footprints</span><span class="p">(</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+                <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+                <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">,</span>
+                <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+                <span class="n">cloud_percent</span><span class="o">=</span><span class="n">cloud_percent</span><span class="p">,</span>
+                <span class="n">catalog_url</span><span class="o">=</span><span class="n">catalog_url</span><span class="p">,</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+                <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+                <span class="n">unique</span><span class="o">=</span><span class="n">unique</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">search_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_gdf</span><span class="p">(</span>
+            <span class="n">gdf</span><span class="p">,</span>
+            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span>
+            <span class="n">hover_style</span><span class="o">=</span><span class="n">hover_style</span><span class="p">,</span>
+            <span class="n">style_callback</span><span class="o">=</span><span class="n">style_callback</span><span class="p">,</span>
+            <span class="n">fill_colors</span><span class="o">=</span><span class="n">fill_colors</span><span class="p">,</span>
+            <span class="n">info_mode</span><span class="o">=</span><span class="n">info_mode</span><span class="p">,</span>
+            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">add_gdf_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">gdf</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">add_hyper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xds</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">wvl_indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a hyperspectral dataset to the map.</span>
@@ -6489,7 +6693,7 @@ rioxarray.open_rasterio.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_tanager" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_tanager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Tanager&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_tanager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Tanager&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s1">&#39;ortho_radiance_hdf5&#39;</span><span class="p">,</span> <span class="n">visual_asset</span><span class="o">=</span><span class="s1">&#39;ortho_visual&#39;</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_tanager" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -6521,10 +6725,27 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
   <tbody>
       <tr>
         <td><code>source</code></td>
-        <td><code>str</code></td>
-        <td><p>The path to the GeoTIFF file or the URL of the Cloud
-Optimized GeoTIFF.</p></td>
+        <td><code>str or dict</code></td>
+        <td><p>The path to a Tanager HDF5 file, a Tanager
+STAC item URL, a Planet STAC browser item URL, a STAC item
+dictionary, or an xarray.Dataset.</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>asset</code></td>
+        <td><code>str</code></td>
+        <td><p>HDF5 STAC asset key to download when
+<code>source</code> is a STAC item. Defaults to
+<code>"ortho_radiance_hdf5"</code>.</p></td>
+        <td><code>&#39;ortho_radiance_hdf5&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>visual_asset</code></td>
+        <td><code>str</code></td>
+        <td><p>STAC COG asset key used for the map
+layer when <code>source</code> is a STAC item. Defaults to
+<code>"ortho_visual"</code>. Set to None to render from the HDF5 data.</p></td>
+        <td><code>&#39;ortho_visual&#39;</code></td>
       </tr>
       <tr>
         <td><code>bands</code></td>
@@ -6620,6 +6841,8 @@ layer. Defaults to True.</p></td>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">asset</span><span class="o">=</span><span class="s2">&quot;ortho_radiance_hdf5&quot;</span><span class="p">,</span>
+    <span class="n">visual_asset</span><span class="o">=</span><span class="s2">&quot;ortho_visual&quot;</span><span class="p">,</span>
     <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
@@ -6635,8 +6858,15 @@ layer. Defaults to True.</p></td>
 <span class="sd">        os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source (str): The path to the GeoTIFF file or the URL of the Cloud</span>
-<span class="sd">            Optimized GeoTIFF.</span>
+<span class="sd">        source (str or dict): The path to a Tanager HDF5 file, a Tanager</span>
+<span class="sd">            STAC item URL, a Planet STAC browser item URL, a STAC item</span>
+<span class="sd">            dictionary, or an xarray.Dataset.</span>
+<span class="sd">        asset (str, optional): HDF5 STAC asset key to download when</span>
+<span class="sd">            ``source`` is a STAC item. Defaults to</span>
+<span class="sd">            ``&quot;ortho_radiance_hdf5&quot;``.</span>
+<span class="sd">        visual_asset (str, optional): STAC COG asset key used for the map</span>
+<span class="sd">            layer when ``source`` is a STAC item. Defaults to</span>
+<span class="sd">            ``&quot;ortho_visual&quot;``. Set to None to render from the HDF5 data.</span>
 <span class="sd">        bands (list, optional): The band indices to select. Defaults to None.</span>
 <span class="sd">        wavelengths (list, optional): The wavelength values to select. Takes priority over bands. Defaults to None.</span>
 <span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
@@ -6662,8 +6892,16 @@ layer. Defaults to True.</p></td>
     <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-
+    <span class="n">stac_source</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="s2">&quot;/data/stac/&quot;</span> <span class="ow">in</span> <span class="n">source</span>
+        <span class="ow">and</span> <span class="s2">&quot;.json&quot;</span> <span class="ow">in</span> <span class="n">source</span>
+    <span class="p">):</span>
+        <span class="n">stac_source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">read_tanager_stac</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">source</span> <span class="o">=</span> <span class="n">read_tanager</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
     <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
@@ -6684,28 +6922,42 @@ layer. Defaults to True.</p></td>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">876.3</span><span class="p">,</span> <span class="mf">675.88</span><span class="p">,</span> <span class="mf">625.83</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span>
-            <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
-        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_wavelengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
-            <span class="n">image</span><span class="p">,</span>
-            <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
-            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-            <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
-            <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
-            <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
-            <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
-            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
-            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
-            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
-            <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">stac_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">visual_asset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">get_tanager_asset_url</span><span class="p">(</span><span class="n">stac_source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">)</span>
+            <span class="n">cog_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cog_kwargs</span><span class="p">[</span><span class="s2">&quot;bidx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">indexes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_cog_layer</span><span class="p">(</span>
+                <span class="n">image</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">shown</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">cog_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">tanager_to_image</span><span class="p">(</span>
+                <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">selected_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+                <span class="n">image</span><span class="p">,</span>
+                <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+                <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+                <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+                <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+                <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+                <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+                <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;vmax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vmax</span>
@@ -6714,6 +6966,307 @@ layer. Defaults to True.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">selected_wavelengths</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="hypercoast.hypercoast.Map.add_tanager_footprints" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">add_tanager_footprints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cloud_percent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">catalog_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;Tanager footprints&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hover_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">style_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">info_mode</span><span class="o">=</span><span class="s1">&#39;on_hover&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.add_tanager_footprints" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Add Tanager STAC item footprints to the map.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>bbox</code></td>
+        <td><code>list</code></td>
+        <td><p>Bounding box <code>[xmin, ymin, xmax, ymax]</code> in
+EPSG:4326.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>temporal</code></td>
+        <td><code>str or tuple</code></td>
+        <td><p>Date/time range as
+<code>"start/end"</code>, <code>"start,end"</code>, or <code>(start, end)</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>collections</code></td>
+        <td><code>str or list</code></td>
+        <td><p>Tanager collection ids or
+titles. Defaults to all collections.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>int</code></td>
+        <td><p>Maximum number of matching STAC item records
+to inspect. <code>-1</code> means all. Defaults to <code>-1</code>.</p></td>
+        <td><code>-1</code></td>
+      </tr>
+      <tr>
+        <td><code>query</code></td>
+        <td><code>str</code></td>
+        <td><p>Case-insensitive text search against item id,
+title, description, and location description.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>cloud_percent</code></td>
+        <td><code>float</code></td>
+        <td><p>Maximum item <code>cloud_percent</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>catalog_url</code></td>
+        <td><code>str</code></td>
+        <td><p>Tanager STAC catalog URL.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>File path to save the footprint
+GeoDataFrame.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>crs</code></td>
+        <td><code>str</code></td>
+        <td><p>CRS for the returned GeoDataFrame. Defaults to
+<code>"EPSG:4326"</code>.</p></td>
+        <td><code>&#39;EPSG:4326&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>unique</code></td>
+        <td><code>bool</code></td>
+        <td><p>Deduplicate scenes that appear in multiple
+thematic collections. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>int</code></td>
+        <td><p>HTTP request timeout in seconds. Defaults
+to 30.</p></td>
+        <td><code>30</code></td>
+      </tr>
+      <tr>
+        <td><code>layer_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Map layer name. Defaults to
+<code>"Tanager footprints"</code>.</p></td>
+        <td><code>&#39;Tanager footprints&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>style</code></td>
+        <td><code>dict</code></td>
+        <td><p>Polygon style dictionary.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>hover_style</code></td>
+        <td><code>dict</code></td>
+        <td><p>Polygon hover style dictionary.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>style_callback</code></td>
+        <td><code>callable</code></td>
+        <td><p>Per-feature style callback.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>fill_colors</code></td>
+        <td><code>list</code></td>
+        <td><p>Random fill colors passed to leafmap.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>info_mode</code></td>
+        <td><code>str</code></td>
+        <td><p><code>"on_hover"</code> or <code>"on_click"</code>.
+Defaults to <code>"on_hover"</code>.</p></td>
+        <td><code>&#39;on_hover&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>zoom_to_layer</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to zoom to the footprints.
+Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Additional exact-match STAC property filters and keyword
+arguments passed to <code>leafmap.Map.add_gdf</code>.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>geopandas.GeoDataFrame</code></td>
+      <td><p>The footprint GeoDataFrame added to the map.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_tanager_footprints</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">bbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">temporal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">collections</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cloud_percent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">catalog_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+    <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;Tanager footprints&quot;</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">hover_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">style_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fill_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">info_mode</span><span class="o">=</span><span class="s2">&quot;on_hover&quot;</span><span class="p">,</span>
+    <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add Tanager STAC item footprints to the map.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in</span>
+<span class="sd">            EPSG:4326.</span>
+<span class="sd">        temporal (str or tuple, optional): Date/time range as</span>
+<span class="sd">            ``&quot;start/end&quot;``, ``&quot;start,end&quot;``, or ``(start, end)``.</span>
+<span class="sd">        collections (str or list, optional): Tanager collection ids or</span>
+<span class="sd">            titles. Defaults to all collections.</span>
+<span class="sd">        count (int, optional): Maximum number of matching STAC item records</span>
+<span class="sd">            to inspect. ``-1`` means all. Defaults to ``-1``.</span>
+<span class="sd">        query (str, optional): Case-insensitive text search against item id,</span>
+<span class="sd">            title, description, and location description.</span>
+<span class="sd">        cloud_percent (float, optional): Maximum item ``cloud_percent``.</span>
+<span class="sd">        catalog_url (str, optional): Tanager STAC catalog URL.</span>
+<span class="sd">        output (str, optional): File path to save the footprint</span>
+<span class="sd">            GeoDataFrame.</span>
+<span class="sd">        crs (str, optional): CRS for the returned GeoDataFrame. Defaults to</span>
+<span class="sd">            ``&quot;EPSG:4326&quot;``.</span>
+<span class="sd">        unique (bool, optional): Deduplicate scenes that appear in multiple</span>
+<span class="sd">            thematic collections. Defaults to True.</span>
+<span class="sd">        timeout (int, optional): HTTP request timeout in seconds. Defaults</span>
+<span class="sd">            to 30.</span>
+<span class="sd">        layer_name (str, optional): Map layer name. Defaults to</span>
+<span class="sd">            ``&quot;Tanager footprints&quot;``.</span>
+<span class="sd">        style (dict, optional): Polygon style dictionary.</span>
+<span class="sd">        hover_style (dict, optional): Polygon hover style dictionary.</span>
+<span class="sd">        style_callback (callable, optional): Per-feature style callback.</span>
+<span class="sd">        fill_colors (list, optional): Random fill colors passed to leafmap.</span>
+<span class="sd">        info_mode (str, optional): ``&quot;on_hover&quot;`` or ``&quot;on_click&quot;``.</span>
+<span class="sd">            Defaults to ``&quot;on_hover&quot;``.</span>
+<span class="sd">        zoom_to_layer (bool, optional): Whether to zoom to the footprints.</span>
+<span class="sd">            Defaults to True.</span>
+<span class="sd">        **kwargs: Additional exact-match STAC property filters and keyword</span>
+<span class="sd">            arguments passed to ``leafmap.Map.add_gdf``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        geopandas.GeoDataFrame: The footprint GeoDataFrame added to the map.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#00A6D6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;fillColor&quot;</span><span class="p">:</span> <span class="s2">&quot;#00A6D6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fillOpacity&quot;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">if</span> <span class="n">hover_style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">hover_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;fillOpacity&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">}</span>
+
+    <span class="n">search_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">add_gdf_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">add_gdf_keys</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="s2">&quot;marker&quot;</span><span class="p">,</span> <span class="s2">&quot;marker_cluster&quot;</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">add_gdf_keys</span><span class="p">:</span>
+            <span class="n">add_gdf_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">search_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">if</span> <span class="n">catalog_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">tanager_footprints</span><span class="p">(</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+            <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+            <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">,</span>
+            <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">cloud_percent</span><span class="o">=</span><span class="n">cloud_percent</span><span class="p">,</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+            <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+            <span class="n">unique</span><span class="o">=</span><span class="n">unique</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">search_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">tanager_footprints</span><span class="p">(</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
+            <span class="n">temporal</span><span class="o">=</span><span class="n">temporal</span><span class="p">,</span>
+            <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">,</span>
+            <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">cloud_percent</span><span class="o">=</span><span class="n">cloud_percent</span><span class="p">,</span>
+            <span class="n">catalog_url</span><span class="o">=</span><span class="n">catalog_url</span><span class="p">,</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+            <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+            <span class="n">unique</span><span class="o">=</span><span class="n">unique</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">search_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_gdf</span><span class="p">(</span>
+        <span class="n">gdf</span><span class="p">,</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+        <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span>
+        <span class="n">hover_style</span><span class="o">=</span><span class="n">hover_style</span><span class="p">,</span>
+        <span class="n">style_callback</span><span class="o">=</span><span class="n">style_callback</span><span class="p">,</span>
+        <span class="n">fill_colors</span><span class="o">=</span><span class="n">fill_colors</span><span class="p">,</span>
+        <span class="n">info_mode</span><span class="o">=</span><span class="n">info_mode</span><span class="p">,</span>
+        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">add_gdf_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">gdf</span>
 </code></pre></div>
         </details>
     </div>
