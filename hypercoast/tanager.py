@@ -459,7 +459,7 @@ def search_tanager(
             if has_limit and len(results) >= count:
                 break
             item_url = _normalize_stac_url(item_link["href"])
-            item = _fetch_json(item_url, timeout=timeout)
+            item = dict(_fetch_json(item_url, timeout=timeout))
             item["_stac_url"] = item_url
             item["_collection_url"] = collection_url
             item["_collection_title"] = collection.get("title", "")
