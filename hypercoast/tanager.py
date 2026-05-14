@@ -365,10 +365,22 @@ def search_tanager(
     if selected_collections is not None:
         selected_collections = {str(value).lower() for value in selected_collections}
 
-    catalog = _fetch_json(catalog_url, timeout=timeout)
+    has_limit = count is not None and count > -1
     results = []
 
+    if has_limit and count == 0:
+        if return_gdf:
+            gdf = _stac_items_to_gdf(results, crs=crs)
+            if output is not None:
+                gdf.to_file(output)
+            return results, gdf
+        return results
+
+    catalog = _fetch_json(catalog_url, timeout=timeout)
+
     for link in _stac_links(catalog, "child"):
+        if has_limit and len(results) >= count:
+            break
         collection_url = _normalize_stac_url(link["href"])
         collection = _fetch_json(collection_url, timeout=timeout)
         collection_id = str(collection.get("id", "")).lower()
@@ -380,6 +392,8 @@ def search_tanager(
             continue
 
         for item_link in _stac_links(collection, "item"):
+            if has_limit and len(results) >= count:
+                break
             item_url = _normalize_stac_url(item_link["href"])
             item = _fetch_json(item_url, timeout=timeout)
             item["_stac_url"] = item_url
@@ -394,10 +408,6 @@ def search_tanager(
                 **kwargs,
             ):
                 results.append(item)
-                if count is not None and count > -1 and len(results) >= count:
-                    break
-        if count is not None and count > -1 and len(results) >= count:
-            break
 
     if return_gdf:
         gdf = _stac_items_to_gdf(results, crs=crs)
@@ -487,6 +497,7 @@ def read_tanager_stac(
     out_dir: Optional[str] = None,
     bands=None,
     wavelengths=None,
+    fwhm=None,
     product: Optional[str] = None,
     quiet: bool = True,
     overwrite: bool = False,
@@ -501,6 +512,7 @@ def read_tanager_stac(
         out_dir (str, optional): Directory for the downloaded HDF5 file.
         bands (array-like, optional): Spectral band indices to keep.
         wavelengths (array-like, optional): Explicit wavelength values in nm.
+        fwhm (array-like, optional): Explicit FWHM values in nm.
         product (str, optional): Force a Tanager product variant.
         quiet (bool, optional): Suppress download output. Defaults to True.
         overwrite (bool, optional): Overwrite existing files. Defaults to False.
@@ -518,13 +530,18 @@ def read_tanager_stac(
         quiet=quiet,
         overwrite=overwrite,
     )
-    if wavelengths is None:
-        wavelengths, _ = _read_wavelengths_from_stac_item(item, asset)
+    if wavelengths is None or fwhm is None:
+        stac_wl, stac_fwhm = _read_wavelengths_from_stac_item(item, asset)
+        if wavelengths is None:
+            wavelengths = stac_wl
+        if fwhm is None:
+            fwhm = stac_fwhm
     ds = read_tanager(
         paths[0],
         bands=bands,
         stac_url=stac_url,
         wavelengths=wavelengths,
+        fwhm=fwhm,
         product=product,
         **kwargs,
     )
@@ -896,6 +913,7 @@ def read_tanager(
     bands=None,
     stac_url=None,
     wavelengths=None,
+    fwhm=None,
     product=None,
     **kwargs,
 ):
@@ -923,6 +941,8 @@ def read_tanager(
         wavelengths (array-like, optional): Wavelengths in nanometers to use
             directly. Must have either the full cube band count or, when
             ``bands`` is also supplied, the number of selected bands.
+        fwhm (array-like, optional): Full width at half maximum in nanometers
+            to use directly. Same length rules as ``wavelengths``.
         product (str, optional): Force a specific product variant. One of
             ``basic_radiance``, ``ortho_radiance``, ``basic_sr``, ``ortho_sr``.
         **kwargs: Extra keyword arguments forwarded to ``xr.Dataset``.
@@ -1017,6 +1037,17 @@ def read_tanager(
                 f"`wavelengths` has length {wl_nm.size} but {n_bands_selected} "
                 f"bands are being read."
             )
+
+    if fwhm is not None:
+        fwhm_arr = np.asarray(fwhm, dtype=float).ravel()
+        if fwhm_arr.size == n_bands_total and bands is not None:
+            fwhm_arr = fwhm_arr[bands]
+        if fwhm_arr.size != n_bands_selected:
+            raise ValueError(
+                f"`fwhm` has length {fwhm_arr.size} but {n_bands_selected} "
+                f"bands are being read."
+            )
+        fwhm_nm = fwhm_arr
 
     if wl_nm is None and stac_url is not None:
         wl_stac, fwhm_stac = _read_wavelengths_from_stac(

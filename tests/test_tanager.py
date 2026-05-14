@@ -373,7 +373,15 @@ class TestTanagerStac(unittest.TestCase):
         _, kwargs = mocked.call_args
         self.assertIsNone(kwargs["product"])
         np.testing.assert_allclose(kwargs["wavelengths"], [400.0])
+        np.testing.assert_allclose(kwargs["fwhm"], [6.0])
         self.assertEqual(result.attrs["product"], "ortho_radiance")
+
+    def test_search_tanager_with_count_zero_returns_empty(self):
+        with mock.patch("hypercoast.tanager.requests.get") as mocked_get:
+            results = hypercoast.search_tanager(count=0)
+
+        self.assertEqual(results, [])
+        mocked_get.assert_not_called()
 
 
 if __name__ == "__main__":
