@@ -15,3 +15,4 @@
 -   [Visualize PACE OCI L1 data products](https://hypercoast.org/examples/pace_oci_l1)
 -   [Visualize PACE OCI L2 data products](https://hypercoast.org/examples/pace_oci_l2)
 -   [Visualize Multispectral data interactively](https://hypercoast.org/examples/multispectral)
+-   [Search and visualize Planet Tanager STAC data](https://hypercoast.org/examples/tanager_stac)

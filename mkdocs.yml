@@ -117,6 +117,7 @@ nav:
           - examples/field_data.ipynb
           - examples/hypoxia.ipynb
           - examples/tanager.ipynb
+          - examples/tanager_stac.ipynb
           - examples/tanager_3d.ipynb
           - examples/prisma.ipynb
           - examples/enmap.ipynb

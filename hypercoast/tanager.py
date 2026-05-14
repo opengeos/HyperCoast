@@ -8,14 +8,21 @@ caller-supplied STAC URL only when necessary.
 """
 
 import warnings
+import os
+import re
+from datetime import datetime, timezone
 
 import h5py
 import xarray as xr
 import numpy as np
 import requests
 import matplotlib.pyplot as plt
-from typing import List, Tuple, Union, Optional, Any, Callable
+from typing import List, Tuple, Union, Optional
 from .common import download_file
+
+TANAGER_STAC_CATALOG_URL = (
+    "https://www.planet.com/data/stac/tanager-core-imagery/catalog.json"
+)
 
 # Recognized Planet Tanager products and their canonical output var names.
 _PRODUCT_VAR_NAME = {
@@ -31,6 +38,651 @@ _PRODUCT_STAC_ASSET = {
     "basic_sr": "basic_sr_hdf5",
     "ortho_sr": "ortho_sr_hdf5",
 }
+
+_STAC_ASSET_PRODUCT = {v: k for k, v in _PRODUCT_STAC_ASSET.items()}
+
+
+def _normalize_stac_url(url):
+    """Convert a Planet STAC browser URL to the raw JSON URL."""
+    if isinstance(url, str):
+        url = url.replace("/data/stac/browser/", "/data/stac/")
+        if ".json?" in url or ".json#" in url:
+            url = url.split(".json", 1)[0] + ".json"
+        return url
+    return url
+
+
+def _fetch_json(url, timeout=30):
+    """Fetch JSON from a URL and raise for HTTP errors when available."""
+    response = requests.get(_normalize_stac_url(url), timeout=timeout)
+    if hasattr(response, "raise_for_status"):
+        response.raise_for_status()
+    return response.json()
+
+
+def _stac_links(obj, rel):
+    """Return all STAC links matching a relation."""
+    return [link for link in obj.get("links", []) if link.get("rel") == rel]
+
+
+def _get_stac_item_url(item):
+    """Return a known URL for a STAC item if one is available."""
+    if isinstance(item, str):
+        return _normalize_stac_url(item)
+    for key in ("_stac_url", "stac_url"):
+        if item.get(key):
+            return _normalize_stac_url(item[key])
+    for link in item.get("links", []):
+        if link.get("rel") == "self" and link.get("href"):
+            return _normalize_stac_url(link["href"])
+    return None
+
+
+def _load_stac_item(item):
+    """Load a STAC item from a dict or URL."""
+    if isinstance(item, str):
+        url = _normalize_stac_url(item)
+        loaded = _fetch_json(url)
+        loaded["_stac_url"] = url
+        return loaded
+    if isinstance(item, dict):
+        return item
+    raise TypeError("Expected a STAC item dictionary or item URL.")
+
+
+def _as_list(value):
+    """Return ``value`` as a list, preserving ``None``."""
+    if value is None:
+        return None
+    if isinstance(value, (list, tuple, set)):
+        return list(value)
+    return [value]
+
+
+def _bbox_intersects(a, b):
+    """Return True when bbox ``a`` intersects bbox ``b``."""
+    if len(a) != 4 or len(b) != 4:
+        return False
+    return not (a[2] < b[0] or a[0] > b[2] or a[3] < b[1] or a[1] > b[3])
+
+
+def _parse_datetime(value):
+    """Parse common STAC datetime strings."""
+    if value in (None, ""):
+        return None
+    if isinstance(value, datetime):
+        parsed = value
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed
+    value = str(value).strip()
+    if value.endswith("Z"):
+        value = value[:-1] + "+00:00"
+    if len(value) == 10:
+        value = value + "T00:00:00+00:00"
+    parsed = datetime.fromisoformat(value)
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
+
+
+def _parse_temporal(temporal):
+    """Parse temporal filters accepted by ``search_tanager``."""
+    if temporal is None:
+        return None, None
+    if isinstance(temporal, str):
+        sep = "/" if "/" in temporal else ","
+        parts = [part.strip() for part in temporal.split(sep, 1)]
+    else:
+        parts = list(temporal)
+    if len(parts) != 2:
+        raise ValueError("temporal must be a string or pair of start/end datetimes.")
+    return _parse_datetime(parts[0]), _parse_datetime(parts[1])
+
+
+def _item_datetime(item):
+    """Return an item's acquisition datetime."""
+    dt = item.get("properties", {}).get("datetime")
+    return _parse_datetime(dt)
+
+
+def _item_matches_filters(
+    item,
+    bbox=None,
+    temporal=None,
+    query=None,
+    cloud_percent=None,
+    **property_filters,
+):
+    """Return True when a STAC item satisfies search filters."""
+    if bbox is not None and not _bbox_intersects(item.get("bbox", []), bbox):
+        return False
+
+    start, end = _parse_temporal(temporal)
+    if start is not None or end is not None:
+        dt = _item_datetime(item)
+        if dt is None:
+            return False
+        if start is not None and dt < start:
+            return False
+        if end is not None and dt > end:
+            return False
+
+    props = item.get("properties", {})
+    if cloud_percent is not None:
+        item_cloud = props.get("cloud_percent")
+        if item_cloud is None or item_cloud > cloud_percent:
+            return False
+
+    if query:
+        haystack = " ".join(
+            str(value)
+            for value in (
+                item.get("id", ""),
+                props.get("title", ""),
+                props.get("description", ""),
+                props.get("location_description", ""),
+            )
+        ).lower()
+        if str(query).lower() not in haystack:
+            return False
+
+    for key, expected in property_filters.items():
+        if expected is None:
+            continue
+        value = props.get(key)
+        expected_values = _as_list(expected)
+        if value not in expected_values:
+            return False
+
+    return True
+
+
+def _coerce_tanager_items(items):
+    """Return STAC item dictionaries from a single item/URL or a sequence."""
+    if isinstance(items, (str, dict)):
+        return [_load_stac_item(items)]
+    return [_load_stac_item(item) for item in items]
+
+
+def _stac_items_to_gdf(items, crs="EPSG:4326"):
+    """Convert STAC items to a GeoDataFrame."""
+    import geopandas as gpd
+
+    features = []
+    for item in items:
+        props = dict(item.get("properties", {}))
+        props["id"] = item.get("id")
+        props["stac_url"] = _get_stac_item_url(item)
+        if item.get("_collection_title"):
+            props["collection_title"] = item["_collection_title"]
+        if item.get("_collection_url"):
+            props["collection_url"] = item["_collection_url"]
+        if item.get("collection"):
+            props["collection"] = item["collection"]
+
+        collection_ids = item.get("_collection_ids")
+        collection_titles = item.get("_collection_titles")
+        if collection_ids:
+            props["collections"] = ", ".join(collection_ids)
+        if collection_titles:
+            props["collection_titles"] = ", ".join(collection_titles)
+
+        assets = item.get("assets", {})
+        for asset_key in (
+            "ortho_visual",
+            "ortho_radiance_hdf5",
+            "basic_radiance_hdf5",
+            "ortho_sr_hdf5",
+            "basic_sr_hdf5",
+        ):
+            if asset_key in assets:
+                props[f"{asset_key}_url"] = assets[asset_key].get("href")
+
+        features.append(
+            {
+                "type": "Feature",
+                "id": item.get("id"),
+                "geometry": item.get("geometry"),
+                "properties": props,
+            }
+        )
+
+    return gpd.GeoDataFrame.from_features(features, crs=crs)
+
+
+def _dedupe_tanager_items(items):
+    """Deduplicate STAC items and track all matching Tanager collections."""
+    deduped = {}
+    for item in items:
+        key = item.get("id") or _get_stac_item_url(item)
+        if key not in deduped:
+            copy = dict(item)
+            copy["_collection_ids"] = []
+            copy["_collection_titles"] = []
+            deduped[key] = copy
+
+        target = deduped[key]
+        collection_id = item.get("collection")
+        if not collection_id and item.get("_collection_url"):
+            collection_id = item["_collection_url"].rstrip("/").split("/")[-2]
+        collection_title = item.get("_collection_title")
+
+        if collection_id and collection_id not in target["_collection_ids"]:
+            target["_collection_ids"].append(collection_id)
+        if collection_title and collection_title not in target["_collection_titles"]:
+            target["_collection_titles"].append(collection_title)
+
+    return list(deduped.values())
+
+
+def _spectral_bands_from_asset(asset):
+    """Return only spectral ``eo:bands`` entries from a STAC asset."""
+    return [band for band in asset.get("eo:bands", []) if "center_wavelength" in band]
+
+
+def _read_wavelengths_from_stac_item(stac_item, asset_key):
+    """Read wavelength and FWHM arrays from a loaded STAC item."""
+    assets = stac_item.get("assets", {})
+    if asset_key not in assets:
+        available = sorted(assets.keys())
+        raise KeyError(
+            f"STAC item has no asset '{asset_key}'. Available assets: {available}"
+        )
+    bands_meta = _spectral_bands_from_asset(assets[asset_key])
+    if not bands_meta:
+        raise KeyError(f"STAC item asset '{asset_key}' has no spectral eo:bands.")
+    wl = np.array([b["center_wavelength"] for b in bands_meta], dtype=float)
+    fwhm = np.array(
+        [b.get("full_width_half_max", np.nan) for b in bands_meta], dtype=float
+    )
+    return _ensure_nm(wl), _ensure_fwhm_nm(fwhm)
+
+
+def _parse_hdfeos_grid_metadata(h5_file):
+    """Parse HDFEOS GRID projection metadata from StructMetadata.0."""
+    path = "HDFEOS INFORMATION/StructMetadata.0"
+    if path not in h5_file:
+        return {}
+
+    raw = h5_file[path][()]
+    if isinstance(raw, bytes):
+        text = raw.decode("utf-8", "ignore")
+    else:
+        text = str(raw)
+
+    def _number(name, cast=float):
+        match = re.search(rf"{name}=(-?\d+(?:\.\d+)?)", text)
+        return cast(match.group(1)) if match else None
+
+    def _point(name):
+        match = re.search(rf"{name}=\((-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)\)", text)
+        if match:
+            return float(match.group(1)), float(match.group(2))
+        return None
+
+    return {
+        "xdim": _number("XDim", int),
+        "ydim": _number("YDim", int),
+        "upper_left": _point("UpperLeftPointMtrs"),
+        "lower_right": _point("LowerRightMtrs"),
+        "projection": "HE5_GCTP_UTM" if "Projection=HE5_GCTP_UTM" in text else None,
+        "zone_code": _number("ZoneCode", int),
+    }
+
+
+def _grid_latlon(h5_file, layout):
+    """Build latitude/longitude arrays for an HDFEOS GRID product."""
+    grid_root = layout.get("grid_root")
+    grid_info = layout.get("grid_info") or {}
+    if not grid_root:
+        return None, None
+
+    attrs = h5_file[grid_root].attrs if grid_root in h5_file else {}
+    epsg = attrs.get("epsg_code")
+    if epsg is not None:
+        epsg = int(epsg)
+    elif grid_info.get("projection") == "HE5_GCTP_UTM" and grid_info.get("zone_code"):
+        zone = int(grid_info["zone_code"])
+        epsg = 32600 + zone if zone > 0 else 32700 + abs(zone)
+
+    upper_left = grid_info.get("upper_left")
+    lower_right = grid_info.get("lower_right")
+    if epsg is None or upper_left is None or lower_right is None:
+        return None, None
+
+    cube = h5_file[layout["data_path"]]
+    if layout["band_axis"] == 0:
+        y_size, x_size = cube.shape[1], cube.shape[2]
+    else:
+        axes = [axis for axis in range(cube.ndim) if axis != layout["band_axis"]]
+        y_size, x_size = cube.shape[axes[0]], cube.shape[axes[1]]
+
+    left, top = upper_left
+    right, bottom = lower_right
+    x_res = (right - left) / x_size
+    y_res = (top - bottom) / y_size
+    x = np.linspace(left + x_res / 2, right - x_res / 2, x_size)
+    y = np.linspace(top - y_res / 2, bottom + y_res / 2, y_size)
+    x2d, y2d = np.meshgrid(x, y)
+
+    try:
+        from pyproj import Transformer
+    except ImportError as exc:
+        raise ImportError(
+            "Reading orthorectified Tanager GRID products requires pyproj. "
+            "Install pyproj or geopandas to generate latitude/longitude coordinates."
+        ) from exc
+
+    transformer = Transformer.from_crs(f"EPSG:{epsg}", "EPSG:4326", always_xy=True)
+    lon, lat = transformer.transform(x2d, y2d)
+    return lat, lon
+
+
+def search_tanager(
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[Union[str, Tuple[str, str]]] = None,
+    collections: Optional[Union[str, List[str]]] = None,
+    count: int = -1,
+    query: Optional[str] = None,
+    cloud_percent: Optional[float] = None,
+    catalog_url: str = TANAGER_STAC_CATALOG_URL,
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    return_gdf: bool = False,
+    timeout: int = 30,
+    **kwargs,
+) -> Union[List[dict], tuple]:
+    """Search Planet Tanager STAC sample imagery.
+
+    Args:
+        bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in
+            EPSG:4326.
+        temporal (str or tuple, optional): Date/time range as
+            ``"start/end"``, ``"start,end"``, or ``(start, end)``.
+        collections (str or list, optional): Tanager collection ids or titles,
+            such as ``"coastal-water-bodies"`` or ``"GHG Plumes"``.
+        count (int, optional): Maximum number of items to return. ``-1`` means
+            all matching items. Defaults to ``-1``.
+        query (str, optional): Case-insensitive text search against item id,
+            title, description, and location description.
+        cloud_percent (float, optional): Maximum item ``cloud_percent``.
+        catalog_url (str, optional): Tanager STAC catalog URL. Planet browser
+            URLs are accepted and normalized to raw JSON URLs.
+        output (str, optional): File path to save a GeoDataFrame when
+            ``return_gdf`` is True.
+        crs (str, optional): CRS for GeoDataFrame output. Defaults to
+            ``"EPSG:4326"``.
+        return_gdf (bool, optional): Return ``(items, gdf)`` instead of only
+            the item list. Defaults to False.
+        timeout (int, optional): HTTP request timeout in seconds.
+        **kwargs: Additional exact-match filters against STAC item properties,
+            for example ``quality_category="test"``.
+
+    Returns:
+        list or tuple: STAC item dictionaries, or ``(items, gdf)`` when
+            ``return_gdf=True``.
+    """
+    catalog_url = _normalize_stac_url(catalog_url)
+    bbox = list(bbox) if bbox is not None else None
+    selected_collections = _as_list(collections)
+    if selected_collections is not None:
+        selected_collections = {str(value).lower() for value in selected_collections}
+
+    has_limit = count is not None and count > -1
+    results = []
+
+    if has_limit and count == 0:
+        if return_gdf:
+            gdf = _stac_items_to_gdf(results, crs=crs)
+            if output is not None:
+                gdf.to_file(output)
+            return results, gdf
+        return results
+
+    catalog = _fetch_json(catalog_url, timeout=timeout)
+
+    for link in _stac_links(catalog, "child"):
+        if has_limit and len(results) >= count:
+            break
+        collection_url = _normalize_stac_url(link["href"])
+        collection = _fetch_json(collection_url, timeout=timeout)
+        collection_id = str(collection.get("id", "")).lower()
+        collection_title = str(collection.get("title", "")).lower()
+        if selected_collections is not None and not (
+            collection_id in selected_collections
+            or collection_title in selected_collections
+        ):
+            continue
+
+        for item_link in _stac_links(collection, "item"):
+            if has_limit and len(results) >= count:
+                break
+            item_url = _normalize_stac_url(item_link["href"])
+            item = dict(_fetch_json(item_url, timeout=timeout))
+            item["_stac_url"] = item_url
+            item["_collection_url"] = collection_url
+            item["_collection_title"] = collection.get("title", "")
+            if _item_matches_filters(
+                item,
+                bbox=bbox,
+                temporal=temporal,
+                query=query,
+                cloud_percent=cloud_percent,
+                **kwargs,
+            ):
+                results.append(item)
+
+    if return_gdf:
+        gdf = _stac_items_to_gdf(results, crs=crs)
+        if output is not None:
+            gdf.to_file(output)
+        return results, gdf
+    return results
+
+
+def tanager_footprints(
+    bbox: Optional[List[float]] = None,
+    temporal: Optional[Union[str, Tuple[str, str]]] = None,
+    collections: Optional[Union[str, List[str]]] = None,
+    count: int = -1,
+    query: Optional[str] = None,
+    cloud_percent: Optional[float] = None,
+    catalog_url: str = TANAGER_STAC_CATALOG_URL,
+    output: Optional[str] = None,
+    crs: str = "EPSG:4326",
+    unique: bool = True,
+    return_items: bool = False,
+    timeout: int = 30,
+    **kwargs,
+):
+    """Return Tanager STAC item footprints as a GeoDataFrame.
+
+    Args:
+        bbox (list, optional): Bounding box ``[xmin, ymin, xmax, ymax]`` in
+            EPSG:4326.
+        temporal (str or tuple, optional): Date/time range as
+            ``"start/end"``, ``"start,end"``, or ``(start, end)``.
+        collections (str or list, optional): Tanager collection ids or titles.
+            Defaults to all collections in the Tanager STAC catalog.
+        count (int, optional): Maximum number of matching STAC item records to
+            inspect. ``-1`` means all. Defaults to ``-1``.
+        query (str, optional): Case-insensitive text search against item id,
+            title, description, and location description.
+        cloud_percent (float, optional): Maximum item ``cloud_percent``.
+        catalog_url (str, optional): Tanager STAC catalog URL. Planet browser
+            URLs are accepted and normalized to raw JSON URLs.
+        output (str, optional): File path to save the GeoDataFrame.
+        crs (str, optional): CRS for GeoDataFrame output. Defaults to
+            ``"EPSG:4326"``.
+        unique (bool, optional): Deduplicate scenes that appear in more than
+            one thematic collection. Defaults to True.
+        return_items (bool, optional): Return ``(items, gdf)`` instead of only
+            the GeoDataFrame. Defaults to False.
+        timeout (int, optional): HTTP request timeout in seconds.
+        **kwargs: Additional exact-match filters against STAC item properties.
+
+    Returns:
+        geopandas.GeoDataFrame or tuple: Footprint GeoDataFrame, or
+            ``(items, gdf)`` when ``return_items=True``.
+    """
+    items = search_tanager(
+        bbox=bbox,
+        temporal=temporal,
+        collections=collections,
+        count=count,
+        query=query,
+        cloud_percent=cloud_percent,
+        catalog_url=catalog_url,
+        return_gdf=False,
+        timeout=timeout,
+        **kwargs,
+    )
+    if unique:
+        items = _dedupe_tanager_items(items)
+
+    gdf = _stac_items_to_gdf(items, crs=crs)
+    if output is not None:
+        gdf.to_file(output)
+
+    if return_items:
+        return items, gdf
+    return gdf
+
+
+def download_tanager(
+    items,
+    asset: str = "ortho_radiance_hdf5",
+    out_dir: Optional[str] = None,
+    quiet: bool = True,
+    overwrite: bool = False,
+    **kwargs,
+) -> List[str]:
+    """Download a Tanager asset from one or more STAC items.
+
+    Args:
+        items (dict, str, or list): STAC item dictionary, STAC item URL, or a
+            sequence of either.
+        asset (str, optional): STAC asset key to download. Defaults to
+            ``"ortho_radiance_hdf5"``.
+        out_dir (str, optional): Output directory. Defaults to the current
+            directory.
+        quiet (bool, optional): Suppress download output. Defaults to True.
+        overwrite (bool, optional): Overwrite existing files. Defaults to False.
+        **kwargs: Extra keyword arguments passed to :func:`download_file`.
+
+    Returns:
+        list: Local file paths for the downloaded assets.
+    """
+    paths = []
+    for item in _coerce_tanager_items(items):
+        assets = item.get("assets", {})
+        if asset not in assets:
+            available = sorted(assets.keys())
+            raise KeyError(
+                f"STAC item has no asset '{asset}'. Available assets: {available}"
+            )
+        href = assets[asset].get("href")
+        if not href:
+            raise ValueError(f"STAC item asset '{asset}' has no href.")
+        output = None
+        if out_dir is not None:
+            output = os.path.join(out_dir, os.path.basename(href))
+        paths.append(
+            download_file(
+                href,
+                output=output,
+                quiet=quiet,
+                overwrite=overwrite,
+                unzip=False,
+                **kwargs,
+            )
+        )
+    return paths
+
+
+def get_tanager_asset_url(stac_item, asset: str = "ortho_visual") -> str:
+    """Return an asset URL from a Tanager STAC item.
+
+    Args:
+        stac_item (dict or str): STAC item dictionary or item JSON URL.
+        asset (str, optional): STAC asset key. Defaults to ``"ortho_visual"``.
+
+    Returns:
+        str: The asset href.
+    """
+    item = _load_stac_item(stac_item)
+    assets = item.get("assets", {})
+    if asset not in assets:
+        available = sorted(assets.keys())
+        raise KeyError(
+            f"STAC item has no asset '{asset}'. Available assets: {available}"
+        )
+    href = assets[asset].get("href")
+    if not href:
+        raise ValueError(f"STAC item asset '{asset}' has no href.")
+    return href
+
+
+def read_tanager_stac(
+    stac_item,
+    asset: str = "ortho_radiance_hdf5",
+    out_dir: Optional[str] = None,
+    bands=None,
+    wavelengths=None,
+    fwhm=None,
+    product: Optional[str] = None,
+    quiet: bool = True,
+    overwrite: bool = False,
+    **kwargs,
+):
+    """Download and read a Tanager HDF5 asset from a STAC item.
+
+    Args:
+        stac_item (dict or str): STAC item dictionary or item JSON URL.
+        asset (str, optional): HDF5 STAC asset key. Defaults to
+            ``"ortho_radiance_hdf5"``.
+        out_dir (str, optional): Directory for the downloaded HDF5 file.
+        bands (array-like, optional): Spectral band indices to keep.
+        wavelengths (array-like, optional): Explicit wavelength values in nm.
+        fwhm (array-like, optional): Explicit FWHM values in nm.
+        product (str, optional): Force a Tanager product variant.
+        quiet (bool, optional): Suppress download output. Defaults to True.
+        overwrite (bool, optional): Overwrite existing files. Defaults to False.
+        **kwargs: Extra keyword arguments passed to :func:`read_tanager`.
+
+    Returns:
+        xarray.Dataset: Tanager dataset read from the selected STAC asset.
+    """
+    item = _load_stac_item(stac_item)
+    stac_url = _get_stac_item_url(item)
+    paths = download_tanager(
+        item,
+        asset=asset,
+        out_dir=out_dir,
+        quiet=quiet,
+        overwrite=overwrite,
+    )
+    if wavelengths is None or fwhm is None:
+        stac_wl, stac_fwhm = _read_wavelengths_from_stac_item(item, asset)
+        if wavelengths is None:
+            wavelengths = stac_wl
+        if fwhm is None:
+            fwhm = stac_fwhm
+    ds = read_tanager(
+        paths[0],
+        bands=bands,
+        stac_url=stac_url,
+        wavelengths=wavelengths,
+        fwhm=fwhm,
+        product=product,
+        **kwargs,
+    )
+    if product is None and asset in _STAC_ASSET_PRODUCT:
+        ds.attrs["product"] = _STAC_ASSET_PRODUCT[asset]
+    ds.attrs["stac_asset"] = asset
+    ds.attrs["stac_item"] = stac_url or ds.attrs.get("stac_item", "")
+    return ds
 
 
 def _ensure_nm(values):
@@ -50,6 +702,19 @@ def _ensure_nm(values):
     arr = np.asarray(values, dtype=float)
     if arr.size and np.nanmax(arr) < 10:
         arr = arr * 1000.0
+    return arr
+
+
+def _ensure_fwhm_nm(values, units=None):
+    """Return a FWHM array in nanometers."""
+    arr = np.asarray(values, dtype=float)
+    units = str(units or "").lower()
+    if "nm" in units or "nanometer" in units:
+        return arr
+    if "um" in units or "µm" in units or "micrometer" in units or "micron" in units:
+        return arr * 1000.0
+    if arr.size and np.nanmax(arr) < 1:
+        return arr * 1000.0
     return arr
 
 
@@ -103,12 +768,11 @@ def _discover_tanager_layout(h5_file, product=None):
     Raises:
         ValueError: If no 3-D data cube can be located in the file.
     """
-    hdfeos_root = "HDFEOS/SWATHS/HYP"
-    df_root = f"{hdfeos_root}/Data Fields"
-    gf_root = f"{hdfeos_root}/Geolocation Fields"
+    hdfeos_roots = ["HDFEOS/SWATHS/HYP", "HDFEOS/GRIDS/HYP"]
 
     data_path = None
     cube_name = None
+    hdfeos_root = None
 
     candidate_names_by_product = {
         "basic_radiance": ["toa_radiance"],
@@ -123,30 +787,44 @@ def _discover_tanager_layout(h5_file, product=None):
                 f"Unknown Tanager product '{product}'. Expected one of "
                 f"{sorted(_PRODUCT_VAR_NAME)}."
             )
-        for candidate in candidate_names_by_product[product]:
-            path = f"{df_root}/{candidate}"
-            if path in h5_file:
-                data_path = path
-                cube_name = candidate
+        for root in hdfeos_roots:
+            df_root = f"{root}/Data Fields"
+            for candidate in candidate_names_by_product[product]:
+                path = f"{df_root}/{candidate}"
+                if path in h5_file:
+                    data_path = path
+                    cube_name = candidate
+                    hdfeos_root = root
+                    break
+            if data_path is not None:
                 break
         if data_path is None:
-            expected = [f"{df_root}/{c}" for c in candidate_names_by_product[product]]
+            expected = [
+                f"{root}/Data Fields/{c}"
+                for root in hdfeos_roots
+                for c in candidate_names_by_product[product]
+            ]
             raise ValueError(
                 f"Forced product '{product}' requires one of {expected} "
                 f"in the HDF5 file but none were found."
             )
 
     if data_path is None:
-        for candidate in (
-            "toa_radiance",
-            "surface_reflectance",
-            "ortho_radiance",
-            "ortho_surface_reflectance",
-        ):
-            path = f"{df_root}/{candidate}"
-            if path in h5_file:
-                data_path = path
-                cube_name = candidate
+        for root in hdfeos_roots:
+            df_root = f"{root}/Data Fields"
+            for candidate in (
+                "toa_radiance",
+                "surface_reflectance",
+                "ortho_radiance",
+                "ortho_surface_reflectance",
+            ):
+                path = f"{df_root}/{candidate}"
+                if path in h5_file:
+                    data_path = path
+                    cube_name = candidate
+                    hdfeos_root = root
+                    break
+            if data_path is not None:
                 break
 
     if data_path is None:
@@ -174,21 +852,37 @@ def _discover_tanager_layout(h5_file, product=None):
             )
         data_path = best["path"]
         cube_name = best["name"]
+        for root in hdfeos_roots:
+            if data_path.startswith(f"{root}/"):
+                hdfeos_root = root
+                break
 
     if product is None:
         product = _cube_name_to_product(cube_name) or "basic_radiance"
+        if hdfeos_root and "/GRIDS/" in hdfeos_root:
+            if product == "basic_radiance":
+                product = "ortho_radiance"
+            elif product == "basic_sr":
+                product = "ortho_sr"
 
     data_var_name = _PRODUCT_VAR_NAME[product]
 
     cube = h5_file[data_path]
-    if data_path.startswith(f"{hdfeos_root}/"):
-        # HDFEOS SWATHS products store cubes in (band, y, x) order.
+    if hdfeos_root is not None and data_path.startswith(f"{hdfeos_root}/"):
+        # HDFEOS SWATHS/GRIDS products store cubes in (band, y, x) order.
         band_axis = 0
     else:
         band_axis = int(np.argmin(cube.shape))
 
-    lat_path = f"{gf_root}/Latitude" if f"{gf_root}/Latitude" in h5_file else None
-    lon_path = f"{gf_root}/Longitude" if f"{gf_root}/Longitude" in h5_file else None
+    gf_root = f"{hdfeos_root}/Geolocation Fields" if hdfeos_root else None
+    lat_path = (
+        f"{gf_root}/Latitude" if gf_root and f"{gf_root}/Latitude" in h5_file else None
+    )
+    lon_path = (
+        f"{gf_root}/Longitude"
+        if gf_root and f"{gf_root}/Longitude" in h5_file
+        else None
+    )
     if lat_path is None or lon_path is None:
         found_lat = []
         found_lon = []
@@ -208,25 +902,26 @@ def _discover_tanager_layout(h5_file, product=None):
 
     wl_path = None
     fwhm_path = None
+    df_root = f"{hdfeos_root}/Data Fields" if hdfeos_root else None
     for candidate in (
-        f"{df_root}/Wavelength",
-        f"{df_root}/Wavelengths",
-        f"{df_root}/wavelength",
-        f"{df_root}/wavelengths",
-        f"{hdfeos_root}/Wavelength",
+        f"{df_root}/Wavelength" if df_root else None,
+        f"{df_root}/Wavelengths" if df_root else None,
+        f"{df_root}/wavelength" if df_root else None,
+        f"{df_root}/wavelengths" if df_root else None,
+        f"{hdfeos_root}/Wavelength" if hdfeos_root else None,
         "Wavelengths",
         "Wavelength",
     ):
-        if candidate in h5_file:
+        if candidate and candidate in h5_file:
             wl_path = candidate
             break
     for candidate in (
-        f"{df_root}/FWHM",
-        f"{df_root}/fwhm",
-        f"{hdfeos_root}/FWHM",
+        f"{df_root}/FWHM" if df_root else None,
+        f"{df_root}/fwhm" if df_root else None,
+        f"{hdfeos_root}/FWHM" if hdfeos_root else None,
         "FWHM",
     ):
-        if candidate in h5_file:
+        if candidate and candidate in h5_file:
             fwhm_path = candidate
             break
 
@@ -258,6 +953,13 @@ def _discover_tanager_layout(h5_file, product=None):
         "fill_value": fill_value,
         "band_axis": band_axis,
         "stac_asset_key": _PRODUCT_STAC_ASSET[product],
+        "hdfeos_root": hdfeos_root,
+        "grid_root": hdfeos_root if hdfeos_root and "/GRIDS/" in hdfeos_root else None,
+        "grid_info": (
+            _parse_hdfeos_grid_metadata(h5_file)
+            if hdfeos_root and "/GRIDS/" in hdfeos_root
+            else {}
+        ),
     }
 
 
@@ -299,14 +1001,23 @@ def _read_wavelengths_from_hdf5(h5_file, layout, n_bands):
     if fwhm_path and fwhm_path in h5_file:
         vals = np.asarray(h5_file[fwhm_path][()], dtype=float).ravel()
         if vals.size == n_bands:
-            fwhm_nm = _ensure_nm(vals)
+            fwhm_nm = _ensure_fwhm_nm(
+                vals,
+                h5_file[fwhm_path].attrs.get("units")
+                or h5_file[fwhm_path].attrs.get("Units"),
+            )
     if fwhm_nm is None:
         cube = h5_file[layout["data_path"]]
         for attr_name in ("fwhm", "full_width_half_max"):
             if attr_name in cube.attrs:
                 vals = np.asarray(cube.attrs[attr_name], dtype=float).ravel()
                 if vals.size == n_bands:
-                    fwhm_nm = _ensure_nm(vals)
+                    fwhm_nm = _ensure_fwhm_nm(
+                        vals,
+                        cube.attrs.get("fwhm_units")
+                        or cube.attrs.get("fwhm_unit")
+                        or cube.attrs.get("units"),
+                    )
                     break
 
     return wl_nm, fwhm_nm
@@ -326,19 +1037,8 @@ def _read_wavelengths_from_stac(stac_url, asset_key):
     Raises:
         KeyError: If the asset key or ``eo:bands`` block is absent.
     """
-    stac_item = requests.get(stac_url, timeout=10).json()
-    assets = stac_item.get("assets", {})
-    if asset_key not in assets:
-        available = sorted(assets.keys())
-        raise KeyError(
-            f"STAC item has no asset '{asset_key}'. Available assets: {available}"
-        )
-    bands_meta = assets[asset_key]["eo:bands"]
-    wl = np.array([b["center_wavelength"] for b in bands_meta], dtype=float)
-    fwhm = np.array(
-        [b.get("full_width_half_max", np.nan) for b in bands_meta], dtype=float
-    )
-    return _ensure_nm(wl), _ensure_nm(fwhm)
+    stac_item = _fetch_json(stac_url, timeout=10)
+    return _read_wavelengths_from_stac_item(stac_item, asset_key)
 
 
 def read_tanager(
@@ -346,6 +1046,7 @@ def read_tanager(
     bands=None,
     stac_url=None,
     wavelengths=None,
+    fwhm=None,
     product=None,
     **kwargs,
 ):
@@ -373,6 +1074,8 @@ def read_tanager(
         wavelengths (array-like, optional): Wavelengths in nanometers to use
             directly. Must have either the full cube band count or, when
             ``bands`` is also supplied, the number of selected bands.
+        fwhm (array-like, optional): Full width at half maximum in nanometers
+            to use directly. Same length rules as ``wavelengths``.
         product (str, optional): Force a specific product variant. One of
             ``basic_radiance``, ``ortho_radiance``, ``basic_sr``, ``ortho_sr``.
         **kwargs: Extra keyword arguments forwarded to ``xr.Dataset``.
@@ -418,12 +1121,15 @@ def read_tanager(
 
         lat_path = layout["lat_path"]
         lon_path = layout["lon_path"]
-        if lat_path is None or lon_path is None:
+        if lat_path is not None and lon_path is not None:
+            lat = f[lat_path][()]
+            lon = f[lon_path][()]
+        else:
+            lat, lon = _grid_latlon(f, layout)
+        if lat is None or lon is None:
             raise ValueError(
                 "Could not locate Latitude/Longitude datasets in the Tanager HDF5 file."
             )
-        lat = f[lat_path][()]
-        lon = f[lon_path][()]
 
         wl_nm_full, fwhm_nm_full = _read_wavelengths_from_hdf5(f, layout, n_bands_total)
 
@@ -464,6 +1170,17 @@ def read_tanager(
                 f"`wavelengths` has length {wl_nm.size} but {n_bands_selected} "
                 f"bands are being read."
             )
+
+    if fwhm is not None:
+        fwhm_arr = np.asarray(fwhm, dtype=float).ravel()
+        if fwhm_arr.size == n_bands_total and bands is not None:
+            fwhm_arr = fwhm_arr[bands]
+        if fwhm_arr.size != n_bands_selected:
+            raise ValueError(
+                f"`fwhm` has length {fwhm_arr.size} but {n_bands_selected} "
+                f"bands are being read."
+            )
+        fwhm_nm = fwhm_arr
 
     if wl_nm is None and stac_url is not None:
         wl_stac, fwhm_stac = _read_wavelengths_from_stac(
