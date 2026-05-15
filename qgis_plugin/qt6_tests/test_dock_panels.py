@@ -8,6 +8,7 @@ from hypercoast_qgis.dialogs.dependency_installer import DependencyInstallerDial
 from hypercoast_qgis.dialogs.load_data_dialog import LoadDataDialog
 from hypercoast_qgis.dialogs.settings_dock import SettingsDockWidget
 from hypercoast_qgis.dialogs.spectral_plot_dialog import SpectralPlotDialog
+from hypercoast_qgis.dialogs.tanager_search_dialog import TanagerSearchDialog
 from hypercoast_qgis.dialogs.update_checker import UpdateCheckerDialog
 
 
@@ -20,6 +21,7 @@ def test_plugin_windows_are_dock_widgets():
         LoadDataDialog,
         SettingsDockWidget,
         SpectralPlotDialog,
+        TanagerSearchDialog,
         UpdateCheckerDialog,
     ]
 

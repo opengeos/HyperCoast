@@ -22,6 +22,7 @@ from .dialogs.update_checker import UpdateCheckerDialog
 _DATA_DIALOGS_AVAILABLE = False
 try:
     from .dialogs.load_data_dialog import LoadDataDialog
+    from .dialogs.tanager_search_dialog import TanagerSearchDialog
     from .dialogs.band_combination_dialog import BandCombinationDialog
     from .dialogs.spectral_inspector_tool import SpectralInspectorTool
     from .dialogs.spectral_plot_dialog import SpectralPlotDialog
@@ -36,6 +37,7 @@ MENU_TITLE = "&HyperCoast"
 DOCK_OBJECT_NAMES = {
     "HyperCoastSettingsDock",
     "HyperCoastLoadDataDock",
+    "HyperCoastTanagerSearchDock",
     "HyperCoastBandCombinationDock",
     "HyperCoastSpectralPlotDock",
     "HyperCoastAboutDock",
@@ -67,6 +69,7 @@ class HyperCoastPlugin:
 
         # Store reference to dialogs and dock widgets
         self.load_dialog = None
+        self.tanager_search_dialog = None
         self.band_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
@@ -154,6 +157,16 @@ class HyperCoastPlugin:
             callback=self.show_load_dialog,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Load hyperspectral data (EMIT, PACE, DESIS, etc.)"),
+            checkable=True,
+        )
+
+        # Tanager search action
+        self.tanager_search_action = self.add_action(
+            os.path.join(icons_dir, "hypercoast.png"),
+            text=self.tr("Search Tanager Data"),
+            callback=self.show_tanager_search_dialog,
+            parent=self.iface.mainWindow(),
+            status_tip=self.tr("Search and visualize Planet Tanager data"),
             checkable=True,
         )
 
@@ -444,6 +457,7 @@ class HyperCoastPlugin:
         for attr_name in (
             "_settings_dock",
             "load_dialog",
+            "tanager_search_dialog",
             "band_dialog",
             "spectral_plot_dialog",
             "about_dialog",
@@ -540,12 +554,14 @@ class HyperCoastPlugin:
             from . import hyperspectral_provider
             from .dialogs import (
                 load_data_dialog,
+                tanager_search_dialog,
                 band_combination_dialog,
                 spectral_plot_dialog,
             )
 
             importlib.reload(hyperspectral_provider)
             importlib.reload(load_data_dialog)
+            importlib.reload(tanager_search_dialog)
             importlib.reload(band_combination_dialog)
             importlib.reload(spectral_plot_dialog)
         except Exception as e:
@@ -558,6 +574,7 @@ class HyperCoastPlugin:
         # Reset cached dialog instances so they are re-created
         # with the reloaded module classes.
         self.load_dialog = None
+        self.tanager_search_dialog = None
         self.band_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
@@ -566,6 +583,9 @@ class HyperCoastPlugin:
             # Try importing again now that venv packages are on sys.path
             try:
                 from .dialogs.load_data_dialog import LoadDataDialog  # noqa: F811
+                from .dialogs.tanager_search_dialog import (  # noqa: F811
+                    TanagerSearchDialog,
+                )
                 from .dialogs.band_combination_dialog import (  # noqa: F811
                     BandCombinationDialog,
                 )
@@ -634,13 +654,13 @@ class HyperCoastPlugin:
     def _set_data_actions_enabled(self, enabled):
         """Enable or disable data-related actions.
 
-        The first 3 actions are data-dependent:
-        Load Data, Band Combination, Spectral Inspector.
+        The first 4 actions are data-dependent:
+        Load Data, Tanager Search, Band Combination, Spectral Inspector.
 
         :param enabled: Whether to enable the actions.
         """
         for i, action in enumerate(self.actions):
-            if i < 3:
+            if i < 4:
                 action.setEnabled(enabled)
 
     def toggle_settings_dock(self):
@@ -704,6 +724,20 @@ class HyperCoastPlugin:
             "load_dialog",
             lambda: LoadDataDialog(self.iface, self, self.iface.mainWindow()),
             self.load_action,
+        )
+
+    def show_tanager_search_dialog(self):
+        """Show the Tanager search dialog."""
+        if not self._deps_available:
+            self._show_deps_required_warning()
+            self.tanager_search_action.setChecked(False)
+            return
+        from .dialogs.tanager_search_dialog import TanagerSearchDialog
+
+        self._toggle_dock(
+            "tanager_search_dialog",
+            lambda: TanagerSearchDialog(self.iface, self, self.iface.mainWindow()),
+            self.tanager_search_action,
         )
 
     def show_band_dialog(self):
