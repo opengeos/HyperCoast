@@ -69,6 +69,7 @@ def test_tanager_auto_detect_sets_radiance_value_range(qapp, tmp_path):
 
 def test_spectral_plot_uses_tanager_radiance_defaults(qapp):
     """Tanager spectra should switch the plot label and y-range."""
+    pytest.importorskip("matplotlib")
 
     class _Iface:
         """Small iface-like object."""

@@ -370,7 +370,7 @@ class SpectralPlotDialog(QDockWidget):
         Args:
             data_type: HyperCoast data type string.
         """
-        if data_type != "Tanager":
+        if not HAS_MATPLOTLIB or data_type != "Tanager":
             return
 
         index = self.ylabel_combo.findText("Radiance")
