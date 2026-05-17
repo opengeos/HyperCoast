@@ -150,16 +150,6 @@ class HyperCoastPlugin:
 
         icons_dir = os.path.join(self.plugin_dir, "icons")
 
-        # Load Hyperspectral Data action
-        self.load_action = self.add_action(
-            os.path.join(icons_dir, "load_data.png"),
-            text=self.tr("Load Hyperspectral Data"),
-            callback=self.show_load_dialog,
-            parent=self.iface.mainWindow(),
-            status_tip=self.tr("Load hyperspectral data (EMIT, PACE, DESIS, etc.)"),
-            checkable=True,
-        )
-
         # Tanager search action
         self.tanager_search_action = self.add_action(
             os.path.join(icons_dir, "tanager.svg"),
@@ -167,6 +157,16 @@ class HyperCoastPlugin:
             callback=self.show_tanager_search_dialog,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Search and visualize Planet Tanager data"),
+            checkable=True,
+        )
+
+        # Load Hyperspectral Data action
+        self.load_action = self.add_action(
+            os.path.join(icons_dir, "load_data.png"),
+            text=self.tr("Load Hyperspectral Data"),
+            callback=self.show_load_dialog,
+            parent=self.iface.mainWindow(),
+            status_tip=self.tr("Load hyperspectral data (EMIT, PACE, DESIS, etc.)"),
             checkable=True,
         )
 

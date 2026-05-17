@@ -8,6 +8,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import pytest
 from qgis.PyQt.QtWidgets import QApplication, QHeaderView
 
+import hypercoast_qgis.hypercoast_plugin as plugin_module
 import hypercoast_qgis.dialogs.tanager_search_dialog as dialog_module
 from hypercoast_qgis.dialogs.tanager_search_dialog import (
     TANAGER_HDF5_ASSET,
@@ -496,3 +497,42 @@ def test_tanager_action_is_dependency_gated():
 
     assert plugin.warning_shown
     assert not plugin.tanager_search_action.checked
+
+
+def test_tanager_action_is_first_toolbar_icon(qapp, monkeypatch):
+    """The Tanager search action should be first in the toolbar."""
+    added_actions = []
+
+    class _Toolbar:
+        """Small toolbar-like object."""
+
+        def addAction(self, action):
+            """Record added toolbar action."""
+            added_actions.append(action)
+
+    class _Iface:
+        """Small QGIS iface-like object."""
+
+        def mainWindow(self):
+            """Return no parent window."""
+            return None
+
+        def addPluginToRasterMenu(self, menu, action):
+            """Ignore menu registration."""
+
+    plugin = HyperCoastPlugin.__new__(HyperCoastPlugin)
+    plugin.iface = _Iface()
+    plugin.plugin_dir = os.path.dirname(os.path.dirname(dialog_module.__file__))
+    plugin.actions = []
+    plugin.menu = plugin.tr("&HyperCoast")
+    plugin.toolbar = _Toolbar()
+    monkeypatch.setattr(plugin_module.QTimer, "singleShot", lambda *args: None)
+    monkeypatch.setattr(
+        plugin,
+        "_connect_project_signals",
+        lambda: None,
+    )
+
+    plugin.initGui()
+
+    assert added_actions[0].text() == "Search Tanager Data"

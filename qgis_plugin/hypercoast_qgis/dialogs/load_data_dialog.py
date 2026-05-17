@@ -47,6 +47,9 @@ from ..hyperspectral_provider import (
 )
 from ..cache_manager import create_generated_raster_path
 
+DEFAULT_VALUE_RANGE = (0.0, 0.5)
+TANAGER_VALUE_RANGE = (0.0, 100.0)
+
 
 class DatasetPreviewWorker(QThread):
     """Worker thread for loading dataset metadata without blocking QGIS."""
@@ -253,7 +256,7 @@ class LoadDataDialog(QDockWidget):
 
         self.vmax_spin = QDoubleSpinBox()
         self.vmax_spin.setRange(-1000, 1000)
-        self.vmax_spin.setValue(0.5)
+        self.vmax_spin.setValue(DEFAULT_VALUE_RANGE[1])
         self.vmax_spin.setDecimals(4)
         range_layout.addWidget(QLabel("Max:"))
         range_layout.addWidget(self.vmax_spin)
@@ -358,12 +361,45 @@ class LoadDataDialog(QDockWidget):
             self.dataset = None
             self.info_text.clear()
             self._populate_variable_combo(None)
+            self._apply_data_type_value_range(
+                self._resolved_value_range_data_type(filepath)
+            )
 
     def _clear_dataset_preview(self, *args):
         """Clear loaded preview state after the requested data type changes."""
         self.dataset = None
         self.info_text.clear()
         self._populate_variable_combo(None)
+        self._apply_data_type_value_range(self._resolved_value_range_data_type())
+
+    def _resolved_value_range_data_type(self, filepath=None):
+        """Return the data type to use for visualization range defaults.
+
+        Args:
+            filepath: Optional data file path to inspect for auto-detection.
+
+        Returns:
+            Selected or auto-detected data type.
+        """
+        data_type = self.data_type_combo.currentData()
+        if data_type != "auto":
+            return data_type
+        filepath = filepath or self.file_path_edit.text()
+        if filepath and os.path.exists(filepath):
+            return HyperspectralDataset(filepath, "auto").data_type
+        return data_type
+
+    def _apply_data_type_value_range(self, data_type):
+        """Apply visualization range defaults for a data type.
+
+        Args:
+            data_type: Resolved HyperCoast data type.
+        """
+        vmin, vmax = (
+            TANAGER_VALUE_RANGE if data_type == "Tanager" else DEFAULT_VALUE_RANGE
+        )
+        self.vmin_spin.setValue(vmin)
+        self.vmax_spin.setValue(vmax)
 
     def preview_dataset(self):
         """Preview the selected dataset."""
@@ -400,6 +436,7 @@ class LoadDataDialog(QDockWidget):
         try:
             if dataset is not None:
                 self.dataset = dataset
+                self._apply_data_type_value_range(dataset.data_type)
                 self.progress_bar.setValue(80)
                 self.info_text.setText(self._format_dataset_info(dataset))
                 self._populate_variable_combo(dataset)
@@ -620,6 +657,7 @@ class LoadDataDialog(QDockWidget):
                 raise ValueError(f"Failed to load dataset. Details: {error_detail}")
 
             self.dataset = dataset
+            self._apply_data_type_value_range(self.dataset.data_type)
             self.progress_bar.setValue(80)
             selected_data_var = self.dataset.get_data_variable()
             selected_variable = variable_name or getattr(
