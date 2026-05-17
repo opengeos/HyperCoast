@@ -185,12 +185,54 @@ class HyperspectralDataset:
             return "PRISMA"
         elif "ENMAP" in filename:
             return "EnMAP"
-        elif "TANAGER" in filename:
+        elif (
+            "TANAGER" in filename
+            or "ORTHO_RADIANCE_HDF5" in filename
+            or "BASIC_RADIANCE_HDF5" in filename
+            or "ORTHO_SR_HDF5" in filename
+            or "BASIC_SR_HDF5" in filename
+        ):
             return "Tanager"
         elif "WYVERN" in filename:
             return "Wyvern"
+        elif ext in [".h5", ".hdf5"] and self._is_tanager_hdf5_file():
+            return "Tanager"
         else:
             return "Generic"
+
+    def _is_tanager_hdf5_file(self):
+        """Return whether an HDF5 file looks like a Tanager product.
+
+        Returns:
+            True when the file contains known Tanager cube dataset names.
+        """
+        if not (HAS_H5PY and os.path.exists(self.filepath)):
+            return False
+
+        tanager_dataset_names = {
+            "toa_radiance",
+            "surface_reflectance",
+            "ortho_radiance",
+            "ortho_surface_reflectance",
+        }
+        found = False
+
+        def visit(name, obj):
+            """Inspect HDF5 objects for Tanager cube dataset names."""
+            nonlocal found
+            if found or not isinstance(obj, h5py.Dataset):
+                return
+            dataset_name = os.path.basename(name).lower()
+            if dataset_name in tanager_dataset_names and obj.ndim >= 3:
+                found = True
+
+        try:
+            with h5py.File(self.filepath, "r") as h5_file:
+                h5_file.visititems(visit)
+        except Exception:
+            return False
+
+        return found
 
     def _log_windows_context(self, stage):
         """Log extra runtime context for Windows debugging."""

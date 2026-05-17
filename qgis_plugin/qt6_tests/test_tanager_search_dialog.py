@@ -14,6 +14,7 @@ from hypercoast_qgis.dialogs.tanager_search_dialog import (
     TANAGER_VISUAL_ASSET,
     TanagerSearchDialog,
     TanagerSearchWorker,
+    _asset_filename,
     _asset_url,
     _stac_browser_url,
 )
@@ -106,6 +107,13 @@ def test_canvas_bbox_uses_map_extent():
     dialog.iface = _Iface()
 
     assert dialog.current_canvas_bbox() == [-122.0, 37.0, -121.0, 38.0]
+
+
+def test_dialog_minimum_width_is_compact(qapp, monkeypatch, tmp_path):
+    """The Tanager dock should fit into a compact side panel."""
+    dialog = _dialog(qapp, monkeypatch=monkeypatch, tmp_path=tmp_path)
+
+    assert dialog.minimumWidth() == 520
 
 
 def test_populate_results_stores_items_and_asset_flags(qapp):
@@ -380,8 +388,15 @@ def test_stac_browser_url_keeps_existing_browser_url():
     assert _stac_browser_url(url) == url
 
 
-def test_download_uses_selected_folder_and_asset(qapp, monkeypatch, tmp_path):
-    """Download should pass the selected folder and asset to the worker."""
+def test_asset_filename_ignores_query_string():
+    """Asset filenames should be parsed from URL paths."""
+    url = "https://example.com/data/scene_ortho_radiance_hdf5.h5?token=abc"
+
+    assert _asset_filename(url) == "scene_ortho_radiance_hdf5.h5"
+
+
+def test_download_prompts_for_save_path_and_asset(qapp, monkeypatch, tmp_path):
+    """Download should prompt for a destination HDF5 path."""
     dialog = _dialog(qapp, monkeypatch=monkeypatch, tmp_path=tmp_path)
     item = {
         "id": "scene-1",
@@ -391,10 +406,11 @@ def test_download_uses_selected_folder_and_asset(qapp, monkeypatch, tmp_path):
     dialog.populate_results([item])
     dialog.results_table.selectRow(0)
     dialog.download_dir_edit.setText(str(tmp_path))
+    save_path = str(tmp_path / "custom.h5")
     monkeypatch.setattr(
-        dialog_module,
-        "create_generated_raster_path",
-        lambda *args, **kwargs: str(tmp_path / "out.tif"),
+        dialog_module.QFileDialog,
+        "getSaveFileName",
+        staticmethod(lambda *args, **kwargs: (save_path, "")),
     )
     recorded = {}
 
@@ -407,15 +423,13 @@ def test_download_uses_selected_folder_and_asset(qapp, monkeypatch, tmp_path):
     class _Worker:
         """Small worker-like object."""
 
-        def __init__(self, item, asset_key, out_dir, output_path, wavelengths, parent):
+        def __init__(self, item, asset_key, output_path, parent):
             """Record worker arguments."""
             recorded.update(
                 {
                     "item": item,
                     "asset_key": asset_key,
-                    "out_dir": out_dir,
                     "output_path": output_path,
-                    "wavelengths": wavelengths,
                     "parent": parent,
                 }
             )
@@ -430,12 +444,13 @@ def test_download_uses_selected_folder_and_asset(qapp, monkeypatch, tmp_path):
             """Record that the worker started."""
             recorded["started"] = True
 
-    monkeypatch.setattr(dialog_module, "TanagerDownloadLoadWorker", _Worker)
+    monkeypatch.setattr(dialog_module, "TanagerDownloadWorker", _Worker)
 
     dialog.download_hdf5()
 
     assert recorded["asset_key"] == "basic_sr_hdf5"
-    assert recorded["out_dir"] == str(tmp_path)
+    assert recorded["output_path"] == save_path
+    assert dialog.download_dir_edit.text() == str(tmp_path)
     assert recorded["started"]
 
 

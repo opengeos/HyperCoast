@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tanager search">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b5f73"/>
+      <stop offset="1" stop-color="#123c69"/>
+    </linearGradient>
+    <linearGradient id="scene" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6c85f"/>
+      <stop offset="0.55" stop-color="#2fbf71"/>
+      <stop offset="1" stop-color="#2f80ed"/>
+    </linearGradient>
+  </defs>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="8" fill="url(#bg)" stroke="#ffffff" stroke-opacity="0.8" stroke-width="3"/>
+  <path d="M10 44 L24 24 L37 34 L53 15 L53 49 L10 49 Z" fill="url(#scene)" opacity="0.95"/>
+  <path d="M10 44 L24 24 L37 34 L53 15" fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="38" cy="34" r="13" fill="none" stroke="#ffffff" stroke-width="5"/>
+  <path d="M48 44 L57 53" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="38" cy="34" r="7" fill="#123c69" opacity="0.35"/>
+  <path d="M18 17 H32" stroke="#9ce6ff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M18 23 H27" stroke="#9ce6ff" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -8,6 +8,25 @@ xr = pytest.importorskip("xarray")
 from hypercoast_qgis.hyperspectral_provider import HyperspectralDataset
 
 
+def test_tanager_hdf5_asset_filename_auto_detects_tanager():
+    """Tanager asset filenames should not fall through to Generic."""
+    provider = HyperspectralDataset("20240925_185509_74_4001_ortho_radiance_hdf5.h5")
+
+    assert provider.data_type == "Tanager"
+
+
+def test_tanager_hdf5_content_auto_detects_custom_filename(tmp_path):
+    """Renamed Tanager HDF5 files should still auto-detect by content."""
+    h5py = pytest.importorskip("h5py")
+    filepath = tmp_path / "custom_name.h5"
+    with h5py.File(filepath, "w") as h5_file:
+        h5_file.create_dataset("product/toa_radiance", shape=(2, 3, 4))
+
+    provider = HyperspectralDataset(str(filepath))
+
+    assert provider.data_type == "Tanager"
+
+
 def test_pace_bgc_prefers_raster_product_over_tilt():
     """PACE BGC products should select a 2D geophysical raster variable."""
     dataset = xr.Dataset(

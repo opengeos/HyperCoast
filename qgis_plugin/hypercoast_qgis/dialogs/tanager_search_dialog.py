@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 import os
 import ast
 import json
+from urllib.parse import unquote, urlparse
 import urllib.request
 
 from qgis.PyQt.QtCore import Qt, QThread, QUrl, pyqtSignal
@@ -33,6 +34,7 @@ from qgis.PyQt.QtWidgets import (
     QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
+    QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QHeaderView,
@@ -48,7 +50,6 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
 )
 from qgis.core import (
-    QgsContrastEnhancement,
     QgsCoordinateReferenceSystem,
     QgsCoordinateTransform,
     QgsFeature,
@@ -56,16 +57,13 @@ from qgis.core import (
     QgsFillSymbol,
     QgsGeometry,
     QgsMessageLog,
-    QgsMultiBandColorRenderer,
     QgsProject,
     QgsRasterLayer,
-    QgsSingleBandGrayRenderer,
     QgsVectorLayer,
     Qgis,
 )
 
-from ..cache_manager import create_generated_raster_path, generated_raster_cache_dir
-from ..hyperspectral_provider import HyperspectralDataset
+from ..cache_manager import generated_raster_cache_dir
 
 TANAGER_HDF5_ASSET = "ortho_radiance_hdf5"
 TANAGER_HDF5_ASSETS = (
@@ -94,6 +92,21 @@ def _asset_url(item, asset_key):
     assets = item.get("assets", {}) if isinstance(item, dict) else {}
     asset = assets.get(asset_key, {})
     return asset.get("href", "") or ""
+
+
+def _asset_filename(url, fallback="tanager.h5"):
+    """Return a readable filename from an asset URL.
+
+    Args:
+        url: Asset URL.
+        fallback: Filename to use when the URL has no basename.
+
+    Returns:
+        Filename string.
+    """
+    path = urlparse(url).path if url else ""
+    filename = os.path.basename(unquote(path))
+    return filename or fallback
 
 
 def _item_title(item):
@@ -189,70 +202,47 @@ class TanagerSearchWorker(QThread):
             self.finished.emit([], None, str(exc))
 
 
-class TanagerDownloadLoadWorker(QThread):
-    """Worker thread for downloading and loading a Tanager HDF5 asset."""
+class TanagerDownloadWorker(QThread):
+    """Worker thread for downloading a Tanager HDF5 asset."""
 
     progress = pyqtSignal(int)
-    finished = pyqtSignal(object, str, str, str)
+    finished = pyqtSignal(str, str)
 
-    def __init__(
-        self,
-        item,
-        asset_key,
-        out_dir,
-        output_path,
-        wavelengths,
-        parent=None,
-    ):
+    def __init__(self, item, asset_key, output_path, parent=None):
         """Initialize the worker.
 
         Args:
             item: STAC item dictionary.
             asset_key: STAC asset key to download.
-            out_dir: Download directory.
-            output_path: GeoTIFF output path.
-            wavelengths: RGB wavelengths.
+            output_path: Destination HDF5 path.
             parent: Optional parent QObject.
         """
         super().__init__(parent)
         self.item = item
         self.asset_key = asset_key
-        self.out_dir = out_dir
         self.output_path = output_path
-        self.wavelengths = wavelengths
 
     def run(self):
-        """Download the HDF5 asset and export an RGB raster."""
+        """Download the HDF5 asset."""
         try:
             from .._hypercoast_lib import get_hypercoast
 
-            self.progress.emit(15)
+            self.progress.emit(20)
             hypercoast = get_hypercoast()
-            paths = hypercoast.download_tanager(
-                self.item,
-                asset=self.asset_key,
-                out_dir=self.out_dir,
+            url = _asset_url(self.item, self.asset_key)
+            if not url:
+                raise ValueError(f"The selected asset '{self.asset_key}' has no URL.")
+            filepath = hypercoast.download_file(
+                url,
+                output=self.output_path,
                 quiet=True,
-                overwrite=False,
+                overwrite=True,
+                unzip=False,
             )
-            if not paths:
-                raise ValueError("Tanager download produced no file.")
-
-            filepath = paths[0]
-            self.progress.emit(45)
-            dataset = HyperspectralDataset(filepath, "Tanager")
-            result = dataset.load_and_export(
-                self.output_path, wavelengths=self.wavelengths
-            )
-            if result is None:
-                detail = getattr(dataset, "last_error", None) or "Unknown error"
-                self.finished.emit(None, filepath, "", detail)
-                return
-
             self.progress.emit(90)
-            self.finished.emit(dataset, filepath, self.output_path, "")
+            self.finished.emit(filepath, "")
         except Exception as exc:
-            self.finished.emit(None, "", "", str(exc))
+            self.finished.emit("", str(exc))
 
 
 class TanagerSearchDialog(QDockWidget):
@@ -278,7 +268,7 @@ class TanagerSearchDialog(QDockWidget):
 
         self.setWindowTitle("Search Tanager Data")
         self.setObjectName("HyperCoastTanagerSearchDock")
-        self.setMinimumWidth(680)
+        self.setMinimumWidth(520)
         self.setMinimumHeight(560)
 
         self.setup_ui()
@@ -394,36 +384,36 @@ class TanagerSearchDialog(QDockWidget):
         self.progress_bar.setVisible(False)
         layout.addWidget(self.progress_bar)
 
-        button_layout = QHBoxLayout()
+        button_layout = QGridLayout()
         self.search_btn = QPushButton("Search")
         self.search_btn.clicked.connect(self.search)
-        button_layout.addWidget(self.search_btn)
+        button_layout.addWidget(self.search_btn, 0, 0)
 
         self.selected_footprints_btn = QPushButton("Use Selected Footprints")
         self.selected_footprints_btn.clicked.connect(
             self.populate_from_selected_footprints
         )
-        button_layout.addWidget(self.selected_footprints_btn)
+        button_layout.addWidget(self.selected_footprints_btn, 0, 1)
 
         self.footprints_btn = QPushButton("Add Footprints")
         self.footprints_btn.clicked.connect(self.add_footprints_layer)
-        button_layout.addWidget(self.footprints_btn)
+        button_layout.addWidget(self.footprints_btn, 0, 2)
 
         self.visual_btn = QPushButton("Open Visual")
         self.visual_btn.clicked.connect(self.open_visual_layer)
-        button_layout.addWidget(self.visual_btn)
+        button_layout.addWidget(self.visual_btn, 1, 0)
 
         self.stac_btn = QPushButton("Open STAC")
         self.stac_btn.clicked.connect(self.open_stac_item)
-        button_layout.addWidget(self.stac_btn)
+        button_layout.addWidget(self.stac_btn, 1, 1)
 
         self.download_btn = QPushButton("Download HDF5")
         self.download_btn.clicked.connect(self.download_hdf5)
-        button_layout.addWidget(self.download_btn)
+        button_layout.addWidget(self.download_btn, 1, 2)
 
         close_btn = QPushButton("Close")
         close_btn.clicked.connect(self.close)
-        button_layout.addWidget(close_btn)
+        button_layout.addWidget(close_btn, 1, 3)
         layout.addLayout(button_layout)
         self._sync_button_state()
 
@@ -1108,7 +1098,7 @@ class TanagerSearchDialog(QDockWidget):
         QDesktopServices.openUrl(QUrl(browser_url))
 
     def download_hdf5(self):
-        """Download and load the selected Tanager radiance HDF5 asset."""
+        """Download the selected Tanager HDF5 asset."""
         item = self.hydrated_selected_item()
         if item is None:
             return
@@ -1131,153 +1121,69 @@ class TanagerSearchDialog(QDockWidget):
             return
 
         try:
-            out_dir = self.download_dir_edit.text().strip()
-            if not out_dir:
-                raise ValueError("Please select a download folder.")
-            os.makedirs(out_dir, exist_ok=True)
-            asset_label = self.asset_combo.currentText() or asset_key
-            layer_name = f"Tanager {asset_label} - {_item_title(item)}"
-            output_path = create_generated_raster_path(
-                layer_name, "rgb", project=QgsProject.instance()
+            asset_url = _asset_url(item, asset_key)
+            out_dir = self.download_dir_edit.text().strip() or tanager_download_dir(
+                QgsProject.instance()
             )
-            wavelengths = [650, 550, 450]
-            self._pending_load_context = {
-                "layer_name": layer_name,
-                "wavelengths": wavelengths,
-                "stac_url": item.get("_stac_url", ""),
-            }
+            os.makedirs(out_dir, exist_ok=True)
+            default_path = os.path.join(
+                out_dir,
+                _asset_filename(asset_url, fallback=f"{_item_title(item)}.h5"),
+            )
+            output_path, _ = QFileDialog.getSaveFileName(
+                self,
+                "Save Tanager HDF5",
+                default_path,
+                "HDF5 files (*.h5 *.hdf5);;All files (*)",
+            )
+            if not output_path:
+                return
+            if not os.path.splitext(output_path)[1]:
+                output_path = f"{output_path}.h5"
+            output_dir = os.path.dirname(os.path.abspath(output_path))
+            os.makedirs(output_dir, exist_ok=True)
+            self.download_dir_edit.setText(output_dir)
+
             self._set_busy(True)
             self.progress_bar.setRange(0, 100)
             self.progress_bar.setValue(20)
             self.status_label.setText("Downloading Tanager HDF5...")
-            self._load_worker = TanagerDownloadLoadWorker(
+            self._load_worker = TanagerDownloadWorker(
                 item,
                 asset_key,
-                out_dir,
                 output_path,
-                wavelengths,
                 parent=self,
             )
             self._load_worker.progress.connect(self.progress_bar.setValue)
-            self._load_worker.finished.connect(self._on_download_load_finished)
+            self._load_worker.finished.connect(self._on_download_finished)
             self._load_worker.start()
         except Exception as exc:
-            self._pending_load_context = None
             self._set_busy(False)
             QMessageBox.warning(self, "Tanager HDF5", str(exc))
 
-    def _on_download_load_finished(self, dataset, filepath, temp_path, error_detail):
-        """Handle Tanager download and load worker completion.
+    def _on_download_finished(self, filepath, error_detail):
+        """Handle Tanager download completion.
 
         Args:
-            dataset: Loaded HyperspectralDataset, or None on failure.
             filepath: Downloaded HDF5 path.
-            temp_path: Exported GeoTIFF path.
-            error_detail: Error message when loading failed.
-        """
-        if self._pending_load_context is not None and filepath:
-            self._pending_load_context["filepath"] = filepath
-        self._on_load_finished(dataset, temp_path, error_detail)
-
-    def _on_load_finished(self, dataset, temp_path, error_detail):
-        """Add the loaded Tanager HDF5 raster to QGIS.
-
-        Args:
-            dataset: Loaded HyperspectralDataset, or None on failure.
-            temp_path: Exported GeoTIFF path.
-            error_detail: Error message when loading failed.
+            error_detail: Error message when downloading failed.
         """
         try:
-            context = self._pending_load_context or {}
-            if dataset is None:
-                raise ValueError(error_detail or "Failed to load Tanager HDF5.")
-
-            layer_name = context.get("layer_name", "Tanager Radiance")
-            raster_layer = QgsRasterLayer(temp_path, layer_name)
-            if not raster_layer.isValid():
-                raise ValueError("Created Tanager raster layer is not valid.")
-
-            if (not raster_layer.crs().isValid()) and dataset.crs:
-                known_crs = QgsCoordinateReferenceSystem(str(dataset.crs))
-                if known_crs.isValid():
-                    raster_layer.setCrs(known_crs)
-
-            self._style_raster_layer(raster_layer)
-            self._set_hyperspectral_properties(raster_layer, dataset, context)
-            QgsProject.instance().addMapLayer(raster_layer)
-
-            selected_data_var = dataset.get_data_variable()
-            selected_variable = getattr(selected_data_var, "name", None)
-            self.plugin.register_hyperspectral_layer(
-                raster_layer.id(),
-                {
-                    "dataset": dataset,
-                    "filepath": context.get("filepath", ""),
-                    "data_type": dataset.data_type,
-                    "wavelengths": dataset.wavelengths,
-                    "rgb_wavelengths": context.get("wavelengths", []),
-                    "selected_variable": selected_variable,
-                    "bounds": dataset.bounds,
-                    "crs": dataset.crs,
-                },
-            )
-            spectral_plot = getattr(self.plugin, "spectral_plot_dialog", None)
-            if spectral_plot is not None:
-                spectral_plot.clear_all_spectra()
-
-            self.iface.setActiveLayer(raster_layer)
-            self._zoom_to_layer(raster_layer)
+            if error_detail:
+                raise ValueError(error_detail)
             self.progress_bar.setValue(100)
-            self.status_label.setText("Tanager HDF5 loaded")
+            self.status_label.setText(
+                f"Tanager HDF5 saved: {os.path.basename(filepath)}"
+            )
         except Exception as exc:
             QMessageBox.warning(self, "Tanager HDF5", str(exc))
             QgsMessageLog.logMessage(
-                f"Error loading Tanager HDF5: {exc}",
+                f"Error downloading Tanager HDF5: {exc}",
                 "HyperCoast",
                 Qgis.MessageLevel.Warning,
             )
         finally:
-            self._pending_load_context = None
             self._set_busy(False)
-
-    def _style_raster_layer(self, raster_layer):
-        """Apply a default renderer to a generated Tanager raster.
-
-        Args:
-            raster_layer: QGIS raster layer.
-        """
-        provider = raster_layer.dataProvider()
-        if provider is None:
-            return
-        for band_idx in range(1, raster_layer.bandCount() + 1):
-            try:
-                provider.setNoDataValue(band_idx, -9999.0)
-            except Exception:
-                pass  # nosec B110
-
-        if raster_layer.bandCount() >= 3:
-            renderer = QgsMultiBandColorRenderer(provider, 1, 2, 3)
-            renderer_bands = [1, 2, 3]
-        else:
-            renderer = QgsSingleBandGrayRenderer(provider, 1)
-            renderer_bands = [1]
-
-        for band_idx in renderer_bands:
-            ce = QgsContrastEnhancement(provider.dataType(band_idx))
-            ce.setContrastEnhancementAlgorithm(
-                QgsContrastEnhancement.StretchToMinimumMaximum
-            )
-            ce.setMinimumValue(0)
-            ce.setMaximumValue(0.5)
-            if raster_layer.bandCount() < 3:
-                renderer.setContrastEnhancement(ce)
-            elif band_idx == 1:
-                renderer.setRedContrastEnhancement(ce)
-            elif band_idx == 2:
-                renderer.setGreenContrastEnhancement(ce)
-            else:
-                renderer.setBlueContrastEnhancement(ce)
-        raster_layer.setRenderer(renderer)
 
     def _style_footprint_layer(self, layer):
         """Apply the default Tanager footprint style.
@@ -1297,28 +1203,6 @@ class TanagerSearchDialog(QDockWidget):
             layer.triggerRepaint()
         except Exception:
             pass  # nosec B110
-
-    def _set_hyperspectral_properties(self, raster_layer, dataset, context):
-        """Persist HyperCoast metadata on a Tanager raster layer.
-
-        Args:
-            raster_layer: Layer receiving custom properties.
-            dataset: Loaded Tanager dataset provider.
-            context: Pending load context.
-        """
-        raster_layer.setCustomProperty(
-            "hypercoast/source_path", context.get("filepath", "")
-        )
-        raster_layer.setCustomProperty("hypercoast/data_type", dataset.data_type)
-        raster_layer.setCustomProperty(
-            "hypercoast/rgb_wavelengths",
-            ",".join(str(value) for value in context.get("wavelengths", [])),
-        )
-        raster_layer.setCustomProperty(
-            "hypercoast/tanager_stac_url", context.get("stac_url", "")
-        )
-        if dataset.crs:
-            raster_layer.setCustomProperty("hypercoast/crs", str(dataset.crs))
 
     def _zoom_to_layer(self, layer):
         """Zoom the map canvas to a layer extent.

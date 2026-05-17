@@ -162,7 +162,7 @@ class HyperCoastPlugin:
 
         # Tanager search action
         self.tanager_search_action = self.add_action(
-            os.path.join(icons_dir, "hypercoast.png"),
+            os.path.join(icons_dir, "tanager.svg"),
             text=self.tr("Search Tanager Data"),
             callback=self.show_tanager_search_dialog,
             parent=self.iface.mainWindow(),
