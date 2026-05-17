@@ -49,6 +49,9 @@ try:
 except ImportError:
     HAS_MATPLOTLIB = False
 
+DEFAULT_Y_RANGE = (0.0, 0.5)
+TANAGER_Y_RANGE = (0.0, 100.0)
+
 
 class SpectralPlotDialog(QDockWidget):
     """Dockable panel for displaying spectral plots."""
@@ -134,6 +137,7 @@ class SpectralPlotDialog(QDockWidget):
             QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon
         )
         self.layer_combo.setSizePolicy(policy.Expanding, policy.Fixed)
+        self.layer_combo.currentIndexChanged.connect(self._on_selected_layer_changed)
         sampling_layout.addWidget(QLabel("Layer:"))
         sampling_layout.addWidget(self.layer_combo, 1)
 
@@ -188,14 +192,14 @@ class SpectralPlotDialog(QDockWidget):
 
         ylim_layout = QHBoxLayout()
         self.ymin_spin = QDoubleSpinBox()
-        self.ymin_spin.setRange(-1, 10)
-        self.ymin_spin.setValue(0)
+        self.ymin_spin.setRange(-1000, 10000)
+        self.ymin_spin.setValue(DEFAULT_Y_RANGE[0])
         self.ymin_spin.setDecimals(4)
         ylim_layout.addWidget(self.ymin_spin)
         ylim_layout.addWidget(QLabel("-"))
         self.ymax_spin = QDoubleSpinBox()
-        self.ymax_spin.setRange(-1, 10)
-        self.ymax_spin.setValue(0.5)
+        self.ymax_spin.setRange(-1000, 10000)
+        self.ymax_spin.setValue(DEFAULT_Y_RANGE[1])
         self.ymax_spin.setDecimals(4)
         ylim_layout.addWidget(self.ymax_spin)
         axis_form.addRow("Y Range:", ylim_layout)
@@ -324,6 +328,7 @@ class SpectralPlotDialog(QDockWidget):
                 self.layer_combo.setCurrentIndex(index)
 
         self.layer_combo.blockSignals(False)
+        self._apply_data_type_plot_defaults(self._selected_layer_data_type())
 
     def selected_layer_id(self):
         """Return the selected sampling layer ID.
@@ -334,6 +339,45 @@ class SpectralPlotDialog(QDockWidget):
         if not hasattr(self, "layer_combo"):
             return None
         return self.layer_combo.currentData()
+
+    def _on_selected_layer_changed(self, *args):
+        """Apply plot defaults when the selected sampling layer changes."""
+        self._apply_data_type_plot_defaults(self._selected_layer_data_type())
+
+    def _selected_layer_data_type(self):
+        """Return the data type represented by the selected sampling layer.
+
+        Returns:
+            HyperCoast data type string, or ``None`` for mixed/unknown layers.
+        """
+        layer_id = self.selected_layer_id()
+        if layer_id:
+            data_info = self.plugin.get_hyperspectral_data(layer_id) or {}
+            return data_info.get("data_type")
+
+        data_types = {
+            (self.plugin.get_hyperspectral_data(layer_id) or {}).get("data_type")
+            for layer_id in self.plugin.get_all_hyperspectral_layers()
+        }
+        data_types.discard(None)
+        if len(data_types) == 1:
+            return next(iter(data_types))
+        return None
+
+    def _apply_data_type_plot_defaults(self, data_type):
+        """Apply axis label and range defaults for a data type.
+
+        Args:
+            data_type: HyperCoast data type string.
+        """
+        if data_type != "Tanager":
+            return
+
+        index = self.ylabel_combo.findText("Radiance")
+        if index >= 0:
+            self.ylabel_combo.setCurrentIndex(index)
+        self.ymin_spin.setValue(TANAGER_Y_RANGE[0])
+        self.ymax_spin.setValue(TANAGER_Y_RANGE[1])
 
     def _project_layer(self, layer_id):
         """Return a QGIS project layer by ID.
@@ -351,7 +395,7 @@ class SpectralPlotDialog(QDockWidget):
         except Exception:
             return None
 
-    def add_spectrum(self, lat, lon, wavelengths, values, layer_name):
+    def add_spectrum(self, lat, lon, wavelengths, values, layer_name, data_type=None):
         """Add a new spectrum to the plot.
 
         :param lat: Latitude
@@ -359,7 +403,9 @@ class SpectralPlotDialog(QDockWidget):
         :param wavelengths: Array of wavelengths
         :param values: Array of spectral values
         :param layer_name: Name of the source layer
+        :param data_type: Optional HyperCoast data type.
         """
+        self._apply_data_type_plot_defaults(data_type)
         spectrum = {
             "lat": lat,
             "lon": lon,
@@ -367,6 +413,7 @@ class SpectralPlotDialog(QDockWidget):
             "values": np.array(values),
             "layer": layer_name,
             "label": f"({lat:.4f}, {lon:.4f})",
+            "data_type": data_type,
         }
 
         self.spectra.append(spectrum)

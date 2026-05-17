@@ -1333,7 +1333,12 @@ class HyperspectralDataset:
                 lon_value, lat_value = self._as_lon_lat(x, y, crs, lon, lat)
                 return self._extract_with_hypercoast(lon_value, lat_value)
 
-            if "latitude" in data_var.dims and "longitude" in data_var.dims:
+            if self._has_2d_latlon_grid(data_var):
+                lon_value, lat_value = self._as_lon_lat(x, y, crs, lon, lat)
+                values = self._extract_from_2d_latlon_grid(
+                    data_var, lon_value, lat_value
+                )
+            elif "latitude" in data_var.dims and "longitude" in data_var.dims:
                 lon_value, lat_value = self._as_lon_lat(x, y, crs, lon, lat)
                 values = data_var.sel(
                     latitude=lat_value, longitude=lon_value, method="nearest"
@@ -1349,6 +1354,54 @@ class HyperspectralDataset:
         except Exception as e:
             _log(f"Error extracting spectral signature: {e}", LOG_WARNING)
             return None, None
+
+    def _has_2d_latlon_grid(self, data_var):
+        """Return whether a data variable has 2D geolocation coordinates.
+
+        Args:
+            data_var: Xarray DataArray to inspect.
+
+        Returns:
+            True when the dataset has 2D latitude/longitude on the variable's
+            spatial dimensions.
+        """
+        if self.dataset is None or "latitude" not in self.dataset:
+            return False
+        if "longitude" not in self.dataset:
+            return False
+        lat = self.dataset["latitude"]
+        lon = self.dataset["longitude"]
+        return (
+            getattr(lat, "ndim", 0) == 2
+            and getattr(lon, "ndim", 0) == 2
+            and "y" in getattr(data_var, "dims", ())
+            and "x" in getattr(data_var, "dims", ())
+        )
+
+    def _extract_from_2d_latlon_grid(self, data_var, lon, lat):
+        """Extract a spectrum by nearest 2D latitude/longitude pixel.
+
+        Args:
+            data_var: Xarray DataArray with ``y`` and ``x`` dimensions.
+            lon: Longitude in EPSG:4326.
+            lat: Latitude in EPSG:4326.
+
+        Returns:
+            One-dimensional spectral values, or ``None`` when unavailable.
+        """
+        lat_grid = np.asarray(self.dataset["latitude"].values, dtype=float)
+        lon_grid = np.asarray(self.dataset["longitude"].values, dtype=float)
+        if lat_grid.shape != lon_grid.shape:
+            return None
+
+        with np.errstate(invalid="ignore"):
+            distance = (lat_grid - float(lat)) ** 2 + (lon_grid - float(lon)) ** 2
+        if not np.isfinite(distance).any():
+            return None
+
+        row, col = np.unravel_index(np.nanargmin(distance), distance.shape)
+        values = data_var.isel(y=int(row), x=int(col)).values
+        return np.asarray(values).squeeze()
 
     def _as_lon_lat(self, x, y, crs, lon=None, lat=None):
         """Return coordinates in EPSG:4326.

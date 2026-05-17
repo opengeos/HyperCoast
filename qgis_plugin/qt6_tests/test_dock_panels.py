@@ -65,3 +65,41 @@ def test_tanager_auto_detect_sets_radiance_value_range(qapp, tmp_path):
     dialog._clear_dataset_preview()
 
     assert dialog.vmax_spin.value() == 100.0
+
+
+def test_spectral_plot_uses_tanager_radiance_defaults(qapp):
+    """Tanager spectra should switch the plot label and y-range."""
+
+    class _Iface:
+        """Small iface-like object."""
+
+        def mainWindow(self):
+            """Return no parent window."""
+            return None
+
+    class _Plugin:
+        """Small plugin-like object."""
+
+        spectral_tool = None
+
+        def get_all_hyperspectral_layers(self):
+            """Return no registered layers."""
+            return {}
+
+        def get_hyperspectral_data(self, layer_id):
+            """Return no layer metadata."""
+            return None
+
+    dialog = SpectralPlotDialog(_Iface(), _Plugin())
+
+    dialog.add_spectrum(
+        30.0,
+        -90.0,
+        [500.0, 600.0],
+        [12.0, 24.0],
+        "Tanager Radiance",
+        data_type="Tanager",
+    )
+
+    assert dialog.ylabel_combo.currentText() == "Radiance"
+    assert dialog.ymax_spin.value() == 100.0
