@@ -164,6 +164,10 @@ class LoadDataDialog(QDockWidget):
         self._preview_worker = None
         self._load_worker = None
         self._pending_load_context = None
+        # Track the last default the dialog applied to the value-range spinboxes
+        # so background callbacks can detect user edits and avoid overwriting
+        # them. Initialized to match the spinbox values set in setup_ui().
+        self._last_applied_value_range = (0.0, DEFAULT_VALUE_RANGE[1])
 
         self.setWindowTitle("Load Hyperspectral Data")
         self.setObjectName("HyperCoastLoadDataDock")
@@ -389,17 +393,33 @@ class LoadDataDialog(QDockWidget):
             return HyperspectralDataset(filepath, "auto").data_type
         return data_type
 
-    def _apply_data_type_value_range(self, data_type):
+    def _apply_data_type_value_range(self, data_type, preserve_user_edits=False):
         """Apply visualization range defaults for a data type.
 
         Args:
             data_type: Resolved HyperCoast data type.
+            preserve_user_edits: When True, skip updating the spinboxes if the
+                user has changed them since the last default was applied. Use
+                this from background callbacks (preview/load completion) so
+                custom min/max values entered before the callback fired are
+                not overwritten.
         """
         vmin, vmax = (
             TANAGER_VALUE_RANGE if data_type == "Tanager" else DEFAULT_VALUE_RANGE
         )
+        if preserve_user_edits:
+            last_vmin, last_vmax = self._last_applied_value_range
+            current_vmin = self.vmin_spin.value()
+            current_vmax = self.vmax_spin.value()
+            tolerance = 10 ** -self.vmin_spin.decimals()
+            if (
+                abs(current_vmin - last_vmin) > tolerance
+                or abs(current_vmax - last_vmax) > tolerance
+            ):
+                return
         self.vmin_spin.setValue(vmin)
         self.vmax_spin.setValue(vmax)
+        self._last_applied_value_range = (vmin, vmax)
 
     def preview_dataset(self):
         """Preview the selected dataset."""
@@ -436,7 +456,9 @@ class LoadDataDialog(QDockWidget):
         try:
             if dataset is not None:
                 self.dataset = dataset
-                self._apply_data_type_value_range(dataset.data_type)
+                self._apply_data_type_value_range(
+                    dataset.data_type, preserve_user_edits=True
+                )
                 self.progress_bar.setValue(80)
                 self.info_text.setText(self._format_dataset_info(dataset))
                 self._populate_variable_combo(dataset)
@@ -657,7 +679,9 @@ class LoadDataDialog(QDockWidget):
                 raise ValueError(f"Failed to load dataset. Details: {error_detail}")
 
             self.dataset = dataset
-            self._apply_data_type_value_range(self.dataset.data_type)
+            self._apply_data_type_value_range(
+                self.dataset.data_type, preserve_user_edits=True
+            )
             self.progress_bar.setValue(80)
             selected_data_var = self.dataset.get_data_variable()
             selected_variable = variable_name or getattr(

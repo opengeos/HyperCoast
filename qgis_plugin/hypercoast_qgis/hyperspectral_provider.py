@@ -116,7 +116,7 @@ DATA_TYPES = {
         "variable": "reflectance",
     },
     "Tanager": {
-        "extensions": [".h5"],
+        "extensions": [".h5", ".hdf5"],
         "description": "Planet Tanager",
         "variable": "toa_radiance",
     },
