@@ -8,6 +8,25 @@ xr = pytest.importorskip("xarray")
 from hypercoast_qgis.hyperspectral_provider import HyperspectralDataset
 
 
+def test_tanager_hdf5_asset_filename_auto_detects_tanager():
+    """Tanager asset filenames should not fall through to Generic."""
+    provider = HyperspectralDataset("20240925_185509_74_4001_ortho_radiance_hdf5.h5")
+
+    assert provider.data_type == "Tanager"
+
+
+def test_tanager_hdf5_content_auto_detects_custom_filename(tmp_path):
+    """Renamed Tanager HDF5 files should still auto-detect by content."""
+    h5py = pytest.importorskip("h5py")
+    filepath = tmp_path / "custom_name.h5"
+    with h5py.File(filepath, "w") as h5_file:
+        h5_file.create_dataset("product/toa_radiance", shape=(2, 3, 4))
+
+    provider = HyperspectralDataset(str(filepath))
+
+    assert provider.data_type == "Tanager"
+
+
 def test_pace_bgc_prefers_raster_product_over_tilt():
     """PACE BGC products should select a 2D geophysical raster variable."""
     dataset = xr.Dataset(
@@ -165,6 +184,49 @@ def test_lat_lon_spectral_extraction_uses_geographic_coordinates(monkeypatch):
 
     np.testing.assert_array_equal(wavelengths, np.array([500.0, 600.0]))
     np.testing.assert_array_equal(values, np.array([1.0, 10.0], dtype="float32"))
+
+
+def test_tanager_2d_geolocation_spectral_extraction(monkeypatch):
+    """Tanager y/x cubes should extract using 2D lat/lon geolocation."""
+    import hypercoast_qgis.hyperspectral_provider as provider_module
+
+    monkeypatch.setattr(provider_module, "HAS_HYPERCOAST", False)
+    dataset = xr.Dataset(
+        {
+            "toa_radiance": (
+                ("wavelength", "y", "x"),
+                np.array(
+                    [
+                        [[1.0, 2.0], [3.0, 4.0]],
+                        [[10.0, 20.0], [30.0, 40.0]],
+                    ],
+                    dtype="float32",
+                ),
+            )
+        },
+        coords={
+            "wavelength": np.array([500.0, 600.0]),
+            "latitude": (
+                ("y", "x"),
+                np.array([[30.0, 30.0], [31.0, 31.0]]),
+            ),
+            "longitude": (
+                ("y", "x"),
+                np.array([[-91.0, -90.0], [-91.0, -90.0]]),
+            ),
+        },
+    )
+    provider = HyperspectralDataset("scene_ortho_radiance_hdf5.h5", "Tanager")
+    provider.dataset = dataset
+    provider.wavelengths = dataset.coords["wavelength"].values
+    provider.crs = "EPSG:4326"
+
+    wavelengths, values = provider.extract_spectral_signature(
+        -90.1, 30.9, crs="EPSG:4326"
+    )
+
+    np.testing.assert_array_equal(wavelengths, np.array([500.0, 600.0]))
+    np.testing.assert_array_equal(values, np.array([4.0, 40.0], dtype="float32"))
 
 
 def test_emit_runtime_export_accepts_written_file_when_return_is_none(

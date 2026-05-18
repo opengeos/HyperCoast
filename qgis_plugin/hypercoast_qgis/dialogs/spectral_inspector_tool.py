@@ -165,7 +165,12 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
                     # Update spectral plot dialog if open
                     if self.plugin.spectral_plot_dialog:
                         self.plugin.spectral_plot_dialog.add_spectrum(
-                            lat, lon, wavelengths, values, layer.name()
+                            lat,
+                            lon,
+                            wavelengths,
+                            values,
+                            layer.name(),
+                            data_info.get("data_type"),
                         )
 
                     QgsMessageLog.logMessage(

@@ -12,6 +12,8 @@ Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video 
 
 -   **Load Multiple Hyperspectral Formats**: Support for NASA EMIT, PACE, DESIS, NEON AOP, AVIRIS, PRISMA, EnMAP, Planet Tanager, Wyvern, and generic GeoTIFF/NetCDF hyperspectral data.
 
+-   **Tanager Search and Visualization**: Search Planet Tanager STAC scenes from QGIS, add footprint layers, open orthorectified visual imagery, and download orthorectified radiance HDF5 files for hyperspectral analysis.
+
 -   **Band Combination Visualization**: Easily change RGB band combinations using wavelength values. Includes presets for:
 
     -   True Color (RGB)
@@ -80,6 +82,14 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 3. Select the data type (or use auto-detect)
 4. Configure RGB wavelengths for visualization
 5. Click **Load Data**
+
+### Searching Tanager Data
+
+1. Click the **Search Tanager Data** button
+2. Use the current map extent or enter a bounding box
+3. Set optional date, collection, query, cloud, and count filters
+4. Click **Search**
+5. Add footprints, open the visual asset, or download the radiance HDF5 for analysis
 
 ### Changing Band Combinations
 

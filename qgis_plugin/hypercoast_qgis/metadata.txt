@@ -4,13 +4,14 @@
 name=HyperCoast
 qgisMinimumVersion=3.28
 qgisMaximumVersion=4.99
-description=Visualize and analyze hyperspectral data including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets
+description=Visualize, search, and analyze hyperspectral data including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets
 version=0.23.0
 author=Qiusheng Wu
 email=giswqs@gmail.com
 
 about=HyperCoast QGIS Plugin provides powerful tools for hyperspectral data visualization and analysis. Features include:
     - Load and display various hyperspectral formats (EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, Wyvern)
+    - Search Planet Tanager STAC data, add footprints, open visual imagery, and download radiance HDF5 assets
     - Interactive band combination visualization
     - Spectral signature inspection with click-to-plot functionality
     - Export spectral profiles to CSV
@@ -20,7 +21,7 @@ about=HyperCoast QGIS Plugin provides powerful tools for hyperspectral data visu
 tracker=https://github.com/opengeos/HyperCoast/issues
 repository=https://github.com/opengeos/HyperCoast
 
-tags=hyperspectral,remote sensing,EMIT,PACE,spectral,analysis,visualization
+tags=hyperspectral,remote sensing,EMIT,PACE,Tanager,STAC,spectral,analysis,visualization
 
 homepage=https://hypercoast.org
 category=Raster
@@ -33,6 +34,7 @@ hasProcessingProvider=yes
 changelog=
     0.23.0
         - Align QGIS plugin metadata with the HyperCoast package release
+        - Add Tanager STAC search, footprint visualization, visual imagery, and radiance HDF5 loading
     0.8.0
         - Convert plugin windows to dockable QGIS panels
         - Add HyperCoast Processing provider with RGB, single-band, spectral index, and PCA tools
