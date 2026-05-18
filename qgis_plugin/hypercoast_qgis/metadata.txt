@@ -5,7 +5,7 @@ name=HyperCoast
 qgisMinimumVersion=3.28
 qgisMaximumVersion=4.99
 description=Visualize, search, and analyze hyperspectral data including EMIT, PACE, DESIS, NEON, AVIRIS, PRISMA, EnMAP, Tanager, and Wyvern datasets
-version=0.23.0
+version=0.24.0
 author=Qiusheng Wu
 email=giswqs@gmail.com
 
@@ -32,6 +32,8 @@ deprecated=False
 hasProcessingProvider=yes
 
 changelog=
+    0.24.0
+        - Bump package and QGIS plugin minor version
     0.23.0
         - Align QGIS plugin metadata with the HyperCoast package release
         - Add Tanager STAC search, footprint visualization, visual imagery, and radiance HDF5 loading
