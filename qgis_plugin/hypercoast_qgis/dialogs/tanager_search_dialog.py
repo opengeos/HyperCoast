@@ -57,6 +57,7 @@ from qgis.core import (
     QgsFillSymbol,
     QgsGeometry,
     QgsMessageLog,
+    QgsPointXY,
     QgsProject,
     QgsRasterLayer,
     QgsVectorLayer,
@@ -193,11 +194,11 @@ class TanagerSearchWorker(QThread):
             self.progress.emit(20)
             hypercoast = get_hypercoast()
             params = dict(self.search_params)
-            params["return_gdf"] = True
+            params["return_gdf"] = False
             self.progress.emit(50)
-            items, gdf = hypercoast.search_tanager(**params)
+            items = hypercoast.search_tanager(**params)
             self.progress.emit(90)
-            self.finished.emit(items, gdf, "")
+            self.finished.emit(items, None, "")
         except Exception as exc:
             self.finished.emit([], None, str(exc))
 
@@ -265,6 +266,7 @@ class TanagerSearchDialog(QDockWidget):
         self._load_worker = None
         self._pending_load_context = None
         self._connected_global_footprint_layers = set()
+        self._result_footprints_layer = None
 
         self.setWindowTitle("Search Tanager Data")
         self.setObjectName("HyperCoastTanagerSearchDock")
@@ -391,12 +393,12 @@ class TanagerSearchDialog(QDockWidget):
 
         self.selected_footprints_btn = QPushButton("Use Selected Footprints")
         self.selected_footprints_btn.clicked.connect(
-            self.populate_from_selected_footprints
+            lambda: self.populate_from_selected_footprints()
         )
         button_layout.addWidget(self.selected_footprints_btn, 0, 1)
 
         self.footprints_btn = QPushButton("Add Footprints")
-        self.footprints_btn.clicked.connect(self.add_footprints_layer)
+        self.footprints_btn.clicked.connect(lambda: self.add_footprints_layer())
         button_layout.addWidget(self.footprints_btn, 0, 2)
 
         self.visual_btn = QPushButton("Open Visual")
@@ -831,6 +833,7 @@ class TanagerSearchDialog(QDockWidget):
             self.items = list(items or [])
             self.gdf = gdf
             self.populate_results(self.items)
+            self.add_footprints_layer(show_message=False, zoom=True, replace=True)
             self.progress_bar.setValue(100)
             self.status_label.setText(f"{len(self.items)} Tanager scenes found")
         except Exception as exc:
@@ -986,13 +989,129 @@ class TanagerSearchDialog(QDockWidget):
         assets = item.get("assets", {}) if isinstance(item, dict) else {}
         return any(asset.get("href") for asset in assets.values())
 
-    def add_footprints_layer(self):
+    def _item_geometry(self, item):
+        """Return a QGIS geometry from a STAC item geometry.
+
+        Args:
+            item: STAC item dictionary.
+
+        Returns:
+            QgsGeometry, or ``None`` when geometry is unavailable.
+        """
+        geometry = item.get("geometry", {}) if isinstance(item, dict) else {}
+        geom_type = geometry.get("type")
+        coordinates = geometry.get("coordinates")
+        if not geom_type or not coordinates:
+            return None
+
+        def ring_points(ring):
+            """Return QGIS points for a GeoJSON ring."""
+            return [QgsPointXY(float(x), float(y)) for x, y, *rest in ring]
+
+        try:
+            if geom_type == "Polygon":
+                return QgsGeometry.fromPolygonXY(
+                    [ring_points(ring) for ring in coordinates]
+                )
+            if geom_type == "MultiPolygon":
+                return QgsGeometry.fromMultiPolygonXY(
+                    [[ring_points(ring) for ring in polygon] for polygon in coordinates]
+                )
+        except Exception:
+            return None
+        return None
+
+    def _item_stac_url(self, item):
+        """Return the best STAC URL for an item.
+
+        Args:
+            item: STAC item dictionary.
+
+        Returns:
+            STAC item URL string.
+        """
+        return item.get("_stac_url") or item.get("properties", {}).get("stac_href", "")
+
+    def _remove_result_footprints_layer(self):
+        """Remove the current search result footprint layer, if present."""
+        layer = self._result_footprints_layer
+        self._result_footprints_layer = None
+        if layer is None:
+            return
+        try:
+            QgsProject.instance().removeMapLayer(layer.id())
+        except Exception:
+            pass  # nosec B110
+
+    def _result_item_ids(self):
+        """Return selected result table item IDs.
+
+        Returns:
+            Set of selected STAC item IDs.
+        """
+        rows = self.results_table.selectionModel().selectedRows()
+        if not rows and self.results_table.currentRow() >= 0:
+            rows = [
+                self.results_table.model().index(self.results_table.currentRow(), 0)
+            ]
+
+        item_ids = set()
+        for row_index in rows:
+            table_item = self.results_table.item(row_index.row(), 0)
+            item = table_item.data(Qt.ItemDataRole.UserRole) if table_item else None
+            if isinstance(item, dict) and item.get("id"):
+                item_ids.add(item["id"])
+        return item_ids
+
+    def _select_result_footprints(self):
+        """Select result footprint features matching selected table rows."""
+        layer = self._result_footprints_layer
+        if layer is None:
+            return
+        item_ids = self._result_item_ids()
+        if not item_ids:
+            try:
+                layer.removeSelection()
+            except Exception:
+                pass  # nosec B110
+            return
+
+        feature_ids = []
+        get_features = getattr(layer, "getFeatures", None)
+        if callable(get_features):
+            try:
+                for feature in get_features():
+                    if self._feature_attr(feature, "id") in item_ids:
+                        feature_ids.append(feature.id())
+            except Exception:
+                feature_ids = []
+
+        try:
+            layer.selectByIds(feature_ids)
+        except Exception:
+            pass  # nosec B110
+
+    def _has_item_footprints(self):
+        """Return whether the current items include STAC geometries."""
+        for item in self.items:
+            geometry = item.get("geometry", {}) if isinstance(item, dict) else {}
+            if geometry.get("type") in {"Polygon", "MultiPolygon"}:
+                if geometry.get("coordinates"):
+                    return True
+        return False
+
+    def add_footprints_layer(self, show_message=True, zoom=True, replace=False):
         """Add Tanager result footprints as an in-memory vector layer."""
-        if self.gdf is None or len(self.items) == 0:
-            QMessageBox.information(self, "Tanager Footprints", "No results to add.")
+        if len(self.items) == 0:
+            if show_message:
+                QMessageBox.information(
+                    self, "Tanager Footprints", "No results to add."
+                )
             return
 
         try:
+            if replace:
+                self._remove_result_footprints_layer()
             layer = QgsVectorLayer(
                 "Polygon?crs=EPSG:4326",
                 "Tanager Footprints",
@@ -1012,39 +1131,53 @@ class TanagerSearchDialog(QDockWidget):
             layer.updateFields()
 
             features = []
-            for item, (_, row) in zip(self.items, self.gdf.iterrows()):
-                geometry = row.geometry
-                if geometry is None or geometry.is_empty:
+            for item in self.items:
+                geometry = self._item_geometry(item)
+                if geometry is None:
                     continue
                 properties = item.get("properties", {})
                 feature = QgsFeature(layer.fields())
-                feature.setGeometry(QgsGeometry.fromWkt(geometry.wkt))
+                feature.setGeometry(geometry)
                 feature.setAttributes(
                     [
                         item.get("id", ""),
                         properties.get("datetime", ""),
                         item.get("_collection_title") or item.get("collection", ""),
                         properties.get("cloud_percent"),
-                        item.get("_stac_url", ""),
+                        self._item_stac_url(item),
                         _asset_url(item, TANAGER_VISUAL_ASSET),
                         _asset_url(item, TANAGER_HDF5_ASSET),
                     ]
                 )
                 features.append(feature)
 
+            if not features:
+                if show_message:
+                    QMessageBox.information(
+                        self,
+                        "Tanager Footprints",
+                        "The search results do not include footprint geometries.",
+                    )
+                return
+
             provider.addFeatures(features)
             layer.updateExtents()
             layer.setCustomProperty(
                 "hypercoast/tanager_stac_url",
-                ",".join(item.get("_stac_url", "") for item in self.items),
+                ",".join(self._item_stac_url(item) for item in self.items),
             )
+            layer.setCustomProperty("hypercoast/tanager_result_footprints", "true")
             self._style_footprint_layer(layer)
             QgsProject.instance().addMapLayer(layer)
-            self._zoom_to_layer(layer)
+            self._result_footprints_layer = layer
+            self._select_result_footprints()
+            if zoom:
+                self._zoom_to_layer(layer)
         except Exception as exc:
-            QMessageBox.warning(
-                self, "Tanager Footprints", f"Could not add footprints: {exc}"
-            )
+            if show_message:
+                QMessageBox.warning(
+                    self, "Tanager Footprints", f"Could not add footprints: {exc}"
+                )
 
     def open_visual_layer(self):
         """Open the selected Tanager visual asset as a QGIS raster layer."""
@@ -1229,7 +1362,7 @@ class TanagerSearchDialog(QDockWidget):
     def _sync_button_state(self):
         """Enable or disable result actions based on current state."""
         has_results = self.results_table.rowCount() > 0
-        has_result_footprints = has_results and self.gdf is not None
+        has_result_footprints = has_results and self._has_item_footprints()
         has_selection = self.selected_item() is not None
         self.footprints_btn.setEnabled(has_result_footprints)
         self.visual_btn.setEnabled(has_selection)
@@ -1239,6 +1372,7 @@ class TanagerSearchDialog(QDockWidget):
     def _on_result_selection_changed(self):
         """Refresh asset options after the selected result changes."""
         self._populate_asset_combo(self.selected_item())
+        self._select_result_footprints()
         self._sync_button_state()
 
     def _populate_asset_combo(self, item=None):
@@ -1285,7 +1419,9 @@ class TanagerSearchDialog(QDockWidget):
         self.search_btn.setEnabled(not busy)
         self.selected_footprints_btn.setEnabled(not busy)
         self.footprints_btn.setEnabled(
-            (not busy) and self.results_table.rowCount() > 0 and self.gdf is not None
+            (not busy)
+            and self.results_table.rowCount() > 0
+            and self._has_item_footprints()
         )
         self.visual_btn.setEnabled((not busy) and self.selected_item() is not None)
         self.stac_btn.setEnabled((not busy) and self.selected_item() is not None)

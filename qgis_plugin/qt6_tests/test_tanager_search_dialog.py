@@ -143,6 +143,70 @@ def test_populate_results_stores_items_and_asset_flags(qapp):
     )
 
 
+def test_search_finished_adds_footprints_without_gdf(qapp, monkeypatch, tmp_path):
+    """STAC search results should add footprints without GeoDataFrame output."""
+    dialog = _dialog(qapp, monkeypatch=monkeypatch, tmp_path=tmp_path)
+    recorded = {}
+
+    def _add_footprints_layer(**kwargs):
+        """Record footprint layer creation arguments."""
+        recorded.update(kwargs)
+
+    monkeypatch.setattr(dialog, "add_footprints_layer", _add_footprints_layer)
+
+    dialog._on_search_finished([{"id": "scene-1", "properties": {}}], None, "")
+
+    assert dialog.gdf is None
+    assert recorded == {"show_message": False, "zoom": True, "replace": True}
+
+
+def test_table_selection_selects_matching_result_footprint(qapp, monkeypatch, tmp_path):
+    """Selecting a result row should select the matching map footprint."""
+    dialog = _dialog(qapp, monkeypatch=monkeypatch, tmp_path=tmp_path)
+    selected = []
+
+    class _Feature:
+        """Small feature-like object."""
+
+        def __init__(self, feature_id, item_id):
+            """Initialize feature identifiers."""
+            self.feature_id = feature_id
+            self.item_id = item_id
+
+        def id(self):
+            """Return the feature id."""
+            return self.feature_id
+
+        def attribute(self, name):
+            """Return the requested attribute."""
+            if name == "id":
+                return self.item_id
+            return None
+
+    class _Layer:
+        """Small vector layer-like object."""
+
+        def getFeatures(self):
+            """Return footprint features."""
+            return [_Feature(11, "scene-1"), _Feature(22, "scene-2")]
+
+        def selectByIds(self, feature_ids):
+            """Record selected feature ids."""
+            selected[:] = feature_ids
+
+    dialog._result_footprints_layer = _Layer()
+    dialog.populate_results(
+        [
+            {"id": "scene-1", "properties": {}, "geometry": {"type": "Point"}},
+            {"id": "scene-2", "properties": {}, "geometry": {"type": "Point"}},
+        ]
+    )
+
+    dialog.results_table.selectRow(1)
+
+    assert selected == [22]
+
+
 def test_global_footprints_layer_is_added_and_styled(qapp, monkeypatch, tmp_path):
     """Opening the Tanager dock should add styled global footprints."""
     added = []
@@ -471,6 +535,33 @@ def test_search_worker_reports_errors(qapp, monkeypatch):
     worker.run()
 
     assert emitted == ["missing dependency"]
+
+
+def test_search_worker_requests_items_without_geodataframe(qapp, monkeypatch):
+    """Search worker should avoid GeoDataFrame creation for faster searches."""
+    import hypercoast_qgis._hypercoast_lib as lib
+
+    recorded = {}
+
+    class _HyperCoast:
+        """Fake HyperCoast module."""
+
+        def search_tanager(self, **params):
+            """Record search parameters and return items."""
+            recorded.update(params)
+            return [{"id": "scene-1"}]
+
+    monkeypatch.setattr(lib, "get_hypercoast", lambda: _HyperCoast())
+    worker = TanagerSearchWorker({"count": 1})
+    emitted = []
+    worker.finished.connect(
+        lambda items, gdf, error: emitted.append((items, gdf, error))
+    )
+
+    worker.run()
+
+    assert recorded["return_gdf"] is False
+    assert emitted == [([{"id": "scene-1"}], None, "")]
 
 
 def test_tanager_action_is_dependency_gated():
