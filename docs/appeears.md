@@ -1,0 +1,3 @@
+# appeears module
+
+::: hypercoast.appeears

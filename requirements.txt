@@ -11,6 +11,7 @@ netcdf4
 numpy
 openpyxl
 psutil
+requests
 rioxarray
 s3fs
 scikit-learn

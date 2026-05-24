@@ -68,6 +68,19 @@ from .cesl import (
     cesl_to_gdf,
     cesl_to_geojson,
 )
+from .appeears import (
+    AppEEARSClient,
+    appeears_area_task,
+    appeears_download,
+    appeears_emit_layers,
+    appeears_layers,
+    appeears_login,
+    appeears_point_task,
+    appeears_products,
+    appeears_submit_task,
+    appeears_wait,
+    read_appeears,
+)
 from .ui import SpectralWidget
 from .common import (
     download_file,
