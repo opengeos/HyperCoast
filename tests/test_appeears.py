@@ -69,20 +69,22 @@ class MockSession:
         if url.endswith("/login"):
             return MockResponse({"token": "abc"})
         if url.endswith("/product/EMIT_L2A_RFL.001"):
+            reflectance = "Reflectance for Wavelength: {} nm, FWHM: 8.415 nm"
+            flag = "Usable wavelengths flag for Wavelength: 388.409 nm, FWHM: 8.415 nm"
             return MockResponse(
                 {
                     "B001": {
-                        "Description": "Reflectance for Wavelength: 381.006 nm, FWHM: 8.415 nm",
+                        "Description": reflectance.format("381.006"),
                         "Units": "spectral reflectance",
                         "DataType": "float32",
                     },
                     "B002": {
-                        "Description": "Reflectance for Wavelength: 388.409 nm, FWHM: 8.415 nm",
+                        "Description": reflectance.format("388.409"),
                         "Units": "spectral reflectance",
                         "DataType": "float32",
                     },
                     "B002_GW": {
-                        "Description": "Usable wavelengths flag for Wavelength: 388.409 nm, FWHM: 8.415 nm",
+                        "Description": flag,
                         "Units": "binary flag",
                         "DataType": "uint8",
                     },
