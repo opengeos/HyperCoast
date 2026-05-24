@@ -1719,6 +1719,50 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_asset_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_asset_url()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_bounds()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_collection_concept_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_collection_concept_id()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_granule_ur" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_granule_ur()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.aviris.read_aviris" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2475,6 +2519,50 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_asset_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_asset_url()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_bounds()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_collection_concept_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_collection_concept_id()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.aviris.get_aviris_granule_ur" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_aviris_granule_ur()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hypercoast.aviris.read_aviris" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2529,6 +2617,8 @@ SPDX-License-Identifier = "MIT"</p>
 
 
   <div class="doc doc-children">
+
+
 
 
 
@@ -2673,7 +2763,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 
 
 <h2 id="hypercoast.aviris.extract_aviris" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extract_aviris</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">extract_aviris</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">allow_remote</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.aviris.extract_aviris" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2717,6 +2807,14 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
         <td><p>The offset from the point to extract. Defaults to 2.0.</p></td>
         <td><code>2.0</code></td>
       </tr>
+      <tr>
+        <td><code>allow_remote</code></td>
+        <td><code>bool</code></td>
+        <td><p>Allow extraction from a remote NetCDF
+source. Defaults to False because point reads from AVIRIS NetCDF
+cubes can be very slow over HTTPS/S3.</p></td>
+        <td><code>False</code></td>
+      </tr>
   </tbody>
 </table>
 <p><strong>Returns:</strong></p>
@@ -2737,7 +2835,11 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
         <details class="quote">
           <summary>Source code in <code>hypercoast/aviris.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_aviris</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="n">dataset</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">allow_remote</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts AVIRIS data from a given xarray Dataset.</span>
@@ -2747,25 +2849,49 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 <span class="sd">        lat (float): The latitude of the point to extract.</span>
 <span class="sd">        lon (float): The longitude of the point to extract.</span>
 <span class="sd">        offset (float, optional): The offset from the point to extract. Defaults to 2.0.</span>
+<span class="sd">        allow_remote (bool, optional): Allow extraction from a remote NetCDF</span>
+<span class="sd">            source. Defaults to False because point reads from AVIRIS NetCDF</span>
+<span class="sd">            cubes can be very slow over HTTPS/S3.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.DataArray: The extracted data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">crs</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_source_is_remote&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_remote</span><span class="p">:</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_source&quot;</span><span class="p">,</span> <span class="s2">&quot;remote AVIRIS NetCDF&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;Interactive spectral extraction from a remote AVIRIS NetCDF can be &quot;</span>
+            <span class="s2">&quot;very slow because the reflectance cube is chunked in large spatial &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;blocks. Download the reflectance NetCDF locally and reopen it with &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;read_aviris() before using the spectral widget. Source: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">crs</span> <span class="o">=</span> <span class="n">_dataset_crs</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">([[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]],</span> <span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span> <span class="n">crs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span>
 
-    <span class="n">x_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;xc&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;xc&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
-    <span class="n">y_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;yc&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;yc&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;xc&quot;</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span> <span class="ow">and</span> <span class="s2">&quot;yc&quot;</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+        <span class="n">x_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;xc&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;xc&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">y_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;yc&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;yc&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_con</span> <span class="o">&amp;</span> <span class="n">y_con</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">])</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_con</span> <span class="o">&amp;</span> <span class="n">y_con</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">x_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+            <span class="n">y_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_con</span> <span class="o">&amp;</span> <span class="n">y_con</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span>
 
     <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
         <span class="n">data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]}</span>
@@ -2784,8 +2910,246 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 
 
 
+<h2 id="hypercoast.aviris.get_aviris_asset_url" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_aviris_asset_url</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s1">&#39;RFL_ORT&#39;</span><span class="p">,</span> <span class="n">prefer_s3</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.aviris.get_aviris_asset_url" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Get an AVIRIS asset URL from a CMR/earthaccess granule.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>granule</code></td>
+        <td><code>Any</code></td>
+        <td><p>A CMR granule dictionary, an earthaccess granule, or a
+STAC-like item dictionary.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>asset</code></td>
+        <td><code>str</code></td>
+        <td><p>Asset alias or filename fragment. Common aliases
+include <code>"RFL_ORT"</code>, <code>"UNC_ORT"</code>, <code>"RFL_ORT_QL"</code>, and
+<code>"BROWSE"</code>. Defaults to <code>"RFL_ORT"</code>.</p></td>
+        <td><code>&#39;RFL_ORT&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>prefer_s3</code></td>
+        <td><code>bool</code></td>
+        <td><p>Prefer <code>s3://</code> links when available.
+Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>The matching asset URL.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/aviris.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_aviris_asset_url</span><span class="p">(</span>
+    <span class="n">granule</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">asset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RFL_ORT&quot;</span><span class="p">,</span>
+    <span class="n">prefer_s3</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get an AVIRIS asset URL from a CMR/earthaccess granule.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        granule (Any): A CMR granule dictionary, an earthaccess granule, or a</span>
+<span class="sd">            STAC-like item dictionary.</span>
+<span class="sd">        asset (str, optional): Asset alias or filename fragment. Common aliases</span>
+<span class="sd">            include ``&quot;RFL_ORT&quot;``, ``&quot;UNC_ORT&quot;``, ``&quot;RFL_ORT_QL&quot;``, and</span>
+<span class="sd">            ``&quot;BROWSE&quot;``. Defaults to ``&quot;RFL_ORT&quot;``.</span>
+<span class="sd">        prefer_s3 (bool, optional): Prefer ``s3://`` links when available.</span>
+<span class="sd">            Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The matching asset URL.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">asset_key</span> <span class="o">=</span> <span class="n">asset</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">fragments</span> <span class="o">=</span> <span class="n">AVIRIS_ASSET_ALIASES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">asset_key</span><span class="p">,</span> <span class="p">(</span><span class="n">asset</span><span class="p">,))</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="n">_granule_links</span><span class="p">(</span><span class="n">granule</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">links</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No links found in the AVIRIS granule.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="n">link</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="n">is_s3</span> <span class="o">=</span> <span class="n">href</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;s3://&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefer_s3</span> <span class="ow">and</span> <span class="n">is_s3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">prefer_s3</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_s3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">links</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">score</span><span class="p">):</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="n">haystack</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">href</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">haystack</span> <span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">href</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find AVIRIS asset matching </span><span class="si">{</span><span class="n">asset</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.aviris.get_aviris_bounds" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_aviris_bounds</span><span class="p">(</span><span class="n">granule</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.aviris.get_aviris_bounds" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Get AVIRIS granule bounds as [min_lon, min_lat, max_lon, max_lat].</p>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/aviris.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_aviris_bounds</span><span class="p">(</span><span class="n">granule</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get AVIRIS granule bounds as [min_lon, min_lat, max_lon, max_lat].&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">spatial</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">umm</span> <span class="o">=</span> <span class="n">granule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;umm&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">umm</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">spatial</span> <span class="o">=</span> <span class="n">umm</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SpatialExtent&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spatial</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">spatial</span> <span class="o">=</span> <span class="n">granule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SpatialExtent&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">[</span><span class="s2">&quot;HorizontalSpatialDomain&quot;</span><span class="p">][</span><span class="s2">&quot;Geometry&quot;</span><span class="p">][</span><span class="s2">&quot;GPolygons&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">lons</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lats</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">polygons</span><span class="p">:</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Boundary&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Points&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Longitude&quot;</span> <span class="ow">in</span> <span class="n">point</span> <span class="ow">and</span> <span class="s2">&quot;Latitude&quot;</span> <span class="ow">in</span> <span class="n">point</span><span class="p">:</span>
+                <span class="n">lons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s2">&quot;Longitude&quot;</span><span class="p">]))</span>
+                <span class="n">lats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="s2">&quot;Latitude&quot;</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lons</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">lats</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">lons</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">lats</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">lons</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">lats</span><span class="p">)]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.aviris.get_aviris_collection_concept_id" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_aviris_collection_concept_id</span><span class="p">(</span><span class="n">granule</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.aviris.get_aviris_collection_concept_id" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the CMR collection concept ID from an AVIRIS granule-like object.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/aviris.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_aviris_collection_concept_id</span><span class="p">(</span><span class="n">granule</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the CMR collection concept ID from an AVIRIS granule-like object.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="n">granule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;collection-concept-id&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;collection-concept-id&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;collection-concept-id&quot;</span><span class="p">,</span> <span class="s2">&quot;collection_concept_id&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">granule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">granule</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.aviris.get_aviris_granule_ur" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_aviris_granule_ur</span><span class="p">(</span><span class="n">granule</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.aviris.get_aviris_granule_ur" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the CMR GranuleUR from an AVIRIS granule-like object.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/aviris.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_aviris_granule_ur</span><span class="p">(</span><span class="n">granule</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the CMR GranuleUR from an AVIRIS granule-like object.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">umm</span> <span class="o">=</span> <span class="n">granule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;umm&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">umm</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">umm</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GranuleUR&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">umm</span><span class="p">[</span><span class="s2">&quot;GranuleUR&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;GranuleUR&quot;</span><span class="p">,</span> <span class="s2">&quot;producer_granule_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">granule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">granule</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="hypercoast.aviris.read_aviris" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_aviris</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_aviris</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">storage_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.aviris.read_aviris" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2808,7 +3172,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
       <tr>
         <td><code>filepath</code></td>
         <td><code>str</code></td>
-        <td><p>The path to the AVIRIS data.</p></td>
+        <td><p>The path or URL to the AVIRIS data.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
@@ -2824,6 +3188,42 @@ all wavelengths are selected. Defaults to None.</p></td>
         <td><p>The method to use for selection. Defaults to
 "nearest".</p></td>
         <td><code>&#39;nearest&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>chunks</code></td>
+        <td><code>Any</code></td>
+        <td><p>Chunking passed to <code>xarray.open_dataset</code> for
+NetCDF inputs. Defaults to <code>"auto"</code>.</p></td>
+        <td><code>&#39;auto&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>engine</code></td>
+        <td><code>str</code></td>
+        <td><p>Xarray backend engine for NetCDF inputs. Remote
+NetCDF sources default to <code>"h5netcdf"</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>variable</code></td>
+        <td><code>str</code></td>
+        <td><p>Data variable to read from NetCDF inputs.
+Defaults to <code>"reflectance"</code>.</p></td>
+        <td><code>&#39;reflectance&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>storage_options</code></td>
+        <td><code>dict</code></td>
+        <td><p>Options passed to <code>fsspec.open</code> for
+remote NetCDF inputs, such as S3 or HTTP credentials.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>group</code></td>
+        <td><code>str</code></td>
+        <td><p>NetCDF group containing the reflectance variable.
+Defaults to <code>"reflectance"</code> for AVIRIS-3/5 products. If the group
+is not present, the root dataset is opened.</p></td>
+        <td><code>&#39;reflectance&#39;</code></td>
       </tr>
       <tr>
         <td><code>**kwargs</code></td>
@@ -2854,22 +3254,60 @@ all wavelengths are selected. Defaults to None.</p></td>
     <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">chunks</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
+    <span class="n">storage_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">group</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads NASA AVIRIS hyperspectral data and returns an xarray dataset.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        filepath (str): The path to the AVIRIS data.</span>
+<span class="sd">        filepath (str): The path or URL to the AVIRIS data.</span>
 <span class="sd">        wavelengths (List[float], optional): The wavelengths to select. If None,</span>
 <span class="sd">            all wavelengths are selected. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for selection. Defaults to</span>
 <span class="sd">            &quot;nearest&quot;.</span>
+<span class="sd">        chunks (Any, optional): Chunking passed to ``xarray.open_dataset`` for</span>
+<span class="sd">            NetCDF inputs. Defaults to ``&quot;auto&quot;``.</span>
+<span class="sd">        engine (str, optional): Xarray backend engine for NetCDF inputs. Remote</span>
+<span class="sd">            NetCDF sources default to ``&quot;h5netcdf&quot;``.</span>
+<span class="sd">        variable (str, optional): Data variable to read from NetCDF inputs.</span>
+<span class="sd">            Defaults to ``&quot;reflectance&quot;``.</span>
+<span class="sd">        storage_options (dict, optional): Options passed to ``fsspec.open`` for</span>
+<span class="sd">            remote NetCDF inputs, such as S3 or HTTP credentials.</span>
+<span class="sd">        group (str, optional): NetCDF group containing the reflectance variable.</span>
+<span class="sd">            Defaults to ``&quot;reflectance&quot;`` for AVIRIS-3/5 products. If the group</span>
+<span class="sd">            is not present, the root dataset is opened.</span>
 <span class="sd">        **kwargs (Any): Additional arguments to pass to the selection method.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xr.Dataset: The dataset containing the reflectance data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">get_aviris_asset_url</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s2">&quot;RFL_ORT&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">):</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">_source_name</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_is_netcdf_path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_is_netcdf_path</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">_open_aviris_netcdf</span><span class="p">(</span>
+            <span class="n">filepath</span><span class="p">,</span>
+            <span class="n">chunks</span><span class="o">=</span><span class="n">chunks</span><span class="p">,</span>
+            <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span>
+            <span class="n">storage_options</span><span class="o">=</span><span class="n">storage_options</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">_normalize_aviris_netcdf</span><span class="p">(</span>
+            <span class="n">ds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_name</span><span class="p">:</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_name</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;_source_is_remote&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_is_remote_path</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ds</span>
 
     <span class="k">if</span> <span class="n">filepath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.hdr&quot;</span><span class="p">):</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.hdr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>

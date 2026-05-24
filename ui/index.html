@@ -2829,7 +2829,20 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_neon</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
-                    <span class="n">da</span> <span class="o">=</span> <span class="n">extract_aviris</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span>
+                                <span class="s2">&quot;AVIRIS spectral extraction requires a local &quot;</span>
+                                <span class="s2">&quot;reflectance NetCDF dataset. Add the layer again &quot;</span>
+                                <span class="s2">&quot;with dataset=hypercoast.read_aviris(local_file).&quot;</span>
+                            <span class="p">)</span>
+                        <span class="k">return</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">da</span> <span class="o">=</span> <span class="n">extract_aviris</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+                        <span class="k">return</span>
 
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PRISMA&quot;</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_prisma</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
@@ -3230,7 +3243,20 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_neon</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
-                <span class="n">da</span> <span class="o">=</span> <span class="n">extract_aviris</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="s2">&quot;AVIRIS spectral extraction requires a local &quot;</span>
+                            <span class="s2">&quot;reflectance NetCDF dataset. Add the layer again &quot;</span>
+                            <span class="s2">&quot;with dataset=hypercoast.read_aviris(local_file).&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">da</span> <span class="o">=</span> <span class="n">extract_aviris</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+                    <span class="k">return</span>
 
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PRISMA&quot;</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_prisma</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>

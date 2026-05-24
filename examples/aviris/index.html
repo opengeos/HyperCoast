@@ -3100,27 +3100,28 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a href="https://colab.research.google.com/github/opengeos/HyperCoast/blob/main/docs/examples/aviris.ipynb"><img alt="image" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
-<h1 id="visualizing-aviris-data-interactively-with-hypercoast">Visualizing AVIRIS data interactively with HyperCoast<a class="anchor-link" href="#visualizing-aviris-data-interactively-with-hypercoast">¶</a></h1><p>This notebook demonstrates how to visualize <a href="https://aviris.jpl.nasa.gov">AVIRIS</a> hyperspectral data interactively with HyperCoast. For more information about AVIRIS, please visit the links below:</p>
+<h1 id="visualizing-aviris-data-interactively-with-hypercoast">Visualizing AVIRIS data interactively with HyperCoast<a class="anchor-link" href="#visualizing-aviris-data-interactively-with-hypercoast">¶</a></h1><p>This notebook demonstrates how to search and visualize the newer ORNL DAAC AVIRIS-3 and AVIRIS-5 L2A orthocorrected surface reflectance products. These products include a chunked/compressed NetCDF reflectance cube (<code>*_RFL_ORT.nc</code>) and a quicklook Cloud Optimized GeoTIFF (<code>*_RFL_ORT_QL.tif</code>) that can be streamed as the map preview through NASA TiTiler CMR.</p>
+<p>For more information about AVIRIS, please visit the links below:</p>
 <ul>
 <li><a href="https://aviris.jpl.nasa.gov/">https://aviris.jpl.nasa.gov/</a></li>
 <li><a href="https://aviris.jpl.nasa.gov/dataportal/">https://aviris.jpl.nasa.gov/dataportal/</a></li>
 <li><a href="https://popo.jpl.nasa.gov/mmgis-aviris/?s=ujooa">https://popo.jpl.nasa.gov/mmgis-aviris/?s=ujooa</a></li>
-<li><a href="https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1988">https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1988</a></li>
 <li><a href="https://github.com/ornldaac/deltax_workshop_2022/tree/main">https://github.com/ornldaac/deltax_workshop_2022/tree/main</a></li>
 <li><a href="https://github.com/jjmcnelis/aviris-ng-notebooks/tree/master">https://github.com/jjmcnelis/aviris-ng-notebooks/tree/master</a></li>
 </ul>
+<p>The AVIRIS data are protected Earthdata assets. Log in with a NASA Earthdata account before streaming or downloading.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3138,16 +3139,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># %pip install "hypercoast[extra]"</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># %pip install "hypercoast[extra]" earthaccess s3fs h5netcdf</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-1"># %pip install "hypercoast[extra]"</div>
+<div class="clipboard-copy-txt" id="cell-1"># %pip install "hypercoast[extra]" earthaccess s3fs h5netcdf</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3165,42 +3166,37 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">hypercoast</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">earthaccess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hypercoast</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-2">import hypercoast</div>
+<div class="clipboard-copy-txt" id="cell-2">import contextlib
+import io
+import os
+
+import earthaccess
+import hypercoast</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Download sample dataset from Access the AVIRIS-NG L2 Surface Reflectance product page via ORNL DAAC
-<a href="https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1988">https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1988</a></p>
-<p><img alt="" src="https://i.imgur.com/3hwihRA.png"/></p>
-<p>Download <code>ang20210401t150456_rfl_v2z1.zip</code> and unzip it.</p>
-<p><img alt="" src="https://i.imgur.com/16jcmxd.png"/></p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The dataset contains 2 files: <code>ang20210401t150456_rfl_v2z1</code> and <code>ang20210401t150456_rfl_v2z1.hdr</code>. We will use the <code>ang20210401t150456_rfl_v2z1</code> file in this notebook.</p>
+<p>Authenticate with Earthdata. Use <code>strategy="interactive"</code> in notebooks when you have not already saved credentials.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3218,27 +3214,27 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">filepath</span> <span class="o">=</span> <span class="s2">"ang20210401t150456_rfl_v2z1"</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">earthaccess</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">"interactive"</span><span class="p">,</span> <span class="n">persist</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-3">filepath = "ang20210401t150456_rfl_v2z1"</div>
+<div class="clipboard-copy-txt" id="cell-3">earthaccess.login(strategy="interactive", persist=True)</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Read the AVIRIS data as an <code>xarray.Dataset</code> object.</p>
+<p>Search the AVIRIS-3 L2A reflectance collection. To use AVIRIS-5 instead, set <code>short_name="AV5_L2A_RFL_2484"</code>.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3256,29 +3252,39 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_aviris</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-<span class="n">ds</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">results</span><span class="p">,</span> <span class="n">gdf</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_aviris</span><span class="p">(</span>
+    <span class="n">short_name</span><span class="o">=</span><span class="s2">"AV3_L2A_RFL_2357"</span><span class="p">,</span>
+    <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">return_gdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-4">ds = hypercoast.read_aviris(filepath)
-ds</div>
+<div class="clipboard-copy-txt" id="cell-4">results, gdf = hypercoast.search_aviris(
+    short_name="AV3_L2A_RFL_2357",
+    count=10,
+    return_gdf=True,
+)
+
+gdf.head()</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Create an interactive map.</p>
+<p>Inspect the reflectance NetCDF, uncertainty NetCDF, and quicklook COG assets for the first granule.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3296,29 +3302,39 @@ ds</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
-<span class="n">m</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">granule</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">rfl_url</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">get_aviris_asset_url</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s2">"RFL_ORT"</span><span class="p">)</span>
+<span class="n">unc_url</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">get_aviris_asset_url</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s2">"UNC_ORT"</span><span class="p">)</span>
+<span class="n">quicklook_url</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">get_aviris_asset_url</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s2">"RFL_ORT_QL"</span><span class="p">)</span>
+
+<span class="n">rfl_url</span><span class="p">,</span> <span class="n">unc_url</span><span class="p">,</span> <span class="n">quicklook_url</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-5">m = hypercoast.Map()
-m</div>
+<div class="clipboard-copy-txt" id="cell-5">granule = results[0]
+
+rfl_url = hypercoast.get_aviris_asset_url(granule, asset="RFL_ORT")
+unc_url = hypercoast.get_aviris_asset_url(granule, asset="UNC_ORT")
+quicklook_url = hypercoast.get_aviris_asset_url(granule, asset="RFL_ORT_QL")
+
+rfl_url, unc_url, quicklook_url</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Add the AVIRIS data to the map.</p>
+<p>For direct S3 streaming, request temporary ORNL DAAC credentials. Direct S3 access works best from AWS <code>us-west-2</code>. When direct S3 is not available, <code>earthaccess.open()</code> provides authenticated HTTPS file-like objects without downloading the full granule.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=10">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3336,24 +3352,293 @@ m</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">m</span><span class="o">.</span><span class="n">add_aviris</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">400</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"spectral"</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">credentials</span> <span class="o">=</span> <span class="n">earthaccess</span><span class="o">.</span><span class="n">get_s3_credentials</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="n">results</span><span class="p">)</span>
+
+<span class="n">storage_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"key"</span><span class="p">:</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">"accessKeyId"</span><span class="p">],</span>
+    <span class="s2">"secret"</span><span class="p">:</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">"secretAccessKey"</span><span class="p">],</span>
+    <span class="s2">"token"</span><span class="p">:</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">"sessionToken"</span><span class="p">],</span>
+    <span class="s2">"client_kwargs"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"region_name"</span><span class="p">:</span> <span class="s2">"us-west-2"</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># Make the credentials available to raster clients used by the map preview.</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"AWS_ACCESS_KEY_ID"</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">"accessKeyId"</span><span class="p">]</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"AWS_SECRET_ACCESS_KEY"</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">"secretAccessKey"</span><span class="p">]</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"AWS_SESSION_TOKEN"</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">"sessionToken"</span><span class="p">]</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-6">m.add_aviris(ds, wavelengths=[1000, 700, 400], vmin=0, vmax=0.2)
-m.add("spectral")</div>
+<div class="clipboard-copy-txt" id="cell-6">credentials = earthaccess.get_s3_credentials(results=results)
+
+storage_options = {
+    "key": credentials["accessKeyId"],
+    "secret": credentials["secretAccessKey"],
+    "token": credentials["sessionToken"],
+    "client_kwargs": {"region_name": "us-west-2"},
+}
+
+# Make the credentials available to raster clients used by the map preview.
+os.environ["AWS_ACCESS_KEY_ID"] = credentials["accessKeyId"]
+os.environ["AWS_SECRET_ACCESS_KEY"] = credentials["secretAccessKey"]
+os.environ["AWS_SESSION_TOKEN"] = credentials["sessionToken"]</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=11">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><img alt="" src="https://i.imgur.com/RdegGqx.gif"/></p>
+<p>Open the reflectance NetCDF without downloading the full cube for metadata inspection. HyperCoast normalizes the AVIRIS-3/5 NetCDF layout to <code>y</code>, <code>x</code>, and <code>wavelength</code> dimensions. The fallback keeps the notebook runnable from local machines that cannot reach NASA's in-region S3 buckets directly. Remote NetCDF point reads can be slow because the reflectance cube is chunked in large spatial blocks, so use a local NetCDF file for interactive spectral extraction.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=12">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">rfl_s3_url</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">get_aviris_asset_url</span><span class="p">(</span>
+    <span class="n">granule</span><span class="p">,</span>
+    <span class="n">asset</span><span class="o">=</span><span class="s2">"RFL_ORT"</span><span class="p">,</span>
+    <span class="n">prefer_s3</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_aviris</span><span class="p">(</span>
+        <span class="n">rfl_s3_url</span><span class="p">,</span>
+        <span class="n">storage_options</span><span class="o">=</span><span class="n">storage_options</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">dataset_source</span> <span class="o">=</span> <span class="s2">"direct S3"</span>
+<span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Direct S3 is not available; using authenticated HTTPS instead."</span><span class="p">)</span>
+    <span class="k">with</span> <span class="p">(</span>
+        <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()),</span>
+        <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stderr</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()),</span>
+    <span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">earthaccess</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">results</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">rfl_file</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+        <span class="n">file</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">"full_name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_RFL_ORT.nc"</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_aviris</span><span class="p">(</span><span class="n">rfl_file</span><span class="p">)</span>
+    <span class="n">dataset_source</span> <span class="o">=</span> <span class="s2">"authenticated HTTPS"</span>
+
+<span class="n">ds</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-7">rfl_s3_url = hypercoast.get_aviris_asset_url(
+    granule,
+    asset="RFL_ORT",
+    prefer_s3=True,
+)
+
+try:
+    ds = hypercoast.read_aviris(
+        rfl_s3_url,
+        storage_options=storage_options,
+    )
+    dataset_source = "direct S3"
+except PermissionError:
+    print("Direct S3 is not available; using authenticated HTTPS instead.")
+    with (
+        contextlib.redirect_stdout(io.StringIO()),
+        contextlib.redirect_stderr(io.StringIO()),
+    ):
+        files = earthaccess.open(results[:1])
+    rfl_file = next(
+        file
+        for file in files
+        if str(getattr(file, "full_name", "")).endswith("_RFL_ORT.nc")
+    )
+    ds = hypercoast.read_aviris(rfl_file)
+    dataset_source = "authenticated HTTPS"
+
+ds</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=13">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Display the quicklook COG through NASA TiTiler CMR. The footprint outline and explicit <code>zoom_to_bounds()</code> call make the scene extent visible on the map without reading the remote NetCDF cube for every map click.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=14">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_aviris</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s2">"AVIRIS-3 quicklook"</span><span class="p">)</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">get_aviris_bounds</span><span class="p">(</span><span class="n">granule</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">add_gdf</span><span class="p">(</span>
+        <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="s2">"AVIRIS-3 footprint"</span><span class="p">,</span>
+        <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="s2">"#ffcc00"</span><span class="p">,</span> <span class="s2">"weight"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"fillOpacity"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">zoom_to_bounds</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+
+<span class="n">m</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-8">m = hypercoast.Map()
+m.add_aviris(granule, layer_name="AVIRIS-3 quicklook")
+
+bounds = hypercoast.get_aviris_bounds(granule)
+if bounds is not None:
+    m.add_gdf(
+        gdf.iloc[[0]],
+        layer_name="AVIRIS-3 footprint",
+        style={"color": "#ffcc00", "weight": 2, "fillOpacity": 0.0},
+    )
+    m.zoom_to_bounds(bounds)
+
+m</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=15">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>For interactive spectral extraction, download the reflectance NetCDF locally and attach that local dataset to the map. This avoids slow remote chunk reads when clicking individual pixels.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=16">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">local_files</span> <span class="o">=</span> <span class="n">earthaccess</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">rfl_url</span><span class="p">,</span> <span class="n">local_path</span><span class="o">=</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">provider</span><span class="o">=</span><span class="s2">"ORNL_CLOUD"</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">local_files</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">local_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">local_files</span><span class="p">]</span>
+<span class="n">local_rfl</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">path</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">local_files</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_RFL_ORT.nc"</span><span class="p">))</span>
+<span class="n">local_ds</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_aviris</span><span class="p">(</span><span class="n">local_rfl</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-9">local_files = earthaccess.download(rfl_url, local_path="data", provider="ORNL_CLOUD")
+if isinstance(local_files, str):
+    local_files = [local_files]
+local_rfl = next(path for path in local_files if str(path).endswith("_RFL_ORT.nc"))
+local_ds = hypercoast.read_aviris(local_rfl, chunks=None)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=17">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_aviris</span><span class="p">(</span><span class="n">granule</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">local_ds</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s2">"AVIRIS-3"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">add_gdf</span><span class="p">(</span>
+        <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="n">layer_name</span><span class="o">=</span><span class="s2">"AVIRIS-3 footprint"</span><span class="p">,</span>
+        <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="s2">"#ffcc00"</span><span class="p">,</span> <span class="s2">"weight"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"fillOpacity"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">zoom_to_bounds</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"spectral"</span><span class="p">)</span>
+<span class="n">m</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-10">m = hypercoast.Map()
+m.add_aviris(granule, dataset=local_ds, layer_name="AVIRIS-3")
+if bounds is not None:
+    m.add_gdf(
+        gdf.iloc[[0]],
+        layer_name="AVIRIS-3 footprint",
+        style={"color": "#ffcc00", "weight": 2, "fillOpacity": 0.0},
+    )
+    m.zoom_to_bounds(bounds)
+m.add("spectral")
+m</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=18">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><img alt="" src="https://github.com/user-attachments/assets/03b1e088-947c-4261-884b-0d0fb5e74dbf"/></p>
 </div>
 </div>
 </div>
@@ -3387,7 +3672,7 @@ m.add("spectral")</div>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="June 8, 2024 05:05:17 UTC"><span class="timeago" datetime="2024-06-08T05:05:17+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="June 8, 2024 05:05:17 UTC">2024-06-08</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 24, 2026 03:48:45 UTC"><span class="timeago" datetime="2026-05-24T03:48:45+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 24, 2026 03:48:45 UTC">2026-05-24</span>
   </span>
 
     

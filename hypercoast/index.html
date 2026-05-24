@@ -2042,6 +2042,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.search_aviris" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_aviris()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.search_ecostress" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2856,6 +2867,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hypercoast.hypercoast.Map.search_aviris" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_aviris()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hypercoast.hypercoast.Map.search_ecostress" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3065,6 +3087,17 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_aviris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;AV3_L2A_RFL_2357&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">            AVIRIS.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">                Defaults to &quot;AV3_L2A_RFL_2357&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">search_pace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_AOP_NRT&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a NASA Earth Data search tool to the map with a default dataset for</span>
@@ -3186,6 +3219,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
             <span class="c1"># if self.cog_layer_dict[layer_name].get(&quot;hyper&quot;) is None:</span>
             <span class="c1">#     self.cog_layer_dict[layer_name][&quot;hyper&quot;] = &quot;COG&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;LOCAL&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">add_dataset</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3732,6 +3767,13 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="n">asset</span><span class="o">=</span><span class="s2">&quot;RFL_ORT&quot;</span><span class="p">,</span>
+        <span class="n">visual_asset</span><span class="o">=</span><span class="s2">&quot;RFL_ORT_QL&quot;</span><span class="p">,</span>
+        <span class="n">prefer_s3</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_cmr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">titiler_cmr_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an AVIRIS dataset to the map.</span>
@@ -3746,7 +3788,10 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">            os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            source (str): The path to the AVIRIS file.</span>
+<span class="sd">            source (str, dict, or xarray.Dataset): The path or URL to an AVIRIS</span>
+<span class="sd">                file, a CMR/earthaccess granule, or an xarray Dataset.</span>
+<span class="sd">            wavelengths (list, optional): Wavelength values to render and use for</span>
+<span class="sd">                band metadata. Defaults to None.</span>
 <span class="sd">            indexes (int, optional): The band(s) to use. Band indexing starts</span>
 <span class="sd">                at 1. Defaults to None.</span>
 <span class="sd">            colormap (str, optional): The name of the colormap from `matplotlib`</span>
@@ -3770,33 +3815,130 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 <span class="sd">                `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">            method (str, optional): The method to use for data interpolation.</span>
 <span class="sd">                Defaults to &quot;nearest&quot;.</span>
+<span class="sd">            asset (str, optional): AVIRIS granule asset used for the spectral</span>
+<span class="sd">                dataset when ``source`` is a CMR/earthaccess granule. Defaults</span>
+<span class="sd">                to ``&quot;RFL_ORT&quot;``.</span>
+<span class="sd">            visual_asset (str, optional): AVIRIS granule COG asset used for the</span>
+<span class="sd">                map layer. Set to None to render the map from the spectral</span>
+<span class="sd">                dataset. Defaults to ``&quot;RFL_ORT_QL&quot;``.</span>
+<span class="sd">            prefer_s3 (bool, optional): Prefer S3 asset links from granules when</span>
+<span class="sd">                available. Defaults to False.</span>
+<span class="sd">            open_args (dict, optional): Extra keyword arguments passed to</span>
+<span class="sd">                ``read_aviris`` for path, URL, and granule inputs.</span>
+<span class="sd">            dataset (xarray.Dataset, optional): Pre-opened AVIRIS dataset to</span>
+<span class="sd">                attach for spectral extraction when ``source`` is a CMR or</span>
+<span class="sd">                earthaccess granule. Defaults to None.</span>
+<span class="sd">            use_cmr (bool, optional): Use NASA TiTiler CMR to stream the</span>
+<span class="sd">                quicklook COG when ``source`` is a CMR or earthaccess granule.</span>
+<span class="sd">                Defaults to True.</span>
+<span class="sd">            titiler_cmr_endpoint (str, optional): TiTiler CMR endpoint. Defaults</span>
+<span class="sd">                to the leafmap default.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">open_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">open_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">xds</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="n">granule_source</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">cmr_layer</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)):</span>
+            <span class="n">granule_source</span> <span class="o">=</span> <span class="n">source</span>
+            <span class="k">if</span> <span class="n">visual_asset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">use_cmr</span><span class="p">:</span>
+                <span class="n">concept_id</span> <span class="o">=</span> <span class="n">get_aviris_collection_concept_id</span><span class="p">(</span><span class="n">granule_source</span><span class="p">)</span>
+                <span class="n">granule_ur</span> <span class="o">=</span> <span class="n">get_aviris_granule_ur</span><span class="p">(</span><span class="n">granule_source</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">concept_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">granule_ur</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;The AVIRIS granule is missing CMR collection or granule IDs.&quot;</span>
+                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_cmr_layer</span><span class="p">(</span>
+                    <span class="n">concept_id</span><span class="o">=</span><span class="n">concept_id</span><span class="p">,</span>
+                    <span class="n">granule_ur</span><span class="o">=</span><span class="n">granule_ur</span><span class="p">,</span>
+                    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;rasterio&quot;</span><span class="p">,</span>
+                    <span class="n">bands</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">,</span>
+                    <span class="n">bands_regex</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                    <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span> <span class="ow">or</span> <span class="s2">&quot;NASA Earthdata&quot;</span><span class="p">,</span>
+                    <span class="n">opacity</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;opacity&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+                    <span class="n">shown</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                    <span class="n">titiler_cmr_endpoint</span><span class="o">=</span><span class="n">titiler_cmr_endpoint</span><span class="p">,</span>
+                    <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">zoom_to_layer</span><span class="p">:</span>
+                    <span class="n">bounds</span> <span class="o">=</span> <span class="n">get_aviris_bounds</span><span class="p">(</span><span class="n">granule_source</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">lon_span</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">lat_span</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">max_span</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lon_span</span><span class="p">,</span> <span class="n">lat_span</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">max_span</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                                <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mf">360.0</span> <span class="o">/</span> <span class="n">max_span</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                            <span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                        <span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">fit_bounds</span><span class="p">(</span>
+                            <span class="p">[[</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]]]</span>
+                        <span class="p">)</span>
+                <span class="n">cmr_layer</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">get_aviris_asset_url</span><span class="p">(</span>
+                    <span class="n">granule_source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">prefer_s3</span><span class="o">=</span><span class="n">prefer_s3</span>
+                <span class="p">)</span>
 
-            <span class="n">xds</span> <span class="o">=</span> <span class="n">read_aviris</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-            <span class="n">source</span> <span class="o">=</span> <span class="n">neon_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">xds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">xds</span> <span class="o">=</span> <span class="n">read_aviris</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">open_args</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">granule_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">visual_asset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">get_aviris_asset_url</span><span class="p">(</span>
+                    <span class="n">granule_source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">,</span> <span class="n">prefer_s3</span><span class="o">=</span><span class="n">prefer_s3</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">aviris_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
             <span class="n">xds</span> <span class="o">=</span> <span class="n">source</span>
             <span class="n">source</span> <span class="o">=</span> <span class="n">aviris_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
-            <span class="n">source</span><span class="p">,</span>
-            <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
-            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-            <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
-            <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
-            <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
-            <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
-            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
-            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
-            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
-            <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">cmr_layer</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;cog_layer_dict&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">layer_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;.tiff&quot;</span><span class="p">))</span>
+            <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">,</span> <span class="s2">&quot;s3://&quot;</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="n">cog_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cog_kwargs</span><span class="p">[</span><span class="s2">&quot;bidx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">indexes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_cog_layer</span><span class="p">(</span>
+                <span class="n">source</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">shown</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">cog_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+                <span class="n">source</span><span class="p">,</span>
+                <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+                <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+                <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+                <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+                <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+                <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+                <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;AVIRIS&quot;</span>
@@ -4422,6 +4564,8 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
 
         <span class="k">if</span> <span class="s2">&quot;xds&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">]:</span>
             <span class="n">xds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">xds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
             <span class="n">dim_name</span> <span class="o">=</span> <span class="s2">&quot;wavelength&quot;</span>
 
             <span class="k">if</span> <span class="s2">&quot;band&quot;</span> <span class="ow">in</span> <span class="n">xds</span><span class="p">:</span>
@@ -4430,6 +4574,9 @@ Map            (<span title="leafmap.leafmap.Map">Map</span>)
             <span class="n">band_count</span> <span class="o">=</span> <span class="n">xds</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">dim_name</span><span class="p">]</span>
             <span class="n">band_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">band</span><span class="p">)</span> <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">band_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;band_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">band_names</span>
+
+            <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">indexes</span> <span class="o">=</span> <span class="n">find_nearest_indices</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">dim_name</span><span class="o">=</span><span class="n">dim_name</span><span class="p">)</span>
@@ -4661,7 +4808,7 @@ class's add_layer method.</p></td>
 
 
 <h3 id="hypercoast.hypercoast.Map.add_aviris" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_aviris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;AVIRIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">add_aviris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="n">nan</span><span class="p">,</span> <span class="n">attribution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s1">&#39;AVIRIS&#39;</span><span class="p">,</span> <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="s1">&#39;RFL_ORT&#39;</span><span class="p">,</span> <span class="n">visual_asset</span><span class="o">=</span><span class="s1">&#39;RFL_ORT_QL&#39;</span><span class="p">,</span> <span class="n">prefer_s3</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_cmr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">titiler_cmr_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.hypercoast.Map.add_aviris" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -4693,9 +4840,17 @@ os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;
   <tbody>
       <tr>
         <td><code>source</code></td>
-        <td><code>str</code></td>
-        <td><p>The path to the AVIRIS file.</p></td>
+        <td><code>str, dict, or xarray.Dataset</code></td>
+        <td><p>The path or URL to an AVIRIS
+file, a CMR/earthaccess granule, or an xarray Dataset.</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>wavelengths</code></td>
+        <td><code>list</code></td>
+        <td><p>Wavelength values to render and use for
+band metadata. Defaults to None.</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>indexes</code></td>
@@ -4775,6 +4930,59 @@ to True.</p></td>
 Defaults to "nearest".</p></td>
         <td><code>&#39;nearest&#39;</code></td>
       </tr>
+      <tr>
+        <td><code>asset</code></td>
+        <td><code>str</code></td>
+        <td><p>AVIRIS granule asset used for the spectral
+dataset when <code>source</code> is a CMR/earthaccess granule. Defaults
+to <code>"RFL_ORT"</code>.</p></td>
+        <td><code>&#39;RFL_ORT&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>visual_asset</code></td>
+        <td><code>str</code></td>
+        <td><p>AVIRIS granule COG asset used for the
+map layer. Set to None to render the map from the spectral
+dataset. Defaults to <code>"RFL_ORT_QL"</code>.</p></td>
+        <td><code>&#39;RFL_ORT_QL&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>prefer_s3</code></td>
+        <td><code>bool</code></td>
+        <td><p>Prefer S3 asset links from granules when
+available. Defaults to False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>open_args</code></td>
+        <td><code>dict</code></td>
+        <td><p>Extra keyword arguments passed to
+<code>read_aviris</code> for path, URL, and granule inputs.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>dataset</code></td>
+        <td><code>xarray.Dataset</code></td>
+        <td><p>Pre-opened AVIRIS dataset to
+attach for spectral extraction when <code>source</code> is a CMR or
+earthaccess granule. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>use_cmr</code></td>
+        <td><code>bool</code></td>
+        <td><p>Use NASA TiTiler CMR to stream the
+quicklook COG when <code>source</code> is a CMR or earthaccess granule.
+Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>titiler_cmr_endpoint</code></td>
+        <td><code>str</code></td>
+        <td><p>TiTiler CMR endpoint. Defaults
+to the leafmap default.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -4794,6 +5002,13 @@ Defaults to "nearest".</p></td>
     <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">array_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">asset</span><span class="o">=</span><span class="s2">&quot;RFL_ORT&quot;</span><span class="p">,</span>
+    <span class="n">visual_asset</span><span class="o">=</span><span class="s2">&quot;RFL_ORT_QL&quot;</span><span class="p">,</span>
+    <span class="n">prefer_s3</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">open_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">use_cmr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">titiler_cmr_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add an AVIRIS dataset to the map.</span>
@@ -4808,7 +5023,10 @@ Defaults to "nearest".</p></td>
 <span class="sd">        os.environ[&#39;LOCALTILESERVER_CLIENT_PREFIX&#39;] = &#39;proxy/{port}&#39;</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source (str): The path to the AVIRIS file.</span>
+<span class="sd">        source (str, dict, or xarray.Dataset): The path or URL to an AVIRIS</span>
+<span class="sd">            file, a CMR/earthaccess granule, or an xarray Dataset.</span>
+<span class="sd">        wavelengths (list, optional): Wavelength values to render and use for</span>
+<span class="sd">            band metadata. Defaults to None.</span>
 <span class="sd">        indexes (int, optional): The band(s) to use. Band indexing starts</span>
 <span class="sd">            at 1. Defaults to None.</span>
 <span class="sd">        colormap (str, optional): The name of the colormap from `matplotlib`</span>
@@ -4832,33 +5050,130 @@ Defaults to "nearest".</p></td>
 <span class="sd">            `array_to_memory_file` when reading the raster. Defaults to {}.</span>
 <span class="sd">        method (str, optional): The method to use for data interpolation.</span>
 <span class="sd">            Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        asset (str, optional): AVIRIS granule asset used for the spectral</span>
+<span class="sd">            dataset when ``source`` is a CMR/earthaccess granule. Defaults</span>
+<span class="sd">            to ``&quot;RFL_ORT&quot;``.</span>
+<span class="sd">        visual_asset (str, optional): AVIRIS granule COG asset used for the</span>
+<span class="sd">            map layer. Set to None to render the map from the spectral</span>
+<span class="sd">            dataset. Defaults to ``&quot;RFL_ORT_QL&quot;``.</span>
+<span class="sd">        prefer_s3 (bool, optional): Prefer S3 asset links from granules when</span>
+<span class="sd">            available. Defaults to False.</span>
+<span class="sd">        open_args (dict, optional): Extra keyword arguments passed to</span>
+<span class="sd">            ``read_aviris`` for path, URL, and granule inputs.</span>
+<span class="sd">        dataset (xarray.Dataset, optional): Pre-opened AVIRIS dataset to</span>
+<span class="sd">            attach for spectral extraction when ``source`` is a CMR or</span>
+<span class="sd">            earthaccess granule. Defaults to None.</span>
+<span class="sd">        use_cmr (bool, optional): Use NASA TiTiler CMR to stream the</span>
+<span class="sd">            quicklook COG when ``source`` is a CMR or earthaccess granule.</span>
+<span class="sd">            Defaults to True.</span>
+<span class="sd">        titiler_cmr_endpoint (str, optional): TiTiler CMR endpoint. Defaults</span>
+<span class="sd">            to the leafmap default.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">array_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">array_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">open_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">open_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="n">xds</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">xds</span> <span class="o">=</span> <span class="n">dataset</span>
+    <span class="n">granule_source</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cmr_layer</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)):</span>
+        <span class="n">granule_source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="k">if</span> <span class="n">visual_asset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">use_cmr</span><span class="p">:</span>
+            <span class="n">concept_id</span> <span class="o">=</span> <span class="n">get_aviris_collection_concept_id</span><span class="p">(</span><span class="n">granule_source</span><span class="p">)</span>
+            <span class="n">granule_ur</span> <span class="o">=</span> <span class="n">get_aviris_granule_ur</span><span class="p">(</span><span class="n">granule_source</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">concept_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">granule_ur</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;The AVIRIS granule is missing CMR collection or granule IDs.&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_cmr_layer</span><span class="p">(</span>
+                <span class="n">concept_id</span><span class="o">=</span><span class="n">concept_id</span><span class="p">,</span>
+                <span class="n">granule_ur</span><span class="o">=</span><span class="n">granule_ur</span><span class="p">,</span>
+                <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;rasterio&quot;</span><span class="p">,</span>
+                <span class="n">bands</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">,</span>
+                <span class="n">bands_regex</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+                <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span> <span class="ow">or</span> <span class="s2">&quot;NASA Earthdata&quot;</span><span class="p">,</span>
+                <span class="n">opacity</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;opacity&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+                <span class="n">shown</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                <span class="n">titiler_cmr_endpoint</span><span class="o">=</span><span class="n">titiler_cmr_endpoint</span><span class="p">,</span>
+                <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">zoom_to_layer</span><span class="p">:</span>
+                <span class="n">bounds</span> <span class="o">=</span> <span class="n">get_aviris_bounds</span><span class="p">(</span><span class="n">granule_source</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">lon_span</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">lat_span</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">max_span</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lon_span</span><span class="p">,</span> <span class="n">lat_span</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">max_span</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mf">360.0</span> <span class="o">/</span> <span class="n">max_span</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fit_bounds</span><span class="p">(</span>
+                        <span class="p">[[</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]]]</span>
+                    <span class="p">)</span>
+            <span class="n">cmr_layer</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">get_aviris_asset_url</span><span class="p">(</span>
+                <span class="n">granule_source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">asset</span><span class="p">,</span> <span class="n">prefer_s3</span><span class="o">=</span><span class="n">prefer_s3</span>
+            <span class="p">)</span>
 
-        <span class="n">xds</span> <span class="o">=</span> <span class="n">read_aviris</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="n">neon_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">xds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xds</span> <span class="o">=</span> <span class="n">read_aviris</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">open_args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">granule_source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">visual_asset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">get_aviris_asset_url</span><span class="p">(</span>
+                <span class="n">granule_source</span><span class="p">,</span> <span class="n">asset</span><span class="o">=</span><span class="n">visual_asset</span><span class="p">,</span> <span class="n">prefer_s3</span><span class="o">=</span><span class="n">prefer_s3</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">aviris_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
         <span class="n">xds</span> <span class="o">=</span> <span class="n">source</span>
         <span class="n">source</span> <span class="o">=</span> <span class="n">aviris_to_image</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
-        <span class="n">source</span><span class="p">,</span>
-        <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
-        <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-        <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
-        <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
-        <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
-        <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
-        <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
-        <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
-        <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
-        <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">cmr_layer</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;cog_layer_dict&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">layer_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">elif</span> <span class="p">(</span>
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;.tiff&quot;</span><span class="p">))</span>
+        <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">,</span> <span class="s2">&quot;s3://&quot;</span><span class="p">))</span>
+    <span class="p">):</span>
+        <span class="n">cog_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">indexes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cog_kwargs</span><span class="p">[</span><span class="s2">&quot;bidx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">indexes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_cog_layer</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">shown</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">cog_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span>
+            <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span>
+            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+            <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+            <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+            <span class="n">nodata</span><span class="o">=</span><span class="n">nodata</span><span class="p">,</span>
+            <span class="n">attribution</span><span class="o">=</span><span class="n">attribution</span><span class="p">,</span>
+            <span class="n">layer_name</span><span class="o">=</span><span class="n">layer_name</span><span class="p">,</span>
+            <span class="n">zoom_to_layer</span><span class="o">=</span><span class="n">zoom_to_layer</span><span class="p">,</span>
+            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+            <span class="n">array_args</span><span class="o">=</span><span class="n">array_args</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;AVIRIS&quot;</span>
@@ -6680,6 +6995,8 @@ rioxarray.open_rasterio.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xds</span>
         <span class="c1"># if self.cog_layer_dict[layer_name].get(&quot;hyper&quot;) is None:</span>
         <span class="c1">#     self.cog_layer_dict[layer_name][&quot;hyper&quot;] = &quot;COG&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;LOCAL&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -7510,6 +7827,61 @@ Defaults to None.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;WYVERN&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_update_band_names</span><span class="p">(</span><span class="n">layer_name</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="hypercoast.hypercoast.Map.search_aviris" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_aviris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s1">&#39;AV3_L2A_RFL_2357&#39;</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.hypercoast.Map.search_aviris" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Adds a NASA Earth Data search tool to the map with a default dataset for
+    AVIRIS.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>default_dataset</code></td>
+        <td><code>str</code></td>
+        <td><p>The default dataset to search for.
+Defaults to "AV3_L2A_RFL_2357".</p></td>
+        <td><code>&#39;AV3_L2A_RFL_2357&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/hypercoast.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_aviris</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="s2">&quot;AV3_L2A_RFL_2357&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds a NASA Earth Data search tool to the map with a default dataset for</span>
+<span class="sd">        AVIRIS.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        default_dataset (str, optional): The default dataset to search for.</span>
+<span class="sd">            Defaults to &quot;AV3_L2A_RFL_2357&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nasa_earth_data&quot;</span><span class="p">,</span> <span class="n">default_dataset</span><span class="o">=</span><span class="n">default_dataset</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
