@@ -453,6 +453,7 @@ class AppEEARSClient:
         headers = kwargs.pop("headers", {})
         if auth_header:
             headers = {**self.headers, **headers}
+        kwargs.setdefault("timeout", 120)
         response = self.session.request(
             method.upper(), self.api_url + path.lstrip("/"), headers=headers, **kwargs
         )
@@ -930,7 +931,11 @@ def _normalize_geojson(geometry: Any) -> Dict[str, Any]:
 
         return json.loads(gpd.read_file(geometry).to_json())
 
-    if isinstance(geometry, (list, tuple)) and len(geometry) == 4:
+    if (
+        isinstance(geometry, (list, tuple))
+        and len(geometry) == 4
+        and all(isinstance(v, (int, float)) for v in geometry)
+    ):
         xmin, ymin, xmax, ymax = geometry
         return {
             "type": "FeatureCollection",
@@ -984,6 +989,8 @@ def _bundle_output_path(
     """
 
     file_path = Path(file_name)
+    if file_path.is_absolute() or ".." in file_path.parts:
+        file_path = Path(file_path.name)
     parts = file_path.parts
     if len(parts) > 1 and file_path.suffix.lower() == ".tif":
         file_path = Path(parts[-1])
