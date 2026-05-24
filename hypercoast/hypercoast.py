@@ -11,7 +11,15 @@ import numpy as np
 import tempfile
 import os
 from typing import Union
-from .aviris import aviris_to_image, read_aviris, extract_aviris
+from .aviris import (
+    aviris_to_image,
+    read_aviris,
+    extract_aviris,
+    get_aviris_asset_url,
+    get_aviris_bounds,
+    get_aviris_collection_concept_id,
+    get_aviris_granule_ur,
+)
 from .desis import desis_to_image, read_desis, extract_desis, filter_desis
 from .prisma import read_prisma, prisma_to_image, extract_prisma
 from .enmap import read_enmap, enmap_to_image, extract_enmap
@@ -69,9 +77,11 @@ from .common import (
     search_pace,
     search_pace_chla,
     search_emit,
+    search_aviris,
     search_ecostress,
     download_pace,
     download_emit,
+    download_aviris,
     download_ecostress,
     nasa_earth_login,
     image_cube,
@@ -141,6 +151,17 @@ class Map(leafmap.Map):
         Args:
             default_dataset (str, optional): The default dataset to search for.
                 Defaults to "EMITL2ARFL".
+        """
+        self.add("nasa_earth_data", default_dataset=default_dataset)
+
+    def search_aviris(self, default_dataset="AV3_L2A_RFL_2357"):
+        """
+        Adds a NASA Earth Data search tool to the map with a default dataset for
+            AVIRIS.
+
+        Args:
+            default_dataset (str, optional): The default dataset to search for.
+                Defaults to "AV3_L2A_RFL_2357".
         """
         self.add("nasa_earth_data", default_dataset=default_dataset)
 
@@ -265,6 +286,8 @@ class Map(leafmap.Map):
             self.cog_layer_dict[layer_name]["xds"] = xds
             # if self.cog_layer_dict[layer_name].get("hyper") is None:
             #     self.cog_layer_dict[layer_name]["hyper"] = "COG"
+
+        self.cog_layer_dict[layer_name]["type"] = "LOCAL"
 
     def add_dataset(
         self,
@@ -811,6 +834,13 @@ class Map(leafmap.Map):
         visible=True,
         array_args=None,
         method="nearest",
+        asset="RFL_ORT",
+        visual_asset="RFL_ORT_QL",
+        prefer_s3=False,
+        open_args=None,
+        dataset=None,
+        use_cmr=True,
+        titiler_cmr_endpoint=None,
         **kwargs,
     ):
         """Add an AVIRIS dataset to the map.
@@ -825,7 +855,10 @@ class Map(leafmap.Map):
             os.environ['LOCALTILESERVER_CLIENT_PREFIX'] = 'proxy/{port}'
 
         Args:
-            source (str): The path to the AVIRIS file.
+            source (str, dict, or xarray.Dataset): The path or URL to an AVIRIS
+                file, a CMR/earthaccess granule, or an xarray Dataset.
+            wavelengths (list, optional): Wavelength values to render and use for
+                band metadata. Defaults to None.
             indexes (int, optional): The band(s) to use. Band indexing starts
                 at 1. Defaults to None.
             colormap (str, optional): The name of the colormap from `matplotlib`
@@ -849,33 +882,130 @@ class Map(leafmap.Map):
                 `array_to_memory_file` when reading the raster. Defaults to {}.
             method (str, optional): The method to use for data interpolation.
                 Defaults to "nearest".
+            asset (str, optional): AVIRIS granule asset used for the spectral
+                dataset when ``source`` is a CMR/earthaccess granule. Defaults
+                to ``"RFL_ORT"``.
+            visual_asset (str, optional): AVIRIS granule COG asset used for the
+                map layer. Set to None to render the map from the spectral
+                dataset. Defaults to ``"RFL_ORT_QL"``.
+            prefer_s3 (bool, optional): Prefer S3 asset links from granules when
+                available. Defaults to False.
+            open_args (dict, optional): Extra keyword arguments passed to
+                ``read_aviris`` for path, URL, and granule inputs.
+            dataset (xarray.Dataset, optional): Pre-opened AVIRIS dataset to
+                attach for spectral extraction when ``source`` is a CMR or
+                earthaccess granule. Defaults to None.
+            use_cmr (bool, optional): Use NASA TiTiler CMR to stream the
+                quicklook COG when ``source`` is a CMR or earthaccess granule.
+                Defaults to True.
+            titiler_cmr_endpoint (str, optional): TiTiler CMR endpoint. Defaults
+                to the leafmap default.
         """
         if array_args is None:
             array_args = {}
+        if open_args is None:
+            open_args = {}
 
-        xds = None
-        if isinstance(source, str):
+        xds = dataset
+        granule_source = None
+        cmr_layer = False
+        if not isinstance(source, (str, os.PathLike, xr.Dataset)):
+            granule_source = source
+            if visual_asset is not None and use_cmr:
+                concept_id = get_aviris_collection_concept_id(granule_source)
+                granule_ur = get_aviris_granule_ur(granule_source)
+                if concept_id is None or granule_ur is None:
+                    raise ValueError(
+                        "The AVIRIS granule is missing CMR collection or granule IDs."
+                    )
+                self.add_cmr_layer(
+                    concept_id=concept_id,
+                    granule_ur=granule_ur,
+                    backend="rasterio",
+                    bands=visual_asset,
+                    bands_regex=visual_asset,
+                    name=layer_name,
+                    attribution=attribution or "NASA Earthdata",
+                    opacity=kwargs.pop("opacity", 1.0),
+                    shown=visible,
+                    titiler_cmr_endpoint=titiler_cmr_endpoint,
+                    zoom_to_layer=zoom_to_layer,
+                    **kwargs,
+                )
+                if zoom_to_layer:
+                    bounds = get_aviris_bounds(granule_source)
+                    if bounds is not None:
+                        lon_span = bounds[2] - bounds[0]
+                        lat_span = bounds[3] - bounds[1]
+                        max_span = max(lon_span, lat_span)
+                        if max_span > 0:
+                            self.zoom = int(
+                                np.clip(np.floor(np.log2(360.0 / max_span)), 1, 18)
+                            )
+                        self.center = [
+                            (bounds[1] + bounds[3]) / 2,
+                            (bounds[0] + bounds[2]) / 2,
+                        ]
+                        self.fit_bounds(
+                            [[bounds[1], bounds[0]], [bounds[3], bounds[2]]]
+                        )
+                cmr_layer = True
+            else:
+                source = get_aviris_asset_url(
+                    granule_source, asset=asset, prefer_s3=prefer_s3
+                )
 
-            xds = read_aviris(source)
-            source = neon_to_image(xds, wavelengths=wavelengths, method=method)
+        if isinstance(source, (str, os.PathLike)):
+            source = os.fspath(source)
+
+            if xds is None:
+                xds = read_aviris(source, method=method, **open_args)
+            if granule_source is not None and visual_asset is not None:
+                source = get_aviris_asset_url(
+                    granule_source, asset=visual_asset, prefer_s3=prefer_s3
+                )
+            else:
+                source = aviris_to_image(xds, wavelengths=wavelengths, method=method)
         elif isinstance(source, xr.Dataset):
             xds = source
             source = aviris_to_image(xds, wavelengths=wavelengths, method=method)
 
-        self.add_raster(
-            source,
-            indexes=indexes,
-            colormap=colormap,
-            vmin=vmin,
-            vmax=vmax,
-            nodata=nodata,
-            attribution=attribution,
-            layer_name=layer_name,
-            zoom_to_layer=zoom_to_layer,
-            visible=visible,
-            array_args=array_args,
-            **kwargs,
-        )
+        if cmr_layer:
+            if not hasattr(self, "cog_layer_dict"):
+                self.cog_layer_dict = {}
+            if layer_name not in self.cog_layer_dict:
+                self.cog_layer_dict[layer_name] = {}
+        elif (
+            isinstance(source, str)
+            and source.split("?", 1)[0].lower().endswith((".tif", ".tiff"))
+            and source.startswith(("http://", "https://", "s3://"))
+        ):
+            cog_kwargs = kwargs.copy()
+            if indexes is not None:
+                cog_kwargs["bidx"] = indexes
+            self.add_cog_layer(
+                source,
+                name=layer_name,
+                attribution=attribution or "",
+                shown=visible,
+                zoom_to_layer=zoom_to_layer,
+                **cog_kwargs,
+            )
+        else:
+            self.add_raster(
+                source,
+                indexes=indexes,
+                colormap=colormap,
+                vmin=vmin,
+                vmax=vmax,
+                nodata=nodata,
+                attribution=attribution,
+                layer_name=layer_name,
+                zoom_to_layer=zoom_to_layer,
+                visible=visible,
+                array_args=array_args,
+                **kwargs,
+            )
 
         self.cog_layer_dict[layer_name]["xds"] = xds
         self.cog_layer_dict[layer_name]["hyper"] = "AVIRIS"
@@ -1501,6 +1631,8 @@ class Map(leafmap.Map):
 
         if "xds" in self.cog_layer_dict[layer_name]:
             xds = self.cog_layer_dict[layer_name]["xds"]
+            if xds is None:
+                return
             dim_name = "wavelength"
 
             if "band" in xds:
@@ -1509,6 +1641,9 @@ class Map(leafmap.Map):
             band_count = xds.sizes[dim_name]
             band_names = ["b" + str(band) for band in range(1, band_count + 1)]
             self.cog_layer_dict[layer_name]["band_names"] = band_names
+
+            if wavelengths is None:
+                return
 
             try:
                 indexes = find_nearest_indices(xds, wavelengths, dim_name=dim_name)

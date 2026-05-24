@@ -246,7 +246,20 @@ class SpectralWidget(widgets.HBox):
                     da = extract_neon(ds, lat, lon)
 
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "AVIRIS":
-                    da = extract_aviris(ds, lat, lon)
+                    if ds is None:
+                        with self._output_widget:
+                            print(
+                                "AVIRIS spectral extraction requires a local "
+                                "reflectance NetCDF dataset. Add the layer again "
+                                "with dataset=hypercoast.read_aviris(local_file)."
+                            )
+                        return
+                    try:
+                        da = extract_aviris(ds, lat, lon)
+                    except (RuntimeError, KeyError) as exc:
+                        with self._output_widget:
+                            print(exc)
+                        return
 
                 elif self._host_map.cog_layer_dict[layer_name]["hyper"] == "PRISMA":
                     da = extract_prisma(ds, lat, lon)
