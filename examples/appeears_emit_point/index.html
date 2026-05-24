@@ -12,13 +12,13 @@
         <meta name="author" content="giswqs">
       
       
-        <link rel="canonical" href="https://hypercoast.org/examples/temperature/">
+        <link rel="canonical" href="https://hypercoast.org/examples/appeears_emit_point/">
       
       
-        <link rel="prev" href="../chla_predict/">
+        <link rel="prev" href="../appeears_emit_area/">
       
       
-        <link rel="next" href="../pace_oci_l1/">
+        <link rel="next" href="../cesl/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Temperature - HyperCoast</title>
+        <title>Appeears emit point - HyperCoast</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#visualizing-era5-temperature-data-interactively-with-hypercoast" class="md-skip">
+        <a href="#request-an-emit-point-spectrum-with-appeears" class="md-skip">
           Skip to content
         </a>
       
@@ -120,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Temperature
+              Appeears emit point
             
           </span>
         </div>
@@ -703,10 +703,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../appeears_emit_point/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -722,6 +731,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -955,19 +965,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../temperature/" class="md-nav__link">
         
   
   
@@ -983,7 +984,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -2450,7 +2450,7 @@
               <article class="md-content__inner md-typeset">
                 
 
-    <a href="/examples/temperature/temperature.ipynb" title="Download Notebook" class="md-content__button md-icon">
+    <a href="/examples/appeears_emit_point/appeears_emit_point.ipynb" title="Download Notebook" class="md-content__button md-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 20h14v-2H5m14-9h-4V3H9v6H5l7 7z"/></svg>
     </a>
 
@@ -3184,19 +3184,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><a href="https://colab.research.google.com/github/opengeos/HyperCoast/blob/main/docs/examples/temperature.ipynb"><img alt="image" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
-<h1 id="visualizing-era5-temperature-data-interactively-with-hypercoast">Visualizing ERA5 temperature data interactively with HyperCoast<a class="anchor-link" href="#visualizing-era5-temperature-data-interactively-with-hypercoast">¶</a></h1><p>This notebook demonstrates how to visualize ERA5 temperature data interactively with HyperCoast.</p>
+<p><a href="https://colab.research.google.com/github/opengeos/HyperCoast/blob/main/docs/examples/appeears_emit_point.ipynb"><img alt="image" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<h1 id="request-an-emit-point-spectrum-with-appeears">Request an EMIT point spectrum with AppEEARS<a class="anchor-link" href="#request-an-emit-point-spectrum-with-appeears">¶</a></h1><p>This notebook requests selected EMIT surface reflectance wavelengths for one point with the HyperCoast AppEEARS helpers.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3214,16 +3214,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">hypercoast</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># %pip install "hypercoast[extra]"</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-1">import hypercoast</div>
+<div class="clipboard-copy-txt" id="cell-1"># %pip install "hypercoast[extra]"</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3241,20 +3241,33 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">"https://github.com/opengeos/datasets/releases/download/hypercoast/ERA5_temperature_2023.nc"</span>
-<span class="n">filepath</span> <span class="o">=</span> <span class="s2">"data/ERA5_temperature_2023.nc"</span>
-<span class="n">hypercoast</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hypercoast</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-2">url = "https://github.com/opengeos/datasets/releases/download/hypercoast/ERA5_temperature_2023.nc"
-filepath = "data/ERA5_temperature_2023.nc"
-hypercoast.download_file(url, filepath)</div>
+<div class="clipboard-copy-txt" id="cell-2">from pathlib import Path
+
+import pandas as pd
+import hypercoast</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Log in and select EMIT reflectance layers by wavelength.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3272,18 +3285,47 @@ hypercoast.download_file(url, filepath)</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-<span class="n">dataset</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">appeears_login</span><span class="p">()</span>
+
+<span class="c1"># wavelengths = [490, 560, 650, 705, 865, 1640, 2210]</span>
+<span class="n">wavelengths</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">appeears_emit_layers</span><span class="p">(</span>
+    <span class="n">wavelengths</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+    <span class="n">return_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"product"</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">"product"</span><span class="p">],</span> <span class="s2">"layer"</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]}</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">]</span>
+<span class="n">layers</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-3">dataset = hypercoast.open_dataset(filepath)
-dataset</div>
+<div class="clipboard-copy-txt" id="cell-3">client = hypercoast.appeears_login()
+
+# wavelengths = [490, 560, 650, 705, 865, 1640, 2210]
+wavelengths = None
+metadata = hypercoast.appeears_emit_layers(
+    wavelengths,
+    client=client,
+    return_metadata=True,
+)
+layers = [{"product": item["product"], "layer": item["layer"]} for item in metadata]
+layers</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Build and submit a point task. Point coordinates use <code>(longitude, latitude)</code>.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3301,16 +3343,45 @@ dataset</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">camera_position</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mf">479.09</span><span class="p">,</span> <span class="o">-</span><span class="mf">82.89</span><span class="p">,</span> <span class="o">-</span><span class="mf">444.45</span><span class="p">),</span> <span class="p">(</span><span class="mf">89.5</span><span class="p">,</span> <span class="mf">179.5</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.58</span><span class="p">,</span> <span class="mf">0.14</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.80</span><span class="p">)]</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">task</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">appeears_point_task</span><span class="p">(</span>
+    <span class="n">task_name</span><span class="o">=</span><span class="s2">"emit_hyperspectral_point"</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">118.33</span><span class="p">,</span> <span class="mf">33.96</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="o">=</span><span class="s2">"2024-04-01"</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="s2">"2024-04-30"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">appeears_submit_task</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+<span class="n">response</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-4">camera_position = [(-479.09, -82.89, -444.45), (89.5, 179.5, 16.5), (0.58, 0.14, -0.80)]</div>
+<div class="clipboard-copy-txt" id="cell-4">task = hypercoast.appeears_point_task(
+    task_name="emit_hyperspectral_point",
+    coordinates=(-118.33, 33.96),
+    layers=layers,
+    start_date="2024-04-01",
+    end_date="2024-04-30",
+)
+
+response = hypercoast.appeears_submit_task(task, client=client)
+response</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Wait for the task and download the CSV result.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3328,49 +3399,47 @@ dataset</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">image_cube</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s2">"temperature_2m"</span><span class="p">,</span>
-    <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">310</span><span class="p">),</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">"Temperature"</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">"coolwarm"</span><span class="p">,</span>
-    <span class="n">widget</span><span class="o">=</span><span class="s2">"plane"</span><span class="p">,</span>
-    <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">task_id</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"task_id"</span><span class="p">]</span>
+<span class="n">hypercoast</span><span class="o">.</span><span class="n">appeears_wait</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">appeears_download</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="p">,</span>
+    <span class="n">out_dir</span><span class="o">=</span><span class="s2">"data/appeears_emit_point"</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+    <span class="n">file_types</span><span class="o">=</span><span class="p">[</span><span class="s2">"csv"</span><span class="p">],</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="n">camera_position</span>
-<span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">files</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-5">p = hypercoast.image_cube(
-    dataset,
-    variable="temperature_2m",
-    clim=(270, 310),
-    title="Temperature",
-    cmap="coolwarm",
-    widget="plane",
-    invert=False,
-    grid_spacing=(1, 1, 3),
+<div class="clipboard-copy-txt" id="cell-5">task_id = response["task_id"]
+hypercoast.appeears_wait(task_id, client=client, interval=60)
+
+files = hypercoast.appeears_download(
+    task_id,
+    out_dir="data/appeears_emit_point",
+    client=client,
+    file_types=["csv"],
+    overwrite=True,
 )
-p.camera_position = camera_position
-p.show()</div>
+files</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><img alt="" src="https://i.imgur.com/3o0BPnv.png"/></p>
+<p>Read the point table and plot the returned spectrum.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=10">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3388,36 +3457,24 @@ p.show()</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">image_cube</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s2">"temperature_2m"</span><span class="p">,</span>
-    <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">310</span><span class="p">),</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">"Temperature"</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">"coolwarm"</span><span class="p">,</span>
-    <span class="n">widget</span><span class="o">=</span><span class="s2">"slice"</span><span class="p">,</span>
-    <span class="n">grid_spacing</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">csv_file</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Path</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">files</span> <span class="k">else</span> <span class="nb">next</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"data/appeears_emit_point"</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.csv"</span><span class="p">))</span>
 <span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="n">camera_position</span>
-<span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-6">p = hypercoast.image_cube(
-    dataset,
-    variable="temperature_2m",
-    clim=(270, 310),
-    title="Temperature",
-    cmap="coolwarm",
-    widget="slice",
-    grid_spacing=(1, 1, 3),
+<div class="clipboard-copy-txt" id="cell-6">csv_file = (
+    Path(files[0]) if files else next(Path("data/appeears_emit_point").glob("*.csv"))
 )
-p.camera_position = camera_position
-p.show()</div>
+df = pd.read_csv(csv_file)
+df.head()</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=11">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3435,40 +3492,54 @@ p.show()</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">image_cube</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s2">"temperature_2m"</span><span class="p">,</span>
-    <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">310</span><span class="p">),</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">"Temperature"</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">"coolwarm"</span><span class="p">,</span>
-    <span class="n">widget</span><span class="o">=</span><span class="s2">"threshold"</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="n">camera_position</span>
-<span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="k">if</span> <span class="p">{</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="s2">"reflectance"</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="s2">"reflectance"</span><span class="p">])</span>
+        <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"wavelength"</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"wavelength"</span><span class="p">)[</span><span class="s2">"reflectance"</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">wavelength_by_layer</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]:</span> <span class="n">item</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">}</span>
+    <span class="n">band_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">"EMIT_L2A_RFL_001_B"</span> <span class="ow">in</span> <span class="n">column</span><span class="p">]</span>
+    <span class="n">wavelength_by_column</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">column</span><span class="p">:</span> <span class="n">wavelength_by_layer</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">band_columns</span>
+    <span class="p">}</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">band_columns</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">wavelength_by_column</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+
+<span class="n">spectrum</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"wavelength"</span>
+<span class="n">spectrum</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">"Wavelength (nm)"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"Reflectance"</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-7">p = hypercoast.image_cube(
-    dataset,
-    variable="temperature_2m",
-    clim=(270, 310),
-    title="Temperature",
-    cmap="coolwarm",
-    widget="threshold",
-)
-p.camera_position = camera_position
-p.show()</div>
+<div class="clipboard-copy-txt" id="cell-7">if {"wavelength", "reflectance"}.issubset(df.columns):
+    spectrum = (
+        df.dropna(subset=["wavelength", "reflectance"])
+        .sort_values("wavelength")
+        .groupby("wavelength")["reflectance"]
+        .mean()
+    )
+else:
+    wavelength_by_layer = {item["layer"]: item["wavelength"] for item in metadata}
+    band_columns = [column for column in df.columns if "EMIT_L2A_RFL_001_B" in column]
+    wavelength_by_column = {
+        column: wavelength_by_layer[column.split("_")[-1]] for column in band_columns
+    }
+    spectrum = df[band_columns].mean().rename(index=wavelength_by_column).sort_index()
+
+spectrum.index.name = "wavelength"
+spectrum.plot(marker="o", xlabel="Wavelength (nm)", ylabel="Reflectance")</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=12">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><img alt="" src="https://i.imgur.com/qaKkmKX.gif"/></p>
+<p><img alt="" src="https://github.com/user-attachments/assets/60f6d9ee-c8c4-4c8c-b362-79e17f476ae8"/></p>
 </div>
 </div>
 </div>
@@ -3502,7 +3573,7 @@ p.show()</div>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="June 27, 2024 02:35:45 UTC"><span class="timeago" datetime="2024-06-27T02:35:45+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="June 27, 2024 02:35:45 UTC">2024-06-27</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 24, 2026 06:31:46 UTC"><span class="timeago" datetime="2026-05-24T06:31:46+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 24, 2026 06:31:46 UTC">2026-05-24</span>
   </span>
 
     
@@ -3512,7 +3583,7 @@ p.show()</div>
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="April 22, 2024 03:52:06 UTC"><span class="timeago" datetime="2024-04-22T03:52:06+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="April 22, 2024 03:52:06 UTC">2024-04-22</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 24, 2026 06:31:46 UTC"><span class="timeago" datetime="2026-05-24T06:31:46+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 24, 2026 06:31:46 UTC">2026-05-24</span>
   </span>
 
     

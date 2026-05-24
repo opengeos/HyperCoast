@@ -5,6 +5,10 @@
          <lastmod>2026-05-24</lastmod>
     </url>
     <url>
+         <loc>https://hypercoast.org/appeears/</loc>
+         <lastmod>2026-05-24</lastmod>
+    </url>
+    <url>
          <loc>https://hypercoast.org/aviris/</loc>
          <lastmod>2026-05-24</lastmod>
     </url>
@@ -122,6 +126,14 @@
     </url>
     <url>
          <loc>https://hypercoast.org/examples/acolite_emit/</loc>
+         <lastmod>2026-05-24</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/appeears_emit_area/</loc>
+         <lastmod>2026-05-24</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/appeears_emit_point/</loc>
          <lastmod>2026-05-24</lastmod>
     </url>
     <url>
