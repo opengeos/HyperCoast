@@ -682,7 +682,13 @@ def extract_aviris(
             data = np.nan * np.ones(da.sizes["wavelength"])
     else:
         try:
-            data = da.sel(x=x, y=y, method="nearest")
+            x_con = (da["x"] > x - offset) & (da["x"] < x + offset)
+            y_con = (da["y"] > y - offset) & (da["y"] < y + offset)
+            data = da.where(x_con & y_con, drop=True)
+            if data.sizes["x"] == 0 or data.sizes["y"] == 0:
+                data = da.sel(x=x, y=y, method="nearest")
+            else:
+                data = data.mean(dim=["x", "y"])
         except (KeyError, ValueError):
             data = np.nan * np.ones(da.sizes["wavelength"])
 

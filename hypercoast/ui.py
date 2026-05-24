@@ -256,7 +256,7 @@ class SpectralWidget(widgets.HBox):
                         return
                     try:
                         da = extract_aviris(ds, lat, lon)
-                    except RuntimeError as exc:
+                    except (RuntimeError, KeyError) as exc:
                         with self._output_widget:
                             print(exc)
                         return

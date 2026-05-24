@@ -909,18 +909,7 @@ class Map(leafmap.Map):
         cmr_layer = False
         if not isinstance(source, (str, os.PathLike, xr.Dataset)):
             granule_source = source
-            source = get_aviris_asset_url(
-                granule_source, asset=asset, prefer_s3=prefer_s3
-            )
-
-        if isinstance(source, (str, os.PathLike)):
-            source = os.fspath(source)
-
-            if xds is None and not (
-                granule_source is not None and visual_asset is not None and use_cmr
-            ):
-                xds = read_aviris(source, method=method, **open_args)
-            if granule_source is not None and visual_asset is not None and use_cmr:
+            if visual_asset is not None and use_cmr:
                 concept_id = get_aviris_collection_concept_id(granule_source)
                 granule_ur = get_aviris_granule_ur(granule_source)
                 if concept_id is None or granule_ur is None:
@@ -931,8 +920,8 @@ class Map(leafmap.Map):
                     concept_id=concept_id,
                     granule_ur=granule_ur,
                     backend="rasterio",
-                    bands="RFL_ORT_QL",
-                    bands_regex="RFL_ORT_QL",
+                    bands=visual_asset,
+                    bands_regex=visual_asset,
                     name=layer_name,
                     attribution=attribution or "NASA Earthdata",
                     opacity=kwargs.pop("opacity", 1.0),
@@ -959,7 +948,17 @@ class Map(leafmap.Map):
                             [[bounds[1], bounds[0]], [bounds[3], bounds[2]]]
                         )
                 cmr_layer = True
-            elif granule_source is not None and visual_asset is not None:
+            else:
+                source = get_aviris_asset_url(
+                    granule_source, asset=asset, prefer_s3=prefer_s3
+                )
+
+        if isinstance(source, (str, os.PathLike)):
+            source = os.fspath(source)
+
+            if xds is None:
+                xds = read_aviris(source, method=method, **open_args)
+            if granule_source is not None and visual_asset is not None:
                 source = get_aviris_asset_url(
                     granule_source, asset=visual_asset, prefer_s3=prefer_s3
                 )
