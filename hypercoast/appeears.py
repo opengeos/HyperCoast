@@ -13,7 +13,6 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple, Union
 
-
 APPEEARS_API_URL = "https://appeears.earthdatacloud.nasa.gov/api/"
 EMIT_REFLECTANCE_PRODUCT = "EMIT_L2A_RFL.001"
 _WAVELENGTH_RE = re.compile(
