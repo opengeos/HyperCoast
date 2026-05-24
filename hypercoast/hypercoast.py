@@ -287,6 +287,8 @@ class Map(leafmap.Map):
             # if self.cog_layer_dict[layer_name].get("hyper") is None:
             #     self.cog_layer_dict[layer_name]["hyper"] = "COG"
 
+        self.cog_layer_dict[layer_name]["type"] = "LOCAL"
+
     def add_dataset(
         self,
         source,
