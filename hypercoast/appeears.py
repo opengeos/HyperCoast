@@ -457,7 +457,13 @@ class AppEEARSClient:
         response = self.session.request(
             method.upper(), self.api_url + path.lstrip("/"), headers=headers, **kwargs
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except Exception as error:
+            message = _response_error_message(response)
+            if message:
+                error.args = (*error.args, message)
+            raise
         return response
 
     def _require_token(self) -> None:
@@ -608,10 +614,12 @@ def appeears_area_task(
     layers: Sequence[Dict[str, str]],
     start_date: str,
     end_date: str,
-    output_format: str = "geotiff",
+    output_format: Optional[str] = None,
     projection: str = "geographic",
     recurring: bool = False,
     year_range: Optional[Sequence[int]] = None,
+    orthorectify: Optional[bool] = True,
+    additional_options: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Build an AppEEARS area task payload.
 
@@ -623,14 +631,30 @@ def appeears_area_task(
         start_date: Start date as ``YYYY-MM-DD`` or ``MM-DD-YYYY``.
         end_date: End date as ``YYYY-MM-DD`` or ``MM-DD-YYYY``.
         output_format: AppEEARS output format, such as ``"geotiff"`` or
-            ``"netcdf4"``.
+            ``"netcdf4"``. If None, EMIT tasks use ``"netcdf4"`` and other
+            tasks use ``"geotiff"``.
         projection: AppEEARS output projection name.
         recurring: Whether the task uses recurring dates.
         year_range: Two-year range for recurring tasks.
+        orthorectify: Whether AppEEARS should orthorectify EMIT area outputs.
+            AppEEARS requires this option for EMIT area tasks. Set to None to
+            omit it.
+        additional_options: Additional AppEEARS output options.
 
     Returns:
         AppEEARS area task payload.
     """
+
+    has_emit = _has_emit_layers(layers)
+    if output_format is None:
+        output_format = "netcdf4" if has_emit else "geotiff"
+
+    output = {"format": {"type": output_format}, "projection": projection}
+    options = dict(additional_options or {})
+    if orthorectify is not None and has_emit:
+        options.setdefault("orthorectify", bool(orthorectify))
+    if options:
+        output["additionalOptions"] = options
 
     params = {
         "dates": [
@@ -642,7 +666,7 @@ def appeears_area_task(
             )
         ],
         "layers": list(layers),
-        "output": {"format": {"type": output_format}, "projection": projection},
+        "output": output,
         "geo": _normalize_geojson(geometry),
     }
     return {"task_type": "area", "task_name": task_name, "params": params}
@@ -732,10 +756,10 @@ def read_appeears(
     client: Optional[AppEEARSClient] = None,
     **kwargs: Any,
 ) -> Any:
-    """Read AppEEARS single-band GeoTIFFs as an xarray hyperspectral cube.
+    """Read AppEEARS raster output as an xarray hyperspectral cube.
 
     Args:
-        files: GeoTIFF path, directory, or sequence of paths.
+        files: GeoTIFF or NetCDF path, directory, or sequence of paths.
         layers: Optional AppEEARS layer metadata from ``appeears_layers`` or
             ``appeears_emit_layers(..., return_metadata=True)``.
         product: AppEEARS product used to infer wavelength metadata when layers
@@ -749,14 +773,16 @@ def read_appeears(
         xarray.Dataset containing the stacked raster data.
     """
 
-    import rioxarray
-    import xarray as xr
-
     paths = _coerce_paths(files)
     if layers is None:
         client = client or AppEEARSClient()
         layers = client.layers(product)
     metadata = _metadata_by_layer(product, layers)
+    if paths and all(Path(path).suffix.lower() in {".nc", ".nc4"} for path in paths):
+        return _read_appeears_netcdf(paths, metadata, product, variable, **kwargs)
+
+    import rioxarray
+    import xarray as xr
 
     arrays = []
     wavelengths = []
@@ -789,6 +815,71 @@ def read_appeears(
     )
     dataset = data.to_dataset(name=variable)
     dataset[variable].attrs["band_names"] = band_names
+    dataset.attrs["source"] = "NASA AppEEARS"
+    dataset.attrs["product"] = product
+    return dataset
+
+
+def _read_appeears_netcdf(
+    paths: Sequence[str],
+    metadata: Dict[str, Dict[str, Any]],
+    product: str,
+    variable: str,
+    **kwargs: Any,
+) -> Any:
+    """Read AppEEARS NetCDF output as an xarray hyperspectral cube.
+
+    Args:
+        paths: NetCDF paths.
+        metadata: Layer metadata indexed by layer name.
+        product: AppEEARS product and version.
+        variable: Output data variable name.
+        **kwargs: Additional keyword arguments passed to ``xarray.open_dataset``.
+
+    Returns:
+        xarray.Dataset containing stacked spectral variables.
+    """
+
+    import xarray as xr
+
+    datasets = []
+    for path in paths:
+        source = xr.open_dataset(path, **kwargs)
+        arrays = []
+        wavelengths = []
+        band_names = []
+        for name in source.data_vars:
+            layer_name = _layer_from_name(name)
+            if layer_name is None:
+                continue
+            layer_info = metadata.get(layer_name)
+            wavelength = None if layer_info is None else layer_info.get("wavelength")
+            if wavelength is None:
+                continue
+            arrays.append(source[name])
+            wavelengths.append(float(wavelength))
+            band_names.append(layer_name)
+
+        if not arrays:
+            continue
+
+        order = sorted(range(len(wavelengths)), key=lambda index: wavelengths[index])
+        data = xr.concat(
+            [arrays[index] for index in order],
+            dim=xr.DataArray(
+                [wavelengths[index] for index in order],
+                dims="wavelength",
+                name="wavelength",
+            ),
+        )
+        dataset = data.to_dataset(name=variable)
+        dataset[variable].attrs["band_names"] = [band_names[index] for index in order]
+        datasets.append(dataset)
+
+    if not datasets:
+        raise ValueError("No AppEEARS spectral NetCDF variables could be read.")
+
+    dataset = xr.concat(datasets, dim="time") if len(datasets) > 1 else datasets[0]
     dataset.attrs["source"] = "NASA AppEEARS"
     dataset.attrs["product"] = product
     return dataset
@@ -1039,6 +1130,45 @@ def _metadata_by_layer(
     return {item["layer"]: dict(item) for item in layers}
 
 
+def _has_emit_layers(layers: Sequence[Dict[str, str]]) -> bool:
+    """Check whether task layers include an EMIT product.
+
+    Args:
+        layers: Task-ready AppEEARS layer dictionaries.
+
+    Returns:
+        True if any layer belongs to an EMIT product.
+    """
+
+    return any(str(item.get("product", "")).startswith("EMIT_") for item in layers)
+
+
+def _response_error_message(response: Any) -> str:
+    """Build a readable AppEEARS HTTP error message.
+
+    Args:
+        response: Requests-compatible response object.
+
+    Returns:
+        Error message extracted from the response body.
+    """
+
+    try:
+        payload = response.json()
+    except ValueError:
+        payload = None
+
+    if isinstance(payload, dict):
+        if "message" in payload:
+            return f"AppEEARS error: {payload['message']}"
+        return f"AppEEARS error: {payload}"
+
+    text = getattr(response, "text", "")
+    if text:
+        return f"AppEEARS error: {text}"
+    return ""
+
+
 def _layer_from_filename(path: Union[str, os.PathLike[str]]) -> Optional[str]:
     """Extract an AppEEARS layer name from a file path.
 
@@ -1049,7 +1179,20 @@ def _layer_from_filename(path: Union[str, os.PathLike[str]]) -> Optional[str]:
         Layer name when a band token is present.
     """
 
-    matches = _BAND_RE.findall(Path(path).name)
+    return _layer_from_name(Path(path).name)
+
+
+def _layer_from_name(name: str) -> Optional[str]:
+    """Extract an AppEEARS layer name from a file or variable name.
+
+    Args:
+        name: File or variable name.
+
+    Returns:
+        Layer name when a band token is present.
+    """
+
+    matches = _BAND_RE.findall(name)
     if not matches:
         return None
     return matches[-1]

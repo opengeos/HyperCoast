@@ -10,6 +10,8 @@ import unittest
 from pathlib import Path
 
 import hypercoast
+import numpy as np
+import xarray as xr
 from hypercoast import appeears
 
 
@@ -157,6 +159,11 @@ class TestAppEEARS(unittest.TestCase):
         self.assertEqual(task["task_type"], "area")
         self.assertEqual(geo["type"], "FeatureCollection")
         self.assertEqual(geo["features"][0]["geometry"]["type"], "Polygon")
+        self.assertEqual(task["params"]["output"]["format"]["type"], "netcdf4")
+        self.assertEqual(
+            task["params"]["output"]["additionalOptions"],
+            {"orthorectify": True},
+        )
 
     def test_download_bundle_filters_file_types(self):
         session = MockSession()
@@ -169,6 +176,30 @@ class TestAppEEARS(unittest.TestCase):
             self.assertEqual(Path(paths[0]).name, "EMIT_L2A_RFL_001_B001_doy.tif")
             self.assertTrue(os.path.exists(paths[0]))
             self.assertEqual(Path(paths[0]).read_bytes(), b"data")
+
+    def test_read_appeears_stacks_netcdf_band_variables(self):
+        layers = [
+            {"product": "EMIT_L2A_RFL.001", "layer": "B001", "wavelength": 381.006},
+            {"product": "EMIT_L2A_RFL.001", "layer": "B002", "wavelength": 388.409},
+        ]
+        source = xr.Dataset(
+            {
+                "EMIT_L2A_RFL_001_B002": (("y", "x"), np.full((2, 2), 2.0)),
+                "EMIT_L2A_RFL_001_B001": (("y", "x"), np.full((2, 2), 1.0)),
+            },
+            coords={"y": [0, 1], "x": [10, 11]},
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            filepath = Path(tmpdir) / "appeears.nc"
+            source.to_netcdf(filepath)
+
+            dataset = hypercoast.read_appeears(str(filepath), layers=layers)
+
+        self.assertEqual(dataset["reflectance"].dims, ("wavelength", "y", "x"))
+        self.assertEqual(dataset.sizes["wavelength"], 2)
+        self.assertEqual(dataset["wavelength"].values.tolist(), [381.006, 388.409])
+        self.assertEqual(dataset["reflectance"].isel(wavelength=0).values[0, 0], 1.0)
 
 
 if __name__ == "__main__":
