@@ -77,15 +77,15 @@ Open **Processing** > **Toolbox** > **HyperCoast** to run batch tools for RGB co
 
 ## Supported File Formats
 
-| Sensor  | Extensions      | Description               |
-| ------- | --------------- | ------------------------- |
-| EMIT    | .nc, .nc4       | NASA EMIT L2A Reflectance |
-| PACE    | .nc, .nc4       | NASA PACE OCI L2 AOP      |
-| DESIS   | .nc, .tif       | DESIS Hyperspectral       |
-| NEON    | .h5             | NEON AOP Hyperspectral    |
-| AVIRIS  | .nc, .img, .bil | AVIRIS/AVIRIS-NG          |
-| PRISMA  | .he5, .nc       | ASI PRISMA                |
-| EnMAP   | .nc, .tif       | DLR EnMAP                 |
-| Tanager | .h5             | Planet Tanager            |
-| Wyvern  | .tif, .tiff     | Wyvern Hyperspectral      |
-| Generic | .tif, .nc       | Multi-band GeoTIFF/NetCDF |
+Sensor | Extensions | Description
+--- | --- | ---
+EMIT | .nc, .nc4 | NASA EMIT L2A Reflectance
+PACE | .nc, .nc4 | NASA PACE OCI L2 AOP
+DESIS | .nc, .tif | DESIS Hyperspectral
+NEON | .h5 | NEON AOP Hyperspectral
+AVIRIS | .nc, .img, .bil | AVIRIS/AVIRIS-NG
+PRISMA | .he5, .nc | ASI PRISMA
+EnMAP | .nc, .tif | DLR EnMAP
+Tanager | .h5 | Planet Tanager
+Wyvern | .tif, .tiff | Wyvern Hyperspectral
+Generic | .tif, .nc | Multi-band GeoTIFF/NetCDF

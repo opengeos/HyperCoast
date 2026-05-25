@@ -89,7 +89,7 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 2. Use the current map extent, draw a bounding box, or enter coordinates manually
 3. Set optional date, collection, query, cloud, and count filters
 4. Click **Search**
-5. Add footprints, open the visual asset, or download the radiance HDF5 for analysis
+5. Add footprints, open the visual asset, or download an HDF5 asset for analysis
 
 ### Changing Band Combinations
 

@@ -226,7 +226,7 @@ class TanagerBboxMapTool(QgsMapTool):
         """
         super().__init__(canvas)
         self.canvas = canvas
-        self.parent = parent
+        self._parent_widget = parent
         self._start_point = None
         self._rubber_band = None
         try:
