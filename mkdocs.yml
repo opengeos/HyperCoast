@@ -89,6 +89,7 @@ nav:
     - Home: index.md
     - Installation: installation.md
     - Usage: usage.md
+    - QGIS Plugin: qgis_plugin.md
     - Contributing: contributing.md
     - Changelog: changelog.md
     - Report Issues: https://github.com/opengeos/HyperCoast/issues

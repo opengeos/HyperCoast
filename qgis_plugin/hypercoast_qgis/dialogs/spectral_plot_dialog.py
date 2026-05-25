@@ -50,7 +50,7 @@ except ImportError:
     HAS_MATPLOTLIB = False
 
 DEFAULT_Y_RANGE = (0.0, 0.5)
-TANAGER_Y_RANGE = (0.0, 100.0)
+TANAGER_Y_RANGE = (0.0, 0.5)
 
 
 class SpectralPlotDialog(QDockWidget):
@@ -373,7 +373,7 @@ class SpectralPlotDialog(QDockWidget):
         if not HAS_MATPLOTLIB or data_type != "Tanager":
             return
 
-        index = self.ylabel_combo.findText("Radiance")
+        index = self.ylabel_combo.findText("Reflectance")
         if index >= 0:
             self.ylabel_combo.setCurrentIndex(index)
         self.ymin_spin.setValue(TANAGER_Y_RANGE[0])

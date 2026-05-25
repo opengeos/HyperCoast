@@ -12,8 +12,9 @@ import json
 from urllib.parse import unquote, urlparse
 import urllib.request
 
-from qgis.PyQt.QtCore import Qt, QThread, QUrl, pyqtSignal
-from qgis.PyQt.QtGui import QDesktopServices
+from qgis.PyQt.QtCore import QObject, Qt, QThread, QUrl, pyqtSignal
+from qgis.PyQt.QtGui import QColor, QCursor, QDesktopServices
+from qgis.gui import QgsMapTool as _QgsMapTool, QgsRubberBand
 
 try:
     from qgis.PyQt.QtCore import QVariant
@@ -60,11 +61,50 @@ from qgis.core import (
     QgsPointXY,
     QgsProject,
     QgsRasterLayer,
+    QgsRectangle,
     QgsVectorLayer,
+    QgsWkbTypes,
     Qgis,
 )
 
-from ..cache_manager import generated_raster_cache_dir
+if isinstance(_QgsMapTool, type):
+    QgsMapTool = _QgsMapTool
+else:  # pragma: no cover - used by lightweight Qt-only test stubs
+
+    class QgsMapTool(QObject):
+        """Minimal QgsMapTool fallback for tests without QGIS GUI classes."""
+
+        def __init__(self, canvas=None):
+            """Initialize the fallback map tool.
+
+            Args:
+                canvas: Optional map canvas.
+            """
+            super().__init__()
+            self.canvas = canvas
+
+        def setCursor(self, cursor):
+            """Store the requested cursor.
+
+            Args:
+                cursor: Cursor object.
+            """
+            self.cursor = cursor
+
+        def toMapCoordinates(self, position):
+            """Return the provided position as a map coordinate.
+
+            Args:
+                position: Position-like object.
+
+            Returns:
+                The input position.
+            """
+            return position
+
+        def deactivate(self):
+            """Deactivate the fallback map tool."""
+
 
 TANAGER_HDF5_ASSET = "ortho_radiance_hdf5"
 TANAGER_HDF5_ASSETS = (
@@ -160,14 +200,234 @@ def tanager_download_dir(project=None):
     """Return the persistent Tanager download directory.
 
     Args:
-        project: Optional QgsProject-like object.
+        project: Optional QgsProject-like object. Kept for backward
+            compatibility and ignored.
 
     Returns:
         Absolute directory path.
     """
-    out_dir = os.path.join(generated_raster_cache_dir(project), "tanager")
+    out_dir = os.path.join(os.path.expanduser("~"), "Downloads")
     os.makedirs(out_dir, exist_ok=True)
     return out_dir
+
+
+class TanagerBboxMapTool(QgsMapTool):
+    """Map tool for drawing a Tanager search bounding box."""
+
+    bbox_drawn = pyqtSignal(list)
+    canceled = pyqtSignal()
+
+    def __init__(self, canvas, parent=None):
+        """Initialize the map tool.
+
+        Args:
+            canvas: QGIS map canvas.
+            parent: Optional QObject parent.
+        """
+        super().__init__(canvas)
+        self.canvas = canvas
+        self._parent_widget = parent
+        self._start_point = None
+        self._rubber_band = None
+        try:
+            self.setCursor(QCursor(Qt.CursorShape.CrossCursor))
+        except AttributeError:
+            self.setCursor(QCursor(Qt.CrossCursor))
+        except Exception:
+            pass  # nosec B110
+
+    def canvasPressEvent(self, event):
+        """Start drawing the bounding box.
+
+        Args:
+            event: QGIS map mouse event.
+        """
+        if not self._is_left_button(event):
+            return
+        self._start_point = self.toMapCoordinates(event.pos())
+        self._ensure_rubber_band()
+
+    def canvasMoveEvent(self, event):
+        """Update the live bounding box preview.
+
+        Args:
+            event: QGIS map mouse event.
+        """
+        if self._start_point is None:
+            return
+        self._update_rubber_band(self._start_point, self.toMapCoordinates(event.pos()))
+
+    def canvasReleaseEvent(self, event):
+        """Finish drawing and emit the WGS84 bbox.
+
+        Args:
+            event: QGIS map mouse event.
+        """
+        if self._start_point is None or not self._is_left_button(event):
+            return
+        end_point = self.toMapCoordinates(event.pos())
+        bbox = self._bbox_from_points(self._start_point, end_point)
+        self._start_point = None
+        self._remove_rubber_band()
+        if bbox[0] == bbox[2] or bbox[1] == bbox[3]:
+            self.canceled.emit()
+            return
+        self.bbox_drawn.emit(self._transform_bbox_to_wgs84(bbox))
+
+    def keyPressEvent(self, event):
+        """Cancel drawing when Escape is pressed.
+
+        Args:
+            event: QGIS key event.
+        """
+        escape_key = getattr(getattr(Qt, "Key", Qt), "Key_Escape", None)
+        if escape_key is None:
+            escape_key = getattr(Qt, "Key_Escape", None)
+        if escape_key is not None and event.key() == escape_key:
+            self._start_point = None
+            self._remove_rubber_band()
+            self.canceled.emit()
+
+    def deactivate(self):
+        """Remove the live preview when the map tool is deactivated."""
+        self._start_point = None
+        self._remove_rubber_band()
+        super_deactivate = getattr(super(), "deactivate", None)
+        if callable(super_deactivate):
+            super_deactivate()
+
+    def _is_left_button(self, event):
+        """Return whether the event used the left mouse button.
+
+        Args:
+            event: QGIS map mouse event.
+
+        Returns:
+            True when the left mouse button was used.
+        """
+        left_button = getattr(getattr(Qt, "MouseButton", Qt), "LeftButton", None)
+        if left_button is None:
+            left_button = getattr(Qt, "LeftButton", None)
+        button = getattr(event, "button", None)
+        if callable(button) and left_button is not None:
+            return button() == left_button
+        return True
+
+    def _ensure_rubber_band(self):
+        """Create the preview rubber band if needed."""
+        if self._rubber_band is not None:
+            return
+        self._rubber_band = QgsRubberBand(self.canvas, self._polygon_geometry_type())
+        try:
+            self._rubber_band.setColor(QColor(0, 102, 204, 90))
+            self._rubber_band.setStrokeColor(QColor(0, 102, 204, 220))
+            self._rubber_band.setFillColor(QColor(173, 216, 230, 55))
+            self._rubber_band.setWidth(2)
+        except Exception:
+            pass  # nosec B110
+
+    def _update_rubber_band(self, start_point, end_point):
+        """Update the preview rectangle.
+
+        Args:
+            start_point: First corner in map coordinates.
+            end_point: Opposite corner in map coordinates.
+        """
+        self._ensure_rubber_band()
+        points = self._rectangle_points(start_point, end_point)
+        try:
+            self._rubber_band.reset(self._polygon_geometry_type())
+            for point in points:
+                self._rubber_band.addPoint(point, False)
+            self._rubber_band.addPoint(points[0], True)
+        except Exception:
+            pass  # nosec B110
+
+    def _remove_rubber_band(self):
+        """Remove the preview rubber band from the canvas."""
+        if self._rubber_band is None:
+            return
+        try:
+            self.canvas.scene().removeItem(self._rubber_band)
+        except Exception:
+            pass  # nosec B110
+        self._rubber_band = None
+
+    def _transform_bbox_to_wgs84(self, bbox):
+        """Transform a map-canvas bbox to EPSG:4326.
+
+        Args:
+            bbox: Bounding box in the map canvas CRS.
+
+        Returns:
+            Bounding box list in EPSG:4326.
+        """
+        try:
+            source_crs = self.canvas.mapSettings().destinationCrs()
+            target_crs = QgsCoordinateReferenceSystem("EPSG:4326")
+            if (
+                source_crs
+                and target_crs.isValid()
+                and source_crs.isValid()
+                and source_crs != target_crs
+            ):
+                transform = QgsCoordinateTransform(
+                    source_crs, target_crs, QgsProject.instance()
+                )
+                extent = transform.transformBoundingBox(QgsRectangle(*bbox))
+                return _extent_to_bbox(extent)
+        except Exception as exc:
+            QgsMessageLog.logMessage(
+                f"Could not transform drawn Tanager bbox: {exc}",
+                "HyperCoast",
+                Qgis.MessageLevel.Warning,
+            )
+        return bbox
+
+    def _bbox_from_points(self, start_point, end_point):
+        """Return a normalized bbox from two map points.
+
+        Args:
+            start_point: First corner point.
+            end_point: Opposite corner point.
+
+        Returns:
+            Bounding box list.
+        """
+        x_values = [float(start_point.x()), float(end_point.x())]
+        y_values = [float(start_point.y()), float(end_point.y())]
+        return [min(x_values), min(y_values), max(x_values), max(y_values)]
+
+    def _rectangle_points(self, start_point, end_point):
+        """Return rectangle corner points.
+
+        Args:
+            start_point: First corner point.
+            end_point: Opposite corner point.
+
+        Returns:
+            List of QGIS points in map coordinates.
+        """
+        xmin, ymin, xmax, ymax = self._bbox_from_points(start_point, end_point)
+        return [
+            QgsPointXY(xmin, ymin),
+            QgsPointXY(xmax, ymin),
+            QgsPointXY(xmax, ymax),
+            QgsPointXY(xmin, ymax),
+        ]
+
+    def _polygon_geometry_type(self):
+        """Return the QGIS polygon geometry type enum.
+
+        Returns:
+            Polygon geometry enum value.
+        """
+        geometry_type = getattr(QgsWkbTypes, "GeometryType", QgsWkbTypes)
+        return getattr(
+            geometry_type,
+            "PolygonGeometry",
+            getattr(QgsWkbTypes, "PolygonGeometry", 2),
+        )
 
 
 class TanagerSearchWorker(QThread):
@@ -267,6 +527,8 @@ class TanagerSearchDialog(QDockWidget):
         self._pending_load_context = None
         self._connected_global_footprint_layers = set()
         self._result_footprints_layer = None
+        self._bbox_map_tool = None
+        self._previous_map_tool = None
 
         self.setWindowTitle("Search Tanager Data")
         self.setObjectName("HyperCoastTanagerSearchDock")
@@ -293,6 +555,9 @@ class TanagerSearchDialog(QDockWidget):
         refresh_btn = QPushButton("Refresh")
         refresh_btn.clicked.connect(self.refresh_extent)
         extent_row.addWidget(refresh_btn)
+        draw_btn = QPushButton("Draw BBox")
+        draw_btn.clicked.connect(self.start_bbox_drawing)
+        extent_row.addWidget(draw_btn)
         global_btn = QPushButton("Global")
         global_btn.clicked.connect(self.clear_bbox)
         extent_row.addWidget(global_btn)
@@ -421,15 +686,94 @@ class TanagerSearchDialog(QDockWidget):
 
     def refresh_extent(self):
         """Refresh the bbox field from the current QGIS map extent."""
+        self._restore_previous_map_tool()
         bbox = self.current_canvas_bbox()
         if bbox:
             self.bbox_edit.setText(", ".join(f"{value:.8f}" for value in bbox))
             self.use_extent_check.setChecked(True)
 
+    def start_bbox_drawing(self):
+        """Activate a map tool for drawing the Tanager search bbox."""
+        try:
+            canvas = self.iface.mapCanvas()
+        except Exception as exc:
+            QMessageBox.warning(self, "Draw BBox", f"Could not access map: {exc}")
+            return
+
+        if self._bbox_map_tool is None:
+            self._bbox_map_tool = TanagerBboxMapTool(canvas, self)
+            self._bbox_map_tool.bbox_drawn.connect(self._on_bbox_drawn)
+            self._bbox_map_tool.canceled.connect(self._on_bbox_drawing_canceled)
+
+        map_tool = getattr(canvas, "mapTool", None)
+        if callable(map_tool):
+            try:
+                current_tool = map_tool()
+                if current_tool is not self._bbox_map_tool:
+                    self._previous_map_tool = current_tool
+            except Exception:
+                self._previous_map_tool = None
+
+        try:
+            canvas.setMapTool(self._bbox_map_tool)
+            self.use_extent_check.setChecked(False)
+            self.status_label.setText("Draw a rectangle on the map for the search bbox")
+        except Exception as exc:
+            QMessageBox.warning(
+                self, "Draw BBox", f"Could not activate map tool: {exc}"
+            )
+
+    def _on_bbox_drawn(self, bbox):
+        """Use a drawn bbox as manual search input.
+
+        Args:
+            bbox: Bounding box list in EPSG:4326.
+        """
+        self.use_extent_check.setChecked(False)
+        self.bbox_edit.setText(", ".join(f"{value:.8f}" for value in bbox))
+        self.status_label.setText("Drawn bbox ready for Tanager search")
+        self._restore_previous_map_tool()
+
+    def _on_bbox_drawing_canceled(self):
+        """Handle bbox drawing cancellation."""
+        self.status_label.setText("BBox drawing canceled")
+        self._restore_previous_map_tool()
+
+    def _restore_previous_map_tool(self):
+        """Restore the previous QGIS map tool after bbox drawing."""
+        if self._bbox_map_tool is None:
+            return
+        try:
+            canvas = self.iface.mapCanvas()
+            map_tool = getattr(canvas, "mapTool", None)
+            current_tool = map_tool() if callable(map_tool) else None
+            if current_tool is not self._bbox_map_tool:
+                return
+            if self._previous_map_tool is not None:
+                canvas.setMapTool(self._previous_map_tool)
+            else:
+                unset_map_tool = getattr(canvas, "unsetMapTool", None)
+                if callable(unset_map_tool):
+                    unset_map_tool(self._bbox_map_tool)
+        except Exception:
+            pass  # nosec B110
+        finally:
+            self._previous_map_tool = None
+
     def clear_bbox(self):
         """Clear the bbox filter for a global Tanager search."""
+        self._restore_previous_map_tool()
         self.use_extent_check.setChecked(False)
         self.bbox_edit.clear()
+
+    def closeEvent(self, event):
+        """Restore the previous map tool before closing.
+
+        Args:
+            event: QGIS close event.
+        """
+        self._restore_previous_map_tool()
+        super().closeEvent(event)
 
     def browse_download_dir(self):
         """Select a Tanager HDF5 download directory."""

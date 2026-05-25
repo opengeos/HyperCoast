@@ -44,8 +44,8 @@ def test_plugin_windows_are_dock_widgets():
         assert issubclass(dock_class, QDockWidget)
 
 
-def test_tanager_auto_detect_sets_radiance_value_range(qapp, tmp_path):
-    """Auto-detected Tanager files should use a radiance-friendly max."""
+def test_tanager_auto_detect_sets_reflectance_value_range(qapp, tmp_path):
+    """Auto-detected Tanager files should use the default reflectance max."""
     h5py = pytest.importorskip("h5py")
     filepath = tmp_path / "custom_name.h5"
     with h5py.File(filepath, "w") as h5_file:
@@ -64,11 +64,11 @@ def test_tanager_auto_detect_sets_radiance_value_range(qapp, tmp_path):
 
     dialog._clear_dataset_preview()
 
-    assert dialog.vmax_spin.value() == 100.0
+    assert dialog.vmax_spin.value() == 0.5
 
 
-def test_spectral_plot_uses_tanager_radiance_defaults(qapp):
-    """Tanager spectra should switch the plot label and y-range."""
+def test_spectral_plot_uses_tanager_reflectance_defaults(qapp):
+    """Tanager spectra should keep the plot label and y-range on reflectance."""
     pytest.importorskip("matplotlib")
 
     class _Iface:
@@ -102,5 +102,5 @@ def test_spectral_plot_uses_tanager_radiance_defaults(qapp):
         data_type="Tanager",
     )
 
-    assert dialog.ylabel_combo.currentText() == "Radiance"
-    assert dialog.ymax_spin.value() == 100.0
+    assert dialog.ylabel_combo.currentText() == "Reflectance"
+    assert dialog.ymax_spin.value() == 0.5
