@@ -9,6 +9,9 @@ HyperCoast provides a QGIS plugin for visualizing and analyzing hyperspectral da
 
 Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video tutorial](https://youtu.be/RxDUcfv-vBc) on how to use the HyperCoast plugin in QGIS.
 
+- [HyperCoast QGIS Plugin: Hyperspectral Data Visualization Made Easy](https://youtu.be/RxDUcfv-vBc)
+- [Working with Planet Tanager Hyperspectral Data (426 Bands) in QGIS with HyperCoast](https://youtu.be/I1LumODB5PU)
+
 [![youtube-video](https://github.com/user-attachments/assets/d7bb977a-c523-485f-8ffb-3c99cb4e89d3)](https://youtu.be/RxDUcfv-vBc)
 
 ## Features
