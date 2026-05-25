@@ -13,6 +13,7 @@ import hypercoast_qgis.dialogs.tanager_search_dialog as dialog_module
 from hypercoast_qgis.dialogs.tanager_search_dialog import (
     TANAGER_HDF5_ASSET,
     TANAGER_VISUAL_ASSET,
+    TanagerBboxMapTool,
     TanagerSearchDialog,
     TanagerSearchWorker,
     _asset_filename,
@@ -108,6 +109,59 @@ def test_canvas_bbox_uses_map_extent():
     dialog.iface = _Iface()
 
     assert dialog.current_canvas_bbox() == [-122.0, 37.0, -121.0, 38.0]
+
+
+def test_tanager_download_dir_defaults_to_user_downloads(monkeypatch, tmp_path):
+    """The default Tanager download folder should be the user's Downloads folder."""
+    monkeypatch.setenv("HOME", str(tmp_path))
+
+    out_dir = dialog_module.tanager_download_dir(project=object())
+
+    assert out_dir == str(tmp_path / "Downloads")
+    assert os.path.isdir(out_dir)
+
+
+def test_drawn_bbox_updates_manual_bbox(qapp, monkeypatch, tmp_path):
+    """Drawing a bbox should fill the bbox field as manual search input."""
+    dialog = _dialog(qapp, monkeypatch=monkeypatch, tmp_path=tmp_path)
+
+    dialog._on_bbox_drawn([-123.0, 36.5, -122.5, 37.25])
+
+    assert not dialog.use_extent_check.isChecked()
+    assert (
+        dialog.bbox_edit.text()
+        == "-123.00000000, 36.50000000, -122.50000000, 37.25000000"
+    )
+    assert dialog.search_params()["bbox"] == [-123.0, 36.5, -122.5, 37.25]
+
+
+def test_bbox_map_tool_normalizes_drag_direction():
+    """Drawn bboxes should be normalized regardless of drag direction."""
+
+    class _Point:
+        """Small point-like object."""
+
+        def __init__(self, x, y):
+            """Initialize point coordinates."""
+            self._x = x
+            self._y = y
+
+        def x(self):
+            """Return the x coordinate."""
+            return self._x
+
+        def y(self):
+            """Return the y coordinate."""
+            return self._y
+
+    tool = TanagerBboxMapTool.__new__(TanagerBboxMapTool)
+
+    assert tool._bbox_from_points(_Point(-121.0, 38.0), _Point(-122.0, 37.0)) == [
+        -122.0,
+        37.0,
+        -121.0,
+        38.0,
+    ]
 
 
 def test_dialog_minimum_width_is_compact(qapp, monkeypatch, tmp_path):

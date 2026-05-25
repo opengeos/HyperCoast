@@ -48,7 +48,7 @@ from ..hyperspectral_provider import (
 from ..cache_manager import create_generated_raster_path
 
 DEFAULT_VALUE_RANGE = (0.0, 0.5)
-TANAGER_VALUE_RANGE = (0.0, 100.0)
+TANAGER_VALUE_RANGE = (0.0, 0.5)
 
 
 class DatasetPreviewWorker(QThread):
