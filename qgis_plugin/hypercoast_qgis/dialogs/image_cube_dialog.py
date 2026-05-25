@@ -552,6 +552,7 @@ class ImageCubeDialog(QDockWidget):
 
         try:
             cube_dataset = self._subset_dataset(dataset, variable, self._subset_bbox)
+            cube_dataset = cube_dataset[[variable]]
             cube_dataset = self._downsample_dataset(
                 cube_dataset,
                 self.spatial_stride_spin.value(),
