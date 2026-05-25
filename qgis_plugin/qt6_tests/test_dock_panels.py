@@ -11,6 +11,8 @@ from qgis.PyQt.QtWidgets import QDockWidget
 from hypercoast_qgis.dialogs.about_dialog import AboutDialog
 from hypercoast_qgis.dialogs.band_combination_dialog import BandCombinationDialog
 from hypercoast_qgis.dialogs.dependency_installer import DependencyInstallerDialog
+from hypercoast_qgis.dialogs.image_cube_dialog import ImageCubeDialog
+import hypercoast_qgis.dialogs.load_data_dialog as load_data_dialog_module
 from hypercoast_qgis.dialogs.load_data_dialog import LoadDataDialog
 from hypercoast_qgis.dialogs.settings_dock import SettingsDockWidget
 from hypercoast_qgis.dialogs.spectral_plot_dialog import SpectralPlotDialog
@@ -33,6 +35,7 @@ def test_plugin_windows_are_dock_widgets():
         AboutDialog,
         BandCombinationDialog,
         DependencyInstallerDialog,
+        ImageCubeDialog,
         LoadDataDialog,
         SettingsDockWidget,
         SpectralPlotDialog,
@@ -65,6 +68,37 @@ def test_tanager_auto_detect_sets_reflectance_value_range(qapp, tmp_path):
     dialog._clear_dataset_preview()
 
     assert dialog.vmax_spin.value() == 0.5
+
+
+def test_load_data_browse_starts_in_user_directory(qapp, monkeypatch):
+    """Load Data Browse should open from the user home directory."""
+
+    class _Iface:
+        """Small iface-like object."""
+
+        def mainWindow(self):
+            """Return no parent window."""
+            return None
+
+    recorded = {}
+    monkeypatch.setattr(
+        load_data_dialog_module.os.path, "expanduser", lambda path: "/home/tester"
+    )
+    monkeypatch.setattr(
+        load_data_dialog_module.QFileDialog,
+        "getOpenFileName",
+        staticmethod(
+            lambda parent, title, directory, file_filter: recorded.update(
+                directory=directory
+            )
+            or ("", "")
+        ),
+    )
+
+    dialog = LoadDataDialog(_Iface(), object())
+    dialog.browse_file()
+
+    assert recorded["directory"] == "/home/tester"
 
 
 def test_spectral_plot_uses_tanager_reflectance_defaults(qapp):

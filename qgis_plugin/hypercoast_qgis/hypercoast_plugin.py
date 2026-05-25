@@ -24,6 +24,7 @@ try:
     from .dialogs.load_data_dialog import LoadDataDialog
     from .dialogs.tanager_search_dialog import TanagerSearchDialog
     from .dialogs.band_combination_dialog import BandCombinationDialog
+    from .dialogs.image_cube_dialog import ImageCubeDialog
     from .dialogs.spectral_inspector_tool import SpectralInspectorTool
     from .dialogs.spectral_plot_dialog import SpectralPlotDialog
 
@@ -39,6 +40,7 @@ DOCK_OBJECT_NAMES = {
     "HyperCoastLoadDataDock",
     "HyperCoastTanagerSearchDock",
     "HyperCoastBandCombinationDock",
+    "HyperCoastImageCubeDock",
     "HyperCoastSpectralPlotDock",
     "HyperCoastAboutDock",
     "HyperCoastUpdateDock",
@@ -71,6 +73,7 @@ class HyperCoastPlugin:
         self.load_dialog = None
         self.tanager_search_dialog = None
         self.band_dialog = None
+        self.image_cube_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
         self.about_dialog = None
@@ -187,6 +190,16 @@ class HyperCoastPlugin:
             callback=self.toggle_spectral_inspector,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Inspect spectral signatures interactively"),
+            checkable=True,
+        )
+
+        # 3D image cube action
+        self.image_cube_action = self.add_action(
+            os.path.join(icons_dir, "image_cube.svg"),
+            text=self.tr("3D Image Cube"),
+            callback=self.show_image_cube_dialog,
+            parent=self.iface.mainWindow(),
+            status_tip=self.tr("Create a PyVista 3D hyperspectral image cube"),
             checkable=True,
         )
 
@@ -459,6 +472,7 @@ class HyperCoastPlugin:
             "load_dialog",
             "tanager_search_dialog",
             "band_dialog",
+            "image_cube_dialog",
             "spectral_plot_dialog",
             "about_dialog",
             "update_dialog",
@@ -556,6 +570,7 @@ class HyperCoastPlugin:
                 load_data_dialog,
                 tanager_search_dialog,
                 band_combination_dialog,
+                image_cube_dialog,
                 spectral_plot_dialog,
             )
 
@@ -563,6 +578,7 @@ class HyperCoastPlugin:
             importlib.reload(load_data_dialog)
             importlib.reload(tanager_search_dialog)
             importlib.reload(band_combination_dialog)
+            importlib.reload(image_cube_dialog)
             importlib.reload(spectral_plot_dialog)
         except Exception as e:
             QgsMessageLog.logMessage(
@@ -576,6 +592,7 @@ class HyperCoastPlugin:
         self.load_dialog = None
         self.tanager_search_dialog = None
         self.band_dialog = None
+        self.image_cube_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
 
@@ -589,6 +606,7 @@ class HyperCoastPlugin:
                 from .dialogs.band_combination_dialog import (  # noqa: F811
                     BandCombinationDialog,
                 )
+                from .dialogs.image_cube_dialog import ImageCubeDialog  # noqa: F811
                 from .dialogs.spectral_inspector_tool import (  # noqa: F811
                     SpectralInspectorTool,
                 )
@@ -654,13 +672,14 @@ class HyperCoastPlugin:
     def _set_data_actions_enabled(self, enabled):
         """Enable or disable data-related actions.
 
-        The first 4 actions are data-dependent:
-        Load Data, Tanager Search, Band Combination, Spectral Inspector.
+        The first 5 actions are data-dependent:
+        Tanager Search, Load Data, Band Combination, Spectral Inspector,
+        and 3D Image Cube.
 
         :param enabled: Whether to enable the actions.
         """
         for i, action in enumerate(self.actions):
-            if i < 4:
+            if i < 5:
                 action.setEnabled(enabled)
 
     def toggle_settings_dock(self):
@@ -752,6 +771,21 @@ class HyperCoastPlugin:
             "band_dialog",
             lambda: BandCombinationDialog(self.iface, self, self.iface.mainWindow()),
             self.band_action,
+            before_show=lambda dock: dock.refresh_layers(),
+        )
+
+    def show_image_cube_dialog(self):
+        """Show the 3D image cube dialog."""
+        if not self._deps_available:
+            self._show_deps_required_warning()
+            self.image_cube_action.setChecked(False)
+            return
+        from .dialogs.image_cube_dialog import ImageCubeDialog
+
+        self._toggle_dock(
+            "image_cube_dialog",
+            lambda: ImageCubeDialog(self.iface, self, self.iface.mainWindow()),
+            self.image_cube_action,
             before_show=lambda dock: dock.refresh_layers(),
         )
 

@@ -17,6 +17,7 @@ from .update_checker import UpdateCheckerDialog
 try:
     from .load_data_dialog import LoadDataDialog
     from .band_combination_dialog import BandCombinationDialog
+    from .image_cube_dialog import ImageCubeDialog
     from .spectral_inspector_tool import SpectralInspectorTool
     from .spectral_plot_dialog import SpectralPlotDialog
 
@@ -28,6 +29,7 @@ __all__ = [
     "DependencyInstallerDialog",
     "LoadDataDialog",
     "BandCombinationDialog",
+    "ImageCubeDialog",
     "SpectralInspectorTool",
     "SpectralPlotDialog",
     "UpdateCheckerDialog",
