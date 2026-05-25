@@ -20,6 +20,7 @@ Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video 
 -   Search Planet Tanager STAC scenes from QGIS, add footprint layers, open visual imagery, and download HDF5 assets for hyperspectral analysis.
 -   Change RGB band combinations by wavelength and use presets such as true color, color infrared, agriculture, vegetation, water, geology, and chlorophyll-a.
 -   Extract and compare spectral signatures by clicking hyperspectral layers on the map.
+-   Create PyVista-based 3D hyperspectral image cubes with optional slicing and threshold widgets.
 -   Use dockable QGIS panels and batch-friendly Processing tools.
 
 ## Installation
@@ -73,6 +74,15 @@ For development installation, packaging, and troubleshooting details, see the [Q
 2. Click a location within a hyperspectral layer.
 3. Compare spectra in the spectral plot panel.
 4. Export data to CSV or save the plot image.
+
+### Creating 3D Image Cubes
+
+1. Load a hyperspectral layer.
+2. Click the **3D Image Cube** button.
+3. Select the layer, data variable, display range, RGB wavelengths, and widget mode.
+4. Click **Draw Subset** and draw a small rectangle on the map for large scenes.
+5. Adjust spatial or spectral stride to reduce memory use.
+6. Click **Create 3D Cube**.
 
 ### Running Processing Tools
 

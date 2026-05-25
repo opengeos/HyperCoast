@@ -607,6 +607,7 @@ def image_cube(
     rgb_cmap: Optional[str] = None,
     rgb_clim: Optional[Tuple[float, float]] = None,
     rgb_args: Dict[str, Any] = None,
+    rgb_z_offset: Optional[float] = None,
     widget=None,
     plotter_args: Dict[str, Any] = None,
     show_axes: bool = True,
@@ -639,6 +640,10 @@ def image_cube(
             the RGB image. Defaults to None.
         rgb_args (Dict[str, Any], optional): Additional arguments for the
             `add_mesh` method for the RGB image. Defaults to {}.
+        rgb_z_offset (Optional[float], optional): Offset added above the cube
+            top face for the RGB overlay. If None, a small offset is computed
+            automatically to avoid z-fighting artifacts. Set to 0 to draw the
+            overlay exactly on the cube top face.
         widget (Optional[str], optional): The widget to use for the image cube.
             Can be one of the following: "box", "plane", "slice", "orthogonal",
             and "threshold". Defaults to None.
@@ -825,7 +830,9 @@ def image_cube(
         )
 
         grid_z_max = grid.bounds[5]
-        im.origin = (0, 0, grid_z_max)
+        if rgb_z_offset is None:
+            rgb_z_offset = max(abs(grid.spacing[2]) * 1e-3, 1e-6)
+        im.origin = (0, 0, grid_z_max + rgb_z_offset)
 
         if rgb_image.shape[2] < 3:
             if rgb_cmap is None:

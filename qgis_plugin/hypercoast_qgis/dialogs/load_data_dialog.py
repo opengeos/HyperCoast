@@ -351,7 +351,10 @@ class LoadDataDialog(QDockWidget):
         """Open file browser dialog."""
         file_filter = create_file_filter()
         filepath, _ = QFileDialog.getOpenFileName(
-            self, "Select Hyperspectral Data File", "", file_filter
+            self,
+            "Select Hyperspectral Data File",
+            self._default_browse_dir(),
+            file_filter,
         )
 
         if filepath:
@@ -368,6 +371,14 @@ class LoadDataDialog(QDockWidget):
             self._apply_data_type_value_range(
                 self._resolved_value_range_data_type(filepath)
             )
+
+    def _default_browse_dir(self):
+        """Return the default directory for selecting hyperspectral files.
+
+        Returns:
+            User home directory path.
+        """
+        return os.path.expanduser("~")
 
     def _clear_dataset_preview(self, *args):
         """Clear loaded preview state after the requested data type changes."""

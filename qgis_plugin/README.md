@@ -27,6 +27,8 @@ Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video 
 
 -   **Dockable QGIS Panels**: Open HyperCoast tools as dockable panels that can be tabbed with the QGIS interface.
 
+-   **3D Image Cubes**: Create PyVista-based 3D hyperspectral cubes from loaded HyperCoast layers, with optional slicing and threshold widgets.
+
 -   **Processing Tools**: Run batch-friendly Processing algorithms for RGB composites, single-band exports, spectral indices, and PCA components.
 
 Before using the plugin, please create a new conda environment to install QGIS and HyperCoast:
@@ -106,6 +108,15 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 3. The spectral plot window will show the extracted spectrum
 4. Click multiple locations to compare spectra
 5. Export data to CSV or save the plot image
+
+### Creating 3D Image Cubes
+
+1. Load a hyperspectral layer
+2. Click the **3D Image Cube** button
+3. Select the layer, data variable, display range, RGB wavelengths, and widget mode
+4. Click **Draw Subset** and draw a small rectangle on the map for large scenes
+5. Adjust spatial or spectral stride to reduce memory use
+6. Click **Create 3D Cube**
 
 ### Running Processing Tools
 
