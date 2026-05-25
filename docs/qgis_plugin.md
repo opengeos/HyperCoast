@@ -77,6 +77,8 @@ For development installation, packaging, and troubleshooting details, see the [Q
 
 ### Creating 3D Image Cubes
 
+![](https://github.com/user-attachments/assets/ee0cc11e-42ae-4ee7-89b2-d6f4fc27ca73)
+
 1. Load a hyperspectral layer.
 2. Click the **3D Image Cube** button.
 3. Select the layer, data variable, display range, RGB wavelengths, and widget mode.
