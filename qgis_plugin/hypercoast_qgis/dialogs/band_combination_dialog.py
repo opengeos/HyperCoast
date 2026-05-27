@@ -7,36 +7,36 @@ SPDX-License-Identifier: MIT
 """
 
 import numpy as np
+from qgis.core import (
+    QgsColorRampShader,
+    QgsContrastEnhancement,
+    QgsCoordinateReferenceSystem,
+    QgsMultiBandColorRenderer,
+    QgsProject,
+    QgsRasterLayer,
+    QgsRasterShader,
+    QgsSingleBandGrayRenderer,
+    QgsSingleBandPseudoColorRenderer,
+)
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
 from qgis.PyQt.QtGui import QColor
 from qgis.PyQt.QtWidgets import (
+    QCheckBox,
+    QComboBox,
     QDockWidget,
-    QVBoxLayout,
+    QDoubleSpinBox,
+    QFormLayout,
+    QGroupBox,
     QHBoxLayout,
     QLabel,
-    QPushButton,
-    QComboBox,
-    QGroupBox,
-    QDoubleSpinBox,
-    QSlider,
-    QCheckBox,
-    QFormLayout,
     QMessageBox,
     QProgressBar,
+    QPushButton,
     QRadioButton,
     QSizePolicy,
+    QSlider,
+    QVBoxLayout,
     QWidget,
-)
-from qgis.core import (
-    QgsCoordinateReferenceSystem,
-    QgsProject,
-    QgsRasterLayer,
-    QgsContrastEnhancement,
-    QgsMultiBandColorRenderer,
-    QgsSingleBandGrayRenderer,
-    QgsColorRampShader,
-    QgsRasterShader,
-    QgsSingleBandPseudoColorRenderer,
 )
 
 from ..cache_manager import create_generated_raster_path

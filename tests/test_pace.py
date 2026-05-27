@@ -1,8 +1,10 @@
-import unittest
-import hypercoast
 import os
+import unittest
+
 import matplotlib
 import pytest
+
+import hypercoast
 
 matplotlib.use("Agg")  # Use the Agg backend to suppress plots
 

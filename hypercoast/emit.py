@@ -15,10 +15,11 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.
 """
 
 import os
-import xarray as xr
-import numpy as np
-import geopandas as gpd
 from typing import Optional, Union
+
+import geopandas as gpd
+import numpy as np
+import xarray as xr
 
 
 def read_emit(
@@ -304,8 +305,8 @@ def emit_xarray(
         xarray.Dataset: An xarray.Dataset constructed based on the parameters provided.
     """
     # Grab granule filename to check product
-    from s3fs.core import S3File
     from fsspec.implementations.http import HTTPFile
+    from s3fs.core import S3File
 
     if isinstance(filepath, S3File):
         granule_id = filepath.info()["name"].split("/", -1)[-1].split(".", -1)[0]

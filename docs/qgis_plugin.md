@@ -21,6 +21,8 @@ Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video 
 -   Change RGB band combinations by wavelength and use presets such as true color, color infrared, agriculture, vegetation, water, geology, and chlorophyll-a.
 -   Extract and compare spectral signatures by clicking hyperspectral layers on the map.
 -   Create PyVista-based 3D hyperspectral image cubes with optional slicing and threshold widgets.
+-   Run water-quality workflow presets from a dockable Workflow Builder panel.
+-   Batch extract spectral signatures from point CSV inputs with Processing tools.
 -   Use dockable QGIS panels and batch-friendly Processing tools.
 
 ## Installation
@@ -86,9 +88,17 @@ For development installation, packaging, and troubleshooting details, see the [Q
 5. Adjust spatial or spectral stride to reduce memory use.
 6. Click **Create 3D Cube**.
 
+### Running Workflow Builder
+
+1. Load a hyperspectral layer.
+2. Click the **Workflow Builder** button.
+3. Select the layer, data variable, workflow preset, and output GeoTIFF path.
+4. Optionally override the workflow wavelengths.
+5. Click **Run Workflow**.
+
 ### Running Processing Tools
 
-Open **Processing** > **Toolbox** > **HyperCoast** to run batch tools for RGB composites, single-band export, spectral index rasters, and PCA components.
+Open **Processing** > **Toolbox** > **HyperCoast** to run batch tools for RGB composites, single-band export, spectral index rasters, workflow presets, PCA components, dataset summaries, and batch spectral extraction.
 
 ## Supported File Formats
 

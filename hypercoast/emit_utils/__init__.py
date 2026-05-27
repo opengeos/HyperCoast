@@ -5,8 +5,8 @@ Investigation) hyperspectral data, including data loading, preprocessing, model 
 and visualization.
 """
 
-from .MoE_VAE import *
 from .data_loading import *
 from .model_inference import *
+from .MoE_VAE import *
 from .plot_and_save import *
 from .preprocess import *

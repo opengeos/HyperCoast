@@ -8,11 +8,12 @@ The source code is adapted from https://bit.ly/3KwyZkn. Credit goes to the
 original authors.
 """
 
+from typing import Any, List, Optional, Union
+
 import h5py
-import rioxarray
 import numpy as np
 import xarray as xr
-from typing import List, Union, Dict, Optional, Tuple, Any
+
 from .common import convert_coords
 
 

@@ -13,6 +13,7 @@ try:
     import torch
     from sklearn.preprocessing import MinMaxScaler
     from torch.utils.data import DataLoader, Subset, TensorDataset
+
     from .preprocess import LogScaler, RobustMinMaxScaler
 except ImportError:
     pass

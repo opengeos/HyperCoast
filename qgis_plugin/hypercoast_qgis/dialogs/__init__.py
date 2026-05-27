@@ -15,11 +15,12 @@ from .update_checker import UpdateCheckerDialog
 # Data-related dialogs depend on numpy (via hyperspectral_provider),
 # so they may fail to import if dependencies are not installed yet.
 try:
-    from .load_data_dialog import LoadDataDialog
     from .band_combination_dialog import BandCombinationDialog
     from .image_cube_dialog import ImageCubeDialog
+    from .load_data_dialog import LoadDataDialog
     from .spectral_inspector_tool import SpectralInspectorTool
     from .spectral_plot_dialog import SpectralPlotDialog
+    from .workflow_builder_dialog import WorkflowBuilderDialog
 
     _DATA_DIALOGS_AVAILABLE = True
 except ImportError:
@@ -33,5 +34,6 @@ __all__ = [
     "SpectralInspectorTool",
     "SpectralPlotDialog",
     "UpdateCheckerDialog",
+    "WorkflowBuilderDialog",
     "_DATA_DIALOGS_AVAILABLE",
 ]

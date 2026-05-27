@@ -17,11 +17,11 @@ SPDX-License-Identifier = "MIT"
 """
 
 import os
+from typing import Any, List, Optional, Union
 
-import rioxarray
 import numpy as np
 import xarray as xr
-from typing import List, Union, Optional, Any
+
 from .common import convert_coords
 
 AVIRIS_NETCDF_SUFFIXES = (".nc", ".nc4", ".cdf")

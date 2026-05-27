@@ -2,13 +2,15 @@
 #
 # SPDX-License-Identifier: MIT
 
-from typing import List, Union, Optional, Any
-import xarray as xr
-import numpy as np
-import os
 import glob
+import os
 import xml.etree.ElementTree as ET
+from typing import Any, List, Optional, Union
+
+import numpy as np
+import xarray as xr
 from leafmap import array_to_image
+
 from .common import convert_coords
 
 
@@ -17,7 +19,6 @@ def _extract_enmap_wavelengths_from_xml(metadata_xml_path: str) -> List[float]:
     Extracts EnMAP spectral center wavelengths (in nm) from the metadata XML file.
     Looks for <wavelengthCenterOfBand> inside each <bandID> block.
     """
-    import xml.etree.ElementTree as ET
 
     tree = ET.parse(metadata_xml_path)
     root = tree.getroot()

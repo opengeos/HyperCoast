@@ -4,12 +4,11 @@ import os
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+import hypercoast_qgis.dialogs.image_cube_dialog as dialog_module
 import numpy as np
 import pytest
-from qgis.PyQt.QtWidgets import QApplication
-
-import hypercoast_qgis.dialogs.image_cube_dialog as dialog_module
 from hypercoast_qgis.dialogs.image_cube_dialog import ImageCubeDialog
+from qgis.PyQt.QtWidgets import QApplication
 
 
 @pytest.fixture(scope="module")

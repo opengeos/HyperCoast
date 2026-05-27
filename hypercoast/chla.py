@@ -2,23 +2,21 @@
 Module for training and evaluating the VAE model for Chl-a concentration estimation.
 """
 
+import os
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import rasterio
+import seaborn as sns
 import torch
 import torch.nn as nn
-import numpy as np
-from torch.utils.data import DataLoader, TensorDataset, random_split
 import torch.nn.functional as F
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-import matplotlib.pyplot as plt
-import seaborn as sns
-import os
-import scipy.io
-import pandas as pd
-import netCDF4 as nc
-import rasterio
 from rasterio.transform import from_origin
-from rasterio.warp import reproject, Resampling
 from scipy.interpolate import griddata
 from scipy.spatial import cKDTree
+from sklearn.preprocessing import MinMaxScaler
+from torch.utils.data import DataLoader, TensorDataset, random_split
 
 
 class VAE(nn.Module):

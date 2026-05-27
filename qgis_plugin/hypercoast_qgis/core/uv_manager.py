@@ -21,7 +21,7 @@ import tarfile
 import tempfile
 import zipfile
 
-from qgis.core import QgsBlockingNetworkRequest, QgsMessageLog, Qgis
+from qgis.core import Qgis, QgsBlockingNetworkRequest, QgsMessageLog
 from qgis.PyQt.QtCore import QUrl
 from qgis.PyQt.QtNetwork import QNetworkRequest
 

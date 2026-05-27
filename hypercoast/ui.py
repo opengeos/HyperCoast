@@ -5,21 +5,23 @@
 """This module contains the user interface for the hypercoast package."""
 
 import os
-import ipyleaflet
+
 import bqplot
+import ipyleaflet
 import ipywidgets as widgets
 import numpy as np
 import xarray as xr
 from bqplot import pyplot as plt
 from ipyfilechooser import FileChooser
-from .pace import extract_pace
-from .desis import extract_desis
-from .neon import extract_neon
+
 from .aviris import extract_aviris
 from .common import extract_spectral
-from .tanager import extract_tanager
-from .prisma import extract_prisma
+from .desis import extract_desis
 from .enmap import extract_enmap
+from .neon import extract_neon
+from .pace import extract_pace
+from .prisma import extract_prisma
+from .tanager import extract_tanager
 from .wyvern import extract_wyvern
 
 

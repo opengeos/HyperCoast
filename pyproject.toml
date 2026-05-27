@@ -27,20 +27,68 @@ hypercoast = "hypercoast.cli:main"
 
 [project.optional-dependencies]
 all = [
-    "HyperCoast[extra]",
-    "HyperCoast[torch]",
+    "HyperCoast[cloud]",
+    "HyperCoast[docs]",
+    "HyperCoast[ml]",
+    "HyperCoast[qgis]",
+    "HyperCoast[viz]",
+]
+
+core = [
+    "h5netcdf",
+    "h5py",
+    "netcdf4",
+    "numpy",
+    "pandas",
+    "requests",
+    "scipy",
+    "xarray",
+]
+
+viz = [
+    "cartopy",
+    "geopandas",
+    "hvplot",
+    "leafmap>=0.62.0",
+    "localtileserver",
+    "mapclassify",
+    "openpyxl",
+    "pyvista[jupyter]",
+    "rioxarray",
+    "scikit-learn",
+    "seaborn",
+]
+
+cloud = [
+    "dask",
+    "earthaccess",
+    "s3fs",
+]
+
+qgis = [
+    "PyQt6",
+    "PyQt6-QScintilla",
+    "rasterio",
+]
+
+ml = ["torch", "seaborn", "pytorch-lightning"]
+
+docs = [
+    "mkdocs",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-git-revision-date-plugin",
+    "mkdocs-jupyter>=0.26.3",
+    "mkdocs-material>=9.1.3",
+    "mkdocstrings",
+    "mkdocstrings-python-legacy",
+    "pymdown-extensions",
 ]
 
 extra = [
-    "cartopy",
-    "fiona",
-    "geopandas",
-    "openpyxl",
-    "pyvista[jupyter]",
-    "scikit-learn",
+    "HyperCoast[viz]",
 ]
 
-torch = ["torch", "seaborn", "pytorch-lightning"]
+torch = ["HyperCoast[ml]"]
 
 [tool]
 [tool.setuptools.packages.find]
@@ -71,6 +119,13 @@ exclude = [
     "docs",
 ]
 max-line-length = 88
+
+[tool.ruff]
+line-length = 88
+exclude = ["docs", "site", "dist"]
+
+[tool.ruff.lint]
+select = ["I"]
 
 
 [project.urls]

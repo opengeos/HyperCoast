@@ -9,7 +9,12 @@ __email__ = "giswqs@gmail.com"
 __version__ = "0.26.0"
 
 
+from . import ml
 from .hypercoast import *
-from . import moe_vae
+
+try:
+    from . import moe_vae
+except ImportError:
+    moe_vae = None
 
 __all__ = [name for name in globals() if not name.startswith("_")]

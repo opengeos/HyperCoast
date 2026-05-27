@@ -7,28 +7,29 @@ SPDX-License-Identifier: MIT
 """
 
 import csv
+
 import numpy as np
 from qgis.PyQt.QtCore import Qt, QTimer
 from qgis.PyQt.QtWidgets import (
-    QDockWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QComboBox,
-    QGroupBox,
     QCheckBox,
+    QComboBox,
+    QDockWidget,
     QDoubleSpinBox,
+    QFileDialog,
     QFormLayout,
+    QGroupBox,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QMessageBox,
+    QPushButton,
+    QSizePolicy,
+    QSplitter,
     QTableWidget,
     QTableWidgetItem,
-    QHeaderView,
-    QSizePolicy,
-    QFileDialog,
-    QMessageBox,
-    QSplitter,
-    QWidget,
     QTabWidget,
+    QVBoxLayout,
+    QWidget,
 )
 
 try:
@@ -42,8 +43,8 @@ try:
         from matplotlib.backends.backend_qt5agg import (
             NavigationToolbar2QT as NavigationToolbar,
         )
-    from matplotlib.figure import Figure
     import matplotlib.pyplot as plt
+    from matplotlib.figure import Figure
 
     HAS_MATPLOTLIB = True
 except ImportError:

@@ -100,7 +100,9 @@ nav:
           - examples/acolite_emit.ipynb
           - examples/search_data.ipynb
           - examples/search_workspace.ipynb
+          - examples/dataset_summary_cli.ipynb
           - examples/registry_workflows.ipynb
+          - examples/qgis_workflow_processing.ipynb
           - examples/spectral_cloud_tools.ipynb
           - examples/image_cube.ipynb
           - examples/image_slicing.ipynb
@@ -155,9 +157,11 @@ nav:
           - prisma module: prisma.md
           - registry module: registry.md
           - spectral module: spectral.md
+          - summary module: summary.md
           - tanager module: tanager.md
           - enmap module: enmap.md
           - workflows module: workflows.md
+          - ml module: ml.md
           - ui module: ui.md
           - moe_vae modules:
                 - data_loading module: moe_vae/data_loading.md

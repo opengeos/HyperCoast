@@ -6,11 +6,12 @@
 This Module has the functions related to working with a DESIS dataset.
 """
 
-import rioxarray
-import xarray as xr
-import pandas as pd
-from .common import convert_coords
 from typing import Optional, Union
+
+import pandas as pd
+import xarray as xr
+
+from .common import convert_coords
 
 
 def read_desis(

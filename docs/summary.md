@@ -1,0 +1,3 @@
+# Summary module
+
+::: hypercoast.summary

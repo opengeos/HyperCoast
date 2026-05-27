@@ -13,7 +13,15 @@ import os
 import platform
 import sys
 import traceback
+
 import numpy as np
+
+from .provider.detection import detect_data_type
+from .provider.metadata import (
+    coordinate_bounds,
+    geolocation_bounds,
+    spectral_coordinates,
+)
 
 try:
     import xarray as xr
@@ -39,11 +47,11 @@ except ImportError:
 
 try:
     from qgis.core import (
+        Qgis,
         QgsCoordinateReferenceSystem,
         QgsCoordinateTransform,
         QgsMessageLog,
         QgsProject,
-        Qgis,
     )
 
     HAS_QGIS = True
@@ -183,37 +191,7 @@ class HyperspectralDataset:
 
     def _detect_type(self):
         """Auto-detect the data type based on file extension and content."""
-        _, ext = os.path.splitext(self.filepath.lower())
-        filename = os.path.basename(self.filepath).upper()
-
-        if "EMIT" in filename:
-            return "EMIT"
-        elif "PACE" in filename or "OCI" in filename:
-            return "PACE"
-        elif "DESIS" in filename:
-            return "DESIS"
-        elif "NEON" in filename:
-            return "NEON"
-        elif "AVIRIS" in filename:
-            return "AVIRIS"
-        elif "PRISMA" in filename or "PRS" in filename:
-            return "PRISMA"
-        elif "ENMAP" in filename:
-            return "EnMAP"
-        elif (
-            "TANAGER" in filename
-            or "ORTHO_RADIANCE_HDF5" in filename
-            or "BASIC_RADIANCE_HDF5" in filename
-            or "ORTHO_SR_HDF5" in filename
-            or "BASIC_SR_HDF5" in filename
-        ):
-            return "Tanager"
-        elif "WYVERN" in filename:
-            return "Wyvern"
-        elif ext in [".h5", ".hdf5"] and self._is_tanager_hdf5_file():
-            return "Tanager"
-        else:
-            return "Generic"
+        return detect_data_type(self.filepath, self._is_tanager_hdf5_file)
 
     def _is_tanager_hdf5_file(self):
         """Return whether an HDF5 file looks like a Tanager product.
@@ -751,12 +729,7 @@ class HyperspectralDataset:
         if "latitude" in ds.coords and "longitude" in ds.coords:
             lat = ds.coords["latitude"].values
             lon = ds.coords["longitude"].values
-            self.bounds = (
-                float(np.nanmin(lon)),
-                float(np.nanmin(lat)),
-                float(np.nanmax(lon)),
-                float(np.nanmax(lat)),
-            )
+            self.bounds = geolocation_bounds(lon, lat)
 
         self.crs = "EPSG:4326"
 
@@ -785,12 +758,7 @@ class HyperspectralDataset:
         if "latitude" in ds.coords:
             lat = ds["latitude"].values
             lon = ds["longitude"].values
-            self.bounds = (
-                float(np.nanmin(lon)),
-                float(np.nanmin(lat)),
-                float(np.nanmax(lon)),
-                float(np.nanmax(lat)),
-            )
+            self.bounds = geolocation_bounds(lon, lat)
 
         self.crs = "EPSG:4326"
         return True
@@ -800,7 +768,7 @@ class HyperspectralDataset:
         ds = self.dataset
 
         if "wavelength" in ds.coords:
-            self.wavelengths = np.array(ds.coords["wavelength"].values)
+            self.wavelengths = spectral_coordinates(ds)
 
         try:
             self.crs = ds.attrs.get("crs", "EPSG:4326")
@@ -822,12 +790,7 @@ class HyperspectralDataset:
         if "x" in ds.coords and "y" in ds.coords:
             x = ds.coords["x"].values
             y = ds.coords["y"].values
-            self.bounds = (
-                float(np.min(x)),
-                float(np.min(y)),
-                float(np.max(x)),
-                float(np.max(y)),
-            )
+            self.bounds = coordinate_bounds(x, y)
 
     def _extract_tanager_metadata(self):
         """Extract metadata from Tanager dataset.
@@ -852,12 +815,7 @@ class HyperspectralDataset:
         if "latitude" in ds.coords:
             lat = ds["latitude"].values
             lon = ds["longitude"].values
-            self.bounds = (
-                float(np.nanmin(lon)),
-                float(np.nanmin(lat)),
-                float(np.nanmax(lon)),
-                float(np.nanmax(lat)),
-            )
+            self.bounds = geolocation_bounds(lon, lat)
 
         self.crs = "EPSG:4326"
         self._is_swath = True
@@ -868,10 +826,7 @@ class HyperspectralDataset:
         ds = self.dataset
 
         # Try to find wavelength coordinate
-        for coord_name in ["wavelength", "wavelengths", "band", "bands"]:
-            if coord_name in ds.coords:
-                self.wavelengths = np.array(ds.coords[coord_name].values)
-                break
+        self.wavelengths = spectral_coordinates(ds)
 
         # Try to get CRS and bounds
         try:
@@ -1122,7 +1077,6 @@ class HyperspectralDataset:
             _, ext = os.path.splitext(self.filepath.lower())
 
             if ext in [".tif", ".tiff"]:
-                import rioxarray
 
                 ds = xr.open_dataset(self.filepath, engine="rasterio")
 

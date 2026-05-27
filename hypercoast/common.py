@@ -6,9 +6,10 @@
 
 import os
 import sys
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import leafmap
 import xarray as xr
-from typing import List, Union, Dict, Optional, Tuple, Any
 
 
 def github_raw_url(url: str) -> str:
@@ -62,8 +63,9 @@ def download_file(
     Returns:
         str: The output file path.
     """
-    import zipfile
     import tarfile
+    import zipfile
+
     import gdown
 
     if output is None:
@@ -560,8 +562,8 @@ def nasa_earth_login(strategy: str = "all", persist: bool = True, **kwargs) -> N
         strategy (str, optional): The login strategy. Defaults to "all".
         persist (bool, optional): Whether to persist the login. Defaults to True.
     """
-    from leafmap import get_api_key
     import earthaccess
+    from leafmap import get_api_key
 
     USERNAME = get_api_key("EARTHDATA_USERNAME")
     PASSWORD = get_api_key("EARTHDATA_PASSWORD")
@@ -924,6 +926,7 @@ def extract_date_from_filename(filename: str):
         None
     """
     import re
+
     import pandas as pd
 
     # Assuming the date format in filename is 'YYYYMMDD'
@@ -977,8 +980,9 @@ def download_acolite(outdir: str = ".", platform: Optional[str] = None) -> str:
         Exception: If the platform is unsupported or the download fails.
     """
     import platform as pf
-    import requests
     import tarfile
+
+    import requests
     from tqdm import tqdm
 
     base_url = "https://github.com/acolite/acolite/releases/download/20231023.0/"
@@ -1259,9 +1263,9 @@ def show_field_data(
     Returns:
         Map: An ipyleaflet Map with the added markers and popups.
     """
-    import pandas as pd
     import matplotlib.pyplot as plt
-    from ipyleaflet import Map, Marker, Popup, MarkerCluster
+    import pandas as pd
+    from ipyleaflet import Map, Marker, MarkerCluster, Popup
     from ipywidgets import Output, VBox
 
     # Read the CSV file

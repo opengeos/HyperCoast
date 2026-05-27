@@ -6,10 +6,10 @@ SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
 SPDX-License-Identifier: MIT
 """
 
+import json
 import os
 
 import numpy as np
-from qgis.PyQt.QtGui import QIcon
 from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingException,
@@ -20,6 +20,7 @@ from qgis.core import (
     QgsProcessingParameterString,
     QgsProcessingProvider,
 )
+from qgis.PyQt.QtGui import QIcon
 
 from .hyperspectral_provider import DATA_TYPES, HyperspectralDataset
 
@@ -68,6 +69,8 @@ class HyperCoastProcessingProvider(QgsProcessingProvider):
         self.addAlgorithm(SpectralIndexAlgorithm())
         self.addAlgorithm(WaterQualityWorkflowAlgorithm())
         self.addAlgorithm(PCAAlgorithm())
+        self.addAlgorithm(SummarizeDatasetAlgorithm())
+        self.addAlgorithm(BatchExtractSpectraAlgorithm())
 
     def id(self):
         """Return the provider ID."""
@@ -729,3 +732,175 @@ class PCAAlgorithm(BaseHyperCoastAlgorithm):
     def createInstance(self):
         """Create a new algorithm instance."""
         return PCAAlgorithm()
+
+
+class SummarizeDatasetAlgorithm(BaseHyperCoastAlgorithm):
+    """Write a JSON summary for a hyperspectral dataset."""
+
+    OUTPUT_JSON = "OUTPUT_JSON"
+
+    def name(self):
+        """Return the algorithm ID."""
+        return "summarize_dataset"
+
+    def displayName(self):
+        """Return the algorithm display name."""
+        return "Summarize Dataset"
+
+    def shortHelpString(self):
+        """Return help text."""
+        return "Writes a JSON summary for a local hyperspectral dataset."
+
+    def initAlgorithm(self, config=None):
+        """Define algorithm parameters."""
+        self._add_common_inputs()
+        self.addParameter(
+            QgsProcessingParameterString(
+                self.OUTPUT_JSON,
+                "Output JSON path",
+                defaultValue="",
+            )
+        )
+
+    def processAlgorithm(self, parameters, context, feedback):
+        """Run dataset summary export."""
+        input_path = self.parameterAsFile(parameters, self.INPUT, context)
+        output_path = self.parameterAsString(parameters, self.OUTPUT_JSON, context)
+        if not output_path:
+            raise QgsProcessingException("Output JSON path is required")
+        data_type_index = self.parameterAsEnum(parameters, self.DATA_TYPE, context)
+        data_type = DATA_TYPE_OPTIONS[data_type_index]
+        variable = self._selected_variable(parameters, context)
+        sensor = None if data_type == "auto" else data_type.lower()
+        try:
+            from hypercoast.summary import summarize_dataset
+
+            summary = summarize_dataset(input_path, sensor=sensor, variable=variable)
+        except Exception:
+            dataset = self._load_dataset(parameters, context)
+            summary = {
+                "path": input_path,
+                "exists": os.path.exists(input_path),
+                "sensor": dataset.data_type,
+                "variables": dataset.list_data_variables(),
+                "selected_variable": dataset.selected_variable,
+                "crs": dataset.crs,
+                "bounds": dataset.bounds,
+                "wavelength_count": int(
+                    len(dataset.wavelengths) if dataset.wavelengths is not None else 0
+                ),
+                "default_rgb": [],
+                "warnings": [],
+            }
+        else:
+            summary = summary.as_dict()
+
+        with open(output_path, "w", encoding="utf-8") as dst:
+            json.dump(summary, dst, indent=2, default=str)
+        if feedback:
+            feedback.setProgress(100)
+        return {self.OUTPUT_JSON: output_path}
+
+    def createInstance(self):
+        """Create a new algorithm instance."""
+        return SummarizeDatasetAlgorithm()
+
+
+class BatchExtractSpectraAlgorithm(BaseHyperCoastAlgorithm):
+    """Extract spectra for CSV point coordinates."""
+
+    POINTS = "POINTS"
+    X_COLUMN = "X_COLUMN"
+    Y_COLUMN = "Y_COLUMN"
+    CRS = "CRS"
+    OUTPUT_CSV = "OUTPUT_CSV"
+
+    def name(self):
+        """Return the algorithm ID."""
+        return "batch_extract_spectra"
+
+    def displayName(self):
+        """Return the algorithm display name."""
+        return "Batch Extract Spectra"
+
+    def shortHelpString(self):
+        """Return help text."""
+        return "Extracts spectra for point coordinates from a CSV file."
+
+    def initAlgorithm(self, config=None):
+        """Define algorithm parameters."""
+        self._add_common_inputs()
+        self.addParameter(
+            QgsProcessingParameterFile(
+                self.POINTS,
+                "Input point CSV",
+                behavior=_file_behavior_file(),
+            )
+        )
+        self.addParameter(
+            QgsProcessingParameterString(self.X_COLUMN, "X column", defaultValue="x")
+        )
+        self.addParameter(
+            QgsProcessingParameterString(self.Y_COLUMN, "Y column", defaultValue="y")
+        )
+        self.addParameter(
+            QgsProcessingParameterString(
+                self.CRS, "Point CRS", defaultValue="EPSG:4326"
+            )
+        )
+        self.addParameter(
+            QgsProcessingParameterString(
+                self.OUTPUT_CSV,
+                "Output CSV path",
+                defaultValue="",
+            )
+        )
+
+    def processAlgorithm(self, parameters, context, feedback):
+        """Run batch spectral extraction."""
+        dataset = self._load_dataset(parameters, context)
+        points_path = self.parameterAsFile(parameters, self.POINTS, context)
+        output_path = self.parameterAsString(parameters, self.OUTPUT_CSV, context)
+        x_column = self.parameterAsString(parameters, self.X_COLUMN, context)
+        y_column = self.parameterAsString(parameters, self.Y_COLUMN, context)
+        crs = self.parameterAsString(parameters, self.CRS, context) or "EPSG:4326"
+        if not output_path:
+            raise QgsProcessingException("Output CSV path is required")
+        import pandas as pd
+
+        points = pd.read_csv(points_path)
+        if x_column not in points.columns or y_column not in points.columns:
+            raise QgsProcessingException(
+                f"Point CSV must contain '{x_column}' and '{y_column}'"
+            )
+
+        rows = []
+        for feature_id, row in points.iterrows():
+            wavelengths, values = dataset.extract_spectral_signature(
+                float(row[x_column]),
+                float(row[y_column]),
+                crs=crs,
+            )
+            if wavelengths is None or values is None:
+                continue
+            for wavelength, value in zip(wavelengths, values):
+                rows.append(
+                    {
+                        "feature_id": feature_id,
+                        "x": row[x_column],
+                        "y": row[y_column],
+                        "crs": crs,
+                        "wavelength": wavelength,
+                        "value": value,
+                        "layer": dataset.filepath,
+                        "variable": dataset.selected_variable,
+                    }
+                )
+        pd.DataFrame(rows).to_csv(output_path, index=False)
+        if feedback:
+            feedback.setProgress(100)
+        return {self.OUTPUT_CSV: output_path}
+
+    def createInstance(self):
+        """Create a new algorithm instance."""
+        return BatchExtractSpectraAlgorithm()

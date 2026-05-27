@@ -1,7 +1,9 @@
-import unittest
-import hypercoast
 import os
+import unittest
+
 import pytest
+
+import hypercoast
 
 
 class TestHypercoastEmit(unittest.TestCase):

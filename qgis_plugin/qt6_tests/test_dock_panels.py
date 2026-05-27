@@ -4,20 +4,18 @@ import os
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+import hypercoast_qgis.dialogs.load_data_dialog as load_data_dialog_module
 import pytest
-from qgis.PyQt.QtWidgets import QApplication
-from qgis.PyQt.QtWidgets import QDockWidget
-
 from hypercoast_qgis.dialogs.about_dialog import AboutDialog
 from hypercoast_qgis.dialogs.band_combination_dialog import BandCombinationDialog
 from hypercoast_qgis.dialogs.dependency_installer import DependencyInstallerDialog
 from hypercoast_qgis.dialogs.image_cube_dialog import ImageCubeDialog
-import hypercoast_qgis.dialogs.load_data_dialog as load_data_dialog_module
 from hypercoast_qgis.dialogs.load_data_dialog import LoadDataDialog
 from hypercoast_qgis.dialogs.settings_dock import SettingsDockWidget
 from hypercoast_qgis.dialogs.spectral_plot_dialog import SpectralPlotDialog
 from hypercoast_qgis.dialogs.tanager_search_dialog import TanagerSearchDialog
 from hypercoast_qgis.dialogs.update_checker import UpdateCheckerDialog
+from qgis.PyQt.QtWidgets import QApplication, QDockWidget
 
 
 @pytest.fixture(scope="module")

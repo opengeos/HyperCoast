@@ -7,45 +7,46 @@ SPDX-License-Identifier: MIT
 """
 
 import os
+
+from qgis.core import (
+    Qgis,
+    QgsContrastEnhancement,
+    QgsCoordinateReferenceSystem,
+    QgsCoordinateTransform,
+    QgsMessageLog,
+    QgsMultiBandColorRenderer,
+    QgsProject,
+    QgsRasterLayer,
+    QgsSingleBandGrayRenderer,
+)
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
 from qgis.PyQt.QtWidgets import (
+    QComboBox,
     QDockWidget,
-    QVBoxLayout,
+    QDoubleSpinBox,
+    QFileDialog,
+    QFormLayout,
+    QGroupBox,
     QHBoxLayout,
     QLabel,
-    QPushButton,
-    QComboBox,
     QLineEdit,
-    QFileDialog,
-    QGroupBox,
-    QDoubleSpinBox,
-    QProgressBar,
-    QMessageBox,
-    QFormLayout,
     QListWidget,
     QListWidgetItem,
-    QTextEdit,
+    QMessageBox,
+    QProgressBar,
+    QPushButton,
     QTabWidget,
+    QTextEdit,
+    QVBoxLayout,
     QWidget,
 )
-from qgis.core import (
-    QgsRasterLayer,
-    QgsProject,
-    QgsMessageLog,
-    QgsCoordinateTransform,
-    QgsCoordinateReferenceSystem,
-    QgsContrastEnhancement,
-    QgsMultiBandColorRenderer,
-    QgsSingleBandGrayRenderer,
-    Qgis,
-)
 
+from ..cache_manager import create_generated_raster_path
 from ..hyperspectral_provider import (
-    HyperspectralDataset,
     DATA_TYPES,
+    HyperspectralDataset,
     create_file_filter,
 )
-from ..cache_manager import create_generated_raster_path
 
 DEFAULT_VALUE_RANGE = (0.0, 0.5)
 TANAGER_VALUE_RANGE = (0.0, 0.5)

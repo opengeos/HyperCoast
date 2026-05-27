@@ -9,9 +9,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import hypercoast
 import numpy as np
 import xarray as xr
+
+import hypercoast
 from hypercoast import appeears
 
 

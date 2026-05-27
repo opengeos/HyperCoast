@@ -1,4 +1,6 @@
 name: QGIS plugin
+env:
+    PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
 
 on:
     push:
@@ -47,6 +49,6 @@ jobs:
             - name: Install PyQt6, pytest, and plugin runtime deps
               run: |
                   python -m pip install --upgrade pip
-                  pip install PyQt6 PyQt6-QScintilla pytest numpy Pillow
+                  pip install PyQt6 PyQt6-QScintilla pytest pytest-cov numpy Pillow pandas xarray
             - name: Run import smoke tests
-              run: pytest qgis_plugin/qt6_tests -v
+              run: pytest qgis_plugin/qt6_tests -v --cov=qgis_plugin/hypercoast_qgis --cov-report=term-missing
