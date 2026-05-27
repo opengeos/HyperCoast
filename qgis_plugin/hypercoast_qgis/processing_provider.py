@@ -776,7 +776,7 @@ class SummarizeDatasetAlgorithm(BaseHyperCoastAlgorithm):
             from hypercoast.summary import summarize_dataset
 
             summary = summarize_dataset(input_path, sensor=sensor, variable=variable)
-        except Exception:
+        except (ImportError, OSError):
             dataset = self._load_dataset(parameters, context)
             summary = {
                 "path": input_path,

@@ -9,6 +9,7 @@ This Module has the functions related to working with a DESIS dataset.
 from typing import Optional, Union
 
 import pandas as pd
+import rioxarray  # noqa: F401 -- registers .rio accessor
 import xarray as xr
 
 from .common import convert_coords

@@ -144,6 +144,10 @@ def subset_dataset(
     ds = read_sensor(sensor, path) if sensor else xr.open_dataset(path)
     try:
         selected = _select_variable(ds, variable)
+        if variable and selected != variable:
+            raise ValueError(
+                f"Variable {variable!r} not found. " f"Available: {list(ds.data_vars)}"
+            )
         if variable and selected:
             ds = ds[[selected]]
         xmin, ymin, xmax, ymax = bbox

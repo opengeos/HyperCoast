@@ -20,6 +20,7 @@ import os
 from typing import Any, List, Optional, Union
 
 import numpy as np
+import rioxarray  # noqa: F401 -- registers .rio accessor
 import xarray as xr
 
 from .common import convert_coords

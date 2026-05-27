@@ -6,6 +6,7 @@ from typing import Any, List, Optional, Tuple, Union
 
 import h5py
 import numpy as np
+import rioxarray  # noqa: F401 -- registers .rio accessor
 import xarray as xr
 from affine import Affine
 from leafmap import array_to_image

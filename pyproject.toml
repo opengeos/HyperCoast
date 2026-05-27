@@ -66,6 +66,7 @@ cloud = [
 ]
 
 qgis = [
+    "HyperCoast[core]",
     "PyQt6",
     "PyQt6-QScintilla",
     "rasterio",
