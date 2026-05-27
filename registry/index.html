@@ -12,13 +12,13 @@
         <meta name="author" content="giswqs">
       
       
-        <link rel="canonical" href="https://hypercoast.org/enmap/">
+        <link rel="canonical" href="https://hypercoast.org/registry/">
       
       
-        <link rel="prev" href="../tanager/">
+        <link rel="prev" href="../prisma/">
       
       
-        <link rel="next" href="../ui/">
+        <link rel="next" href="../tanager/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>enmap module - HyperCoast</title>
+        <title>registry module - HyperCoast</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#enmap-module" class="md-skip">
+        <a href="#registry-module" class="md-skip">
           Skip to content
         </a>
       
@@ -120,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              enmap module
+              registry module
             
           </span>
         </div>
@@ -2042,10 +2042,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    registry module
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2061,6 +2088,136 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hypercoast.registry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.SensorHandler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SensorHandler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.download_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        download_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.extract_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.get_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.list_sensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_sensors()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.read_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.register_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.search_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.sensor_to_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sensor_to_image()
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2098,37 +2255,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    enmap module
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../enmap/" class="md-nav__link">
         
   
   
@@ -2144,70 +2274,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#hypercoast.enmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        hypercoast.enmap
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hypercoast.enmap.enmap_to_image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enmap_to_image()
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hypercoast.enmap.extract_enmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        extract_enmap()
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hypercoast.enmap.read_enmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        read_enmap()
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2637,10 +2703,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#hypercoast.enmap" class="md-nav__link">
+  <a href="#hypercoast.registry" class="md-nav__link">
     <span class="md-ellipsis">
       
-        hypercoast.enmap
+        hypercoast.registry
       
     </span>
   </a>
@@ -2648,10 +2714,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hypercoast.enmap.enmap_to_image" class="md-nav__link">
+  <a href="#hypercoast.registry.SensorHandler" class="md-nav__link">
     <span class="md-ellipsis">
       
-        enmap_to_image()
+        SensorHandler
       
     </span>
   </a>
@@ -2659,10 +2725,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hypercoast.enmap.extract_enmap" class="md-nav__link">
+  <a href="#hypercoast.registry.download_sensor" class="md-nav__link">
     <span class="md-ellipsis">
       
-        extract_enmap()
+        download_sensor()
       
     </span>
   </a>
@@ -2670,10 +2736,76 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hypercoast.enmap.read_enmap" class="md-nav__link">
+  <a href="#hypercoast.registry.extract_sensor" class="md-nav__link">
     <span class="md-ellipsis">
       
-        read_enmap()
+        extract_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.get_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.list_sensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_sensors()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.read_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.register_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.search_sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_sensor()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypercoast.registry.sensor_to_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sensor_to_image()
       
     </span>
   </a>
@@ -2703,14 +2835,15 @@
   
 
 
-<h1 id="enmap-module">enmap module<a class="headerlink" href="#enmap-module" title="Permanent link">&para;</a></h1>
+<h1 id="registry-module">registry module<a class="headerlink" href="#registry-module" title="Permanent link">&para;</a></h1>
 
 
   <div class="doc doc-object doc-module">
 
-<a id="hypercoast.enmap"></a>
+<a id="hypercoast.registry"></a>
     <div class="doc doc-contents first">
 
+      <p>Sensor registry for common HyperCoast workflows.</p>
 
 
 
@@ -2723,20 +2856,25 @@
 
 
 
-  <div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-class">
 
 
 
-<h2 id="hypercoast.enmap.enmap_to_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">enmap_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale_factor</span><span class="o">=</span><span class="mf">10000.0</span><span class="p">,</span> <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<h2 id="hypercoast.registry.SensorHandler" class="doc doc-heading">
+        <code>
+SensorHandler        </code>
 
 
-<a href="#hypercoast.enmap.enmap_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#hypercoast.registry.SensorHandler" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Converts an EnMAP dataset to an RGB image.
-Automatically masks NoData and scales reflectance if needed.</p>
+      <p>Describe a HyperCoast sensor workflow.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2750,101 +2888,217 @@ Automatically masks NoData and scales reflectance if needed.</p>
   </thead>
   <tbody>
       <tr>
-        <td><code>dataset</code></td>
-        <td><code>Union[xr.Dataset, str]</code></td>
-        <td><p>Path or xarray Dataset.</p></td>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>Canonical sensor name.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>wavelengths</code></td>
-        <td><code>np.ndarray</code></td>
-        <td><p>Wavelengths to select.</p></td>
+        <td><code>read</code></td>
+        <td><code>Optional[Callable[..., xr.Dataset]]</code></td>
+        <td><p>Function used to read local sensor data.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
-        <td><code>method</code></td>
+        <td><code>to_image</code></td>
+        <td><code>Optional[Callable[..., Any]]</code></td>
+        <td><p>Function used to convert sensor data to an image.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>extract</code></td>
+        <td><code>Optional[Callable[..., xr.DataArray]]</code></td>
+        <td><p>Function used to extract a point spectrum.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>search</code></td>
+        <td><code>Optional[Callable[..., Any]]</code></td>
+        <td><p>Function used to search remote sensor data.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>download</code></td>
+        <td><code>Optional[Callable[..., Any]]</code></td>
+        <td><p>Function used to download remote sensor data.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>aliases</code></td>
+        <td><code>tuple[str, ...]</code></td>
+        <td><p>Additional case-insensitive names accepted for the sensor.</p></td>
+        <td><code>()</code></td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
         <td><code>str</code></td>
-        <td><p>Selection method ("nearest" by default).</p></td>
-        <td><code>&#39;nearest&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>output</code></td>
-        <td><code>str</code></td>
-        <td><p>File path to save image. If None, returns PIL.Image.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>scale_factor</code></td>
-        <td><code>float</code></td>
-        <td><p>Scale factor to convert integer reflectance to 0–1.</p></td>
-        <td><code>10000.0</code></td>
-      </tr>
-      <tr>
-        <td><code>rgb_wavelengths</code></td>
-        <td><code>list</code></td>
-        <td><p>Wavelengths (nm) to use for RGB, e.g., [660, 560, 480].</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>**kwargs</code></td>
-        <td><code>Any</code></td>
-        <td><p>Passed to leafmap.array_to_image().</p></td>
-        <td><code>{}</code></td>
+        <td><p>Short human-readable description.</p></td>
+        <td><code>&#39;&#39;</code></td>
       </tr>
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>hypercoast/enmap.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enmap_to_image</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-    <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10000.0</span><span class="p">,</span>
-    <span class="n">rgb_wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Converts an EnMAP dataset to an RGB image.</span>
-<span class="sd">    Automatically masks NoData and scales reflectance if needed.</span>
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SensorHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Describe a HyperCoast sensor workflow.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        dataset (Union[xr.Dataset, str]): Path or xarray Dataset.</span>
-<span class="sd">        wavelengths (np.ndarray, optional): Wavelengths to select.</span>
-<span class="sd">        method (str): Selection method (&quot;nearest&quot; by default).</span>
-<span class="sd">        output (str, optional): File path to save image. If None, returns PIL.Image.</span>
-<span class="sd">        scale_factor (float): Scale factor to convert integer reflectance to 0–1.</span>
-<span class="sd">        rgb_wavelengths (list, optional): Wavelengths (nm) to use for RGB, e.g., [660, 560, 480].</span>
-<span class="sd">        **kwargs: Passed to leafmap.array_to_image().</span>
+<span class="sd">        name: Canonical sensor name.</span>
+<span class="sd">        read: Function used to read local sensor data.</span>
+<span class="sd">        to_image: Function used to convert sensor data to an image.</span>
+<span class="sd">        extract: Function used to extract a point spectrum.</span>
+<span class="sd">        search: Function used to search remote sensor data.</span>
+<span class="sd">        download: Function used to download remote sensor data.</span>
+<span class="sd">        aliases: Additional case-insensitive names accepted for the sensor.</span>
+<span class="sd">        description: Short human-readable description.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_enmap</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">read</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">to_image</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">extract</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">search</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">download</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">aliases</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
-    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="c1"># Pick default RGB if not provided</span>
-    <span class="k">if</span> <span class="n">rgb_wavelengths</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">rgb_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">660</span><span class="p">,</span> <span class="mi">560</span><span class="p">,</span> <span class="mi">480</span><span class="p">]</span>  <span class="c1"># Red, Green, Blue in nm</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">rgb_wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
 
-    <span class="n">arr</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span>
+  <div class="doc doc-children">
 
-    <span class="k">if</span> <span class="s2">&quot;_FillValue&quot;</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
-        <span class="n">nodata</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;_FillValue&quot;</span><span class="p">]</span>
-        <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">arr</span> <span class="o">!=</span> <span class="n">nodata</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">scale_factor</span> <span class="ow">and</span> <span class="n">arr</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">:</span>
-        <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">/</span> <span class="n">scale_factor</span>
 
-    <span class="k">return</span> <span class="n">array_to_image</span><span class="p">(</span>
-        <span class="n">arr</span><span class="p">,</span>
-        <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
-        <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-    <span class="p">)</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.registry.download_sensor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">download_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.registry.download_sensor" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Download remote data using the registered download function.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sensor</code></td>
+        <td><code>str</code></td>
+        <td><p>Sensor name or alias.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>Iterable[Any]</code></td>
+        <td><p>Granules or STAC items accepted by the download function.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Download keyword arguments.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Any</code></td>
+      <td><p>Download function result.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>NotImplementedError</code></td>
+        <td><p>If the sensor has no registered download function.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download remote data using the registered download function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sensor: Sensor name or alias.</span>
+<span class="sd">        items: Granules or STAC items accepted by the download function.</span>
+<span class="sd">        **kwargs: Download keyword arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: Download function result.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If the sensor has no registered download function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">download</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered download function.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2857,15 +3111,15 @@ Automatically masks NoData and scales reflectance if needed.</p>
 
 
 
-<h2 id="hypercoast.enmap.extract_enmap" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extract_enmap</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span></code>
+<h2 id="hypercoast.registry.extract_sensor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extract_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
-<a href="#hypercoast.enmap.extract_enmap" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#hypercoast.registry.extract_sensor" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Extracts EnMAP reflectance spectrum from a given xarray Dataset.</p>
+      <p>Extract a point spectrum using the registered extractor.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2879,21 +3133,134 @@ Automatically masks NoData and scales reflectance if needed.</p>
   </thead>
   <tbody>
       <tr>
-        <td><code>ds</code></td>
-        <td><code>xarray.Dataset</code></td>
-        <td><p>The dataset containing the EnMAP data.</p></td>
+        <td><code>sensor</code></td>
+        <td><code>str</code></td>
+        <td><p>Sensor name or alias.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Any</code></td>
+        <td><p>Dataset or local path accepted by the sensor reader.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>lat</code></td>
         <td><code>float</code></td>
-        <td><p>The latitude of the point to extract.</p></td>
+        <td><p>Latitude of the point to extract.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>lon</code></td>
         <td><code>float</code></td>
-        <td><p>The longitude of the point to extract.</p></td>
+        <td><p>Longitude of the point to extract.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional extractor keyword arguments.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xr.DataArray</code></td>
+      <td><p>Extracted spectrum.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>NotImplementedError</code></td>
+        <td><p>If the sensor has no registered extractor.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_sensor</span><span class="p">(</span>
+    <span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a point spectrum using the registered extractor.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sensor: Sensor name or alias.</span>
+<span class="sd">        data: Dataset or local path accepted by the sensor reader.</span>
+<span class="sd">        lat: Latitude of the point to extract.</span>
+<span class="sd">        lon: Longitude of the point to extract.</span>
+<span class="sd">        **kwargs: Additional extractor keyword arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xr.DataArray: Extracted spectrum.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If the sensor has no registered extractor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">extract</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered extractor.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">read_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.registry.get_sensor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_sensor</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.registry.get_sensor" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the handler for a sensor name or alias.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>Sensor name or alias.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -2908,42 +3275,45 @@ Automatically masks NoData and scales reflectance if needed.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>xarray.DataArray</code></td>
-      <td><p>The extracted spectrum with wavelength as coordinate.</p></td>
+      <td><code>SensorHandler</code></td>
+      <td><p>Matching sensor handler.</p></td>
     </tr>
   </tbody>
 </table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>KeyError</code></td>
+        <td><p>If the sensor is not registered.</p></td>
+      </tr>
+  </tbody>
+</table>
         <details class="quote">
-          <summary>Source code in <code>hypercoast/enmap.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_enmap</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Extracts EnMAP reflectance spectrum from a given xarray Dataset.</span>
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_sensor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SensorHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the handler for a sensor name or alias.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ds (xarray.Dataset): The dataset containing the EnMAP data.</span>
-<span class="sd">        lat (float): The latitude of the point to extract.</span>
-<span class="sd">        lon (float): The longitude of the point to extract.</span>
+<span class="sd">        name: Sensor name or alias.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        xarray.DataArray: The extracted spectrum with wavelength as coordinate.</span>
+<span class="sd">        SensorHandler: Matching sensor handler.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        KeyError: If the sensor is not registered.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s2">&quot;crs&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dataset has no CRS in attributes.&quot;</span><span class="p">)</span>
-
-    <span class="n">crs</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span>
-
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">([[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]],</span> <span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span> <span class="n">crs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="n">values</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-
-    <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-        <span class="n">values</span><span class="p">,</span>
-        <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span>
-        <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]},</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">da</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">_normalize_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_ALIASES</span><span class="p">:</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_sensors</span><span class="p">())</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported sensor &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;. Available sensors: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SENSOR_REGISTRY</span><span class="p">[</span><span class="n">_ALIASES</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
 </code></pre></div>
         </details>
     </div>
@@ -2956,98 +3326,427 @@ Automatically masks NoData and scales reflectance if needed.</p>
 
 
 
-<h2 id="hypercoast.enmap.read_enmap" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_enmap</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<h2 id="hypercoast.registry.list_sensors" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">list_sensors</span><span class="p">()</span></code>
 
 
-<a href="#hypercoast.enmap.read_enmap" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#hypercoast.registry.list_sensors" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Reads EnMAP hyperspectral GeoTIFF (COG) and returns an xarray dataset.
-If wavelengths are not in the file, they will be extracted from the
-associated Metadata XML file in the same directory.
-Masks NoData values as NaN.</p>
+      <p>Return registered sensor names.</p>
 
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list[str]</code></td>
+      <td><p>Sorted canonical sensor names.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
-          <summary>Source code in <code>hypercoast/enmap.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_enmap</span><span class="p">(</span>
-    <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads EnMAP hyperspectral GeoTIFF (COG) and returns an xarray dataset.</span>
-<span class="sd">    If wavelengths are not in the file, they will be extracted from the</span>
-<span class="sd">    associated Metadata XML file in the same directory.</span>
-<span class="sd">    Masks NoData values as NaN.</span>
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list_sensors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return registered sensor names.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: Sorted canonical sensor names.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;rasterio&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">SENSOR_REGISTRY</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
 
-    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
-            <span class="n">wavelength</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
-            <span class="n">wavelength</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="nb">float</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-            <span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-            <span class="n">pattern_lower</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;*METADATA.xml&quot;</span><span class="p">)</span>
-            <span class="n">pattern_upper</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;*METADATA.XML&quot;</span><span class="p">)</span>
+  </div>
 
-            <span class="n">matches</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">pattern_lower</span><span class="p">)</span> <span class="o">+</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">pattern_upper</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No wavelength information in GeoTIFF and no matching METADATA XML found in </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-            <span class="n">xml_path</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">wavelength</span> <span class="o">=</span> <span class="n">_extract_enmap_wavelengths_from_xml</span><span class="p">(</span><span class="n">xml_path</span><span class="p">)</span>
 
-    <span class="n">wavelength</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">num</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">wavelength</span><span class="p">]</span>
 
-    <span class="n">cols</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">size</span>
-    <span class="n">rio_transform</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span>
-    <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rio_transform</span><span class="p">)[:</span><span class="mi">6</span><span class="p">]</span>
-    <span class="n">xarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xmin</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">xres</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">)])</span>
-    <span class="n">yarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ymax</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">yres</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">)])</span>
+  <div class="doc doc-object doc-function">
 
-    <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-        <span class="n">yarr</span><span class="p">,</span>
-        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,),</span>
-        <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;standard_name&quot;</span><span class="p">:</span> <span class="s2">&quot;projection_y_coordinate&quot;</span><span class="p">},</span>
-    <span class="p">)</span>
-    <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-        <span class="n">xarr</span><span class="p">,</span>
-        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,),</span>
-        <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;standard_name&quot;</span><span class="p">:</span> <span class="s2">&quot;projection_x_coordinate&quot;</span><span class="p">},</span>
-    <span class="p">)</span>
 
-    <span class="c1"># Dataset attributes</span>
-    <span class="n">global_atts</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span>
-    <span class="n">global_atts</span><span class="p">[</span><span class="s2">&quot;Conventions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;CF-1.6&quot;</span>
-    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;unitless&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_FillValue&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;grid_mapping&quot;</span><span class="p">:</span> <span class="s2">&quot;crs&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;standard_name&quot;</span><span class="p">:</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;surface reflectance&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">global_atts</span><span class="p">)</span>
 
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;band&quot;</span><span class="p">)</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;band&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;band_data&quot;</span><span class="p">:</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">})</span>
-    <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wavelength</span>
+<h2 id="hypercoast.registry.read_sensor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-    <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span><span class="p">:</span>
-        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
-    <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_transform</span><span class="p">(</span><span class="n">rio_transform</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a href="#hypercoast.registry.read_sensor" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <span class="k">return</span> <span class="n">ds</span>
+    <div class="doc doc-contents ">
+
+      <p>Read sensor data using the registered reader.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sensor</code></td>
+        <td><code>str</code></td>
+        <td><p>Sensor name or alias.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>source</code></td>
+        <td><code>Any</code></td>
+        <td><p>Local source path or object accepted by the sensor reader.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional reader keyword arguments.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>xr.Dataset</code></td>
+      <td><p>Loaded sensor dataset.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>NotImplementedError</code></td>
+        <td><p>If the sensor has no registered reader.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read sensor data using the registered reader.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sensor: Sensor name or alias.</span>
+<span class="sd">        source: Local source path or object accepted by the sensor reader.</span>
+<span class="sd">        **kwargs: Additional reader keyword arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        xr.Dataset: Loaded sensor dataset.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If the sensor has no registered reader.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">read</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered reader.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.registry.register_sensor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">register_sensor</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.registry.register_sensor" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Register a sensor handler.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>handler</code></td>
+        <td><code>SensorHandler</code></td>
+        <td><p>The sensor handler to register.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>SensorHandler</code></td>
+      <td><p>The registered handler.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_sensor</span><span class="p">(</span><span class="n">handler</span><span class="p">:</span> <span class="n">SensorHandler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SensorHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a sensor handler.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        handler: The sensor handler to register.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        SensorHandler: The registered handler.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">_normalize_name</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">SENSOR_REGISTRY</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">handler</span>
+    <span class="n">_ALIASES</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+    <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">handler</span><span class="o">.</span><span class="n">aliases</span><span class="p">:</span>
+        <span class="n">_ALIASES</span><span class="p">[</span><span class="n">_normalize_name</span><span class="p">(</span><span class="n">alias</span><span class="p">)]</span> <span class="o">=</span> <span class="n">key</span>
+    <span class="k">return</span> <span class="n">handler</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.registry.search_sensor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.registry.search_sensor" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Search remote data using the registered search function.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sensor</code></td>
+        <td><code>str</code></td>
+        <td><p>Sensor name or alias.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Search keyword arguments.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Any</code></td>
+      <td><p>Search function result.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>NotImplementedError</code></td>
+        <td><p>If the sensor has no registered search function.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search remote data using the registered search function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sensor: Sensor name or alias.</span>
+<span class="sd">        **kwargs: Search keyword arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: Search function result.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If the sensor has no registered search function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">search</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered search function.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="hypercoast.registry.sensor_to_image" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sensor_to_image</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#hypercoast.registry.sensor_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert sensor data to an image using the registered converter.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>sensor</code></td>
+        <td><code>str</code></td>
+        <td><p>Sensor name or alias.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Any</code></td>
+        <td><p>Dataset or local path accepted by the image converter.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>Optional output image path.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>Any</code></td>
+        <td><p>Additional image converter keyword arguments.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Any</code></td>
+      <td><p>The sensor converter return value.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>NotImplementedError</code></td>
+        <td><p>If the sensor has no registered image converter.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>hypercoast/registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sensor_to_image</span><span class="p">(</span>
+    <span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sensor data to an image using the registered converter.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sensor: Sensor name or alias.</span>
+<span class="sd">        data: Dataset or local path accepted by the image converter.</span>
+<span class="sd">        output: Optional output image path.</span>
+<span class="sd">        **kwargs: Additional image converter keyword arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: The sensor converter return value.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If the sensor has no registered image converter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">to_image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered image converter.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -3086,7 +3785,7 @@ Masks NoData values as NaN.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="August 15, 2025 13:44:07 UTC"><span class="timeago" datetime="2025-08-15T13:44:07+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 15, 2025 13:44:07 UTC">2025-08-15</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 27, 2026 19:18:25 UTC"><span class="timeago" datetime="2026-05-27T19:18:25+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 27, 2026 19:18:25 UTC">2026-05-27</span>
   </span>
 
     
@@ -3096,7 +3795,7 @@ Masks NoData values as NaN.</p>
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="August 15, 2025 13:44:07 UTC"><span class="timeago" datetime="2025-08-15T13:44:07+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 15, 2025 13:44:07 UTC">2025-08-15</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 27, 2026 19:18:25 UTC"><span class="timeago" datetime="2026-05-27T19:18:25+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 27, 2026 19:18:25 UTC">2026-05-27</span>
   </span>
 
     
