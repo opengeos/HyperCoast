@@ -13,6 +13,10 @@
          <lastmod>2026-05-27</lastmod>
     </url>
     <url>
+         <loc>https://hypercoast.org/catalog/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
          <loc>https://hypercoast.org/cesl/</loc>
          <lastmod>2026-05-27</lastmod>
     </url>
@@ -34,6 +38,10 @@
     </url>
     <url>
          <loc>https://hypercoast.org/cli/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/cloud/</loc>
          <lastmod>2026-05-27</lastmod>
     </url>
     <url>
@@ -81,7 +89,15 @@
          <lastmod>2026-05-27</lastmod>
     </url>
     <url>
+         <loc>https://hypercoast.org/recipes/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
          <loc>https://hypercoast.org/registry/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/spectral/</loc>
          <lastmod>2026-05-27</lastmod>
     </url>
     <url>
@@ -94,6 +110,10 @@
     </url>
     <url>
          <loc>https://hypercoast.org/usage/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/workflows/</loc>
          <lastmod>2026-05-27</lastmod>
     </url>
     <url>
@@ -245,7 +265,19 @@
          <lastmod>2026-05-27</lastmod>
     </url>
     <url>
+         <loc>https://hypercoast.org/examples/registry_workflows/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
          <loc>https://hypercoast.org/examples/search_data/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/search_workspace/</loc>
+         <lastmod>2026-05-27</lastmod>
+    </url>
+    <url>
+         <loc>https://hypercoast.org/examples/spectral_cloud_tools/</loc>
          <lastmod>2026-05-27</lastmod>
     </url>
     <url>
