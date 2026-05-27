@@ -8,8 +8,6 @@ on:
 jobs:
     test-docs-build:
         runs-on: ubuntu-latest
-        env:
-            PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
         strategy:
             matrix:
                 python-version: ["3.12"]
@@ -52,7 +50,7 @@ jobs:
 
             - name: Running pytest
               run: |
-                  .venv/bin/pytest . --verbose
+                  .venv/bin/pytest tests/ --verbose
 
             - name: Install mkdocs
               run: .venv/bin/mkdocs build

@@ -1,6 +1,4 @@
 name: QGIS plugin
-env:
-    PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
 
 on:
     push:
