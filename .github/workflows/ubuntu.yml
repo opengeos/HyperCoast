@@ -16,7 +16,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                python-version: ["3.10", "3.11", "3.12"]
+                python-version: ["3.11", "3.12", "3.13"]
 
         steps:
             - uses: actions/checkout@v6
@@ -45,3 +45,6 @@ jobs:
                   uv run python -c "import hypercoast; print('hypercoast import successful')"
                   uv run python -c "from osgeo import gdal; print('gdal import successful')"
                   uv run gdalinfo --version
+
+            - name: Running pytest
+              run: uv run pytest . --verbose

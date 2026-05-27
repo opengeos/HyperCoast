@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.26.0 - Current
+
+**What's Changed**
+
+-   Add Python 3.11 as the minimum supported Python version.
+-   Add CLI and sensor registry foundations for shared search, image, extraction, and processing workflows.
+-   Expand CI coverage to run the package test suite in the Linux workflow.
+-   Refresh API navigation and QGIS plugin packaging documentation.
+
 ## v0.7.6 - Aug 07, 2024
 
 **What's Changed**

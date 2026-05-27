@@ -1,5 +1,7 @@
 # Installation
 
+HyperCoast requires Python 3.11 or newer.
+
 ## Install using uv
 
 [uv](https://docs.astral.sh/uv/) is an extremely fast Python package and project manager, written in Rust. Follow the [instructions](https://docs.astral.sh/uv/getting-started/installation/) on the uv website to install uv on your computer. Once uv is installed, you can install **hypercoast** using the following command:
