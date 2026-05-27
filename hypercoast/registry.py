@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Iterable, List, Optional
 
@@ -183,9 +184,9 @@ def extract_sensor(
     handler = get_sensor(sensor)
     if handler.extract is None:
         raise NotImplementedError(f"{handler.name} has no registered extractor.")
-    if isinstance(data, (str, bytes)):
+    if isinstance(data, (str, bytes, os.PathLike)):
         data = read_sensor(sensor, data)
-    return handler.extract(data, lat=lat, lon=lon, **kwargs)
+    return handler.extract(data, lat, lon, **kwargs)
 
 
 def search_sensor(sensor: str, **kwargs: Any) -> Any:

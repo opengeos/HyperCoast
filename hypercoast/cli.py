@@ -165,8 +165,15 @@ def _cmd_search(args: argparse.Namespace) -> int:
 
 def _cmd_download(args: argparse.Namespace) -> int:
     """Download remote sensor data from a JSON item file."""
-    with open(args.input, encoding="utf-8") as src:
-        items = json.load(src)
+    try:
+        with open(args.input, encoding="utf-8") as src:
+            items = json.load(src)
+    except FileNotFoundError:
+        print(f"Error: file not found: {args.input}", file=sys.stderr)
+        return 1
+    except json.JSONDecodeError as exc:
+        print(f"Error: invalid JSON in {args.input}: {exc}", file=sys.stderr)
+        return 1
 
     if get_sensor(args.sensor).name == "tanager":
         result = download_sensor(
