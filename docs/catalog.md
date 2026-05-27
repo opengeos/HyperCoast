@@ -1,0 +1,3 @@
+# catalog module
+
+::: hypercoast.catalog

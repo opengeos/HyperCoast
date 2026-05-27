@@ -7,7 +7,7 @@
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, field
 from typing import Any, Callable, Dict, Iterable, List, Optional
 
 import xarray as xr
@@ -51,6 +51,13 @@ class SensorHandler:
         search: Function used to search remote sensor data.
         download: Function used to download remote sensor data.
         aliases: Additional case-insensitive names accepted for the sensor.
+        extensions: Supported file extensions.
+        default_rgb: Default RGB wavelengths in nanometers.
+        default_variable: Default raster variable name.
+        crs: Expected CRS behavior or CRS default.
+        qgis: Whether the sensor should be exposed in the QGIS plugin.
+        qgis_name: Optional QGIS display key.
+        sample_data: Optional sample dataset metadata.
         description: Short human-readable description.
     """
 
@@ -61,7 +68,31 @@ class SensorHandler:
     search: Optional[Callable[..., Any]] = None
     download: Optional[Callable[..., Any]] = None
     aliases: tuple[str, ...] = ()
+    extensions: tuple[str, ...] = ()
+    default_rgb: tuple[float, float, float] = ()
+    default_variable: str = ""
+    crs: str = ""
+    qgis: bool = True
+    qgis_name: str = ""
+    sample_data: Dict[str, str] = field(default_factory=dict)
     description: str = ""
+
+    def as_dict(self) -> Dict[str, Any]:
+        """Return serializable sensor metadata.
+
+        Returns:
+            dict: Sensor metadata excluding function objects.
+        """
+        data = asdict(self)
+        for key in ("read", "to_image", "extract", "search", "download"):
+            data.pop(key, None)
+        data["has_reader"] = self.read is not None
+        data["has_image_converter"] = self.to_image is not None
+        data["has_extractor"] = self.extract is not None
+        data["has_search"] = self.search is not None
+        data["has_download"] = self.download is not None
+        data["qgis_name"] = self.qgis_name or self.name
+        return data
 
 
 SENSOR_REGISTRY: Dict[str, SensorHandler] = {}
@@ -92,6 +123,45 @@ def list_sensors() -> List[str]:
         list[str]: Sorted canonical sensor names.
     """
     return sorted(SENSOR_REGISTRY)
+
+
+def registry_as_dict() -> Dict[str, Dict[str, Any]]:
+    """Return serializable metadata for all registered sensors.
+
+    Returns:
+        dict: Mapping of sensor names to metadata dictionaries.
+    """
+    return {name: SENSOR_REGISTRY[name].as_dict() for name in list_sensors()}
+
+
+def qgis_data_types(include_generic: bool = True) -> Dict[str, Dict[str, Any]]:
+    """Return QGIS data-type metadata derived from the registry.
+
+    Args:
+        include_generic: Whether to include the generic fallback type.
+
+    Returns:
+        dict: Mapping compatible with the QGIS plugin ``DATA_TYPES`` table.
+    """
+    data_types = {}
+    for handler in SENSOR_REGISTRY.values():
+        if not handler.qgis:
+            continue
+        key = handler.qgis_name or handler.name
+        data_types[key] = {
+            "extensions": list(handler.extensions),
+            "description": handler.description,
+            "variable": handler.default_variable or "data",
+            "default_rgb": list(handler.default_rgb),
+        }
+    if include_generic:
+        data_types["Generic"] = {
+            "extensions": [".tif", ".tiff", ".nc", ".nc4"],
+            "description": "Generic Hyperspectral (GeoTIFF/NetCDF)",
+            "variable": "data",
+            "default_rgb": [650, 550, 450],
+        }
+    return data_types
 
 
 def get_sensor(name: str) -> SensorHandler:
@@ -246,6 +316,11 @@ def _register_defaults() -> None:
             search=search_aviris,
             download=download_aviris,
             aliases=("aviris-ng", "aviris3", "aviris5"),
+            extensions=(".nc", ".img", ".bil"),
+            default_rgb=(650, 550, 450),
+            default_variable="reflectance",
+            crs="dataset",
+            qgis_name="AVIRIS",
             description="NASA AVIRIS and AVIRIS-NG hyperspectral data.",
         )
     )
@@ -255,6 +330,11 @@ def _register_defaults() -> None:
             read=read_desis,
             to_image=desis_to_image,
             extract=extract_desis,
+            extensions=(".nc", ".tif", ".tiff"),
+            default_rgb=(900, 650, 525),
+            default_variable="reflectance",
+            crs="dataset",
+            qgis_name="DESIS",
             description="DESIS hyperspectral data.",
         )
     )
@@ -265,6 +345,11 @@ def _register_defaults() -> None:
             to_image=emit_to_image,
             search=search_emit,
             download=download_emit,
+            extensions=(".nc", ".nc4"),
+            default_rgb=(650, 550, 450),
+            default_variable="reflectance",
+            crs="EPSG:4326",
+            qgis_name="EMIT",
             description="NASA EMIT hyperspectral data.",
         )
     )
@@ -274,6 +359,11 @@ def _register_defaults() -> None:
             read=read_enmap,
             to_image=enmap_to_image,
             extract=extract_enmap,
+            extensions=(".nc", ".tif", ".tiff"),
+            default_rgb=(660, 560, 480),
+            default_variable="reflectance",
+            crs="dataset",
+            qgis_name="EnMAP",
             description="DLR EnMAP hyperspectral data.",
         )
     )
@@ -282,6 +372,11 @@ def _register_defaults() -> None:
             name="ecostress",
             search=search_ecostress,
             download=download_ecostress,
+            extensions=(".nc", ".nc4"),
+            default_variable="LST",
+            crs="EPSG:4326",
+            qgis=False,
+            qgis_name="ECOSTRESS",
             description="NASA ECOSTRESS data discovery and download.",
         )
     )
@@ -292,6 +387,11 @@ def _register_defaults() -> None:
             to_image=neon_to_image,
             extract=extract_neon,
             aliases=("neon-aop",),
+            extensions=(".h5",),
+            default_rgb=(660, 550, 440),
+            default_variable="reflectance",
+            crs="dataset",
+            qgis_name="NEON",
             description="NEON AOP hyperspectral data.",
         )
     )
@@ -303,6 +403,11 @@ def _register_defaults() -> None:
             extract=extract_pace,
             search=search_pace,
             download=download_pace,
+            extensions=(".nc", ".nc4"),
+            default_rgb=(650, 550, 450),
+            default_variable="Rrs",
+            crs="EPSG:4326",
+            qgis_name="PACE",
             description="NASA PACE OCI data.",
         )
     )
@@ -312,6 +417,11 @@ def _register_defaults() -> None:
             read=read_prisma,
             to_image=prisma_to_image,
             extract=extract_prisma,
+            extensions=(".he5", ".nc"),
+            default_rgb=(650, 550, 450),
+            default_variable="reflectance",
+            crs="dataset",
+            qgis_name="PRISMA",
             description="ASI PRISMA hyperspectral data.",
         )
     )
@@ -324,6 +434,11 @@ def _register_defaults() -> None:
             search=search_tanager,
             download=download_tanager,
             aliases=("planet-tanager",),
+            extensions=(".h5", ".hdf5"),
+            default_rgb=(650, 550, 450),
+            default_variable="toa_radiance",
+            crs="dataset",
+            qgis_name="Tanager",
             description="Planet Tanager STAC and HDF5 hyperspectral data.",
         )
     )
@@ -333,6 +448,11 @@ def _register_defaults() -> None:
             read=read_wyvern,
             to_image=wyvern_to_image,
             extract=extract_wyvern,
+            extensions=(".tif", ".tiff"),
+            default_rgb=(799, 679, 570),
+            default_variable="reflectance",
+            crs="dataset",
+            qgis_name="Wyvern",
             description="Wyvern hyperspectral GeoTIFF data.",
         )
     )
@@ -348,7 +468,9 @@ __all__ = [
     "extract_sensor",
     "get_sensor",
     "list_sensors",
+    "qgis_data_types",
     "read_sensor",
+    "registry_as_dict",
     "register_sensor",
     "search_sensor",
     "sensor_to_image",

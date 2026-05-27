@@ -5,7 +5,13 @@ import pytest
 
 xr = pytest.importorskip("xarray")
 
-from hypercoast_qgis.hyperspectral_provider import HyperspectralDataset
+from hypercoast_qgis.hyperspectral_provider import DATA_TYPES, HyperspectralDataset
+
+
+def test_data_types_include_registry_metadata():
+    """QGIS data types should expose registry defaults when available."""
+    assert DATA_TYPES["PACE"]["variable"] == "Rrs"
+    assert DATA_TYPES["Wyvern"]["default_rgb"] == [799, 679, 570]
 
 
 def test_tanager_hdf5_asset_filename_auto_detects_tanager():

@@ -89,6 +89,7 @@ nav:
     - Home: index.md
     - Installation: installation.md
     - Usage: usage.md
+    - Task Recipes: recipes.md
     - QGIS Plugin: qgis_plugin.md
     - Contributing: contributing.md
     - Changelog: changelog.md
@@ -98,6 +99,9 @@ nav:
           - examples/acolite.ipynb
           - examples/acolite_emit.ipynb
           - examples/search_data.ipynb
+          - examples/search_workspace.ipynb
+          - examples/registry_workflows.ipynb
+          - examples/spectral_cloud_tools.ipynb
           - examples/image_cube.ipynb
           - examples/image_slicing.ipynb
           - examples/aviris.ipynb
@@ -137,9 +141,11 @@ nav:
     - API Reference:
           - aviris module: aviris.md
           - appeears module: appeears.md
+          - catalog module: catalog.md
           - chla module: chla.md
           - cesl module: cesl.md
           - cli module: cli.md
+          - cloud module: cloud.md
           - common module: common.md
           - desis module: desis.md
           - emit module: emit.md
@@ -148,8 +154,10 @@ nav:
           - pace module: pace.md
           - prisma module: prisma.md
           - registry module: registry.md
+          - spectral module: spectral.md
           - tanager module: tanager.md
           - enmap module: enmap.md
+          - workflows module: workflows.md
           - ui module: ui.md
           - moe_vae modules:
                 - data_loading module: moe_vae/data_loading.md

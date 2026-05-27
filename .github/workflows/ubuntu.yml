@@ -38,7 +38,7 @@ jobs:
             - name: Install optional dependencies
               run: |
                   uv pip install --find-links https://girder.github.io/large_image_wheels gdal pyproj
-                  uv pip install pytest
+                  uv pip install build pytest
 
             - name: Test import
               run: |
@@ -48,3 +48,9 @@ jobs:
 
             - name: Running pytest
               run: uv run pytest . --verbose
+
+            - name: Build wheel and test console script
+              run: |
+                  uv run python -m build --wheel
+                  uv pip install --force-reinstall --no-deps dist/*.whl
+                  uv run hypercoast info

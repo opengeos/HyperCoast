@@ -168,6 +168,7 @@ class LoadDataDialog(QDockWidget):
         # so background callbacks can detect user edits and avoid overwriting
         # them. Initialized to match the spinbox values set in setup_ui().
         self._last_applied_value_range = (0.0, DEFAULT_VALUE_RANGE[1])
+        self._last_applied_rgb = (650.0, 550.0, 450.0)
 
         self.setWindowTitle("Load Hyperspectral Data")
         self.setObjectName("HyperCoastLoadDataDock")
@@ -209,7 +210,7 @@ class LoadDataDialog(QDockWidget):
         self.data_type_combo.addItem("Auto-detect", "auto")
         for dtype, info in DATA_TYPES.items():
             self.data_type_combo.addItem(f"{dtype} - {info['description']}", dtype)
-        self.data_type_combo.currentIndexChanged.connect(self._clear_dataset_preview)
+        self.data_type_combo.currentIndexChanged.connect(self._on_data_type_changed)
         file_group_layout.addRow("Data Type:", self.data_type_combo)
 
         file_group.setLayout(file_group_layout)
@@ -368,9 +369,9 @@ class LoadDataDialog(QDockWidget):
             self.dataset = None
             self.info_text.clear()
             self._populate_variable_combo(None)
-            self._apply_data_type_value_range(
-                self._resolved_value_range_data_type(filepath)
-            )
+            resolved_type = self._resolved_value_range_data_type(filepath)
+            self._apply_data_type_value_range(resolved_type)
+            self._apply_data_type_rgb_defaults(resolved_type)
 
     def _default_browse_dir(self):
         """Return the default directory for selecting hyperspectral files.
@@ -386,6 +387,12 @@ class LoadDataDialog(QDockWidget):
         self.info_text.clear()
         self._populate_variable_combo(None)
         self._apply_data_type_value_range(self._resolved_value_range_data_type())
+
+    def _on_data_type_changed(self, *args):
+        """Apply registry defaults after the requested data type changes."""
+        self._clear_dataset_preview()
+        data_type = self._resolved_value_range_data_type()
+        self._apply_data_type_rgb_defaults(data_type)
 
     def _resolved_value_range_data_type(self, filepath=None):
         """Return the data type to use for visualization range defaults.
@@ -432,6 +439,31 @@ class LoadDataDialog(QDockWidget):
         self.vmax_spin.setValue(vmax)
         self._last_applied_value_range = (vmin, vmax)
 
+    def _apply_data_type_rgb_defaults(self, data_type, preserve_user_edits=False):
+        """Apply registry-backed RGB defaults for a data type.
+
+        Args:
+            data_type: Resolved HyperCoast data type.
+            preserve_user_edits: When True, skip updating spinboxes if the
+                user changed RGB wavelengths since the last applied default.
+        """
+        rgb = DATA_TYPES.get(data_type, {}).get("default_rgb")
+        if not rgb or len(rgb) != 3:
+            return
+        values = tuple(float(value) for value in rgb)
+        if preserve_user_edits:
+            current = (
+                self.red_spin.value(),
+                self.green_spin.value(),
+                self.blue_spin.value(),
+            )
+            if current != self._last_applied_rgb:
+                return
+        self.red_spin.setValue(values[0])
+        self.green_spin.setValue(values[1])
+        self.blue_spin.setValue(values[2])
+        self._last_applied_rgb = values
+
     def preview_dataset(self):
         """Preview the selected dataset."""
         filepath = self.file_path_edit.text()
@@ -468,6 +500,9 @@ class LoadDataDialog(QDockWidget):
             if dataset is not None:
                 self.dataset = dataset
                 self._apply_data_type_value_range(
+                    dataset.data_type, preserve_user_edits=True
+                )
+                self._apply_data_type_rgb_defaults(
                     dataset.data_type, preserve_user_edits=True
                 )
                 self.progress_bar.setValue(80)
