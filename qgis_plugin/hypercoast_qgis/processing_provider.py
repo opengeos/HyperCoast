@@ -288,9 +288,10 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
         dim = self._spectral_dim(data_var)
         if dim in data_var.coords:
             return data_var.sel({dim: wavelength}, method="nearest").values
-        axis = data_var.get_axis_num(dim)
-        index = int(np.clip(round(wavelength), 0, data_var.shape[axis] - 1))
-        return data_var.isel({dim: index}).values
+        raise QgsProcessingException(
+            f"Spectral dimension '{dim}' has no coordinate values; "
+            "cannot map wavelength to band index"
+        )
 
 
 class RGBCompositeAlgorithm(BaseHyperCoastAlgorithm):
