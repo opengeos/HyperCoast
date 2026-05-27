@@ -7,7 +7,7 @@
 import pytest
 
 from hypercoast import cli
-from hypercoast.registry import get_sensor, list_sensors
+from hypercoast.registry import get_sensor, list_sensors, qgis_data_types
 
 
 def test_registry_lists_core_sensors():
@@ -48,3 +48,65 @@ def test_cli_sensors(capsys):
     output = capsys.readouterr().out
     assert "pace" in output
     assert "tanager" in output
+
+
+def test_qgis_data_types_use_registry_metadata():
+    """QGIS metadata should be generated from the sensor registry."""
+    data_types = qgis_data_types()
+
+    assert data_types["PACE"]["variable"] == "Rrs"
+    assert data_types["Wyvern"]["default_rgb"] == [799, 679, 570]
+    assert "Generic" in data_types
+
+
+def test_cli_registry_json(capsys):
+    """The registry command should expose serializable metadata."""
+    assert cli.main(["registry", "--json"]) == 0
+
+    output = capsys.readouterr().out
+    assert '"pace"' in output
+    assert '"default_rgb"' in output
+
+
+def test_cli_validate_and_inspect(tmp_path, capsys):
+    """Validate and inspect should use registry extensions."""
+    path = tmp_path / "scene.nc"
+    path.write_bytes(b"placeholder")
+
+    assert cli.main(["validate", "pace", str(path)]) == 0
+    assert cli.main(["inspect", str(path), "--json"]) == 0
+
+    output = capsys.readouterr().out
+    assert "valid for pace" in output
+    assert "matched_sensors" in output
+
+
+def test_cli_workflow_runs_on_local_netcdf(tmp_path, capsys):
+    """The workflow command should run on a small xarray fixture."""
+    np = pytest.importorskip("numpy")
+    xr = pytest.importorskip("xarray")
+    input_path = tmp_path / "cube.nc"
+    output_path = tmp_path / "ndwi.nc"
+    dataset = xr.Dataset(
+        {
+            "reflectance": (
+                ("wavelength", "y", "x"),
+                np.array(
+                    [
+                        [[0.6, 0.8], [0.4, 0.2]],
+                        [[0.2, 0.2], [0.1, 0.1]],
+                    ],
+                    dtype="float32",
+                ),
+            )
+        },
+        coords={"wavelength": [560.0, 860.0], "y": [0, 1], "x": [0, 1]},
+    )
+    dataset.to_netcdf(input_path)
+
+    assert cli.main(["workflow", "ndwi", str(input_path), str(output_path)]) == 0
+
+    output = capsys.readouterr().out
+    assert str(output_path) in output
+    result = xr.open_dataarray(output_path)
+    assert result.name == "nd_560_860"

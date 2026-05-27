@@ -1,0 +1,3 @@
+# spectral module
+
+::: hypercoast.spectral

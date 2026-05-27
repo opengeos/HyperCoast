@@ -1,0 +1,3 @@
+# cloud module
+
+::: hypercoast.cloud

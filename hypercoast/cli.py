@@ -14,15 +14,19 @@ from pathlib import Path
 from typing import Any, Optional, Sequence
 
 from . import __version__
+from .catalog import SearchResult
 from .common import pca
 from .registry import (
     download_sensor,
     extract_sensor,
     get_sensor,
     list_sensors,
+    read_sensor,
+    registry_as_dict,
     search_sensor,
     sensor_to_image,
 )
+from .workflows import apply_workflow, list_workflows
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -53,6 +57,13 @@ def _build_parser() -> argparse.ArgumentParser:
     sensors = subparsers.add_parser("sensors", help="List registered sensors.")
     sensors.set_defaults(func=_cmd_sensors)
 
+    registry = subparsers.add_parser(
+        "registry",
+        help="Show sensor registry metadata.",
+    )
+    registry.add_argument("--json", action="store_true", help="Print JSON output.")
+    registry.set_defaults(func=_cmd_registry)
+
     search = subparsers.add_parser("search", help="Search remote sensor data.")
     _add_sensor_arg(search)
     search.add_argument(
@@ -67,6 +78,10 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     search.add_argument("--count", type=int, default=10, help="Maximum result count.")
     search.add_argument("--output", help="Optional output file for search results.")
+    search.add_argument(
+        "--workspace-output",
+        help="Optional SearchResult workspace JSON output.",
+    )
     search.add_argument(
         "--return-gdf",
         action="store_true",
@@ -99,6 +114,51 @@ def _build_parser() -> argparse.ArgumentParser:
     rgb.add_argument("--wavelengths", nargs="+", type=float, help="Wavelengths to use.")
     rgb.add_argument("--method", default="nearest", help="Wavelength selection method.")
     rgb.set_defaults(func=_cmd_rgb)
+
+    validate = subparsers.add_parser(
+        "validate",
+        help="Validate a local dataset against registry metadata.",
+    )
+    _add_sensor_arg(validate)
+    validate.add_argument("input", help="Input dataset path.")
+    validate.add_argument(
+        "--read",
+        action="store_true",
+        help="Open the dataset with the registered reader.",
+    )
+    validate.set_defaults(func=_cmd_validate)
+
+    inspect = subparsers.add_parser(
+        "inspect",
+        help="Inspect a local dataset path and matching sensors.",
+    )
+    inspect.add_argument("input", help="Input dataset path.")
+    inspect.add_argument("--sensor", help="Optional sensor name or alias.")
+    inspect.add_argument("--json", action="store_true", help="Print JSON output.")
+    inspect.set_defaults(func=_cmd_inspect)
+
+    workflows = subparsers.add_parser(
+        "workflows",
+        help="List workflow presets.",
+    )
+    workflows.add_argument("--json", action="store_true", help="Print JSON output.")
+    workflows.set_defaults(func=_cmd_workflows)
+
+    workflow = subparsers.add_parser(
+        "workflow",
+        help="Run a coastal workflow preset on a local dataset.",
+    )
+    workflow.add_argument("name", help="Workflow preset name.")
+    workflow.add_argument("input", help="Input dataset path.")
+    workflow.add_argument("output", help="Output NetCDF or CSV path.")
+    workflow.add_argument("--sensor", help="Optional sensor reader to use.")
+    workflow.add_argument("--variable", help="Optional data variable.")
+    workflow.add_argument(
+        "--format",
+        choices=("netcdf", "csv"),
+        help="Output format. Defaults to the output file extension.",
+    )
+    workflow.set_defaults(func=_cmd_workflow)
 
     extract = subparsers.add_parser(
         "extract-spectrum",
@@ -147,8 +207,28 @@ def _cmd_sensors(_: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_registry(args: argparse.Namespace) -> int:
+    """Print registry metadata."""
+    registry = registry_as_dict()
+    if args.json:
+        print(_json_default(registry))
+        return 0
+    for name, metadata in registry.items():
+        extensions = ", ".join(metadata.get("extensions") or ["any"])
+        variable = metadata.get("default_variable") or "data"
+        rgb = metadata.get("default_rgb") or []
+        rgb_text = ", ".join(str(value) for value in rgb) if rgb else "none"
+        print(f"{name}: {extensions}; variable={variable}; rgb={rgb_text}")
+    return 0
+
+
 def _cmd_search(args: argparse.Namespace) -> int:
     """Run a remote sensor search."""
+    query = {
+        "bbox": args.bbox,
+        "temporal": args.temporal,
+        "count": args.count,
+    }
     result = search_sensor(
         args.sensor,
         bbox=args.bbox,
@@ -157,6 +237,9 @@ def _cmd_search(args: argparse.Namespace) -> int:
         output=args.output,
         return_gdf=args.return_gdf,
     )
+    workspace = SearchResult.from_result(result, sensor=args.sensor, query=query)
+    if args.workspace_output:
+        workspace.to_json(args.workspace_output)
     if args.return_gdf:
         result = result[0]
     print(_json_default(result))
@@ -202,6 +285,111 @@ def _cmd_rgb(args: argparse.Namespace) -> int:
         method=args.method,
     )
     print(args.output)
+    return 0
+
+
+def _cmd_validate(args: argparse.Namespace) -> int:
+    """Validate a local dataset path against a sensor registration."""
+    path = Path(args.input)
+    try:
+        handler = get_sensor(args.sensor)
+    except KeyError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+    if not path.exists():
+        print(f"Error: file not found: {path}", file=sys.stderr)
+        return 1
+    suffix = path.suffix.lower()
+    extensions = tuple(ext.lower() for ext in handler.extensions)
+    if extensions and suffix not in extensions:
+        allowed = ", ".join(extensions)
+        print(
+            f"Error: {handler.name} does not list {suffix} files. "
+            f"Supported extensions: {allowed}",
+            file=sys.stderr,
+        )
+        return 1
+    if args.read:
+        try:
+            read_sensor(args.sensor, path)
+        except Exception as exc:
+            print(f"Error: reader failed for {path}: {exc}", file=sys.stderr)
+            return 1
+    print(f"{path} is valid for {handler.name}")
+    return 0
+
+
+def _cmd_inspect(args: argparse.Namespace) -> int:
+    """Inspect a local dataset path."""
+    path = Path(args.input)
+    suffix = path.suffix.lower()
+    matches = [
+        name
+        for name in list_sensors()
+        if suffix in tuple(ext.lower() for ext in get_sensor(name).extensions)
+    ]
+    payload: dict[str, Any] = {
+        "path": str(path),
+        "exists": path.exists(),
+        "suffix": suffix,
+        "size_bytes": path.stat().st_size if path.exists() else None,
+        "matched_sensors": matches,
+    }
+    if args.sensor:
+        try:
+            handler = get_sensor(args.sensor)
+        except KeyError as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            return 1
+        payload["sensor"] = handler.as_dict()
+    if args.json:
+        print(_json_default(payload))
+    else:
+        print(f"Path: {payload['path']}")
+        print(f"Exists: {payload['exists']}")
+        print(f"Suffix: {payload['suffix'] or 'none'}")
+        print(f"Size: {payload['size_bytes']}")
+        print("Matched sensors: " + (", ".join(matches) or "none"))
+    return 0
+
+
+def _cmd_workflows(args: argparse.Namespace) -> int:
+    """Print workflow preset metadata."""
+    workflows = list_workflows()
+    if args.json:
+        print(_json_default(workflows))
+        return 0
+    for name, metadata in workflows.items():
+        print(f"{name}: {metadata['description']}")
+    return 0
+
+
+def _cmd_workflow(args: argparse.Namespace) -> int:
+    """Run a workflow preset and write the result."""
+    import xarray as xr
+
+    try:
+        data = (
+            read_sensor(args.sensor, args.input)
+            if args.sensor
+            else xr.open_dataset(args.input)
+        )
+        result = apply_workflow(data, args.name, variable=args.variable)
+    except Exception as exc:
+        print(f"Error: workflow failed: {exc}", file=sys.stderr)
+        return 1
+
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output_format = args.format or (
+        "csv" if output.suffix.lower() == ".csv" else "netcdf"
+    )
+    if output_format == "csv":
+        name = result.name or args.name
+        result.to_dataframe(name=name).reset_index().to_csv(output, index=False)
+    else:
+        result.to_netcdf(output)
+    print(output)
     return 0
 
 

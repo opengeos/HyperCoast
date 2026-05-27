@@ -8,7 +8,9 @@ xr = pytest.importorskip("xarray")
 from hypercoast_qgis.processing_provider import (
     BaseHyperCoastAlgorithm,
     QgsProcessingException,
+    HyperCoastProcessingProvider,
     RGBCompositeAlgorithm,
+    WaterQualityWorkflowAlgorithm,
 )
 from hypercoast_qgis.hyperspectral_provider import HyperspectralDataset
 
@@ -68,3 +70,22 @@ def test_invalid_processing_variable_raises_clear_exception():
     dataset.set_selected_variable("metadata")
     with pytest.raises(QgsProcessingException, match="not raster-like"):
         algorithm._validate_selected_variable(dataset)
+
+
+def test_processing_provider_registers_water_quality_workflow():
+    """Processing provider should include the coastal workflow algorithm."""
+    provider = HyperCoastProcessingProvider()
+
+    provider.loadAlgorithms()
+
+    names = [algorithm.name() for algorithm in provider.algorithms]
+    assert "water_quality_workflow" in names
+
+
+def test_water_quality_workflow_selects_nearest_band():
+    """Workflow helpers should select nearest spectral bands."""
+    algorithm = WaterQualityWorkflowAlgorithm()
+    dataset = _loaded_dataset()
+    band = algorithm._select_nearest_band(dataset.dataset["reflectance"], 590.0)
+
+    np.testing.assert_array_equal(band, np.ones((2, 2), dtype="float32"))

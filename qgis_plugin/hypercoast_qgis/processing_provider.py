@@ -66,6 +66,7 @@ class HyperCoastProcessingProvider(QgsProcessingProvider):
         self.addAlgorithm(RGBCompositeAlgorithm())
         self.addAlgorithm(SingleBandExportAlgorithm())
         self.addAlgorithm(SpectralIndexAlgorithm())
+        self.addAlgorithm(WaterQualityWorkflowAlgorithm())
         self.addAlgorithm(PCAAlgorithm())
 
     def id(self):
@@ -256,6 +257,40 @@ class BaseHyperCoastAlgorithm(QgsProcessingAlgorithm):
         ) as dst:
             dst.write(np.nan_to_num(arr, nan=nodata_value).astype("float32"))
         return output_path
+
+    def _spectral_dim(self, data_var):
+        """Return the spectral dimension name for a data variable.
+
+        Args:
+            data_var: xarray DataArray to inspect.
+
+        Returns:
+            Spectral dimension name.
+
+        Raises:
+            QgsProcessingException: If no spectral dimension is available.
+        """
+        for dim in ("wavelength", "wavelengths", "band"):
+            if dim in data_var.dims:
+                return dim
+        raise QgsProcessingException("Dataset does not expose a spectral dimension")
+
+    def _select_nearest_band(self, data_var, wavelength):
+        """Select the nearest spectral band.
+
+        Args:
+            data_var: xarray DataArray with a spectral dimension.
+            wavelength: Target wavelength in nanometers.
+
+        Returns:
+            Selected band as a NumPy array.
+        """
+        dim = self._spectral_dim(data_var)
+        if dim in data_var.coords:
+            return data_var.sel({dim: wavelength}, method="nearest").values
+        axis = data_var.get_axis_num(dim)
+        index = int(np.clip(round(wavelength), 0, data_var.shape[axis] - 1))
+        return data_var.isel({dim: index}).values
 
 
 class RGBCompositeAlgorithm(BaseHyperCoastAlgorithm):
@@ -470,6 +505,98 @@ class SpectralIndexAlgorithm(BaseHyperCoastAlgorithm):
     def createInstance(self):
         """Create a new algorithm instance."""
         return SpectralIndexAlgorithm()
+
+
+class WaterQualityWorkflowAlgorithm(BaseHyperCoastAlgorithm):
+    """Calculate coastal water-quality workflow presets."""
+
+    WORKFLOW = "WORKFLOW"
+
+    WORKFLOW_OPTIONS = [
+        "NDWI water mask",
+        "Chlorophyll-a proxy",
+        "Turbidity proxy",
+        "CDOM proxy",
+        "Cyanobacteria proxy",
+        "Spectral anomaly",
+    ]
+    WORKFLOW_PRESETS = {
+        "NDWI water mask": ("normalized_difference", 560.0, 860.0),
+        "Chlorophyll-a proxy": ("ratio", 560.0, 665.0),
+        "Turbidity proxy": ("ratio", 665.0, 860.0),
+        "CDOM proxy": ("ratio", 412.0, 555.0),
+        "Cyanobacteria proxy": ("normalized_difference", 709.0, 665.0),
+        "Spectral anomaly": ("anomaly", None, None),
+    }
+
+    def name(self):
+        """Return the algorithm ID."""
+        return "water_quality_workflow"
+
+    def displayName(self):
+        """Return the algorithm display name."""
+        return "Water Quality Workflow"
+
+    def shortHelpString(self):
+        """Return help text."""
+        return "Runs registry-aligned coastal water-quality workflow presets."
+
+    def initAlgorithm(self, config=None):
+        """Define algorithm parameters."""
+        self._add_common_inputs()
+        self.addParameter(
+            QgsProcessingParameterEnum(
+                self.WORKFLOW,
+                "Workflow",
+                options=self.WORKFLOW_OPTIONS,
+                defaultValue=0,
+            )
+        )
+        self.addParameter(
+            QgsProcessingParameterRasterDestination(self.OUTPUT, "Output")
+        )
+
+    def processAlgorithm(self, parameters, context, feedback):
+        """Run a water-quality workflow."""
+        dataset = self._load_dataset(parameters, context)
+        output_path = self.parameterAsOutputLayer(parameters, self.OUTPUT, context)
+        workflow = self.WORKFLOW_OPTIONS[
+            self.parameterAsEnum(parameters, self.WORKFLOW, context)
+        ]
+        kind, first_wavelength, second_wavelength = self.WORKFLOW_PRESETS[workflow]
+        data_var = dataset.get_data_variable()
+        if data_var is None:
+            raise QgsProcessingException("No data variable found")
+
+        if kind == "anomaly":
+            dim = self._spectral_dim(data_var)
+            arr = data_var.astype("float32")
+            mean = arr.mean(dim=dim, skipna=True)
+            std = arr.std(dim=dim, skipna=True)
+            with np.errstate(divide="ignore", invalid="ignore"):
+                output = np.abs((arr - mean) / std).max(dim=dim, skipna=True)
+            output = output.values.astype("float32")
+        else:
+            first = self._select_nearest_band(data_var, first_wavelength).astype(
+                "float32"
+            )
+            second = self._select_nearest_band(data_var, second_wavelength).astype(
+                "float32"
+            )
+            with np.errstate(divide="ignore", invalid="ignore"):
+                if kind == "normalized_difference":
+                    output = (first - second) / (first + second)
+                else:
+                    output = first / second
+
+        self._write_raster(dataset, output_path, output)
+        if feedback:
+            feedback.setProgress(100)
+        return {self.OUTPUT: output_path}
+
+    def createInstance(self):
+        """Create a new algorithm instance."""
+        return WaterQualityWorkflowAlgorithm()
 
 
 class PCAAlgorithm(BaseHyperCoastAlgorithm):

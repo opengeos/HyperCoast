@@ -78,8 +78,8 @@ def _log(message, level=LOG_INFO):
         print(f"[HyperCoast] {text}")
 
 
-# Supported data types
-DATA_TYPES = {
+# Supported data types used when the Python registry is unavailable.
+FALLBACK_DATA_TYPES = {
     "EMIT": {
         "extensions": [".nc", ".nc4"],
         "description": "NASA EMIT L2A Reflectance",
@@ -131,6 +131,21 @@ DATA_TYPES = {
         "variable": "data",
     },
 }
+
+
+def _registry_data_types():
+    """Return data types from the HyperCoast registry when available."""
+    if HAS_HYPERCOAST and hasattr(hypercoast, "qgis_data_types"):
+        try:
+            data_types = hypercoast.qgis_data_types()
+            if data_types:
+                return data_types
+        except Exception as exc:
+            _log(f"Falling back to bundled data types: {exc}", LOG_WARNING)
+    return dict(FALLBACK_DATA_TYPES)
+
+
+DATA_TYPES = _registry_data_types()
 
 
 PACE_BGC_VARIABLES = [
