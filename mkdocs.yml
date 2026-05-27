@@ -99,6 +99,9 @@ nav:
           - examples/acolite.ipynb
           - examples/acolite_emit.ipynb
           - examples/search_data.ipynb
+          - examples/search_workspace.ipynb
+          - examples/registry_workflows.ipynb
+          - examples/spectral_cloud_tools.ipynb
           - examples/image_cube.ipynb
           - examples/image_slicing.ipynb
           - examples/aviris.ipynb
