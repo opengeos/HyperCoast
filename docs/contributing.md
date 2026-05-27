@@ -56,7 +56,7 @@ Ready to contribute? Here's how to set up HyperCoast for local development.
     $ git clone https://github.com/<YOUR-GITHUB-USERNAME>/HyperCoast.git
     ```
 
-3.  Create a new conda environment to install HyperCoast and its dependencies. Assuming you have
+3.  Create a new conda environment with Python 3.11 or newer to install HyperCoast and its dependencies. Assuming you have
     [Anaconda](https://www.anaconda.com/distribution/#download-section) or
     [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed,
     this is how you set up your fork for local development:

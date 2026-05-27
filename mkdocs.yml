@@ -139,6 +139,7 @@ nav:
           - appeears module: appeears.md
           - chla module: chla.md
           - cesl module: cesl.md
+          - cli module: cli.md
           - common module: common.md
           - desis module: desis.md
           - emit module: emit.md
@@ -146,6 +147,8 @@ nav:
           - neon module: neon.md
           - pace module: pace.md
           - prisma module: prisma.md
+          - registry module: registry.md
+          - tanager module: tanager.md
           - enmap module: enmap.md
           - ui module: ui.md
           - moe_vae modules:
