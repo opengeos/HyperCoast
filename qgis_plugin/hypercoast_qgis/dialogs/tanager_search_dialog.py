@@ -6,15 +6,16 @@ SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
 SPDX-License-Identifier: MIT
 """
 
-import os
 import ast
 import json
-from urllib.parse import unquote, urlparse
+import os
 import urllib.request
+from urllib.parse import unquote, urlparse
 
+from qgis.gui import QgsMapTool as _QgsMapTool
+from qgis.gui import QgsRubberBand
 from qgis.PyQt.QtCore import QObject, Qt, QThread, QUrl, pyqtSignal
 from qgis.PyQt.QtGui import QColor, QCursor, QDesktopServices
-from qgis.gui import QgsMapTool as _QgsMapTool, QgsRubberBand
 
 try:
     from qgis.PyQt.QtCore import QVariant
@@ -27,6 +28,22 @@ except ImportError:  # pragma: no cover - PyQt6 test shim
         Double = float
 
 
+from qgis.core import (
+    Qgis,
+    QgsCoordinateReferenceSystem,
+    QgsCoordinateTransform,
+    QgsFeature,
+    QgsField,
+    QgsFillSymbol,
+    QgsGeometry,
+    QgsMessageLog,
+    QgsPointXY,
+    QgsProject,
+    QgsRasterLayer,
+    QgsRectangle,
+    QgsVectorLayer,
+    QgsWkbTypes,
+)
 from qgis.PyQt.QtWidgets import (
     QAbstractItemView,
     QCheckBox,
@@ -49,22 +66,6 @@ from qgis.PyQt.QtWidgets import (
     QTableWidgetItem,
     QVBoxLayout,
     QWidget,
-)
-from qgis.core import (
-    QgsCoordinateReferenceSystem,
-    QgsCoordinateTransform,
-    QgsFeature,
-    QgsField,
-    QgsFillSymbol,
-    QgsGeometry,
-    QgsMessageLog,
-    QgsPointXY,
-    QgsProject,
-    QgsRasterLayer,
-    QgsRectangle,
-    QgsVectorLayer,
-    QgsWkbTypes,
-    Qgis,
 )
 
 if isinstance(_QgsMapTool, type):

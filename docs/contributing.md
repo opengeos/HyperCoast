@@ -85,7 +85,7 @@ Ready to contribute? Here's how to set up HyperCoast for local development.
     $ pip install pre-commit
     $ pre-commit install
     $ pre-commit run --all-files
-    $ python -m unittest discover tests/
+    $ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests qgis_plugin/qt6_tests
     ```
 
 6.  Commit your changes and push your branch to GitHub:

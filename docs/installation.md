@@ -26,10 +26,26 @@ uv run jupyter lab
 pip install hypercoast
 ```
 
-HyperCoast has some optional dependencies that are not installed by default, such as cartopy, earthaccess, mapclassify, and pyvista. To install all optional dependencies all at once, run the following command:
+HyperCoast groups optional dependencies by feature area:
+
+-   `core`: local NetCDF/HDF and xarray workflows.
+-   `viz`: maps, plotting, PyVista, and raster visualization.
+-   `cloud`: NASA Earthdata and cloud storage helpers.
+-   `qgis`: QGIS plugin runtime helpers.
+-   `ml`: optional MoE/VAE machine-learning workflows.
+-   `docs`: documentation build tools.
+
+To install all optional dependencies all at once, run the following command:
 
 ```bash
-pip install "hypercoast[extra]"
+pip install "hypercoast[all]"
+```
+
+For a smaller install, choose only the extras you need, for example:
+
+```bash
+pip install "hypercoast[core,cloud]"
+pip install "hypercoast[viz,ml]"
 ```
 
 ## Install from conda-forge

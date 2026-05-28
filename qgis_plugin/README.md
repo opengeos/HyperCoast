@@ -31,6 +31,8 @@ Check out this [short video demo](https://youtu.be/EEUAC5BxqtM) and [full video 
 
 -   **Processing Tools**: Run batch-friendly Processing algorithms for RGB composites, single-band exports, spectral indices, and PCA components.
 
+-   **Workflow Builder**: Run coastal workflow presets such as NDWI, chlorophyll-a proxy, turbidity proxy, CDOM proxy, cyanobacteria proxy, and spectral anomaly on loaded layers.
+
 Before using the plugin, please create a new conda environment to install QGIS and HyperCoast:
 
 ```bash
@@ -120,7 +122,7 @@ When QGIS is launched from this Conda environment, the plugin automatically dete
 
 ### Running Processing Tools
 
-Open **Processing** → **Toolbox** → **HyperCoast** to run batch tools for RGB composites, single-band export, spectral index rasters, and PCA components.
+Open **Processing** → **Toolbox** → **HyperCoast** to run batch tools for RGB composites, single-band export, spectral index rasters, workflow presets, PCA components, dataset summaries, and batch spectral extraction.
 
 ## Supported File Formats
 

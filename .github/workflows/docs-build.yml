@@ -50,7 +50,7 @@ jobs:
 
             - name: Running pytest
               run: |
-                  .venv/bin/pytest . --verbose
+                  .venv/bin/pytest tests/ --verbose
 
             - name: Install mkdocs
               run: .venv/bin/mkdocs build

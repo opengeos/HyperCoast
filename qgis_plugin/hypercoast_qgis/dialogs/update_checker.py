@@ -14,24 +14,24 @@ import re
 import shutil
 import tempfile
 import zipfile
+from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
-from urllib.error import URLError, HTTPError
 
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
+from qgis.PyQt.QtGui import QFont
 from qgis.PyQt.QtWidgets import (
     QDockWidget,
-    QVBoxLayout,
+    QFormLayout,
+    QGroupBox,
     QHBoxLayout,
     QLabel,
-    QPushButton,
-    QProgressBar,
     QMessageBox,
-    QGroupBox,
-    QFormLayout,
+    QProgressBar,
+    QPushButton,
     QTextEdit,
+    QVBoxLayout,
     QWidget,
 )
-from qgis.PyQt.QtGui import QFont
 
 # GitHub URLs for the plugin
 GITHUB_REPO = "opengeos/HyperCoast"

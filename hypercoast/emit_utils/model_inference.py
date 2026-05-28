@@ -5,10 +5,9 @@ data, visualizing results with RGB backgrounds, and converting predictions to
 GeoTIFF format.
 """
 
-from typing import Any, Dict, List, Optional, Tuple, Union
-
 import os
 import re
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -476,12 +475,12 @@ def preprocess_emit_data_Robust(
     mask = np.all(~np.isnan(filtered_Rrs), axis=2)
 
     target_443 = (
-        f"Rrs_443"
+        "Rrs_443"
         if "Rrs_443" in bands_to_extract
         else find_closest_band(443, bands_to_extract)
     )
     target_560 = (
-        f"Rrs_560"
+        "Rrs_560"
         if "Rrs_560" in bands_to_extract
         else find_closest_band(560, bands_to_extract)
     )

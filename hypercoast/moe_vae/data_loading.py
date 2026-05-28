@@ -10,14 +10,13 @@ import pandas as pd
 
 try:
     import torch
-    from torch.utils.data import DataLoader, TensorDataset
     from sklearn.preprocessing import MinMaxScaler
-    from torch.utils.data import DataLoader, TensorDataset, Subset
+    from torch.utils.data import DataLoader, Subset, TensorDataset
 except ImportError:
     pass
 
 try:
-    from .preprocess import RobustMinMaxScaler, LogScaler
+    from .preprocess import LogScaler, RobustMinMaxScaler
 except ImportError:
     pass
 

@@ -13,7 +13,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-pytest.importorskip("PyQt6")
+pytest.importorskip("PyQt6.QtWidgets")
 
 import PyQt6.QtCore  # noqa: E402
 import PyQt6.QtGui  # noqa: E402

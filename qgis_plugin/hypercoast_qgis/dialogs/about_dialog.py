@@ -7,15 +7,16 @@ SPDX-License-Identifier: MIT
 """
 
 import os
+
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QPixmap
 from qgis.PyQt.QtWidgets import (
     QDockWidget,
-    QVBoxLayout,
+    QFrame,
     QHBoxLayout,
     QLabel,
     QPushButton,
-    QFrame,
+    QVBoxLayout,
     QWidget,
 )
 

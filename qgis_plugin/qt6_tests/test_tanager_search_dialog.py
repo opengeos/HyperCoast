@@ -5,11 +5,9 @@ from datetime import datetime
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-import pytest
-from qgis.PyQt.QtWidgets import QApplication, QHeaderView
-
-import hypercoast_qgis.hypercoast_plugin as plugin_module
 import hypercoast_qgis.dialogs.tanager_search_dialog as dialog_module
+import hypercoast_qgis.hypercoast_plugin as plugin_module
+import pytest
 from hypercoast_qgis.dialogs.tanager_search_dialog import (
     TANAGER_HDF5_ASSET,
     TANAGER_VISUAL_ASSET,
@@ -21,6 +19,7 @@ from hypercoast_qgis.dialogs.tanager_search_dialog import (
     _stac_browser_url,
 )
 from hypercoast_qgis.hypercoast_plugin import HyperCoastPlugin
+from qgis.PyQt.QtWidgets import QApplication, QHeaderView
 
 
 @pytest.fixture(scope="module")

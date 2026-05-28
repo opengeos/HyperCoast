@@ -6,9 +6,10 @@ import sys
 import types
 import unittest
 
-import hypercoast
 import numpy as np
 import pytest
+
+import hypercoast
 
 
 class TestHypercoast(unittest.TestCase):

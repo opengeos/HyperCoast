@@ -12,7 +12,8 @@ import subprocess
 import sys
 import uuid
 
-from qgis.PyQt.QtCore import QObject, Qt, QThread, pyqtSignal
+from qgis.core import Qgis, QgsMessageLog, QgsProject
+from qgis.PyQt.QtCore import QObject, QThread, pyqtSignal
 from qgis.PyQt.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -30,7 +31,6 @@ from qgis.PyQt.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from qgis.core import QgsMessageLog, QgsProject, Qgis
 
 from ..cache_manager import generated_raster_cache_dir
 from .tanager_search_dialog import TanagerBboxMapTool

@@ -27,9 +27,11 @@ psutil
 pygments
 pymdown-extensions
 pytest
+pytest-cov
 pytest-runner
 pyvista
 reuse>=5.1.1
+ruff
 scikit-learn
 seaborn
 sphinx

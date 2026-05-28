@@ -6,17 +6,17 @@ SPDX-FileCopyrightText: 2024 Qiusheng Wu <giswqs@gmail.com>
 SPDX-License-Identifier: MIT
 """
 
-from qgis.PyQt.QtCore import Qt, pyqtSignal
-from qgis.PyQt.QtGui import QCursor
-from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand
 from qgis.core import (
-    QgsProject,
+    Qgis,
     QgsCoordinateReferenceSystem,
     QgsCoordinateTransform,
-    QgsWkbTypes,
     QgsMessageLog,
-    Qgis,
+    QgsProject,
+    QgsWkbTypes,
 )
+from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand
+from qgis.PyQt.QtCore import Qt, pyqtSignal
+from qgis.PyQt.QtGui import QCursor
 
 
 class SpectralInspectorTool(QgsMapToolEmitPoint):
@@ -191,7 +191,6 @@ class SpectralInspectorTool(QgsMapToolEmitPoint):
 
         :param point: QgsPointXY
         """
-        from qgis.PyQt.QtCore import Qt
         from qgis.PyQt.QtGui import QColor
 
         rb = QgsRubberBand(self.canvas, QgsWkbTypes.GeometryType.PointGeometry)

@@ -4,70 +4,15 @@
 
 """Main module."""
 
+import os
+import tempfile
+from typing import Union
+
 import ipyleaflet
 import leafmap
-import xarray as xr
 import numpy as np
-import tempfile
-import os
-from typing import Union
-from .aviris import (
-    aviris_to_image,
-    read_aviris,
-    extract_aviris,
-    get_aviris_asset_url,
-    get_aviris_bounds,
-    get_aviris_collection_concept_id,
-    get_aviris_granule_ur,
-)
-from .desis import desis_to_image, read_desis, extract_desis, filter_desis
-from .prisma import read_prisma, prisma_to_image, extract_prisma
-from .enmap import read_enmap, enmap_to_image, extract_enmap
-from .emit import (
-    emit_to_image,
-    read_emit,
-    plot_emit,
-    viz_emit,
-    emit_to_netcdf,
-)
-from .neon import extract_neon, neon_to_image, read_neon
-from .pace import (
-    pace_to_image,
-    read_pace,
-    read_pace_aop,
-    read_pace_bgc,
-    read_pace_chla,
-    view_pace_pixel_locations,
-    viz_pace,
-    viz_pace_chla,
-    filter_pace,
-    extract_pace,
-    grid_pace,
-    grid_pace_bgc,
-    pace_to_image,
-    pace_chla_to_image,
-)
-from .tanager import (
-    read_tanager,
-    read_tanager_stac,
-    search_tanager,
-    tanager_footprints,
-    download_tanager,
-    get_tanager_asset_url,
-    tanager_to_image,
-    extract_tanager,
-    grid_tanager,
-)
-from .wyvern import read_wyvern, wyvern_to_image, extract_wyvern, filter_wyvern
-from .cesl import (
-    search_cesl,
-    get_cesl_metadata,
-    get_cesl_spectrum,
-    plot_cesl_spectrum,
-    get_cesl_sites,
-    cesl_to_gdf,
-    cesl_to_geojson,
-)
+import xarray as xr
+
 from .appeears import (
     AppEEARSClient,
     appeears_area_task,
@@ -81,31 +26,74 @@ from .appeears import (
     appeears_wait,
     read_appeears,
 )
-from .ui import SpectralWidget
-from .common import (
-    download_file,
-    search_datasets,
-    search_nasa_data,
-    download_nasa_data,
-    search_pace,
-    search_pace_chla,
-    search_emit,
-    search_aviris,
-    search_ecostress,
-    download_pace,
-    download_emit,
-    download_aviris,
-    download_ecostress,
-    nasa_earth_login,
-    image_cube,
-    open_dataset,
-    download_acolite,
-    run_acolite,
-    pca,
-    show_field_data,
+from .aviris import (
+    aviris_to_image,
+    extract_aviris,
+    get_aviris_asset_url,
+    get_aviris_bounds,
+    get_aviris_collection_concept_id,
+    get_aviris_granule_ur,
+    read_aviris,
 )
 from .catalog import SearchResult, load_search_result
+from .cesl import (
+    cesl_to_gdf,
+    cesl_to_geojson,
+    get_cesl_metadata,
+    get_cesl_sites,
+    get_cesl_spectrum,
+    plot_cesl_spectrum,
+    search_cesl,
+)
 from .cloud import open_cloud_dataset, suggest_chunks, to_cog, to_zarr
+from .common import (
+    download_acolite,
+    download_aviris,
+    download_ecostress,
+    download_emit,
+    download_file,
+    download_nasa_data,
+    download_pace,
+    image_cube,
+    nasa_earth_login,
+    open_dataset,
+    pca,
+    run_acolite,
+    search_aviris,
+    search_datasets,
+    search_ecostress,
+    search_emit,
+    search_nasa_data,
+    search_pace,
+    search_pace_chla,
+    show_field_data,
+)
+from .desis import desis_to_image, extract_desis, filter_desis, read_desis
+from .emit import (
+    emit_to_image,
+    emit_to_netcdf,
+    plot_emit,
+    read_emit,
+    viz_emit,
+)
+from .enmap import enmap_to_image, extract_enmap, read_enmap
+from .neon import extract_neon, neon_to_image, read_neon
+from .pace import (
+    extract_pace,
+    filter_pace,
+    grid_pace,
+    grid_pace_bgc,
+    pace_chla_to_image,
+    pace_to_image,
+    read_pace,
+    read_pace_aop,
+    read_pace_bgc,
+    read_pace_chla,
+    view_pace_pixel_locations,
+    viz_pace,
+    viz_pace_chla,
+)
+from .prisma import extract_prisma, prisma_to_image, read_prisma
 from .registry import (
     SENSOR_REGISTRY,
     SensorHandler,
@@ -115,8 +103,8 @@ from .registry import (
     list_sensors,
     qgis_data_types,
     read_sensor,
-    registry_as_dict,
     register_sensor,
+    registry_as_dict,
     search_sensor,
     sensor_to_image,
 )
@@ -130,6 +118,24 @@ from .spectral import (
     spectral_information_divergence,
     write_spectral_library,
 )
+from .summary import (
+    DatasetSummary,
+    extract_spectra_to_csv,
+    subset_dataset,
+    summarize_dataset,
+)
+from .tanager import (
+    download_tanager,
+    extract_tanager,
+    get_tanager_asset_url,
+    grid_tanager,
+    read_tanager,
+    read_tanager_stac,
+    search_tanager,
+    tanager_footprints,
+    tanager_to_image,
+)
+from .ui import SpectralWidget
 from .workflows import (
     WORKFLOW_PRESETS,
     WorkflowPreset,
@@ -139,6 +145,7 @@ from .workflows import (
     normalized_difference,
     spectral_anomaly,
 )
+from .wyvern import extract_wyvern, filter_wyvern, read_wyvern, wyvern_to_image
 
 __all__ = [
     "AppEEARSClient",
@@ -179,6 +186,8 @@ __all__ = [
     "emit_to_image",
     "emit_to_netcdf",
     "enmap_to_image",
+    "DatasetSummary",
+    "extract_spectra_to_csv",
     "extract_aviris",
     "extract_desis",
     "extract_enmap",
@@ -256,6 +265,8 @@ __all__ = [
     "normalized_difference",
     "open_cloud_dataset",
     "suggest_chunks",
+    "subset_dataset",
+    "summarize_dataset",
     "tanager_to_image",
     "to_cog",
     "to_zarr",

@@ -1,10 +1,12 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import os
-import pandas as pd
 import inspect
-from .model import MoE_VAE, SparseDispatcher, VAE
+import os
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
+from .model import VAE, MoE_VAE, SparseDispatcher
 
 
 def save_model_structure_from_classes(save_path):

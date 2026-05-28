@@ -26,6 +26,7 @@ from .registry import (
     search_sensor,
     sensor_to_image,
 )
+from .summary import extract_spectra_to_csv, subset_dataset, summarize_dataset
 from .workflows import apply_workflow, list_workflows
 
 
@@ -137,6 +138,33 @@ def _build_parser() -> argparse.ArgumentParser:
     inspect.add_argument("--json", action="store_true", help="Print JSON output.")
     inspect.set_defaults(func=_cmd_inspect)
 
+    summarize = subparsers.add_parser(
+        "summarize",
+        help="Summarize a local hyperspectral dataset.",
+    )
+    summarize.add_argument("input", help="Input dataset path.")
+    summarize.add_argument("--sensor", help="Optional sensor reader to use.")
+    summarize.add_argument("--variable", help="Optional data variable.")
+    summarize.add_argument("--json", action="store_true", help="Print JSON output.")
+    summarize.set_defaults(func=_cmd_summarize)
+
+    subset = subparsers.add_parser(
+        "subset",
+        help="Subset a local rectilinear dataset by bounding box.",
+    )
+    subset.add_argument("input", help="Input dataset path.")
+    subset.add_argument("output", help="Output NetCDF path.")
+    subset.add_argument(
+        "--bbox",
+        nargs=4,
+        type=float,
+        required=True,
+        metavar=("XMIN", "YMIN", "XMAX", "YMAX"),
+    )
+    subset.add_argument("--sensor", help="Optional sensor reader to use.")
+    subset.add_argument("--variable", help="Optional data variable.")
+    subset.set_defaults(func=_cmd_subset)
+
     workflows = subparsers.add_parser(
         "workflows",
         help="List workflow presets.",
@@ -170,6 +198,19 @@ def _build_parser() -> argparse.ArgumentParser:
     extract.add_argument("--lon", type=float, required=True, help="Longitude.")
     extract.add_argument("--output", required=True, help="Output CSV path.")
     extract.set_defaults(func=_cmd_extract_spectrum)
+
+    spectra = subparsers.add_parser(
+        "spectra",
+        help="Extract spectra for point coordinates from a CSV file.",
+    )
+    _add_sensor_arg(spectra)
+    spectra.add_argument("input", help="Input dataset path.")
+    spectra.add_argument("--points", required=True, help="Input point CSV path.")
+    spectra.add_argument("--output", required=True, help="Output long-form CSV path.")
+    spectra.add_argument("--x-column", default="x", help="Point x/lon column.")
+    spectra.add_argument("--y-column", default="y", help="Point y/lat column.")
+    spectra.add_argument("--crs", default="EPSG:4326", help="Point coordinate CRS.")
+    spectra.set_defaults(func=_cmd_spectra)
 
     pca_parser = subparsers.add_parser("pca", help="Run PCA on an input image.")
     pca_parser.add_argument("input", help="Input raster path.")
@@ -257,6 +298,8 @@ def _cmd_download(args: argparse.Namespace) -> int:
     except json.JSONDecodeError as exc:
         print(f"Error: invalid JSON in {args.input}: {exc}", file=sys.stderr)
         return 1
+    if isinstance(items, dict) and "items" in items:
+        items = items["items"]
 
     if get_sensor(args.sensor).name == "tanager":
         result = download_sensor(
@@ -353,6 +396,51 @@ def _cmd_inspect(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_summarize(args: argparse.Namespace) -> int:
+    """Summarize a local dataset."""
+    try:
+        summary = summarize_dataset(
+            args.input,
+            sensor=args.sensor,
+            variable=args.variable,
+        )
+    except KeyError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+    payload = summary.as_dict()
+    if args.json:
+        print(_json_default(payload))
+    else:
+        print(f"Path: {payload['path']}")
+        print(f"Exists: {payload['exists']}")
+        print(f"Sensor: {payload['sensor'] or 'auto'}")
+        print("Variables: " + (", ".join(payload["variables"]) or "none"))
+        print(f"Selected variable: {payload['selected_variable'] or 'none'}")
+        print(f"CRS: {payload['crs'] or 'unknown'}")
+        print(f"Bounds: {payload['bounds'] or 'unknown'}")
+        print(f"Wavelengths: {payload['wavelength_count']}")
+        if payload["warnings"]:
+            print("Warnings: " + "; ".join(payload["warnings"]))
+    return 0
+
+
+def _cmd_subset(args: argparse.Namespace) -> int:
+    """Subset a local dataset."""
+    try:
+        output = subset_dataset(
+            args.input,
+            args.output,
+            bbox=tuple(args.bbox),
+            sensor=args.sensor,
+            variable=args.variable,
+        )
+    except Exception as exc:
+        print(f"Error: subset failed: {exc}", file=sys.stderr)
+        return 1
+    print(output)
+    return 0
+
+
 def _cmd_workflows(args: argparse.Namespace) -> int:
     """Print workflow preset metadata."""
     workflows = list_workflows()
@@ -398,6 +486,25 @@ def _cmd_extract_spectrum(args: argparse.Namespace) -> int:
     spectrum = extract_sensor(args.sensor, args.input, lat=args.lat, lon=args.lon)
     _write_spectrum_csv(spectrum, args.output)
     print(args.output)
+    return 0
+
+
+def _cmd_spectra(args: argparse.Namespace) -> int:
+    """Extract spectra for CSV point coordinates."""
+    try:
+        output = extract_spectra_to_csv(
+            args.sensor,
+            args.input,
+            points_csv=args.points,
+            output=args.output,
+            x_column=args.x_column,
+            y_column=args.y_column,
+            crs=args.crs,
+        )
+    except Exception as exc:
+        print(f"Error: spectra extraction failed: {exc}", file=sys.stderr)
+        return 1
+    print(output)
     return 0
 
 

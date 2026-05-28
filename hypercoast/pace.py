@@ -11,9 +11,11 @@ try:
 except ImportError:
     from typing import Any as ArrayLike
 import os
-import xarray as xr
+from typing import Any, Callable, List, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
-from typing import List, Tuple, Union, Optional, Any, Callable
+import xarray as xr
+
 from .common import extract_date_from_filename
 
 
@@ -188,9 +190,8 @@ def read_pace_chla(
         >>> chla_data = read_pace_chla(['path/to/file1.nc', 'path/to/file2.nc'], combine='by_coords')
     """
 
-    import os
     import glob
-    import rioxarray
+    import os
 
     date = None
     if isinstance(filepaths, str) and os.path.isfile(filepaths):
@@ -313,9 +314,10 @@ def viz_pace(
         **kwargs: Additional keyword arguments to pass to the `plt.subplots` function.
     """
 
+    import math
+
     import matplotlib.pyplot as plt
     import numpy as np
-    import math
 
     if isinstance(dataset, str):
         dataset = read_pace(dataset, wavelengths, method)
@@ -368,7 +370,7 @@ def viz_pace(
     else:
 
         import cartopy
-        from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+        from cartopy.mpl.ticker import LatitudeFormatter, LongitudeFormatter
 
         if crs == "default":
             crs = cartopy.crs.PlateCarree()
@@ -635,7 +637,6 @@ def grid_pace_bgc(
         >>> gridded_data = grid_pace_bgc(dataset, variable="chlor_a", method="nearest")
         >>> print(gridded_data)
     """
-    import rioxarray
     from scipy.interpolate import griddata
 
     lat = dataset.latitude
@@ -829,13 +830,12 @@ def apply_kmeans(
         tuple[np.ndarray, np.ndarray, np.ndarray]: The cluster labels, latitudes, and longitudes.
     """
 
-    import numpy as np
-    from sklearn.cluster import KMeans
-
-    import matplotlib.pyplot as plt
-    import matplotlib.colors as mcolors
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
+    import matplotlib.colors as mcolors
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from sklearn.cluster import KMeans
 
     if isinstance(dataset, str):
         dataset = read_pace(dataset)
@@ -1035,13 +1035,14 @@ def apply_sam(
         Tuple[np.ndarray, np.ndarray, np.ndarray]: The best match classification, latitudes, and longitudes.
     """
     import glob
-    import pandas as pd
-    from sklearn.cluster import KMeans
-    import matplotlib.colors as mcolors
+
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
-    from sklearn.decomposition import PCA
+    import matplotlib.colors as mcolors
+    import pandas as pd
     from scipy.interpolate import interp1d
+    from sklearn.cluster import KMeans
+    from sklearn.decomposition import PCA
 
     if isinstance(dataset, str):
         dataset = read_pace(dataset)
@@ -1262,10 +1263,11 @@ def apply_sam_spectral(
         Tuple[np.ndarray, np.ndarray, np.ndarray]: The best match classification, latitudes, and longitudes.
     """
     import glob
-    import pandas as pd
-    import matplotlib.colors as mcolors
+
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
+    import matplotlib.colors as mcolors
+    import pandas as pd
     from scipy.interpolate import interp1d
 
     if isinstance(dataset, str):

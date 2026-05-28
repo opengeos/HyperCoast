@@ -2,13 +2,15 @@
 #
 # SPDX-License-Identifier: MIT
 
-import numpy as np
-import xarray as xr
-from typing import List, Optional, Any, Union, Tuple
-from affine import Affine
+from typing import Any, List, Optional, Tuple, Union
+
 import h5py
-import pyproj
+import numpy as np
+import rioxarray  # noqa: F401 -- registers .rio accessor
+import xarray as xr
+from affine import Affine
 from leafmap import array_to_image
+
 from .common import convert_coords
 
 

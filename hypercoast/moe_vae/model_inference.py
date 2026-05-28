@@ -4,20 +4,20 @@ This module provides functions for preprocessing and inference using MoE-VAE mod
 """
 
 import os
-import numpy as np
+
 import matplotlib.pyplot as plt
 import netCDF4 as nc
+import numpy as np
 from netCDF4 import Dataset as nc
 
 try:
-    import torch
-    from torch.utils.data import DataLoader, TensorDataset
-    import torch.nn.functional as F
-    from sklearn.preprocessing import MinMaxScaler
-    from scipy.interpolate import griddata
-    from torch.utils.data import DataLoader, TensorDataset
     import rasterio
+    import torch
+    import torch.nn.functional as F
     from rasterio.transform import from_origin
+    from scipy.interpolate import griddata
+    from sklearn.preprocessing import MinMaxScaler
+    from torch.utils.data import DataLoader, TensorDataset
 except ImportError:
     pass
 
@@ -741,12 +741,12 @@ def preprocess_emit_data_Robust(
     mask = np.all(~np.isnan(filtered_Rrs), axis=2)
 
     target_443 = (
-        f"Rrs_443"
+        "Rrs_443"
         if "Rrs_443" in bands_to_extract
         else find_closest_band(443, bands_to_extract)
     )
     target_560 = (
-        f"Rrs_560"
+        "Rrs_560"
         if "Rrs_560" in bands_to_extract
         else find_closest_band(560, bands_to_extract)
     )

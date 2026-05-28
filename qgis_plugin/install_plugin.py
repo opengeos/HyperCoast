@@ -9,13 +9,13 @@ Usage:
     python install_plugin.py --help       # Show help
 """
 
-import os
-import sys
-import shutil
-import zipfile
 import argparse
-import tempfile
+import os
 import platform
+import shutil
+import sys
+import tempfile
+import zipfile
 from pathlib import Path
 
 # Plugin configuration

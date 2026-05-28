@@ -9,15 +9,14 @@ Why this exists:
 
 from __future__ import annotations
 
-from pathlib import Path
-from types import ModuleType
-from typing import Optional
-
 import importlib
 import importlib.metadata
 import importlib.util
 import os
 import sys
+from pathlib import Path
+from types import ModuleType
+from typing import Optional
 
 _CACHED: Optional[ModuleType] = None
 

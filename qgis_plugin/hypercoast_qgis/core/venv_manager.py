@@ -25,7 +25,7 @@ import sys
 import tempfile
 import time
 
-from qgis.core import QgsMessageLog, Qgis
+from qgis.core import Qgis, QgsMessageLog
 
 CACHE_DIR = os.path.expanduser("~/.qgis_hypercoast")
 VENV_DIR = os.path.join(CACHE_DIR, "venv")
@@ -715,7 +715,7 @@ def _get_system_python():
     Raises:
         RuntimeError: If no usable Python is found.
     """
-    from .python_manager import standalone_python_exists, get_standalone_python_path
+    from .python_manager import get_standalone_python_path, standalone_python_exists
 
     if standalone_python_exists():
         python_path = get_standalone_python_path()
@@ -797,7 +797,7 @@ def create_venv(venv_dir=None, progress_callback=None):
     if system_python:
         _log(f"Using Python: {system_python}")
 
-    from .uv_manager import uv_exists, get_uv_path
+    from .uv_manager import get_uv_path, uv_exists
 
     use_uv = uv_exists()
 
@@ -1427,7 +1427,7 @@ def install_dependencies(plugin_dir, progress_callback=None, cancel_check=None):
     env = _get_clean_env_for_venv()
     kwargs = _get_subprocess_kwargs()
 
-    from .uv_manager import uv_exists, get_uv_path
+    from .uv_manager import get_uv_path, uv_exists
 
     use_uv = uv_exists()
     if use_uv:
@@ -1848,8 +1848,9 @@ def create_venv_and_install(plugin_dir, progress_callback=None, cancel_check=Non
     Returns:
         A tuple of (success: bool, message: str).
     """
-    from .python_manager import standalone_python_exists, download_python_standalone
-    from .uv_manager import uv_exists as _uv_exists, download_uv
+    from .python_manager import download_python_standalone, standalone_python_exists
+    from .uv_manager import download_uv
+    from .uv_manager import uv_exists as _uv_exists
 
     if using_conda_env_with_deps(plugin_dir):
         msg = "Using Conda environment, no venv needed."

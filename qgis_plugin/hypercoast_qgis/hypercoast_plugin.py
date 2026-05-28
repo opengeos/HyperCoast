@@ -8,10 +8,10 @@ SPDX-License-Identifier: MIT
 
 import os
 
+from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsProject
 from qgis.PyQt.QtCore import QCoreApplication, Qt, QTimer
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox, QToolBar
-from qgis.core import QgsApplication, QgsMessageLog, QgsProject, Qgis
 
 # About and update checker have no heavy deps, always available
 from .dialogs.about_dialog import AboutDialog
@@ -21,12 +21,13 @@ from .dialogs.update_checker import UpdateCheckerDialog
 # so they may fail to import if dependencies are not installed yet.
 _DATA_DIALOGS_AVAILABLE = False
 try:
-    from .dialogs.load_data_dialog import LoadDataDialog
-    from .dialogs.tanager_search_dialog import TanagerSearchDialog
     from .dialogs.band_combination_dialog import BandCombinationDialog
     from .dialogs.image_cube_dialog import ImageCubeDialog
+    from .dialogs.load_data_dialog import LoadDataDialog
     from .dialogs.spectral_inspector_tool import SpectralInspectorTool
     from .dialogs.spectral_plot_dialog import SpectralPlotDialog
+    from .dialogs.tanager_search_dialog import TanagerSearchDialog
+    from .dialogs.workflow_builder_dialog import WorkflowBuilderDialog
 
     _DATA_DIALOGS_AVAILABLE = True
 except ImportError:
@@ -42,6 +43,7 @@ DOCK_OBJECT_NAMES = {
     "HyperCoastBandCombinationDock",
     "HyperCoastImageCubeDock",
     "HyperCoastSpectralPlotDock",
+    "HyperCoastWorkflowBuilderDock",
     "HyperCoastAboutDock",
     "HyperCoastUpdateDock",
     "HyperCoastDependencyInstallerDock",
@@ -74,6 +76,7 @@ class HyperCoastPlugin:
         self.tanager_search_dialog = None
         self.band_dialog = None
         self.image_cube_dialog = None
+        self.workflow_builder_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
         self.about_dialog = None
@@ -200,6 +203,16 @@ class HyperCoastPlugin:
             callback=self.show_image_cube_dialog,
             parent=self.iface.mainWindow(),
             status_tip=self.tr("Create a PyVista 3D hyperspectral image cube"),
+            checkable=True,
+        )
+
+        # Workflow builder action
+        self.workflow_action = self.add_action(
+            os.path.join(icons_dir, "hypercoast.png"),
+            text=self.tr("Workflow Builder"),
+            callback=self.show_workflow_builder_dialog,
+            parent=self.iface.mainWindow(),
+            status_tip=self.tr("Run coastal workflow presets on loaded layers"),
             checkable=True,
         )
 
@@ -567,11 +580,12 @@ class HyperCoastPlugin:
         try:
             from . import hyperspectral_provider
             from .dialogs import (
-                load_data_dialog,
-                tanager_search_dialog,
                 band_combination_dialog,
                 image_cube_dialog,
+                load_data_dialog,
                 spectral_plot_dialog,
+                tanager_search_dialog,
+                workflow_builder_dialog,
             )
 
             importlib.reload(hyperspectral_provider)
@@ -580,6 +594,7 @@ class HyperCoastPlugin:
             importlib.reload(band_combination_dialog)
             importlib.reload(image_cube_dialog)
             importlib.reload(spectral_plot_dialog)
+            importlib.reload(workflow_builder_dialog)
         except Exception as e:
             QgsMessageLog.logMessage(
                 f"Error reloading data modules: {e}",
@@ -593,25 +608,29 @@ class HyperCoastPlugin:
         self.tanager_search_dialog = None
         self.band_dialog = None
         self.image_cube_dialog = None
+        self.workflow_builder_dialog = None
         self.spectral_tool = None
         self.spectral_plot_dialog = None
 
         if not _DATA_DIALOGS_AVAILABLE:
             # Try importing again now that venv packages are on sys.path
             try:
-                from .dialogs.load_data_dialog import LoadDataDialog  # noqa: F811
-                from .dialogs.tanager_search_dialog import (  # noqa: F811
-                    TanagerSearchDialog,
-                )
                 from .dialogs.band_combination_dialog import (  # noqa: F811
                     BandCombinationDialog,
                 )
                 from .dialogs.image_cube_dialog import ImageCubeDialog  # noqa: F811
+                from .dialogs.load_data_dialog import LoadDataDialog  # noqa: F811
                 from .dialogs.spectral_inspector_tool import (  # noqa: F811
                     SpectralInspectorTool,
                 )
                 from .dialogs.spectral_plot_dialog import (  # noqa: F811
                     SpectralPlotDialog,
+                )
+                from .dialogs.tanager_search_dialog import (  # noqa: F811
+                    TanagerSearchDialog,
+                )
+                from .dialogs.workflow_builder_dialog import (  # noqa: F811
+                    WorkflowBuilderDialog,
                 )
 
                 _DATA_DIALOGS_AVAILABLE = True
@@ -672,14 +691,14 @@ class HyperCoastPlugin:
     def _set_data_actions_enabled(self, enabled):
         """Enable or disable data-related actions.
 
-        The first 5 actions are data-dependent:
+        The first 6 actions are data-dependent:
         Tanager Search, Load Data, Band Combination, Spectral Inspector,
-        and 3D Image Cube.
+        3D Image Cube, and Workflow Builder.
 
         :param enabled: Whether to enable the actions.
         """
         for i, action in enumerate(self.actions):
-            if i < 5:
+            if i < 6:
                 action.setEnabled(enabled)
 
     def toggle_settings_dock(self):
@@ -786,6 +805,21 @@ class HyperCoastPlugin:
             "image_cube_dialog",
             lambda: ImageCubeDialog(self.iface, self, self.iface.mainWindow()),
             self.image_cube_action,
+            before_show=lambda dock: dock.refresh_layers(),
+        )
+
+    def show_workflow_builder_dialog(self):
+        """Show the workflow builder dialog."""
+        if not self._deps_available:
+            self._show_deps_required_warning()
+            self.workflow_action.setChecked(False)
+            return
+        from .dialogs.workflow_builder_dialog import WorkflowBuilderDialog
+
+        self._toggle_dock(
+            "workflow_builder_dialog",
+            lambda: WorkflowBuilderDialog(self.iface, self, self.iface.mainWindow()),
+            self.workflow_action,
             before_show=lambda dock: dock.refresh_layers(),
         )
 

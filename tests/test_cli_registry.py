@@ -110,3 +110,83 @@ def test_cli_workflow_runs_on_local_netcdf(tmp_path, capsys):
     assert str(output_path) in output
     result = xr.open_dataarray(output_path)
     assert result.name == "nd_560_860"
+
+
+def test_cli_summarize_and_subset_local_netcdf(tmp_path, capsys):
+    """Summarize and subset should work with local xarray fixtures."""
+    np = pytest.importorskip("numpy")
+    xr = pytest.importorskip("xarray")
+    input_path = tmp_path / "cube.nc"
+    subset_path = tmp_path / "subset.nc"
+    dataset = xr.Dataset(
+        {
+            "reflectance": (
+                ("wavelength", "y", "x"),
+                np.arange(27, dtype="float32").reshape(3, 3, 3),
+            )
+        },
+        coords={
+            "wavelength": [450.0, 550.0, 650.0],
+            "y": [10.0, 11.0, 12.0],
+            "x": [100.0, 101.0, 102.0],
+        },
+    )
+    dataset.to_netcdf(input_path)
+
+    assert cli.main(["summarize", str(input_path), "--json"]) == 0
+    assert (
+        cli.main(
+            [
+                "subset",
+                str(input_path),
+                str(subset_path),
+                "--bbox",
+                "100.5",
+                "10.5",
+                "102",
+                "12",
+            ]
+        )
+        == 0
+    )
+
+    output = capsys.readouterr().out
+    assert '"wavelength_count": 3' in output
+    assert str(subset_path) in output
+    subset = xr.open_dataset(subset_path)
+    assert subset.sizes["x"] == 2
+    assert subset.sizes["y"] == 2
+
+
+def test_cli_spectra_delegates_to_batch_extractor(tmp_path, monkeypatch, capsys):
+    """The spectra command should call the batch extraction helper."""
+    points = tmp_path / "points.csv"
+    output_path = tmp_path / "spectra.csv"
+    points.write_text("x,y\n1,2\n", encoding="utf-8")
+
+    def fake_extract(sensor, input_path, **kwargs):
+        assert sensor == "pace"
+        assert input_path == "cube.nc"
+        assert kwargs["points_csv"] == str(points)
+        assert kwargs["output"] == str(output_path)
+        output_path.write_text("feature_id,wavelength,value\n0,500,0.1\n")
+        return str(output_path)
+
+    monkeypatch.setattr(cli, "extract_spectra_to_csv", fake_extract)
+
+    assert (
+        cli.main(
+            [
+                "spectra",
+                "pace",
+                "cube.nc",
+                "--points",
+                str(points),
+                "--output",
+                str(output_path),
+            ]
+        )
+        == 0
+    )
+
+    assert str(output_path) in capsys.readouterr().out

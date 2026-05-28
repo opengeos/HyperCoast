@@ -7,17 +7,18 @@ wavelength metadata from inside the file when available, falling back to a
 caller-supplied STAC URL only when necessary.
 """
 
-import warnings
 import os
 import re
+import warnings
 from datetime import datetime, timezone
+from typing import List, Optional, Tuple, Union
 
 import h5py
-import xarray as xr
+import matplotlib.pyplot as plt
 import numpy as np
 import requests
-import matplotlib.pyplot as plt
-from typing import List, Tuple, Union, Optional
+import xarray as xr
+
 from .common import download_file
 
 TANAGER_STAC_CATALOG_URL = (

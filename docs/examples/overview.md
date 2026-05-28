@@ -1,6 +1,8 @@
 # Overview
 
 -   [Search and download NASA hyperspectral data](https://hypercoast.org/examples/search_data)
+-   [Summarize and subset local hyperspectral datasets](https://hypercoast.org/examples/dataset_summary_cli)
+-   [Run QGIS workflow and batch extraction concepts](https://hypercoast.org/examples/qgis_workflow_processing)
 -   [Search and download NASA ECOSTRESS data](https://hypercoast.org/examples/ecostress)
 -   [Visualize Hyperspectral Data in 3D](https://hypercoast.org/examples/image_cube)
 -   [Interactive slicing and thresholding of hyperspectral data](https://hypercoast.org/examples/image_slicing)

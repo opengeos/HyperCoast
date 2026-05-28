@@ -6,11 +6,13 @@
 This Module has the functions related to working with a Wyvern dataset.
 """
 
+from typing import Optional, Union
+
+import pandas as pd
 import rioxarray
 import xarray as xr
-import pandas as pd
+
 from .common import convert_coords
-from typing import Optional, Union
 
 
 def read_wyvern(
@@ -83,8 +85,8 @@ def wyvern_to_image(
             `output` is provided, the image will be saved to the specified file
             and the function will return None.
     """
-    from leafmap import array_to_image
     import numpy as np
+    from leafmap import array_to_image
 
     if isinstance(dataset, str):
         dataset = read_wyvern(dataset, method=method)
