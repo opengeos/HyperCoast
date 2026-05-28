@@ -674,6 +674,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/dataset_summary_cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataset summary cli
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/registry_workflows/" class="md-nav__link">
         
   
@@ -682,6 +710,34 @@
     
   
     Registry workflows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/qgis_workflow_processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qgis workflow processing
   
 
     
@@ -2524,6 +2580,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    summary module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../tanager/" class="md-nav__link">
         
   
@@ -2608,6 +2692,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ml module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ui/" class="md-nav__link">
         
   
@@ -2644,10 +2756,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_21" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_23" >
         
           
-          <label class="md-nav__link" for="__nav_11_21" id="__nav_11_21_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_23" id="__nav_11_23_label" tabindex="0">
             
   
   
@@ -2665,8 +2777,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_21_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_21">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_23">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2811,10 +2923,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_22" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_24" >
         
           
-          <label class="md-nav__link" for="__nav_11_22" id="__nav_11_22_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_24" id="__nav_11_24_label" tabindex="0">
             
   
   
@@ -2832,8 +2944,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_22_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_22">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_24">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3397,13 +3509,12 @@
 <span class="sd">        tuple[np.ndarray, np.ndarray, np.ndarray]: The cluster labels, latitudes, and longitudes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
-
-    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.feature</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cfeature</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
@@ -3829,13 +3940,14 @@
 <span class="sd">        Tuple[np.ndarray, np.ndarray, np.ndarray]: The best match classification, latitudes, and longitudes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+
     <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.feature</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cfeature</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
@@ -4160,10 +4272,11 @@
 <span class="sd">        Tuple[np.ndarray, np.ndarray, np.ndarray]: The best match classification, latitudes, and longitudes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+
     <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.feature</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cfeature</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -4992,7 +5105,6 @@ Defaults to "nearest".</p></td>
 <span class="sd">        &gt;&gt;&gt; gridded_data = grid_pace_bgc(dataset, variable=&quot;chlor_a&quot;, method=&quot;nearest&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; print(gridded_data)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">griddata</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">latitude</span>
@@ -5728,9 +5840,8 @@ applies a logarithmic transformation, and sets the coordinate reference system t
 <span class="sd">        &gt;&gt;&gt; chla_data = read_pace_chla([&#39;path/to/file1.nc&#39;, &#39;path/to/file2.nc&#39;], combine=&#39;by_coords&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
     <span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filepaths</span><span class="p">):</span>
@@ -6037,9 +6148,10 @@ See https://scitools.org.uk/cartopy/docs/latest/reference/projections.html</p></
 <span class="sd">        **kwargs: Additional keyword arguments to pass to the `plt.subplots` function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
     <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
@@ -6092,7 +6204,7 @@ See https://scitools.org.uk/cartopy/docs/latest/reference/projections.html</p></
     <span class="k">else</span><span class="p">:</span>
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">cartopy.mpl.ticker</span><span class="w"> </span><span class="kn">import</span> <span class="n">LongitudeFormatter</span><span class="p">,</span> <span class="n">LatitudeFormatter</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">cartopy.mpl.ticker</span><span class="w"> </span><span class="kn">import</span> <span class="n">LatitudeFormatter</span><span class="p">,</span> <span class="n">LongitudeFormatter</span>
 
         <span class="k">if</span> <span class="n">crs</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
             <span class="n">crs</span> <span class="o">=</span> <span class="n">cartopy</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>

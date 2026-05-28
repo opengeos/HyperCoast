@@ -765,6 +765,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../examples/dataset_summary_cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataset summary cli
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../examples/registry_workflows/" class="md-nav__link">
         
   
@@ -773,6 +801,34 @@
     
   
     Registry workflows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/qgis_workflow_processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qgis workflow processing
   
 
     
@@ -2357,6 +2413,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    summary module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../tanager/" class="md-nav__link">
         
   
@@ -2441,6 +2525,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ml module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ui/" class="md-nav__link">
         
   
@@ -2477,10 +2589,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_21" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_23" >
         
           
-          <label class="md-nav__link" for="__nav_11_21" id="__nav_11_21_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_23" id="__nav_11_23_label" tabindex="0">
             
   
   
@@ -2498,8 +2610,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_21_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_21">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_23">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2644,10 +2756,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_22" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_24" >
         
           
-          <label class="md-nav__link" for="__nav_11_22" id="__nav_11_22_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_24" id="__nav_11_24_label" tabindex="0">
             
   
   
@@ -2665,8 +2777,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_22_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_22">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_24">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2939,8 +3051,22 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
 <p><strong>hypercoast</strong> is available on <a href="https://pypi.org/project/hypercoast/">PyPI</a>. To install <strong>hypercoast</strong>, run this command in your terminal:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>hypercoast
 </code></pre></div></td></tr></table></div>
-<p>HyperCoast has some optional dependencies that are not installed by default, such as cartopy, earthaccess, mapclassify, and pyvista. To install all optional dependencies all at once, run the following command:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;hypercoast[extra]&quot;</span>
+<p>HyperCoast groups optional dependencies by feature area:</p>
+<ul>
+<li><code>core</code>: local NetCDF/HDF and xarray workflows.</li>
+<li><code>viz</code>: maps, plotting, PyVista, and raster visualization.</li>
+<li><code>cloud</code>: NASA Earthdata and cloud storage helpers.</li>
+<li><code>qgis</code>: QGIS plugin runtime helpers.</li>
+<li><code>ml</code>: optional MoE/VAE machine-learning workflows.</li>
+<li><code>docs</code>: documentation build tools.</li>
+</ul>
+<p>To install all optional dependencies all at once, run the following command:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;hypercoast[all]&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>For a smaller install, choose only the extras you need, for example:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;hypercoast[core,cloud]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;hypercoast[viz,ml]&quot;</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="install-from-conda-forge">Install from conda-forge<a class="headerlink" href="#install-from-conda-forge" title="Permanent link">&para;</a></h2>
 <p><strong>hypercoast</strong> is also available on <a href="https://anaconda.org/conda-forge/hypercoast">conda-forge</a>. If you have
@@ -2985,7 +3111,7 @@ mamba<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> <
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 27, 2026 19:18:25 UTC"><span class="timeago" datetime="2026-05-27T19:18:25+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 27, 2026 19:18:25 UTC">2026-05-27</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 28, 2026 02:44:29 UTC"><span class="timeago" datetime="2026-05-28T02:44:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 28, 2026 02:44:29 UTC">2026-05-28</span>
   </span>
 
     

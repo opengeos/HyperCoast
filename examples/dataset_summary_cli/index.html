@@ -12,13 +12,13 @@
         <meta name="author" content="giswqs">
       
       
-        <link rel="canonical" href="https://hypercoast.org/examples/pace_cyano/">
+        <link rel="canonical" href="https://hypercoast.org/examples/dataset_summary_cli/">
       
       
-        <link rel="prev" href="../pace_oci_l2/">
+        <link rel="prev" href="../search_workspace/">
       
       
-        <link rel="next" href="../multispectral/">
+        <link rel="next" href="../registry_workflows/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Pace cyano - HyperCoast</title>
+        <title>Dataset summary cli - HyperCoast</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mapping-cyanobacteria-with-pace-data" class="md-skip">
+        <a href="#dataset-summary-and-cli-utilities" class="md-skip">
           Skip to content
         </a>
       
@@ -120,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pace cyano
+              Dataset summary cli
             
           </span>
         </div>
@@ -673,10 +673,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../dataset_summary_cli/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataset summary cli
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -692,6 +719,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-small-local-cube" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a small local cube
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summarize-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summarize metadata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subset-by-bounding-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subset by bounding box
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-spectra-command-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batch spectra command shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1233,37 +1324,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pace cyano
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../pace_cyano/" class="md-nav__link">
         
   
   
@@ -1279,197 +1343,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-packages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install packages
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#import-libraries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Import libraries
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#download-pace-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Download PACE data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#read-pace-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Read PACE data
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#compute-band-ratios" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Compute band ratios
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-spectra-of-cyanobacteria-bloom" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The spectra of cyanobacteria bloom:
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cyanobacteria-and-spectral-angle-mapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cyanobacteria and Spectral Angle Mapper
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#k-means-applied-to-the-whole-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        K-means applied to the whole image
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#k-means-applied-to-selected-pixels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        K-means applied to selected pixels
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#principal-component-analysis-pca" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Principal Component Analysis (PCA)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#spectral-angle-mapper-sam" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Spectral Angle Mapper (SAM)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Spectral Angle Mapper (SAM)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#apply-sam-to-the-whole-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply SAM to the whole image
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apply-sam-to-selected-pixels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply SAM to selected pixels
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apply-sam-with-a-filtering-condition" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply SAM with a filtering condition
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#use-spectral-library" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Use spectral library
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -3099,10 +2972,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-packages" class="md-nav__link">
+  <a href="#create-a-small-local-cube" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install packages
+        Create a small local cube
       
     </span>
   </a>
@@ -3110,10 +2983,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#import-libraries" class="md-nav__link">
+  <a href="#summarize-metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Import libraries
+        Summarize metadata
       
     </span>
   </a>
@@ -3121,10 +2994,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#download-pace-data" class="md-nav__link">
+  <a href="#subset-by-bounding-box" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Download PACE data
+        Subset by bounding box
       
     </span>
   </a>
@@ -3132,140 +3005,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#read-pace-data" class="md-nav__link">
+  <a href="#batch-spectra-command-shape" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Read PACE data
+        Batch spectra command shape
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#compute-band-ratios" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Compute band ratios
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-spectra-of-cyanobacteria-bloom" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The spectra of cyanobacteria bloom:
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cyanobacteria-and-spectral-angle-mapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cyanobacteria and Spectral Angle Mapper
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#k-means-applied-to-the-whole-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        K-means applied to the whole image
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#k-means-applied-to-selected-pixels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        K-means applied to selected pixels
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#principal-component-analysis-pca" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Principal Component Analysis (PCA)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#spectral-angle-mapper-sam" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Spectral Angle Mapper (SAM)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Spectral Angle Mapper (SAM)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#apply-sam-to-the-whole-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply SAM to the whole image
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apply-sam-to-selected-pixels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply SAM to selected pixels
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apply-sam-with-a-filtering-condition" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply SAM with a filtering condition
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#use-spectral-library" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Use spectral library
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3283,7 +3029,7 @@
               <article class="md-content__inner md-typeset">
                 
 
-    <a href="/examples/pace_cyano/pace_cyano.ipynb" title="Download Notebook" class="md-content__button md-icon">
+    <a href="/examples/dataset_summary_cli/dataset_summary_cli.ipynb" title="Download Notebook" class="md-content__button md-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 20h14v-2H5m14-9h-4V3H9v6H5l7 7z"/></svg>
     </a>
 
@@ -4017,30 +3763,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><a href="https://colab.research.google.com/github/opengeos/HyperCoast/blob/main/docs/examples/pace_cyano.ipynb"><img alt="image" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
-<h1 id="mapping-cyanobacteria-with-pace-data">Mapping Cyanobacteria with PACE data<a class="anchor-link" href="#mapping-cyanobacteria-with-pace-data">¶</a></h1>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="install-packages">Install packages<a class="anchor-link" href="#install-packages">¶</a></h2><p>Uncomment the following cell to install the HyperCoast package.</p>
+<p><a href="https://colab.research.google.com/github/opengeos/HyperCoast/blob/main/docs/examples/dataset_summary_cli.ipynb"><img alt="image" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<h1 id="dataset-summary-and-cli-utilities">Dataset Summary and CLI Utilities<a class="anchor-link" href="#dataset-summary-and-cli-utilities">¶</a></h1><p>This notebook demonstrates the new local dataset summary and subsetting helpers. It uses a small synthetic hyperspectral cube so the example runs without downloading external data.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -4058,27 +3793,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># %pip install -U "hypercoast[extra]"</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># %pip install hypercoast</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-1"># %pip install -U "hypercoast[extra]"</div>
+<div class="clipboard-copy-txt" id="cell-1"># %pip install hypercoast</div>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="import-libraries">Import libraries<a class="anchor-link" href="#import-libraries">¶</a></h2>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -4096,43 +3820,39 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">earthaccess</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tempfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">hypercoast</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">hypercoast.pace</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">cyano_band_ratios</span><span class="p">,</span>
-    <span class="n">apply_kmeans</span><span class="p">,</span>
-    <span class="n">apply_pca</span><span class="p">,</span>
-    <span class="n">apply_sam</span><span class="p">,</span>
-    <span class="n">apply_sam_spectral</span><span class="p">,</span>
-<span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-2">import earthaccess
-import hypercoast
-from hypercoast.pace import (
-    cyano_band_ratios,
-    apply_kmeans,
-    apply_pca,
-    apply_sam,
-    apply_sam_spectral,
-)</div>
+<div class="clipboard-copy-txt" id="cell-2">from pathlib import Path
+from tempfile import TemporaryDirectory
+
+import numpy as np
+import xarray as xr
+
+import hypercoast</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="download-pace-data">Download PACE data<a class="anchor-link" href="#download-pace-data">¶</a></h2><p>To download and access the PACE AOP data, you will need to create an Earthdata login. You can register for an account at <a href="https://urs.earthdata.nasa.gov">urs.earthdata.nasa.gov</a>. Once you have an account, run the following cell and enter your NASA Earthdata login credentials.</p>
+<h2 id="create-a-small-local-cube">Create a small local cube<a class="anchor-link" href="#create-a-small-local-cube">¶</a></h2>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -4150,27 +3870,57 @@ from hypercoast.pace import (
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">earthaccess</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">persist</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">450.0</span><span class="p">,</span> <span class="mf">550.0</span><span class="p">,</span> <span class="mf">650.0</span><span class="p">,</span> <span class="mf">750.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float32"</span><span class="p">)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"reflectance"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float32"</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"wavelength"</span><span class="p">:</span> <span class="n">wavelengths</span><span class="p">,</span>
+        <span class="s2">"y"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">28.0</span><span class="p">,</span> <span class="mf">29.0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+        <span class="s2">"x"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">91.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">"crs"</span><span class="p">:</span> <span class="s2">"EPSG:4326"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">cube</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-3">earthaccess.login(persist=True)</div>
+<div class="clipboard-copy-txt" id="cell-3">wavelengths = np.array([450.0, 550.0, 650.0, 750.0], dtype="float32")
+cube = xr.Dataset(
+    {
+        "reflectance": (
+            ("wavelength", "y", "x"),
+            np.arange(4 * 5 * 6, dtype="float32").reshape(4, 5, 6) / 100.0,
+        )
+    },
+    coords={
+        "wavelength": wavelengths,
+        "y": np.linspace(28.0, 29.0, 5),
+        "x": np.linspace(-91.0, -90.0, 6),
+    },
+    attrs={"crs": "EPSG:4326"},
+)
+cube</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Search for PACE AOP data:</p>
+<h2 id="summarize-metadata">Summarize metadata<a class="anchor-link" href="#summarize-metadata">¶</a></h2>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -4188,37 +3938,50 @@ from hypercoast.pace import (
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_pace</span><span class="p">(</span>
-    <span class="n">bounding_box</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">83</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
-    <span class="n">temporal</span><span class="o">=</span><span class="p">(</span><span class="s2">"2024-07-30"</span><span class="p">,</span> <span class="s2">"2024-08-15"</span><span class="p">),</span>
-    <span class="n">short_name</span><span class="o">=</span><span class="s2">"PACE_OCI_L2_AOP_NRT"</span><span class="p">,</span>
-    <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"synthetic_cube.nc"</span>
+    <span class="n">cube</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">summary</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">summarize_dataset</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s2">"reflectance"</span><span class="p">)</span>
+    <span class="n">summary</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-4">results = hypercoast.search_pace(
-    bounding_box=(-83, 25, -81, 28),
-    temporal=("2024-07-30", "2024-08-15"),
-    short_name="PACE_OCI_L2_AOP_NRT",
-    count=1,
-)</div>
+<div class="clipboard-copy-txt" id="cell-4">with TemporaryDirectory() as tmpdir:
+    path = Path(tmpdir) / "synthetic_cube.nc"
+    cube.to_netcdf(path)
+
+    summary = hypercoast.summarize_dataset(path, variable="reflectance")
+    summary.as_dict()</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Download PACE AOP data:</p>
+<p>The same metadata is available from the command line:</p>
+<div class="highlight"><pre><span></span>hypercoast<span class="w"> </span>summarize<span class="w"> </span>synthetic_cube.nc<span class="w"> </span>--variable<span class="w"> </span>reflectance<span class="w"> </span>--json
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="subset-by-bounding-box">Subset by bounding box<a class="anchor-link" href="#subset-by-bounding-box">¶</a></h2>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -4236,598 +3999,62 @@ from hypercoast.pace import (
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">hypercoast</span><span class="o">.</span><span class="n">download_pace</span><span class="p">(</span><span class="n">results</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">out_dir</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-5">hypercoast.download_pace(results[:1], out_dir="data")</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="read-pace-data">Read PACE data<a class="anchor-link" href="#read-pace-data">¶</a></h2><p>Read PACE AOP data as an <code>xarray.Dataset</code>:</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">filepath</span> <span class="o">=</span> <span class="s2">"data/PACE_OCI.20240730T181157.L2.OC_AOP.V2_0.NRT.nc"</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_pace</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-<span class="c1"># dataset</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-6">filepath = "data/PACE_OCI.20240730T181157.L2.OC_AOP.V2_0.NRT.nc"
-dataset = hypercoast.read_pace(filepath)
-# dataset</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><img alt="image" src="https://github.com/user-attachments/assets/56b1fae3-9acf-4ee1-8dc9-7f6784bedf88"/></p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="compute-band-ratios">Compute band ratios<a class="anchor-link" href="#compute-band-ratios">¶</a></h2>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">da</span> <span class="o">=</span> <span class="n">cyano_band_ratios</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-7">da = cyano_band_ratios(dataset, plot=True)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="the-spectra-of-cyanobacteria-bloom">The spectra of cyanobacteria bloom:<a class="anchor-link" href="#the-spectra-of-cyanobacteria-bloom">¶</a></h2><p><img alt="" src="https://i.imgur.com/pQP50bz.png"/></p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="cyanobacteria-and-spectral-angle-mapper">Cyanobacteria and Spectral Angle Mapper<a class="anchor-link" href="#cyanobacteria-and-spectral-angle-mapper">¶</a></h2><p>Spectral Angle Mapper: Spectral similarity
-Input: library of Cyanobacteria bloom Rrs spectra with Chla at different levels</p>
-<p>Spectral Mixture Analysis: unmix different cyanobacteria species based on spectral difference.</p>
-<p><img alt="" src="https://i.imgur.com/xLaLMA4.png"/></p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="k-means-applied-to-the-whole-image">K-means applied to the whole image<a class="anchor-link" href="#k-means-applied-to-the-whole-image">¶</a></h2>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">cluster_labels</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">apply_kmeans</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-8">cluster_labels, latitudes, longitudes = apply_kmeans(dataset, n_clusters=6)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="k-means-applied-to-selected-pixels">K-means applied to selected pixels<a class="anchor-link" href="#k-means-applied-to-selected-pixels">¶</a></h2>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">"Rrs"</span><span class="p">]</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+    <span class="n">input_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"synthetic_cube.nc"</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"subset.nc"</span>
+    <span class="n">cube</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
 
-<span class="n">filter_condition</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">650</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">620</span><span class="p">))</span>
-    <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">701</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">681</span><span class="p">))</span>
-    <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">701</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span><span class="p">))</span>
-<span class="p">)</span>
-<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#e41a1c"</span><span class="p">,</span> <span class="s2">"#377eb8"</span><span class="p">,</span> <span class="s2">"#4daf4a"</span><span class="p">,</span> <span class="s2">"#f781bf"</span><span class="p">,</span> <span class="s2">"#a65628"</span><span class="p">,</span> <span class="s2">"#984ea3"</span><span class="p">]</span>
-
-<span class="n">cluster_labels</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">apply_kmeans</span><span class="p">(</span>
-    <span class="n">da</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">filter_condition</span><span class="o">=</span><span class="n">filter_condition</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span>
-<span class="p">)</span>
+    <span class="n">hypercoast</span><span class="o">.</span><span class="n">subset_dataset</span><span class="p">(</span>
+        <span class="n">input_path</span><span class="p">,</span>
+        <span class="n">output_path</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">90.8</span><span class="p">,</span> <span class="mf">28.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">90.2</span><span class="p">,</span> <span class="mf">28.75</span><span class="p">),</span>
+        <span class="n">variable</span><span class="o">=</span><span class="s2">"reflectance"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+    <span class="n">subset</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-9">da = dataset["Rrs"]
+<div class="clipboard-copy-txt" id="cell-5">with TemporaryDirectory() as tmpdir:
+    input_path = Path(tmpdir) / "synthetic_cube.nc"
+    output_path = Path(tmpdir) / "subset.nc"
+    cube.to_netcdf(input_path)
 
-filter_condition = (
-    (da.sel(wavelength=650) &gt; da.sel(wavelength=620))
-    &amp; (da.sel(wavelength=701) &gt; da.sel(wavelength=681))
-    &amp; (da.sel(wavelength=701) &gt; da.sel(wavelength=450))
-)
-extent = [-95, -85, 27, 33]
-colors = ["#e41a1c", "#377eb8", "#4daf4a", "#f781bf", "#a65628", "#984ea3"]
-
-cluster_labels, latitudes, longitudes = apply_kmeans(
-    da, n_clusters=6, filter_condition=filter_condition, extent=extent, colors=colors
-)</div>
+    hypercoast.subset_dataset(
+        input_path,
+        output_path,
+        bbox=(-90.8, 28.25, -90.2, 28.75),
+        variable="reflectance",
+    )
+    subset = xr.open_dataset(output_path)
+    subset</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=10">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="principal-component-analysis-pca">Principal Component Analysis (PCA)<a class="anchor-link" href="#principal-component-analysis-pca">¶</a></h2>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">pca_data</span> <span class="o">=</span> <span class="n">apply_pca</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">x_component</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_component</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<p>The equivalent CLI command is:</p>
+<div class="highlight"><pre><span></span>hypercoast<span class="w"> </span>subset<span class="w"> </span>synthetic_cube.nc<span class="w"> </span>subset.nc<span class="w"> </span>--bbox<span class="w"> </span>-90.8<span class="w"> </span><span class="m">28</span>.25<span class="w"> </span>-90.2<span class="w"> </span><span class="m">28</span>.75<span class="w"> </span>--variable<span class="w"> </span>reflectance
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-10">pca_data = apply_pca(dataset, n_components=3, x_component=0, y_component=1)</div>
 </div>
 </div>
 </div>
 </div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-11">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">pca_data</span> <span class="o">=</span> <span class="n">apply_pca</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">x_component</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_component</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-11">pca_data = apply_pca(dataset, n_components=3, x_component=1, y_component=2)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=11">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="spectral-angle-mapper-sam">Spectral Angle Mapper (SAM)<a class="anchor-link" href="#spectral-angle-mapper-sam">¶</a></h2><h3 id="apply-sam-to-the-whole-image">Apply SAM to the whole image<a class="anchor-link" href="#apply-sam-to-the-whole-image">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-12">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">data</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">apply_sam</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">n_clusters</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-<span class="p">)</span>
+<h2 id="batch-spectra-command-shape">Batch spectra command shape<a class="anchor-link" href="#batch-spectra-command-shape">¶</a></h2><p>For sensor readers that provide point extraction, the <code>spectra</code> command writes long-form spectral rows from a point CSV:</p>
+<div class="highlight"><pre><span></span>hypercoast<span class="w"> </span>spectra<span class="w"> </span>pace<span class="w"> </span>PACE_scene.nc<span class="w"> </span>--points<span class="w"> </span>stations.csv<span class="w"> </span>--output<span class="w"> </span>spectra.csv<span class="w"> </span>--x-column<span class="w"> </span>lon<span class="w"> </span>--y-column<span class="w"> </span>lat<span class="w"> </span>--crs<span class="w"> </span>EPSG:4326
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-12">data, latitudes, longitudes = apply_sam(
-    dataset,
-    n_components=3,
-    n_clusters=6,
-)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="apply-sam-to-selected-pixels">Apply SAM to selected pixels<a class="anchor-link" href="#apply-sam-to-selected-pixels">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-13">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#377eb8"</span><span class="p">,</span> <span class="s2">"#ff7f00"</span><span class="p">,</span> <span class="s2">"#4daf4a"</span><span class="p">,</span> <span class="s2">"#f781bf"</span><span class="p">,</span> <span class="s2">"#a65628"</span><span class="p">,</span> <span class="s2">"#984ea3"</span><span class="p">]</span>
-<span class="n">data</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">apply_sam</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">n_clusters</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-    <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-13">extent = [-95, -85, 27, 33]
-colors = ["#377eb8", "#ff7f00", "#4daf4a", "#f781bf", "#a65628", "#984ea3"]
-data, latitudes, longitudes = apply_sam(
-    dataset,
-    n_components=3,
-    n_clusters=6,
-    extent=extent,
-    colors=colors,
-)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="apply-sam-with-a-filtering-condition">Apply SAM with a filtering condition<a class="anchor-link" href="#apply-sam-with-a-filtering-condition">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-14">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">"Rrs"</span><span class="p">]</span>
-
-<span class="n">filter_condition</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">650</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">620</span><span class="p">))</span>
-    <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">701</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">681</span><span class="p">))</span>
-    <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">701</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span><span class="p">))</span>
-<span class="p">)</span>
-<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#e41a1c"</span><span class="p">,</span> <span class="s2">"#377eb8"</span><span class="p">,</span> <span class="s2">"#4daf4a"</span><span class="p">,</span> <span class="s2">"#f781bf"</span><span class="p">,</span> <span class="s2">"#a65628"</span><span class="p">,</span> <span class="s2">"#984ea3"</span><span class="p">]</span>
-
-<span class="n">data</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">apply_sam</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">n_clusters</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">filter_condition</span><span class="o">=</span><span class="n">filter_condition</span><span class="p">,</span>
-    <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-    <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-14">da = dataset["Rrs"]
-
-filter_condition = (
-    (da.sel(wavelength=650) &gt; da.sel(wavelength=620))
-    &amp; (da.sel(wavelength=701) &gt; da.sel(wavelength=681))
-    &amp; (da.sel(wavelength=701) &gt; da.sel(wavelength=450))
-)
-extent = [-95, -85, 27, 33]
-colors = ["#e41a1c", "#377eb8", "#4daf4a", "#f781bf", "#a65628", "#984ea3"]
-
-data, latitudes, longitudes = apply_sam(
-    dataset,
-    n_components=3,
-    n_clusters=6,
-    filter_condition=filter_condition,
-    extent=extent,
-    colors=colors,
-)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="use-spectral-library">Use spectral library<a class="anchor-link" href="#use-spectral-library">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-15">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">filepath</span> <span class="o">=</span> <span class="s2">"data/PACE_OCI.20240730T181157.L2.OC_AOP.V2_0.NRT.nc"</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_pace</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">"https://github.com/opengeos/datasets/releases/download/hypercoast/SAM_spectral_library.zip"</span>
-<span class="n">hypercoast</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">spectral_library</span> <span class="o">=</span> <span class="s2">"./SAM_spectral_library/*.csv"</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-15">filepath = "data/PACE_OCI.20240730T181157.L2.OC_AOP.V2_0.NRT.nc"
-dataset = hypercoast.read_pace(filepath)
-url = "https://github.com/opengeos/datasets/releases/download/hypercoast/SAM_spectral_library.zip"
-hypercoast.download_file(url)
-spectral_library = "./SAM_spectral_library/*.csv"</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-16">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
-<span class="n">data</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">apply_sam_spectral</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">spectral_library</span><span class="o">=</span><span class="n">spectral_library</span><span class="p">,</span>
-    <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-16">extent = [-95, -85, 27, 33]
-data, latitudes, longitudes = apply_sam_spectral(
-    dataset,
-    spectral_library=spectral_library,
-    extent=extent,
-)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-17">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">da</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">"Rrs"</span><span class="p">]</span>
-<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">85</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
-<span class="n">filter_condition</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">650</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">620</span><span class="p">))</span>
-    <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">701</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">681</span><span class="p">))</span>
-    <span class="o">&amp;</span> <span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">701</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span><span class="p">))</span>
-<span class="p">)</span>
-<span class="n">data</span><span class="p">,</span> <span class="n">latitudes</span><span class="p">,</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">apply_sam_spectral</span><span class="p">(</span>
-    <span class="n">da</span><span class="p">,</span>
-    <span class="n">spectral_library</span><span class="o">=</span><span class="n">spectral_library</span><span class="p">,</span>
-    <span class="n">filter_condition</span><span class="o">=</span><span class="n">filter_condition</span><span class="p">,</span>
-    <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-17">da = dataset["Rrs"]
-extent = [-95, -85, 27, 33]
-filter_condition = (
-    (da.sel(wavelength=650) &gt; da.sel(wavelength=620))
-    &amp; (da.sel(wavelength=701) &gt; da.sel(wavelength=681))
-    &amp; (da.sel(wavelength=701) &gt; da.sel(wavelength=450))
-)
-data, latitudes, longitudes = apply_sam_spectral(
-    da,
-    spectral_library=spectral_library,
-    filter_condition=filter_condition,
-    extent=extent,
-)</div>
-</div>
-</div>
+<p>The output columns are <code>feature_id</code>, <code>x</code>, <code>y</code>, <code>crs</code>, <code>wavelength</code>, <code>value</code>, <code>layer</code>, and <code>variable</code>.</p>
 </div>
 </div>
 </div>
@@ -4861,7 +4088,7 @@ data, latitudes, longitudes = apply_sam_spectral(
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="October 13, 2024 04:02:00 UTC"><span class="timeago" datetime="2024-10-13T04:02:00+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 13, 2024 04:02:00 UTC">2024-10-13</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 28, 2026 02:44:29 UTC"><span class="timeago" datetime="2026-05-28T02:44:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 28, 2026 02:44:29 UTC">2026-05-28</span>
   </span>
 
     
@@ -4871,7 +4098,7 @@ data, latitudes, longitudes = apply_sam_spectral(
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="August 25, 2024 05:10:47 UTC"><span class="timeago" datetime="2024-08-25T05:10:47+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 25, 2024 05:10:47 UTC">2024-08-25</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 28, 2026 02:44:29 UTC"><span class="timeago" datetime="2026-05-28T02:44:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 28, 2026 02:44:29 UTC">2026-05-28</span>
   </span>
 
     
