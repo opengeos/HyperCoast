@@ -1601,6 +1601,7 @@ def ensure_venv_packages_available(plugin_dir=None):
         "rioxarray",
         "pyproj",
         "leafmap",
+        "matplotlib",
     ]
     if not h5py_from_qgis:
         refresh_list.append("h5py")
