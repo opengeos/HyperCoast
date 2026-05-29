@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.26.0 - Current
+## v0.27.0 - Current
 
 **What's Changed**
 
