@@ -1612,7 +1612,10 @@ class HyperspectralDataset:
                 # sensor (DESIS, NEON, Tanager, AVIRIS, PRISMA, EnMAP, Wyvern,
                 # and any future addition to the hypercoast registry).
                 image = hypercoast.sensor_to_image(
-                    self.data_type, self.dataset, wavelengths=wavelengths
+                    self.data_type,
+                    self.dataset,
+                    wavelengths=wavelengths,
+                    method="nearest",
                 )
 
             else:
