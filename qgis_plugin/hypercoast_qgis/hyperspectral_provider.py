@@ -156,6 +156,24 @@ def _registry_data_types():
 DATA_TYPES = _registry_data_types()
 
 
+def _reader_data_types():
+    """Return reader-backed data types (every type except ``Generic``).
+
+    These are the sensors dispatched to the hypercoast library readers. The
+    list is derived from :data:`DATA_TYPES`, which is itself sourced from the
+    hypercoast registry when available, so new sensors added to the library are
+    picked up automatically.
+
+    Returns:
+        list[str]: Sensor data-type keys backed by a hypercoast reader.
+    """
+    return [name for name in DATA_TYPES if name != "Generic"]
+
+
+# Sensor data types backed by a hypercoast reader (excludes ``Generic``).
+READER_DATA_TYPES = _reader_data_types()
+
+
 PACE_BGC_VARIABLES = [
     "chlor_a",
     "carbon_phyto",
@@ -191,7 +209,7 @@ class HyperspectralDataset:
 
     def _detect_type(self):
         """Auto-detect the data type based on file extension and content."""
-        return detect_data_type(self.filepath, self._is_tanager_hdf5_file)
+        return detect_data_type(self.filepath, self._is_tanager_hdf5_file, DATA_TYPES)
 
     def _is_tanager_hdf5_file(self):
         """Return whether an HDF5 file looks like a Tanager product.
@@ -293,47 +311,15 @@ class HyperspectralDataset:
                 f"Trying hypercoast loader: type={self.data_type}, file={self.filepath}",
                 LOG_INFO,
             )
-            if self.data_type == "EMIT":
-                self.dataset = hypercoast.read_emit(self.filepath)
-                self._extract_emit_metadata()
-
-            elif self.data_type == "PACE":
-                self.dataset = hypercoast.read_pace(self.filepath)
-                self._is_swath = True
-                if not self._extract_pace_metadata():
-                    return False
-
-            elif self.data_type == "DESIS":
-                self.dataset = hypercoast.read_desis(self.filepath)
-                self._extract_desis_metadata()
-
-            elif self.data_type == "NEON":
-                self.dataset = hypercoast.read_neon(self.filepath)
-                self._extract_neon_metadata()
-
-            elif self.data_type == "AVIRIS":
-                self.dataset = hypercoast.read_aviris(self.filepath)
-                self._extract_generic_metadata()
-
-            elif self.data_type == "PRISMA":
-                self.dataset = hypercoast.read_prisma(self.filepath)
-                self._extract_generic_metadata()
-
-            elif self.data_type == "EnMAP":
-                self.dataset = hypercoast.read_enmap(self.filepath)
-                self._extract_generic_metadata()
-
-            elif self.data_type == "Tanager":
-                self.dataset = hypercoast.read_tanager(self.filepath)
-                if not self._extract_tanager_metadata():
-                    return False
-
-            elif self.data_type == "Wyvern":
-                self.dataset = hypercoast.read_wyvern(self.filepath)
-                self._extract_generic_metadata()
-
-            else:
+            if self.data_type == "Generic":
                 return self._load_generic()
+
+            # Registry-driven dispatch: every sensor registered in the
+            # hypercoast library (current or future) is read through the
+            # shared ``read_sensor`` entry point, so the plugin automatically
+            # supports every hyperspectral format the library supports without
+            # a per-sensor branch here.
+            self.dataset = hypercoast.read_sensor(self.data_type, self.filepath)
 
             # Guard against readers that return None instead of raising
             if self.dataset is None:
@@ -342,6 +328,9 @@ class HyperspectralDataset:
                     LOG_WARNING,
                 )
                 return self._load_generic()
+
+            if not self._extract_metadata():
+                return False
 
             _log(
                 f"Hypercoast loader succeeded: type={self.data_type}",
@@ -384,19 +373,7 @@ class HyperspectralDataset:
         """
         from .core.venv_manager import run_in_venv
 
-        reader_map = {
-            "EMIT": "read_emit",
-            "PACE": "read_pace",
-            "DESIS": "read_desis",
-            "NEON": "read_neon",
-            "AVIRIS": "read_aviris",
-            "PRISMA": "read_prisma",
-            "EnMAP": "read_enmap",
-            "Tanager": "read_tanager",
-            "Wyvern": "read_wyvern",
-        }
-        reader_fn = reader_map.get(self.data_type)
-        if reader_fn is None:
+        if not self._is_reader_data_type():
             return False
 
         import tempfile
@@ -413,7 +390,7 @@ class HyperspectralDataset:
 
         script = (
             "import hypercoast, sys\n"
-            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            f"ds = hypercoast.read_sensor({self.data_type!r}, r'{fp}')\n"
             "if ds is None:\n"
             "    sys.exit(1)\n"
             "ds.load()\n"
@@ -421,7 +398,7 @@ class HyperspectralDataset:
         )
 
         _log(
-            f"Running hypercoast.{reader_fn} in venv subprocess",
+            f"Running hypercoast reader for {self.data_type} in venv subprocess",
             LOG_INFO,
         )
         rc, stdout, stderr = run_in_venv(script, timeout=120)
@@ -438,17 +415,8 @@ class HyperspectralDataset:
             # Load into memory so the file handle is released before cleanup
             with xr.open_dataset(tmp_nc) as ds:
                 self.dataset = ds.load()
-            # Extract metadata using the same helpers as _load_with_hypercoast
-            extractor = {
-                "EMIT": self._extract_emit_metadata,
-                "PACE": self._extract_pace_metadata,
-                "DESIS": self._extract_desis_metadata,
-                "NEON": self._extract_neon_metadata,
-                "Tanager": self._extract_tanager_metadata,
-            }.get(self.data_type, self._extract_generic_metadata)
-            if self.data_type == "PACE":
-                self._is_swath = True
-            extractor()
+            # Extract metadata using the same helper as _load_with_hypercoast
+            self._extract_metadata()
             _log(
                 f"Subprocess load succeeded: type={self.data_type}",
                 LOG_INFO,
@@ -471,26 +439,7 @@ class HyperspectralDataset:
         """
         from .core.venv_manager import run_in_venv
 
-        fn_map = {
-            "EMIT": "emit_to_image",
-            "PACE": "pace_to_image",
-            "DESIS": "desis_to_image",
-            "NEON": "neon_to_image",
-            "Tanager": "tanager_to_image",
-        }
-        to_image_fn = fn_map.get(self.data_type)
-        if to_image_fn is None:
-            return None
-
-        reader_map = {
-            "EMIT": "read_emit",
-            "PACE": "read_pace",
-            "DESIS": "read_desis",
-            "NEON": "read_neon",
-            "Tanager": "read_tanager",
-        }
-        reader_fn = reader_map.get(self.data_type)
-        if reader_fn is None:
+        if not self._is_reader_data_type():
             return None
 
         if wavelengths is None:
@@ -499,21 +448,19 @@ class HyperspectralDataset:
         fp = self.filepath.replace("\\", "\\\\")
         op = output_path.replace("\\", "\\\\")
 
-        extra_args = ""
-        if self.data_type == "PACE":
-            extra_args = ", method='nearest'"
-
+        # Registry-driven read + image conversion so every reader-backed sensor
+        # can be exported in the subprocess, not just a hardcoded subset.
         script = (
             "import hypercoast, sys\n"
             "from leafmap import image_to_geotiff\n"
-            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            f"ds = hypercoast.read_sensor({self.data_type!r}, r'{fp}')\n"
             "if ds is None:\n"
             "    sys.exit(1)\n"
             "if 'wavelength' not in ds.dims and 'wavelength' not in ds.coords:\n"
             "    print('NO_WAVELENGTH_DIM', file=sys.stderr)\n"
             "    sys.exit(2)\n"
-            f"image = hypercoast.{to_image_fn}(ds, wavelengths={wavelengths!r}"
-            f"{extra_args})\n"
+            f"image = hypercoast.sensor_to_image({self.data_type!r}, ds, "
+            f"wavelengths={wavelengths!r}, method='nearest')\n"
             f"image_to_geotiff(image, r'{op}', dtype='float32')\n"
         )
 
@@ -562,29 +509,8 @@ class HyperspectralDataset:
         """
         from .core.venv_manager import run_in_venv
 
-        reader_map = {
-            "EMIT": "read_emit",
-            "PACE": "read_pace",
-            "DESIS": "read_desis",
-            "NEON": "read_neon",
-            "AVIRIS": "read_aviris",
-            "PRISMA": "read_prisma",
-            "EnMAP": "read_enmap",
-            "Tanager": "read_tanager",
-            "Wyvern": "read_wyvern",
-        }
-        reader_fn = reader_map.get(self.data_type)
-        if reader_fn is None:
+        if not self._is_reader_data_type():
             return None
-
-        fn_map = {
-            "EMIT": "emit_to_image",
-            "PACE": "pace_to_image",
-            "DESIS": "desis_to_image",
-            "NEON": "neon_to_image",
-            "Tanager": "tanager_to_image",
-        }
-        to_image_fn = fn_map.get(self.data_type)
 
         if wavelengths is None:
             wavelengths = [650, 550, 450]
@@ -598,24 +524,19 @@ class HyperspectralDataset:
         op = output_path.replace("\\", "\\\\")
         nc = tmp_nc.replace("\\", "\\\\")
 
-        extra_args = ""
-        if self.data_type == "PACE":
-            extra_args = ", method='nearest'"
-
-        # Build optional export block
-        export_block = ""
-        if to_image_fn:
-            export_block = (
-                "if 'wavelength' in ds.dims or 'wavelength' in ds.coords:\n"
-                f"    image = hypercoast.{to_image_fn}(ds, wavelengths={wavelengths!r}"
-                f"{extra_args})\n"
-                f"    image_to_geotiff(image, r'{op}', dtype='float32')\n"
-            )
+        # Export only when the dataset has a spectral dimension; registry-driven
+        # conversion handles every reader-backed sensor uniformly.
+        export_block = (
+            "if 'wavelength' in ds.dims or 'wavelength' in ds.coords:\n"
+            f"    image = hypercoast.sensor_to_image({self.data_type!r}, ds, "
+            f"wavelengths={wavelengths!r}, method='nearest')\n"
+            f"    image_to_geotiff(image, r'{op}', dtype='float32')\n"
+        )
 
         script = (
             "import hypercoast, sys\n"
             "from leafmap import image_to_geotiff\n"
-            f"ds = hypercoast.{reader_fn}(r'{fp}')\n"
+            f"ds = hypercoast.read_sensor({self.data_type!r}, r'{fp}')\n"
             "if ds is None:\n"
             "    sys.exit(1)\n" + export_block + "ds.load()\n"
             f"ds.to_netcdf(r'{nc}')\n"
@@ -640,16 +561,7 @@ class HyperspectralDataset:
             with xr.open_dataset(tmp_nc) as ds:
                 self.dataset = ds.load()
 
-            extractor = {
-                "EMIT": self._extract_emit_metadata,
-                "PACE": self._extract_pace_metadata,
-                "DESIS": self._extract_desis_metadata,
-                "NEON": self._extract_neon_metadata,
-                "Tanager": self._extract_tanager_metadata,
-            }.get(self.data_type, self._extract_generic_metadata)
-            if self.data_type == "PACE":
-                self._is_swath = True
-            extractor()
+            self._extract_metadata()
 
             if os.path.isfile(output_path):
                 _log(f"Combined load+export succeeded: {output_path}", LOG_INFO)
@@ -718,6 +630,39 @@ class HyperspectralDataset:
             if not self.load():
                 return None
         return self.export_to_geotiff(output_path, wavelengths, bands)
+
+    def _is_reader_data_type(self):
+        """Return whether the data type is backed by a hypercoast reader.
+
+        Returns:
+            True when ``self.data_type`` is a registry sensor (not ``Generic``).
+        """
+        return self.data_type != "Generic" and self.data_type in DATA_TYPES
+
+    def _extract_metadata(self):
+        """Populate metadata from ``self.dataset`` using a per-sensor extractor.
+
+        Sensors with bespoke geolocation handling keep their tuned extractors;
+        any other (including newly registered) sensor falls back to the generic
+        extractor. This keeps the loader registry-driven while preserving the
+        well-tested behavior of the established sensors.
+
+        Returns:
+            bool: ``True`` on success. Extractors that can detect an empty or
+            invalid dataset return ``False``, which is propagated here.
+        """
+        extractor = {
+            "EMIT": self._extract_emit_metadata,
+            "PACE": self._extract_pace_metadata,
+            "DESIS": self._extract_desis_metadata,
+            "NEON": self._extract_neon_metadata,
+            "Tanager": self._extract_tanager_metadata,
+        }.get(self.data_type, self._extract_generic_metadata)
+
+        if self.data_type == "PACE":
+            self._is_swath = True
+
+        return extractor() is not False
 
     def _extract_emit_metadata(self):
         """Extract metadata from EMIT dataset."""
@@ -1475,33 +1420,22 @@ class HyperspectralDataset:
                 )
                 return self._filter_good_wavelengths(self.wavelengths, values)
 
-            elif self.data_type == "PACE":
-                da = hypercoast.extract_pace(self.dataset, lat, lon)
+            # Registry-driven extraction for any reader-backed sensor with a
+            # registered extractor (PACE, DESIS, NEON, and future additions).
+            if self._is_reader_data_type():
+                da = hypercoast.extract_sensor(self.data_type, self.dataset, lat, lon)
                 return self._filter_good_wavelengths(
                     da.coords["wavelength"].values, da.values
                 )
 
-            elif self.data_type == "DESIS":
-                da = hypercoast.extract_desis(self.dataset, lat, lon)
-                return self._filter_good_wavelengths(
-                    da.coords["wavelength"].values, da.values
-                )
-
-            elif self.data_type == "NEON":
-                da = hypercoast.extract_neon(self.dataset, lat, lon)
-                return self._filter_good_wavelengths(
-                    da.coords["wavelength"].values, da.values
-                )
-
+            data_var = self.get_data_variable()
+            if "y" in data_var.dims and "x" in data_var.dims:
+                values = data_var.sel(y=lat, x=lon, method="nearest").values
             else:
-                data_var = self.get_data_variable()
-                if "y" in data_var.dims and "x" in data_var.dims:
-                    values = data_var.sel(y=lat, x=lon, method="nearest").values
-                else:
-                    values = data_var.sel(
-                        latitude=lat, longitude=lon, method="nearest"
-                    ).values
-                return self._filter_good_wavelengths(self.wavelengths, values)
+                values = data_var.sel(
+                    latitude=lat, longitude=lon, method="nearest"
+                ).values
+            return self._filter_good_wavelengths(self.wavelengths, values)
 
         except Exception as e:
             _log(f"Error in hypercoast extraction: {e}", LOG_WARNING)
@@ -1673,15 +1607,12 @@ class HyperspectralDataset:
                     self.dataset, wavelengths=wavelengths, method="nearest"
                 )
 
-            elif self.data_type == "DESIS":
-                image = hypercoast.desis_to_image(self.dataset, wavelengths=wavelengths)
-
-            elif self.data_type == "NEON":
-                image = hypercoast.neon_to_image(self.dataset, wavelengths=wavelengths)
-
-            elif self.data_type == "Tanager":
-                image = hypercoast.tanager_to_image(
-                    self.dataset, wavelengths=wavelengths
+            elif self._is_reader_data_type():
+                # Registry-driven conversion for every other reader-backed
+                # sensor (DESIS, NEON, Tanager, AVIRIS, PRISMA, EnMAP, Wyvern,
+                # and any future addition to the hypercoast registry).
+                image = hypercoast.sensor_to_image(
+                    self.data_type, self.dataset, wavelengths=wavelengths
                 )
 
             else:
