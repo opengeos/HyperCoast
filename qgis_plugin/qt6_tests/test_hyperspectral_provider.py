@@ -5,13 +5,119 @@ import pytest
 
 xr = pytest.importorskip("xarray")
 
-from hypercoast_qgis.hyperspectral_provider import DATA_TYPES, HyperspectralDataset
+from hypercoast_qgis.hyperspectral_provider import (
+    DATA_TYPES,
+    READER_DATA_TYPES,
+    HyperspectralDataset,
+)
+from hypercoast_qgis.provider.detection import detect_data_type
+
+
+def _spectral_dataset(variable="reflectance"):
+    """Return a minimal spectral xarray dataset for loader/export tests."""
+    return xr.Dataset(
+        {
+            variable: (
+                ("wavelength", "y", "x"),
+                np.ones((2, 2, 2), dtype="float32"),
+            )
+        },
+        coords={"wavelength": np.array([500.0, 600.0])},
+    )
 
 
 def test_data_types_include_registry_metadata():
     """QGIS data types should expose registry defaults when available."""
     assert DATA_TYPES["PACE"]["variable"] == "Rrs"
     assert DATA_TYPES["Wyvern"]["default_rgb"] == [799, 679, 570]
+
+
+def test_reader_data_types_exclude_generic():
+    """Reader-backed data types should cover sensors but not the fallback."""
+    assert "Generic" not in READER_DATA_TYPES
+    assert "EMIT" in READER_DATA_TYPES
+    assert "Wyvern" in READER_DATA_TYPES
+
+
+def test_detect_data_type_matches_registry_sensor_by_name():
+    """A newly registered sensor should auto-detect from its name alone."""
+    data_types = {"EMIT": {}, "PACE": {}, "HYPERION": {}, "Generic": {}}
+
+    assert detect_data_type("scene_HYPERION_001.tif", data_types=data_types) == (
+        "HYPERION"
+    )
+    # Established alias tokens still resolve to their sensor.
+    assert detect_data_type("PACE_OCI_2024.nc", data_types=data_types) == "PACE"
+    assert detect_data_type("random_scene.tif", data_types=data_types) == "Generic"
+
+
+def test_load_with_hypercoast_dispatches_through_read_sensor(monkeypatch):
+    """Loading should route every sensor through the registry read_sensor."""
+    import hypercoast_qgis.hyperspectral_provider as provider_module
+
+    calls = {}
+
+    class _HyperCoast:
+        """Fake HyperCoast module recording the requested sensor."""
+
+        def read_sensor(self, sensor, source, **kwargs):
+            """Record the sensor name and return a spectral dataset."""
+            calls["sensor"] = sensor
+            calls["source"] = source
+            return _spectral_dataset()
+
+    monkeypatch.setattr(provider_module, "HAS_HYPERCOAST", True)
+    monkeypatch.setattr(provider_module, "hypercoast", _HyperCoast(), raising=False)
+
+    provider = HyperspectralDataset("AVIRIS_scene.nc", "AVIRIS")
+
+    assert provider.load() is True
+    assert calls["sensor"] == "AVIRIS"
+    assert provider.dataset is not None
+
+
+def test_export_with_hypercoast_dispatches_through_sensor_to_image(
+    tmp_path, monkeypatch
+):
+    """Export should route reader-backed sensors through sensor_to_image."""
+    import hypercoast_qgis.hyperspectral_provider as provider_module
+    import leafmap
+
+    calls = {}
+
+    class _HyperCoast:
+        """Fake HyperCoast module recording the converted sensor."""
+
+        def sensor_to_image(self, sensor, data, **kwargs):
+            """Record the sensor name and return a placeholder image."""
+            calls["sensor"] = sensor
+            return "IMAGE"
+
+    def _fake_write(image, output, dtype=None):
+        """Write a placeholder GeoTIFF so the export path can succeed."""
+        with open(output, "wb") as handle:
+            handle.write(b"fake geotiff")
+
+    monkeypatch.setattr(provider_module, "HAS_HYPERCOAST", True)
+    monkeypatch.setattr(provider_module, "hypercoast", _HyperCoast(), raising=False)
+    monkeypatch.setattr(leafmap, "image_to_geotiff", _fake_write)
+
+    provider = HyperspectralDataset("WYVERN_scene.tif", "Wyvern")
+    provider.dataset = _spectral_dataset()
+    output_path = tmp_path / "wyvern.tif"
+
+    result = provider._export_with_hypercoast(str(output_path), [650, 550, 450])
+
+    assert result == str(output_path)
+    assert calls["sensor"] == "Wyvern"
+
+
+def test_extract_metadata_returns_false_for_empty_pace():
+    """Empty PACE datasets should fail metadata extraction."""
+    provider = HyperspectralDataset("PACE_OCI_test.nc", "PACE")
+    provider.dataset = xr.Dataset()
+
+    assert provider._extract_metadata() is False
 
 
 def test_tanager_hdf5_asset_filename_auto_detects_tanager():
