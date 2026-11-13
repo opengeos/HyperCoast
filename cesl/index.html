@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3173,13 +3173,13 @@
     <span class="n">skip_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">search_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert CESL site metadata to a GeoPandas GeoDataFrame.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert CESL site metadata to a GeoPandas GeoDataFrame."""</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
     <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-            <span class="s2">&quot;geopandas is required to convert CESL sites to a GeoDataFrame.&quot;</span>
+            <span class="s2">"geopandas is required to convert CESL sites to a GeoDataFrame."</span>
         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 <span class="w">    </span><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 
@@ -3194,13 +3194,13 @@
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">records</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="p">[],</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="p">[],</span> <span class="n">crs</span><span class="o">=</span><span class="s2">"EPSG:4326"</span><span class="p">)</span>
 
     <span class="n">frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
         <span class="n">frame</span><span class="p">,</span>
-        <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]),</span>
-        <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">],</span> <span class="n">frame</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]),</span>
+        <span class="n">crs</span><span class="o">=</span><span class="s2">"EPSG:4326"</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3318,7 +3318,7 @@ reason (e.g. non-JSON API responses). Defaults to False.</p></td>
     <span class="n">skip_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">search_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a GeoJSON feature collection for CESL sites.</span>
+<span class="w">    </span><span class="sd">"""Create a GeoJSON feature collection for CESL sites.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output (str, optional): Output GeoJSON path. If provided, the GeoJSON is</span>
@@ -3338,7 +3338,7 @@ reason (e.g. non-JSON API responses). Defaults to False.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict[str, Any]: A GeoJSON FeatureCollection.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">records</span> <span class="o">=</span> <span class="n">get_cesl_sites</span><span class="p">(</span>
         <span class="n">sample_ids</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">,</span>
@@ -3350,14 +3350,14 @@ reason (e.g. non-JSON API responses). Defaults to False.</p></td>
         <span class="o">**</span><span class="n">search_kwargs</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">feature_collection</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">_build_feature</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">],</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"FeatureCollection"</span><span class="p">,</span>
+        <span class="s2">"features"</span><span class="p">:</span> <span class="p">[</span><span class="n">_build_feature</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">],</span>
     <span class="p">}</span>
 
     <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">feature_collection</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">feature_collection</span>
@@ -3374,7 +3374,7 @@ reason (e.g. non-JSON API responses). Defaults to False.</p></td>
 
 
 <h2 id="hypercoast.cesl.get_cesl_metadata" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_cesl_metadata</span><span class="p">(</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">crosswalk</span><span class="o">=</span><span class="s1">&#39;speclib&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">get_cesl_metadata</span><span class="p">(</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">crosswalk</span><span class="o">=</span><span class="s1">'speclib'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.cesl.get_cesl_metadata" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3443,9 +3443,9 @@ Defaults to False.</p></td>
     <span class="n">sample_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">include_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
-    <span class="n">crosswalk</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;speclib&quot;</span><span class="p">,</span>
+    <span class="n">crosswalk</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"speclib"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve metadata for a CESL sample.</span>
+<span class="w">    </span><span class="sd">"""Retrieve metadata for a CESL sample.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sample_id (int): CESL sample ID.</span>
@@ -3453,15 +3453,15 @@ Defaults to False.</p></td>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        timeout (int, optional): Request timeout in seconds. Defaults to 30.</span>
 <span class="sd">        crosswalk (str, optional): Metadata crosswalk type. Defaults to</span>
-<span class="sd">            ``&quot;speclib&quot;``.</span>
+<span class="sd">            ``"speclib"``.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict[str, Any]: Normalized metadata for the sample.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">_request_cesl</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;sample/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">/metadata&quot;</span><span class="p">,</span>
-        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;crosswalk&quot;</span><span class="p">:</span> <span class="n">crosswalk</span><span class="p">},</span>
+        <span class="sa">f</span><span class="s2">"sample/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">/metadata"</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"json"</span><span class="p">,</span> <span class="s2">"crosswalk"</span><span class="p">:</span> <span class="n">crosswalk</span><span class="p">},</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">_get_payload</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_METADATA_KEY_CANDIDATES</span><span class="p">)</span>
@@ -3576,7 +3576,7 @@ skipped sample. Defaults to False.</p></td>
     <span class="n">skip_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">search_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve CESL site metadata for a set of sample IDs.</span>
+<span class="w">    </span><span class="sd">"""Retrieve CESL site metadata for a set of sample IDs.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sample_ids (Iterable[int], optional): CESL sample IDs to retrieve.</span>
@@ -3596,7 +3596,7 @@ skipped sample. Defaults to False.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list[dict[str, Any]]: Normalized site records including coordinates.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">sample_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">search_cesl</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">search_kwargs</span><span class="p">)</span>
@@ -3607,14 +3607,14 @@ skipped sample. Defaults to False.</p></td>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">get_cesl_metadata</span><span class="p">(</span>
             <span class="n">sample_id</span><span class="o">=</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">include_units</span><span class="o">=</span><span class="n">include_units</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
         <span class="p">)</span>
-        <span class="n">latitude</span> <span class="o">=</span> <span class="n">_extract_coordinate</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">_LATITUDE_KEYS</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">)</span>
-        <span class="n">longitude</span> <span class="o">=</span> <span class="n">_extract_coordinate</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">_LONGITUDE_KEYS</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">)</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">_extract_coordinate</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">_LATITUDE_KEYS</span><span class="p">,</span> <span class="s2">"latitude"</span><span class="p">)</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">_extract_coordinate</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">_LONGITUDE_KEYS</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
             <span class="o">**</span><span class="n">metadata</span><span class="p">,</span>
-            <span class="s2">&quot;sample_id&quot;</span><span class="p">:</span> <span class="n">sample_id</span><span class="p">,</span>
-            <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">latitude</span><span class="p">,</span>
-            <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">longitude</span><span class="p">,</span>
+            <span class="s2">"sample_id"</span><span class="p">:</span> <span class="n">sample_id</span><span class="p">,</span>
+            <span class="s2">"latitude"</span><span class="p">:</span> <span class="n">latitude</span><span class="p">,</span>
+            <span class="s2">"longitude"</span><span class="p">:</span> <span class="n">longitude</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="n">_BATCH_SIZE</span> <span class="o">=</span> <span class="mi">50</span>
@@ -3635,16 +3635,16 @@ skipped sample. Defaults to False.</p></td>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">skip_errors</span><span class="p">:</span>
                         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Skipping sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">"Skipping sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
                             <span class="ne">RuntimeWarning</span><span class="p">,</span>
                             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Failed to retrieve CESL metadata for sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">.&quot;</span>
+                            <span class="sa">f</span><span class="s2">"Failed to retrieve CESL metadata for sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">."</span>
                         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
-    <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">])</span>
+    <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="n">record</span><span class="p">[</span><span class="s2">"sample_id"</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">records</span>
 </code></pre></div>
         </details>
@@ -3720,7 +3720,7 @@ Defaults to the first non-<code>wavelength</code> field returned by the API.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_cesl_spectrum</span><span class="p">(</span>
     <span class="n">sample_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve the wavelength and spectrum values for a CESL sample.</span>
+<span class="w">    </span><span class="sd">"""Retrieve the wavelength and spectrum values for a CESL sample.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sample_id (int): CESL sample ID.</span>
@@ -3730,37 +3730,37 @@ Defaults to the first non-<code>wavelength</code> field returned by the API.</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pandas.DataFrame: A DataFrame with ``wavelength`` and spectrum columns.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">_request_cesl</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;sample/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">/data&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+        <span class="sa">f</span><span class="s2">"sample/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">/data"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"json"</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
     <span class="p">)</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">_get_payload</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_DATA_KEY_CANDIDATES</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;CESL spectrum response does not contain &#39;wavelength&#39;.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"wavelength"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">"CESL spectrum response does not contain 'wavelength'."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">spectrum_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">spectrum_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">payload</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">]</span>
+        <span class="n">spectrum_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">payload</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">"wavelength"</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">spectrum_keys</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;CESL spectrum response does not contain any spectral data.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">"CESL spectrum response does not contain any spectral data."</span><span class="p">)</span>
         <span class="n">spectrum_key</span> <span class="o">=</span> <span class="n">spectrum_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">matching_keys</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">payload</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;wavelength&quot;</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">payload</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">"wavelength"</span>
         <span class="p">}</span>
         <span class="n">resolved_key</span> <span class="o">=</span> <span class="n">matching_keys</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">spectrum_key</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">resolved_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find spectrum key &#39;</span><span class="si">{</span><span class="n">spectrum_key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not find spectrum key '</span><span class="si">{</span><span class="n">spectrum_key</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
         <span class="n">spectrum_key</span> <span class="o">=</span> <span class="n">resolved_key</span>
 
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-        <span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">spectrum_key</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="n">spectrum_key</span><span class="p">]}</span>
+        <span class="p">{</span><span class="s2">"wavelength"</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">],</span> <span class="n">spectrum_key</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="n">spectrum_key</span><span class="p">]}</span>
     <span class="p">)</span>
-    <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_id</span>
-    <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spectrum_key&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectrum_key</span>
+    <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"sample_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_id</span>
+    <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"spectrum_key"</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectrum_key</span>
     <span class="k">return</span> <span class="n">spectrum</span>
 </code></pre></div>
         </details>
@@ -3775,7 +3775,7 @@ Defaults to the first non-<code>wavelength</code> field returned by the API.</p>
 
 
 <h2 id="hypercoast.cesl.plot_cesl_spectrum" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">plot_cesl_spectrum</span><span class="p">(</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Wavelength (nm)&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">plot_cesl_spectrum</span><span class="p">(</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">'Wavelength (nm)'</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.cesl.plot_cesl_spectrum" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3889,7 +3889,7 @@ exclude reflectance outliers from the visible plot extent.</p></td>
     <span class="n">spectrum_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">ax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Wavelength (nm)"</span><span class="p">,</span>
     <span class="n">ylabel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">figsize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">x_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3897,7 +3897,7 @@ exclude reflectance outliers from the visible plot extent.</p></td>
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a CESL spectrum for a selected sample.</span>
+<span class="w">    </span><span class="sd">"""Plot a CESL spectrum for a selected sample.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sample_id (int): CESL sample ID.</span>
@@ -3918,23 +3918,23 @@ exclude reflectance outliers from the visible plot extent.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        matplotlib.axes.Axes: The axes containing the plot.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">get_cesl_spectrum</span><span class="p">(</span>
         <span class="n">sample_id</span><span class="o">=</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">spectrum_key</span><span class="o">=</span><span class="n">spectrum_key</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
     <span class="p">)</span>
-    <span class="n">spectrum_key</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spectrum_key&quot;</span><span class="p">]</span>
+    <span class="n">spectrum_key</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"spectrum_key"</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 
-    <span class="n">label</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">spectrum</span><span class="p">[</span><span class="n">spectrum_key</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"label"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">],</span> <span class="n">spectrum</span><span class="p">[</span><span class="n">spectrum_key</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span> <span class="ow">or</span> <span class="n">spectrum_key</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;CESL Sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">"CESL Sample </span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">x_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span>
@@ -4059,7 +4059,7 @@ samples.</p></td>
     <span class="n">coverage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search the CESL catalog and return matching sample IDs.</span>
+<span class="w">    </span><span class="sd">"""Search the CESL catalog and return matching sample IDs.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        bbox (Sequence[float], optional): Bounding box formatted as</span>
@@ -4077,30 +4077,30 @@ samples.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list[int]: Matching CESL sample IDs.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">}</span>
-    <span class="n">formatted_bbox</span> <span class="o">=</span> <span class="n">_format_catalog_param</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;bbox&quot;</span><span class="p">)</span>
-    <span class="n">formatted_circle</span> <span class="o">=</span> <span class="n">_format_catalog_param</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;circle&quot;</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"json"</span><span class="p">}</span>
+    <span class="n">formatted_bbox</span> <span class="o">=</span> <span class="n">_format_catalog_param</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">"bbox"</span><span class="p">)</span>
+    <span class="n">formatted_circle</span> <span class="o">=</span> <span class="n">_format_catalog_param</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"circle"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">formatted_bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;bbox&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatted_bbox</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"bbox"</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatted_bbox</span>
     <span class="k">if</span> <span class="n">formatted_circle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;circle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatted_circle</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"circle"</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatted_circle</span>
     <span class="k">if</span> <span class="n">publish_date_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;publish_date_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">publish_date_start</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"publish_date_start"</span><span class="p">]</span> <span class="o">=</span> <span class="n">publish_date_start</span>
     <span class="k">if</span> <span class="n">publish_date_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;publish_date_end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">publish_date_end</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"publish_date_end"</span><span class="p">]</span> <span class="o">=</span> <span class="n">publish_date_end</span>
     <span class="k">if</span> <span class="n">taxonomy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;taxonomy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxonomy</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"taxonomy"</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxonomy</span>
     <span class="k">if</span> <span class="n">biomass</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;biomass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">biomass</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"biomass"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">biomass</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">coverage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;coverage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coverage</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"coverage"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coverage</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">_request_cesl</span><span class="p">(</span><span class="s2">&quot;catalog&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_request_cesl</span><span class="p">(</span><span class="s2">"catalog"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">_get_payload</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">_CATALOG_KEY_CANDIDATES</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ids&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">return</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ids"</span><span class="p">,</span> <span class="p">[])</span>
 </code></pre></div>
         </details>
     </div>
@@ -4209,15 +4209,122 @@ samples.</p></td>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

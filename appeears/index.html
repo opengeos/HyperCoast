@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3628,13 +3628,13 @@ AppEEARSClient        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AppEEARSClient</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Client for the NASA AppEEARS API.</span>
+<span class="w">    </span><span class="sd">"""Client for the NASA AppEEARS API.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        api_url: Base URL for the AppEEARS API.</span>
 <span class="sd">        token: Existing AppEEARS bearer token.</span>
 <span class="sd">        session: Optional requests-compatible session.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3644,21 +3644,21 @@ AppEEARSClient        </code>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span> <span class="o">=</span> <span class="n">api_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span> <span class="o">=</span> <span class="n">api_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"/"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">or</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">headers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return authorization headers for authenticated requests.</span>
+<span class="w">        </span><span class="sd">"""Return authorization headers for authenticated requests.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dictionary containing the bearer token header when a token exists.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">login</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3666,7 +3666,7 @@ AppEEARSClient        </code>
         <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Authenticate with AppEEARS.</span>
+<span class="w">        </span><span class="sd">"""Authenticate with AppEEARS.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            username: NASA Earthdata username. If omitted, environment variables</span>
@@ -3677,22 +3677,22 @@ AppEEARSClient        </code>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            AppEEARS login response containing the bearer token.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="n">token</span><span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"token"</span><span class="p">:</span> <span class="n">token</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">username</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EARTHDATA_USERNAME&quot;</span><span class="p">)</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"EARTHDATA_USERNAME"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EARTHDATA_PASSWORD&quot;</span><span class="p">)</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"EARTHDATA_PASSWORD"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="kn">from</span><span class="w"> </span><span class="nn">netrc</span><span class="w"> </span><span class="kn">import</span> <span class="n">netrc</span>
 
-                <span class="n">auth</span> <span class="o">=</span> <span class="n">netrc</span><span class="p">()</span><span class="o">.</span><span class="n">authenticators</span><span class="p">(</span><span class="s2">&quot;urs.earthdata.nasa.gov&quot;</span><span class="p">)</span>
+                <span class="n">auth</span> <span class="o">=</span> <span class="n">netrc</span><span class="p">()</span><span class="o">.</span><span class="n">authenticators</span><span class="p">(</span><span class="s2">"urs.earthdata.nasa.gov"</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
                 <span class="n">auth</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">auth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -3701,14 +3701,14 @@ AppEEARSClient        </code>
 
         <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;username and password are required unless EARTHDATA_USERNAME &quot;</span>
-                <span class="s2">&quot;and EARTHDATA_PASSWORD or a netrc entry are available.&quot;</span>
+                <span class="s2">"username and password are required unless EARTHDATA_USERNAME "</span>
+                <span class="s2">"and EARTHDATA_PASSWORD or a netrc entry are available."</span>
             <span class="p">)</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span>
-            <span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">),</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span>
+            <span class="s2">"post"</span><span class="p">,</span> <span class="s2">"login"</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">),</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"token"</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">response</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">products</span><span class="p">(</span>
@@ -3717,18 +3717,18 @@ AppEEARSClient        </code>
         <span class="n">platform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">available</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;List AppEEARS products.</span>
+<span class="w">        </span><span class="sd">"""List AppEEARS products.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            keyword: Case-insensitive search text matched against product fields.</span>
-<span class="sd">            platform: Platform name, such as ``&quot;EMIT&quot;``.</span>
+<span class="sd">            platform: Platform name, such as ``"EMIT"``.</span>
 <span class="sd">            available: If set, filter by the AppEEARS availability flag.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List of product metadata dictionaries.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">products</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">products</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"product"</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">keyword</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">query</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span> <span class="k">if</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
@@ -3736,23 +3736,23 @@ AppEEARSClient        </code>
             <span class="n">products</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">p</span>
                 <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span>
-                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Platform&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">platform</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Platform"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">platform</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="p">]</span>
         <span class="k">if</span> <span class="n">available</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Available&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="n">available</span><span class="p">]</span>
+            <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Available"</span><span class="p">)</span> <span class="ow">is</span> <span class="n">available</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">products</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;List layers for an AppEEARS product.</span>
+<span class="w">        </span><span class="sd">"""List layers for an AppEEARS product.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            product: Product and version string, such as ``&quot;EMIT_L2A_RFL.001&quot;``.</span>
+<span class="sd">            product: Product and version string, such as ``"EMIT_L2A_RFL.001"``.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dictionary keyed by layer name.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;product/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"product/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">spectral_layers</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3760,7 +3760,7 @@ AppEEARSClient        </code>
         <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">include_flags</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return spectral layer metadata, optionally nearest to wavelengths.</span>
+<span class="w">        </span><span class="sd">"""Return spectral layer metadata, optionally nearest to wavelengths.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            product: AppEEARS product and version.</span>
@@ -3771,20 +3771,20 @@ AppEEARSClient        </code>
 <span class="sd">        Returns:</span>
 <span class="sd">            List of layer records containing product, layer, wavelength, fwhm,</span>
 <span class="sd">            units, description, and data type.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">layer</span><span class="p">,</span> <span class="n">metadata</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">product</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">include_flags</span> <span class="ow">and</span> <span class="n">layer</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_GW&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">include_flags</span> <span class="ow">and</span> <span class="n">layer</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_GW"</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;B\d</span><span class="si">{3}</span><span class="s2">(?:_GW)?&quot;</span> <span class="k">if</span> <span class="n">include_flags</span> <span class="k">else</span> <span class="sa">r</span><span class="s2">&quot;B\d</span><span class="si">{3}</span><span class="s2">&quot;</span>
+            <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"B\d</span><span class="si">{3}</span><span class="s2">(?:_GW)?"</span> <span class="k">if</span> <span class="n">include_flags</span> <span class="k">else</span> <span class="sa">r</span><span class="s2">"B\d</span><span class="si">{3}</span><span class="s2">"</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="n">record</span> <span class="o">=</span> <span class="n">_layer_record</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">record</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-        <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span>
+        <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">records</span>
 
@@ -3793,34 +3793,34 @@ AppEEARSClient        </code>
         <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">:</span>
             <span class="n">nearest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
                 <span class="n">records</span><span class="p">,</span>
-                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)),</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)),</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">nearest</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">used_layers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nearest</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">used_layers</span><span class="p">:</span>
                 <span class="n">selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nearest</span><span class="p">)</span>
-                <span class="n">used_layers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nearest</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">])</span>
+                <span class="n">used_layers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nearest</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">selected</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">projections</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;List AppEEARS output projections.</span>
+<span class="w">        </span><span class="sd">"""List AppEEARS output projections.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dictionary of AppEEARS projection metadata.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;spatial/proj&quot;</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"spatial/proj"</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">submit_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Submit an AppEEARS task.</span>
+<span class="w">        </span><span class="sd">"""Submit an AppEEARS task.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            task: AppEEARS task payload.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            AppEEARS task submission response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="s2">&quot;task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"post"</span><span class="p">,</span> <span class="s2">"task"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">tasks</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3828,7 +3828,7 @@ AppEEARSClient        </code>
         <span class="n">offset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">pretty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;List submitted AppEEARS tasks for the authenticated user.</span>
+<span class="w">        </span><span class="sd">"""List submitted AppEEARS tasks for the authenticated user.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            limit: Maximum number of tasks to return.</span>
@@ -3837,41 +3837,41 @@ AppEEARSClient        </code>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Task list response from AppEEARS.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pretty&quot;</span><span class="p">:</span> <span class="n">pretty</span><span class="p">}</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pretty"</span><span class="p">:</span> <span class="n">pretty</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">"limit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
         <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;task&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">"offset"</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"task"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an AppEEARS task.</span>
+<span class="w">        </span><span class="sd">"""Get an AppEEARS task.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            task_id: AppEEARS task identifier.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Task metadata response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;task/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"task/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an AppEEARS task status.</span>
+<span class="w">        </span><span class="sd">"""Get an AppEEARS task status.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            task_id: AppEEARS task identifier.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Task status response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;status/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"status/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">wait_for_task</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3880,7 +3880,7 @@ AppEEARSClient        </code>
         <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait for an AppEEARS task to finish.</span>
+<span class="w">        </span><span class="sd">"""Wait for an AppEEARS task to finish.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            task_id: AppEEARS task identifier.</span>
@@ -3890,75 +3890,75 @@ AppEEARSClient        </code>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Final task metadata response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">last_status</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
-            <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"status"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">last_status</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;done&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">"done"</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">response</span>
-            <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;failed&quot;</span><span class="p">}:</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">,</span> <span class="s2">"failed"</span><span class="p">}:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Timed out waiting for AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Timed out waiting for AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
             <span class="n">last_status</span> <span class="o">=</span> <span class="n">status</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get bundle metadata for a completed AppEEARS task.</span>
+<span class="w">        </span><span class="sd">"""Get bundle metadata for a completed AppEEARS task.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            task_id: AppEEARS task identifier.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Bundle metadata response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">download_bundle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+        <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">,</span>
         <span class="n">file_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">file_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download files from an AppEEARS task bundle.</span>
+<span class="w">        </span><span class="sd">"""Download files from an AppEEARS task bundle.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            task_id: AppEEARS task identifier.</span>
 <span class="sd">            out_dir: Output directory.</span>
 <span class="sd">            file_ids: Optional subset of AppEEARS file identifiers to download.</span>
-<span class="sd">            file_types: Optional file type filter, such as ``[&quot;tif&quot;, &quot;csv&quot;]``.</span>
+<span class="sd">            file_types: Optional file type filter, such as ``["tif", "csv"]``.</span>
 <span class="sd">            overwrite: Whether to overwrite existing files.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List of downloaded file paths.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">bundle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
         <span class="n">selected_file_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">file_ids</span><span class="p">)</span> <span class="k">if</span> <span class="n">file_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">selected_file_types</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">file_types</span><span class="p">)</span> <span class="k">if</span> <span class="n">file_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">bundle</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="n">file_id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;file_id&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">bundle</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"files"</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">file_id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">"file_id"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">selected_file_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">file_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_file_ids</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="n">selected_file_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_type&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_file_types</span>
+                <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"file_type"</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_file_types</span>
             <span class="p">):</span>
                 <span class="k">continue</span>
             <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
                 <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span>
                 <span class="n">file_id</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span>
-                <span class="n">file_name</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;file_name&quot;</span><span class="p">],</span>
+                <span class="n">file_name</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">"file_name"</span><span class="p">],</span>
                 <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
                 <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span>
             <span class="p">)</span>
@@ -3970,11 +3970,11 @@ AppEEARSClient        </code>
         <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">file_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+        <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">,</span>
         <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8192</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download one AppEEARS bundle file.</span>
+<span class="w">        </span><span class="sd">"""Download one AppEEARS bundle file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            task_id: AppEEARS task identifier.</span>
@@ -3986,30 +3986,30 @@ AppEEARSClient        </code>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Path to the downloaded file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
         <span class="n">out_path</span> <span class="o">=</span> <span class="n">_bundle_output_path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">out_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">out_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">out_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">out_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
                     <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">s3credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Request temporary S3 credentials from AppEEARS.</span>
+<span class="w">        </span><span class="sd">"""Request temporary S3 credentials from AppEEARS.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Temporary credential response from AppEEARS.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;s3credentials&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"s3credentials"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_request</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -4018,7 +4018,7 @@ AppEEARSClient        </code>
         <span class="n">auth_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a JSON request to AppEEARS.</span>
+<span class="w">        </span><span class="sd">"""Send a JSON request to AppEEARS.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            method: HTTP method name.</span>
@@ -4028,7 +4028,7 @@ AppEEARSClient        </code>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Decoded JSON response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="n">auth_header</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -4043,7 +4043,7 @@ AppEEARSClient        </code>
         <span class="n">auth_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a raw request to AppEEARS.</span>
+<span class="w">        </span><span class="sd">"""Send a raw request to AppEEARS.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            method: HTTP method name.</span>
@@ -4053,14 +4053,14 @@ AppEEARSClient        </code>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Requests response object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;headers&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"headers"</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">if</span> <span class="n">auth_header</span><span class="p">:</span>
             <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="o">**</span><span class="n">headers</span><span class="p">}</span>
-        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"timeout"</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_url</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"/"</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
@@ -4072,10 +4072,10 @@ AppEEARSClient        </code>
         <span class="k">return</span> <span class="n">response</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_require_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Raise an error when an authenticated request lacks a token.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Raise an error when an authenticated request lacks a token."""</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Call login() or provide a token before this request.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Call login() or provide a token before this request."</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -4181,17 +4181,17 @@ AppEEARSClient        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get bundle metadata for a completed AppEEARS task.</span>
+<span class="w">    </span><span class="sd">"""Get bundle metadata for a completed AppEEARS task.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Bundle metadata response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -4205,7 +4205,7 @@ AppEEARSClient        </code>
 
 
 <h3 id="hypercoast.appeears.AppEEARSClient.download_bundle" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">download_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">file_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">download_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">file_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.AppEEARSClient.download_bundle" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -4277,41 +4277,41 @@ AppEEARSClient        </code>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_bundle</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">,</span>
     <span class="n">file_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">file_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download files from an AppEEARS task bundle.</span>
+<span class="w">    </span><span class="sd">"""Download files from an AppEEARS task bundle.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
 <span class="sd">        out_dir: Output directory.</span>
 <span class="sd">        file_ids: Optional subset of AppEEARS file identifiers to download.</span>
-<span class="sd">        file_types: Optional file type filter, such as ``[&quot;tif&quot;, &quot;csv&quot;]``.</span>
+<span class="sd">        file_types: Optional file type filter, such as ``["tif", "csv"]``.</span>
 <span class="sd">        overwrite: Whether to overwrite existing files.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of downloaded file paths.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">bundle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bundle</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
     <span class="n">selected_file_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">file_ids</span><span class="p">)</span> <span class="k">if</span> <span class="n">file_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="n">selected_file_types</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">file_types</span><span class="p">)</span> <span class="k">if</span> <span class="n">file_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">bundle</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-        <span class="n">file_id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;file_id&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">bundle</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"files"</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="n">file_id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">"file_id"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">selected_file_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">file_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_file_ids</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">selected_file_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_type&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_file_types</span>
+            <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"file_type"</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_file_types</span>
         <span class="p">):</span>
             <span class="k">continue</span>
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
             <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span>
             <span class="n">file_id</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span>
-            <span class="n">file_name</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;file_name&quot;</span><span class="p">],</span>
+            <span class="n">file_name</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">"file_name"</span><span class="p">],</span>
             <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span>
             <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span>
         <span class="p">)</span>
@@ -4330,7 +4330,7 @@ AppEEARSClient        </code>
 
 
 <h3 id="hypercoast.appeears.AppEEARSClient.download_file" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_id</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">file_id</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.AppEEARSClient.download_file" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -4410,11 +4410,11 @@ AppEEARSClient        </code>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">file_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">,</span>
     <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8192</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download one AppEEARS bundle file.</span>
+<span class="w">    </span><span class="sd">"""Download one AppEEARS bundle file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
@@ -4426,16 +4426,16 @@ AppEEARSClient        </code>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Path to the downloaded file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
     <span class="n">out_path</span> <span class="o">=</span> <span class="n">_bundle_output_path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">out_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"bundle/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">out_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">out_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">out_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
                 <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
@@ -4499,16 +4499,16 @@ AppEEARSClient        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List layers for an AppEEARS product.</span>
+<span class="w">    </span><span class="sd">"""List layers for an AppEEARS product.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        product: Product and version string, such as ``&quot;EMIT_L2A_RFL.001&quot;``.</span>
+<span class="sd">        product: Product and version string, such as ``"EMIT_L2A_RFL.001"``.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Dictionary keyed by layer name.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;product/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"product/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -4587,7 +4587,7 @@ sent.</p></td>
     <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Authenticate with AppEEARS.</span>
+<span class="w">    </span><span class="sd">"""Authenticate with AppEEARS.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        username: NASA Earthdata username. If omitted, environment variables</span>
@@ -4598,22 +4598,22 @@ sent.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        AppEEARS login response containing the bearer token.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="n">token</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"token"</span><span class="p">:</span> <span class="n">token</span><span class="p">}</span>
 
     <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">username</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EARTHDATA_USERNAME&quot;</span><span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"EARTHDATA_USERNAME"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EARTHDATA_PASSWORD&quot;</span><span class="p">)</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"EARTHDATA_PASSWORD"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">netrc</span><span class="w"> </span><span class="kn">import</span> <span class="n">netrc</span>
 
-            <span class="n">auth</span> <span class="o">=</span> <span class="n">netrc</span><span class="p">()</span><span class="o">.</span><span class="n">authenticators</span><span class="p">(</span><span class="s2">&quot;urs.earthdata.nasa.gov&quot;</span><span class="p">)</span>
+            <span class="n">auth</span> <span class="o">=</span> <span class="n">netrc</span><span class="p">()</span><span class="o">.</span><span class="n">authenticators</span><span class="p">(</span><span class="s2">"urs.earthdata.nasa.gov"</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">):</span>
             <span class="n">auth</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">auth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -4622,14 +4622,14 @@ sent.</p></td>
 
     <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;username and password are required unless EARTHDATA_USERNAME &quot;</span>
-            <span class="s2">&quot;and EARTHDATA_PASSWORD or a netrc entry are available.&quot;</span>
+            <span class="s2">"username and password are required unless EARTHDATA_USERNAME "</span>
+            <span class="s2">"and EARTHDATA_PASSWORD or a netrc entry are available."</span>
         <span class="p">)</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span>
-        <span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">),</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span>
+        <span class="s2">"post"</span><span class="p">,</span> <span class="s2">"login"</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">),</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"token"</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">response</span>
 </code></pre></div>
         </details>
@@ -4707,18 +4707,18 @@ sent.</p></td>
     <span class="n">platform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">available</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List AppEEARS products.</span>
+<span class="w">    </span><span class="sd">"""List AppEEARS products.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        keyword: Case-insensitive search text matched against product fields.</span>
-<span class="sd">        platform: Platform name, such as ``&quot;EMIT&quot;``.</span>
+<span class="sd">        platform: Platform name, such as ``"EMIT"``.</span>
 <span class="sd">        available: If set, filter by the AppEEARS availability flag.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of product metadata dictionaries.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">products</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"product"</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">keyword</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span> <span class="k">if</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
@@ -4726,10 +4726,10 @@ sent.</p></td>
         <span class="n">products</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">p</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span>
-            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Platform&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">platform</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Platform"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">platform</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="p">]</span>
     <span class="k">if</span> <span class="n">available</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Available&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="n">available</span><span class="p">]</span>
+        <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Available"</span><span class="p">)</span> <span class="ow">is</span> <span class="n">available</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">products</span>
 </code></pre></div>
         </details>
@@ -4771,13 +4771,13 @@ sent.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">projections</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List AppEEARS output projections.</span>
+<span class="w">    </span><span class="sd">"""List AppEEARS output projections.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Dictionary of AppEEARS projection metadata.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;spatial/proj&quot;</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"spatial/proj"</span><span class="p">,</span> <span class="n">auth_header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -4818,14 +4818,14 @@ sent.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">s3credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Request temporary S3 credentials from AppEEARS.</span>
+<span class="w">    </span><span class="sd">"""Request temporary S3 credentials from AppEEARS.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Temporary credential response from AppEEARS.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;s3credentials&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"s3credentials"</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -4839,7 +4839,7 @@ sent.</p></td>
 
 
 <h3 id="hypercoast.appeears.AppEEARSClient.spectral_layers" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">spectral_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">&#39;EMIT_L2A_RFL.001&#39;</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_flags</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">spectral_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">'EMIT_L2A_RFL.001'</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_flags</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.AppEEARSClient.spectral_layers" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -4904,7 +4904,7 @@ units, description, and data type.</p></td>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">include_flags</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return spectral layer metadata, optionally nearest to wavelengths.</span>
+<span class="w">    </span><span class="sd">"""Return spectral layer metadata, optionally nearest to wavelengths.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        product: AppEEARS product and version.</span>
@@ -4915,20 +4915,20 @@ units, description, and data type.</p></td>
 <span class="sd">    Returns:</span>
 <span class="sd">        List of layer records containing product, layer, wavelength, fwhm,</span>
 <span class="sd">        units, description, and data type.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">layer</span><span class="p">,</span> <span class="n">metadata</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">product</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">include_flags</span> <span class="ow">and</span> <span class="n">layer</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_GW&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">include_flags</span> <span class="ow">and</span> <span class="n">layer</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_GW"</span><span class="p">):</span>
             <span class="k">continue</span>
-        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;B\d</span><span class="si">{3}</span><span class="s2">(?:_GW)?&quot;</span> <span class="k">if</span> <span class="n">include_flags</span> <span class="k">else</span> <span class="sa">r</span><span class="s2">&quot;B\d</span><span class="si">{3}</span><span class="s2">&quot;</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"B\d</span><span class="si">{3}</span><span class="s2">(?:_GW)?"</span> <span class="k">if</span> <span class="n">include_flags</span> <span class="k">else</span> <span class="sa">r</span><span class="s2">"B\d</span><span class="si">{3}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
             <span class="k">continue</span>
         <span class="n">record</span> <span class="o">=</span> <span class="n">_layer_record</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">record</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
-    <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span>
+    <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">records</span>
 
@@ -4937,11 +4937,11 @@ units, description, and data type.</p></td>
     <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">:</span>
         <span class="n">nearest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
             <span class="n">records</span><span class="p">,</span>
-            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)),</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)),</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">nearest</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">used_layers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nearest</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">used_layers</span><span class="p">:</span>
             <span class="n">selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nearest</span><span class="p">)</span>
-            <span class="n">used_layers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nearest</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">])</span>
+            <span class="n">used_layers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nearest</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">selected</span>
 </code></pre></div>
         </details>
@@ -5002,17 +5002,17 @@ units, description, and data type.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get an AppEEARS task status.</span>
+<span class="w">    </span><span class="sd">"""Get an AppEEARS task status.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Task status response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;status/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"status/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -5072,17 +5072,17 @@ units, description, and data type.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">submit_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Submit an AppEEARS task.</span>
+<span class="w">    </span><span class="sd">"""Submit an AppEEARS task.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task: AppEEARS task payload.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        AppEEARS task submission response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;post&quot;</span><span class="p">,</span> <span class="s2">&quot;task&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"post"</span><span class="p">,</span> <span class="s2">"task"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">task</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -5142,17 +5142,17 @@ units, description, and data type.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get an AppEEARS task.</span>
+<span class="w">    </span><span class="sd">"""Get an AppEEARS task.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Task metadata response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;task/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"task/</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -5229,7 +5229,7 @@ units, description, and data type.</p></td>
     <span class="n">offset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">pretty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List submitted AppEEARS tasks for the authenticated user.</span>
+<span class="w">    </span><span class="sd">"""List submitted AppEEARS tasks for the authenticated user.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        limit: Maximum number of tasks to return.</span>
@@ -5238,15 +5238,15 @@ units, description, and data type.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Task list response from AppEEARS.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_require_token</span><span class="p">()</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pretty&quot;</span><span class="p">:</span> <span class="n">pretty</span><span class="p">}</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pretty"</span><span class="p">:</span> <span class="n">pretty</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"limit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
     <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;task&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">"offset"</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="s2">"task"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -5330,7 +5330,7 @@ units, description, and data type.</p></td>
     <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait for an AppEEARS task to finish.</span>
+<span class="w">    </span><span class="sd">"""Wait for an AppEEARS task to finish.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
@@ -5340,21 +5340,21 @@ units, description, and data type.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Final task metadata response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">last_status</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
-        <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"status"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">last_status</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;done&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">"done"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">response</span>
-        <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;failed&quot;</span><span class="p">}:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">,</span> <span class="s2">"failed"</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Timed out waiting for AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Timed out waiting for AppEEARS task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
         <span class="n">last_status</span> <span class="o">=</span> <span class="n">status</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
 </code></pre></div>
@@ -5381,7 +5381,7 @@ units, description, and data type.</p></td>
 
 
 <h2 id="hypercoast.appeears.appeears_area_task" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">appeears_area_task</span><span class="p">(</span><span class="n">task_name</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;geographic&#39;</span><span class="p">,</span> <span class="n">recurring</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">year_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orthorectify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">additional_options</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">appeears_area_task</span><span class="p">(</span><span class="n">task_name</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">'geographic'</span><span class="p">,</span> <span class="n">recurring</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">year_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orthorectify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">additional_options</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.appeears_area_task" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5498,13 +5498,13 @@ omit it.</p></td>
     <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">output_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">projection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;geographic&quot;</span><span class="p">,</span>
+    <span class="n">projection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"geographic"</span><span class="p">,</span>
     <span class="n">recurring</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">year_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">orthorectify</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">additional_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build an AppEEARS area task payload.</span>
+<span class="w">    </span><span class="sd">"""Build an AppEEARS area task payload.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_name: AppEEARS task name.</span>
@@ -5513,9 +5513,9 @@ omit it.</p></td>
 <span class="sd">        layers: Task-ready AppEEARS layers.</span>
 <span class="sd">        start_date: Start date as ``YYYY-MM-DD`` or ``MM-DD-YYYY``.</span>
 <span class="sd">        end_date: End date as ``YYYY-MM-DD`` or ``MM-DD-YYYY``.</span>
-<span class="sd">        output_format: AppEEARS output format, such as ``&quot;geotiff&quot;`` or</span>
-<span class="sd">            ``&quot;netcdf4&quot;``. If None, EMIT tasks use ``&quot;netcdf4&quot;`` and other</span>
-<span class="sd">            tasks use ``&quot;geotiff&quot;``.</span>
+<span class="sd">        output_format: AppEEARS output format, such as ``"geotiff"`` or</span>
+<span class="sd">            ``"netcdf4"``. If None, EMIT tasks use ``"netcdf4"`` and other</span>
+<span class="sd">            tasks use ``"geotiff"``.</span>
 <span class="sd">        projection: AppEEARS output projection name.</span>
 <span class="sd">        recurring: Whether the task uses recurring dates.</span>
 <span class="sd">        year_range: Two-year range for recurring tasks.</span>
@@ -5526,21 +5526,21 @@ omit it.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        AppEEARS area task payload.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">has_emit</span> <span class="o">=</span> <span class="n">_has_emit_layers</span><span class="p">(</span><span class="n">layers</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">output_format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">output_format</span> <span class="o">=</span> <span class="s2">&quot;netcdf4&quot;</span> <span class="k">if</span> <span class="n">has_emit</span> <span class="k">else</span> <span class="s2">&quot;geotiff&quot;</span>
+        <span class="n">output_format</span> <span class="o">=</span> <span class="s2">"netcdf4"</span> <span class="k">if</span> <span class="n">has_emit</span> <span class="k">else</span> <span class="s2">"geotiff"</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">output_format</span><span class="p">},</span> <span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">projection</span><span class="p">}</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="n">output_format</span><span class="p">},</span> <span class="s2">"projection"</span><span class="p">:</span> <span class="n">projection</span><span class="p">}</span>
     <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">additional_options</span> <span class="ow">or</span> <span class="p">{})</span>
     <span class="k">if</span> <span class="n">orthorectify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">has_emit</span><span class="p">:</span>
-        <span class="n">options</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;orthorectify&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">orthorectify</span><span class="p">))</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"orthorectify"</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">orthorectify</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">options</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;additionalOptions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"additionalOptions"</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span>
 
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;dates&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"dates"</span><span class="p">:</span> <span class="p">[</span>
             <span class="n">_date_range</span><span class="p">(</span>
                 <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
                 <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
@@ -5548,11 +5548,11 @@ omit it.</p></td>
                 <span class="n">year_range</span><span class="o">=</span><span class="n">year_range</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">],</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">layers</span><span class="p">),</span>
-        <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
-        <span class="s2">&quot;geo&quot;</span><span class="p">:</span> <span class="n">_normalize_geojson</span><span class="p">(</span><span class="n">geometry</span><span class="p">),</span>
+        <span class="s2">"layers"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">layers</span><span class="p">),</span>
+        <span class="s2">"output"</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
+        <span class="s2">"geo"</span><span class="p">:</span> <span class="n">_normalize_geojson</span><span class="p">(</span><span class="n">geometry</span><span class="p">),</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;task_type&quot;</span><span class="p">:</span> <span class="s2">&quot;area&quot;</span><span class="p">,</span> <span class="s2">&quot;task_name&quot;</span><span class="p">:</span> <span class="n">task_name</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"task_type"</span><span class="p">:</span> <span class="s2">"area"</span><span class="p">,</span> <span class="s2">"task_name"</span><span class="p">:</span> <span class="n">task_name</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 </code></pre></div>
         </details>
     </div>
@@ -5566,7 +5566,7 @@ omit it.</p></td>
 
 
 <h2 id="hypercoast.appeears.appeears_download" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">appeears_download</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">appeears_download</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.appeears_download" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5637,23 +5637,23 @@ omit it.</p></td>
           <summary>Source code in <code>hypercoast/appeears.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">appeears_download</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">,</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AppEEARSClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">file_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download an AppEEARS task bundle.</span>
+<span class="w">    </span><span class="sd">"""Download an AppEEARS task bundle.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
 <span class="sd">        out_dir: Output directory.</span>
 <span class="sd">        client: Authenticated AppEEARS client.</span>
-<span class="sd">        file_types: Optional file type filter, such as ``[&quot;tif&quot;]``.</span>
+<span class="sd">        file_types: Optional file type filter, such as ``["tif"]``.</span>
 <span class="sd">        overwrite: Whether to overwrite existing files.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of downloaded file paths.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">appeears_login</span><span class="p">()</span>
@@ -5676,7 +5676,7 @@ omit it.</p></td>
 
 
 <h2 id="hypercoast.appeears.appeears_emit_layers" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">appeears_emit_layers</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">&#39;EMIT_L2A_RFL.001&#39;</span><span class="p">,</span> <span class="n">include_flags</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">appeears_emit_layers</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">'EMIT_L2A_RFL.001'</span><span class="p">,</span> <span class="n">include_flags</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.appeears_emit_layers" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5755,7 +5755,7 @@ are returned.</p></td>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AppEEARSClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select EMIT AppEEARS layers by wavelength.</span>
+<span class="w">    </span><span class="sd">"""Select EMIT AppEEARS layers by wavelength.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        wavelengths: Target wavelengths in nanometers. If omitted, all spectral</span>
@@ -5763,13 +5763,13 @@ are returned.</p></td>
 <span class="sd">        product: EMIT product and version.</span>
 <span class="sd">        include_flags: Whether to include good wavelength flag layers.</span>
 <span class="sd">        return_metadata: Whether to return wavelength metadata. If False,</span>
-<span class="sd">            task-ready ``{&quot;product&quot;: product, &quot;layer&quot;: layer}`` dictionaries</span>
+<span class="sd">            task-ready ``{"product": product, "layer": layer}`` dictionaries</span>
 <span class="sd">            are returned.</span>
 <span class="sd">        client: Optional AppEEARS client.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Selected EMIT layer records or task-ready layer dictionaries.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">AppEEARSClient</span><span class="p">()</span>
     <span class="n">layers</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">spectral_layers</span><span class="p">(</span>
@@ -5777,7 +5777,7 @@ are returned.</p></td>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">layers</span>
-    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">],</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[{</span><span class="s2">"product"</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">"product"</span><span class="p">],</span> <span class="s2">"layer"</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">"layer"</span><span class="p">]}</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">]</span>
 </code></pre></div>
         </details>
     </div>
@@ -5846,7 +5846,7 @@ are returned.</p></td>
     <span class="n">product</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AppEEARSClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List AppEEARS layers for a product.</span>
+<span class="w">    </span><span class="sd">"""List AppEEARS layers for a product.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        product: Product and version string.</span>
@@ -5854,7 +5854,7 @@ are returned.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Dictionary keyed by layer name.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">AppEEARSClient</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
@@ -5871,7 +5871,7 @@ are returned.</p></td>
 
 
 <h2 id="hypercoast.appeears.appeears_login" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">appeears_login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_url</span><span class="o">=</span><span class="s1">&#39;https://appeears.earthdatacloud.nasa.gov/api/&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">appeears_login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_url</span><span class="o">=</span><span class="s1">'https://appeears.earthdatacloud.nasa.gov/api/'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.appeears_login" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5940,7 +5940,7 @@ are returned.</p></td>
     <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">api_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">APPEEARS_API_URL</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AppEEARSClient</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create and authenticate an AppEEARS client.</span>
+<span class="w">    </span><span class="sd">"""Create and authenticate an AppEEARS client.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        username: NASA Earthdata username.</span>
@@ -5950,7 +5950,7 @@ are returned.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Authenticated AppEEARS client.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">AppEEARSClient</span><span class="p">(</span><span class="n">api_url</span><span class="o">=</span><span class="n">api_url</span><span class="p">)</span>
     <span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
@@ -6059,7 +6059,7 @@ dictionaries containing longitude and latitude.</p></td>
     <span class="n">recurring</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">year_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build an AppEEARS point task payload.</span>
+<span class="w">    </span><span class="sd">"""Build an AppEEARS point task payload.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_name: AppEEARS task name.</span>
@@ -6073,10 +6073,10 @@ dictionaries containing longitude and latitude.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        AppEEARS point task payload.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;dates&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"dates"</span><span class="p">:</span> <span class="p">[</span>
             <span class="n">_date_range</span><span class="p">(</span>
                 <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
                 <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
@@ -6084,10 +6084,10 @@ dictionaries containing longitude and latitude.</p></td>
                 <span class="n">year_range</span><span class="o">=</span><span class="n">year_range</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">],</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">layers</span><span class="p">),</span>
-        <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="n">_normalize_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span>
+        <span class="s2">"layers"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">layers</span><span class="p">),</span>
+        <span class="s2">"coordinates"</span><span class="p">:</span> <span class="n">_normalize_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;task_type&quot;</span><span class="p">:</span> <span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;task_name&quot;</span><span class="p">:</span> <span class="n">task_name</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"task_type"</span><span class="p">:</span> <span class="s2">"point"</span><span class="p">,</span> <span class="s2">"task_name"</span><span class="p">:</span> <span class="n">task_name</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 </code></pre></div>
         </details>
     </div>
@@ -6170,17 +6170,17 @@ dictionaries containing longitude and latitude.</p></td>
     <span class="n">available</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AppEEARSClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List AppEEARS products.</span>
+<span class="w">    </span><span class="sd">"""List AppEEARS products.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        keyword: Case-insensitive search text matched against product fields.</span>
-<span class="sd">        platform: Platform name, such as ``&quot;EMIT&quot;``.</span>
+<span class="sd">        platform: Platform name, such as ``"EMIT"``.</span>
 <span class="sd">        available: If set, filter by the AppEEARS availability flag.</span>
 <span class="sd">        client: Optional AppEEARS client.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of product metadata dictionaries.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">AppEEARSClient</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">products</span><span class="p">(</span><span class="n">keyword</span><span class="o">=</span><span class="n">keyword</span><span class="p">,</span> <span class="n">platform</span><span class="o">=</span><span class="n">platform</span><span class="p">,</span> <span class="n">available</span><span class="o">=</span><span class="n">available</span><span class="p">)</span>
@@ -6252,7 +6252,7 @@ dictionaries containing longitude and latitude.</p></td>
     <span class="n">task</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AppEEARSClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Submit an AppEEARS task.</span>
+<span class="w">    </span><span class="sd">"""Submit an AppEEARS task.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task: AppEEARS task payload.</span>
@@ -6260,7 +6260,7 @@ dictionaries containing longitude and latitude.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        AppEEARS task submission response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">appeears_login</span><span class="p">()</span>
@@ -6354,7 +6354,7 @@ dictionaries containing longitude and latitude.</p></td>
     <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait for an AppEEARS task to finish.</span>
+<span class="w">    </span><span class="sd">"""Wait for an AppEEARS task to finish.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        task_id: AppEEARS task identifier.</span>
@@ -6365,7 +6365,7 @@ dictionaries containing longitude and latitude.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Final task metadata response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">appeears_login</span><span class="p">()</span>
@@ -6385,7 +6385,7 @@ dictionaries containing longitude and latitude.</p></td>
 
 
 <h2 id="hypercoast.appeears.read_appeears" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_appeears</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">&#39;EMIT_L2A_RFL.001&#39;</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_appeears</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="s1">'EMIT_L2A_RFL.001'</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="s1">'reflectance'</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.appeears.read_appeears" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -6467,11 +6467,11 @@ are omitted.</p></td>
     <span class="n">files</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]],</span>
     <span class="n">layers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">product</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">EMIT_REFLECTANCE_PRODUCT</span><span class="p">,</span>
-    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"reflectance"</span><span class="p">,</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AppEEARSClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read AppEEARS raster output as an xarray hyperspectral cube.</span>
+<span class="w">    </span><span class="sd">"""Read AppEEARS raster output as an xarray hyperspectral cube.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        files: GeoTIFF or NetCDF path, directory, or sequence of paths.</span>
@@ -6486,14 +6486,14 @@ are omitted.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.Dataset containing the stacked raster data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">paths</span> <span class="o">=</span> <span class="n">_coerce_paths</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">layers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">AppEEARSClient</span><span class="p">()</span>
         <span class="n">layers</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_by_layer</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">layers</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">paths</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;.nc&quot;</span><span class="p">,</span> <span class="s2">&quot;.nc4&quot;</span><span class="p">}</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">paths</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">".nc"</span><span class="p">,</span> <span class="s2">".nc4"</span><span class="p">}</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_read_appeears_netcdf</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span>
@@ -6507,18 +6507,18 @@ are omitted.</p></td>
         <span class="k">if</span> <span class="n">layer_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">layer_info</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
-        <span class="n">wavelength</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">layer_info</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">layer_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;wavelength&quot;</span><span class="p">)</span>
+        <span class="n">wavelength</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">layer_info</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">layer_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"wavelength"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">wavelength</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">masked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;band&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">dims</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">sizes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"band"</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">dims</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">sizes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"band"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="s2">"band"</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="n">wavelengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="p">))</span>
         <span class="n">band_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">arrays</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No AppEEARS spectral GeoTIFF files could be read.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No AppEEARS spectral GeoTIFF files could be read."</span><span class="p">)</span>
 
     <span class="n">order</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">index</span><span class="p">:</span> <span class="n">wavelengths</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
     <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">arrays</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
@@ -6526,12 +6526,12 @@ are omitted.</p></td>
     <span class="n">band_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">band_names</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
         <span class="n">arrays</span><span class="p">,</span>
-        <span class="n">dim</span><span class="o">=</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;wavelength&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;wavelength&quot;</span><span class="p">),</span>
+        <span class="n">dim</span><span class="o">=</span><span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">variable</span><span class="p">)</span>
-    <span class="n">dataset</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;band_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">band_names</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NASA AppEEARS&quot;</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span>
+    <span class="n">dataset</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"band_names"</span><span class="p">]</span> <span class="o">=</span> <span class="n">band_names</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"NASA AppEEARS"</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"product"</span><span class="p">]</span> <span class="o">=</span> <span class="n">product</span>
     <span class="k">return</span> <span class="n">dataset</span>
 </code></pre></div>
         </details>
@@ -6641,15 +6641,122 @@ are omitted.</p></td>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

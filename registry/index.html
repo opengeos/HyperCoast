@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3396,7 +3396,7 @@ SensorHandler        </code>
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SensorHandler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Describe a HyperCoast sensor workflow.</span>
+<span class="w">    </span><span class="sd">"""Describe a HyperCoast sensor workflow.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        name: Canonical sensor name.</span>
@@ -3414,7 +3414,7 @@ SensorHandler        </code>
 <span class="sd">        qgis_name: Optional QGIS display key.</span>
 <span class="sd">        sample_data: Optional sample dataset metadata.</span>
 <span class="sd">        description: Short human-readable description.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">read</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -3425,28 +3425,28 @@ SensorHandler        </code>
     <span class="n">aliases</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">extensions</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">default_rgb</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
-    <span class="n">default_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">default_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">qgis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">qgis_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">qgis_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">sample_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
-    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return serializable sensor metadata.</span>
+<span class="w">        </span><span class="sd">"""Return serializable sensor metadata.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Sensor metadata excluding function objects.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="s2">&quot;to_image&quot;</span><span class="p">,</span> <span class="s2">&quot;extract&quot;</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"read"</span><span class="p">,</span> <span class="s2">"to_image"</span><span class="p">,</span> <span class="s2">"extract"</span><span class="p">,</span> <span class="s2">"search"</span><span class="p">,</span> <span class="s2">"download"</span><span class="p">):</span>
             <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_reader&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_image_converter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_extractor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_search&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_download&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;qgis_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qgis_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"has_reader"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"has_image_converter"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"has_extractor"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"has_search"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"has_download"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"qgis_name"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qgis_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="n">data</span>
 </code></pre></div>
         </details>
@@ -3516,20 +3516,20 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return serializable sensor metadata.</span>
+<span class="w">    </span><span class="sd">"""Return serializable sensor metadata.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Sensor metadata excluding function objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="s2">&quot;to_image&quot;</span><span class="p">,</span> <span class="s2">&quot;extract&quot;</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"read"</span><span class="p">,</span> <span class="s2">"to_image"</span><span class="p">,</span> <span class="s2">"extract"</span><span class="p">,</span> <span class="s2">"search"</span><span class="p">,</span> <span class="s2">"download"</span><span class="p">):</span>
         <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_reader&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_image_converter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_extractor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_search&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;has_download&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;qgis_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qgis_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">"has_reader"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">"has_image_converter"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">"has_extractor"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">"has_search"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">"has_download"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">"qgis_name"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qgis_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
     <span class="k">return</span> <span class="n">data</span>
 </code></pre></div>
         </details>
@@ -3628,7 +3628,7 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">download_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download remote data using the registered download function.</span>
+<span class="w">    </span><span class="sd">"""Download remote data using the registered download function.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sensor: Sensor name or alias.</span>
@@ -3640,11 +3640,11 @@ SensorHandler        </code>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the sensor has no registered download function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">download</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered download function.&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered download function."</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
@@ -3751,7 +3751,7 @@ SensorHandler        </code>
     <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a point spectrum using the registered extractor.</span>
+<span class="w">    </span><span class="sd">"""Extract a point spectrum using the registered extractor.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sensor: Sensor name or alias.</span>
@@ -3765,10 +3765,10 @@ SensorHandler        </code>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the sensor has no registered extractor.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">extract</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered extractor.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered extractor."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">read_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -3846,7 +3846,7 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_sensor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SensorHandler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the handler for a sensor name or alias.</span>
+<span class="w">    </span><span class="sd">"""Return the handler for a sensor name or alias.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        name: Sensor name or alias.</span>
@@ -3856,11 +3856,11 @@ SensorHandler        </code>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        KeyError: If the sensor is not registered.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">_normalize_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_ALIASES</span><span class="p">:</span>
-        <span class="n">available</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_sensors</span><span class="p">())</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported sensor &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;. Available sensors: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_sensors</span><span class="p">())</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported sensor '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">'. Available sensors: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">SENSOR_REGISTRY</span><span class="p">[</span><span class="n">_ALIASES</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
 </code></pre></div>
         </details>
@@ -3902,11 +3902,11 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list_sensors</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return registered sensor names.</span>
+<span class="w">    </span><span class="sd">"""Return registered sensor names.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list[str]: Sorted canonical sensor names.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">SENSOR_REGISTRY</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3967,31 +3967,31 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">qgis_data_types</span><span class="p">(</span><span class="n">include_generic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return QGIS data-type metadata derived from the registry.</span>
+<span class="w">    </span><span class="sd">"""Return QGIS data-type metadata derived from the registry.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        include_generic: Whether to include the generic fallback type.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Mapping compatible with the QGIS plugin ``DATA_TYPES`` table.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">data_types</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">SENSOR_REGISTRY</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">handler</span><span class="o">.</span><span class="n">qgis</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">qgis_name</span> <span class="ow">or</span> <span class="n">handler</span><span class="o">.</span><span class="n">name</span>
         <span class="n">data_types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">extensions</span><span class="p">),</span>
-            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">handler</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-            <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="n">handler</span><span class="o">.</span><span class="n">default_variable</span> <span class="ow">or</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;default_rgb&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">default_rgb</span><span class="p">),</span>
+            <span class="s2">"extensions"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">extensions</span><span class="p">),</span>
+            <span class="s2">"description"</span><span class="p">:</span> <span class="n">handler</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s2">"variable"</span><span class="p">:</span> <span class="n">handler</span><span class="o">.</span><span class="n">default_variable</span> <span class="ow">or</span> <span class="s2">"data"</span><span class="p">,</span>
+            <span class="s2">"default_rgb"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">default_rgb</span><span class="p">),</span>
         <span class="p">}</span>
     <span class="k">if</span> <span class="n">include_generic</span><span class="p">:</span>
-        <span class="n">data_types</span><span class="p">[</span><span class="s2">&quot;Generic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;.tiff&quot;</span><span class="p">,</span> <span class="s2">&quot;.nc&quot;</span><span class="p">,</span> <span class="s2">&quot;.nc4&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Generic Hyperspectral (GeoTIFF/NetCDF)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;default_rgb&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">450</span><span class="p">],</span>
+        <span class="n">data_types</span><span class="p">[</span><span class="s2">"Generic"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"extensions"</span><span class="p">:</span> <span class="p">[</span><span class="s2">".tif"</span><span class="p">,</span> <span class="s2">".tiff"</span><span class="p">,</span> <span class="s2">".nc"</span><span class="p">,</span> <span class="s2">".nc4"</span><span class="p">],</span>
+            <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Generic Hyperspectral (GeoTIFF/NetCDF)"</span><span class="p">,</span>
+            <span class="s2">"variable"</span><span class="p">:</span> <span class="s2">"data"</span><span class="p">,</span>
+            <span class="s2">"default_rgb"</span><span class="p">:</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">450</span><span class="p">],</span>
         <span class="p">}</span>
     <span class="k">return</span> <span class="n">data_types</span>
 </code></pre></div>
@@ -4080,7 +4080,7 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read sensor data using the registered reader.</span>
+<span class="w">    </span><span class="sd">"""Read sensor data using the registered reader.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sensor: Sensor name or alias.</span>
@@ -4092,10 +4092,10 @@ SensorHandler        </code>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the sensor has no registered reader.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">read</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered reader.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered reader."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -4156,14 +4156,14 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_sensor</span><span class="p">(</span><span class="n">handler</span><span class="p">:</span> <span class="n">SensorHandler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SensorHandler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a sensor handler.</span>
+<span class="w">    </span><span class="sd">"""Register a sensor handler.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        handler: The sensor handler to register.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        SensorHandler: The registered handler.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">_normalize_name</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="n">SENSOR_REGISTRY</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">handler</span>
     <span class="n">_ALIASES</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
@@ -4210,11 +4210,11 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">registry_as_dict</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return serializable metadata for all registered sensors.</span>
+<span class="w">    </span><span class="sd">"""Return serializable metadata for all registered sensors.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Mapping of sensor names to metadata dictionaries.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">SENSOR_REGISTRY</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">list_sensors</span><span class="p">()}</span>
 </code></pre></div>
         </details>
@@ -4296,7 +4296,7 @@ SensorHandler        </code>
         <details class="quote">
           <summary>Source code in <code>hypercoast/registry.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search remote data using the registered search function.</span>
+<span class="w">    </span><span class="sd">"""Search remote data using the registered search function.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sensor: Sensor name or alias.</span>
@@ -4307,10 +4307,10 @@ SensorHandler        </code>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the sensor has no registered search function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">search</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered search function.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered search function."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -4409,7 +4409,7 @@ SensorHandler        </code>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sensor data to an image using the registered converter.</span>
+<span class="w">    </span><span class="sd">"""Convert sensor data to an image using the registered converter.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sensor: Sensor name or alias.</span>
@@ -4422,10 +4422,10 @@ SensorHandler        </code>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the sensor has no registered image converter.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">get_sensor</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">to_image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered image converter.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">handler</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no registered image converter."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -4535,15 +4535,122 @@ SensorHandler        </code>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

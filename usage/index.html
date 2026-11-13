@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3192,15 +3192,15 @@ search for all datasets with the instrument "oci":</p>
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_datasets</span><span class="p">(</span><span class="n">instrument</span><span class="o">=</span><span class="s2">&quot;oci&quot;</span><span class="p">)</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_datasets</span><span class="p">(</span><span class="n">instrument</span><span class="o">=</span><span class="s2">"oci"</span><span class="p">)</span>
 <span class="n">datasets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
     <span class="n">summary</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-    <span class="n">short_name</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;short-name&quot;</span><span class="p">]</span>
+    <span class="n">short_name</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">"short-name"</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">short_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">short_name</span><span class="p">)</span>
     <span class="n">datasets</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">short_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span><span class="si">}</span><span class="s2"> unique datasets&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span><span class="si">}</span><span class="s2"> unique datasets"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="search-for-data-by-short-name">Search for data by short name<a class="headerlink" href="#search-for-data-by-short-name" title="Permanent link">&para;</a></h2>
 <p>Next, we use the <code>search_nasa_data</code> function to find granules within a collection.
@@ -3210,7 +3210,7 @@ and biogeochemical properties.</p>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_nasa_data</span><span class="p">(</span>
-    <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_BGC_NRT&quot;</span><span class="p">,</span>
+    <span class="n">short_name</span><span class="o">=</span><span class="s2">"PACE_OCI_L2_BGC_NRT"</span><span class="p">,</span>
     <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3230,12 +3230,12 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">tspan</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;2024-04-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-04-16&quot;</span><span class="p">)</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">tspan</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"2024-04-01"</span><span class="p">,</span> <span class="s2">"2024-04-16"</span><span class="p">)</span>
 <span class="n">bbox</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">76.75</span><span class="p">,</span> <span class="mf">36.97</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.74</span><span class="p">,</span> <span class="mf">39.01</span><span class="p">)</span>
 <span class="n">clouds</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 
 <span class="n">results</span><span class="p">,</span> <span class="n">gdf</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_nasa_data</span><span class="p">(</span>
-    <span class="n">short_name</span><span class="o">=</span><span class="s2">&quot;PACE_OCI_L2_BGC_NRT&quot;</span><span class="p">,</span>
+    <span class="n">short_name</span><span class="o">=</span><span class="s2">"PACE_OCI_L2_BGC_NRT"</span><span class="p">,</span>
     <span class="n">temporal</span><span class="o">=</span><span class="n">tspan</span><span class="p">,</span>
     <span class="n">bounding_box</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span>
     <span class="n">cloud_cover</span><span class="o">=</span><span class="n">clouds</span><span class="p">,</span>
@@ -3246,7 +3246,7 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">explore</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
 <p>We can also download all the results with one command.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">download_nasa_data</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">download_nasa_data</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="search-for-pace-data">Search for PACE data<a class="headerlink" href="#search-for-pace-data" title="Permanent link">&para;</a></h2>
 <p>To search for PACE data, we can use the <code>search_pace</code> function:</p>
@@ -3257,13 +3257,13 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">results</span><span class="p">,</span> <span class="n">gdf</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_pace</span><span class="p">(</span>
     <span class="n">bounding_box</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">83</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
-    <span class="n">temporal</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2024-05-10&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-05-16&quot;</span><span class="p">),</span>
+    <span class="n">temporal</span><span class="o">=</span><span class="p">(</span><span class="s2">"2024-05-10"</span><span class="p">,</span> <span class="s2">"2024-05-16"</span><span class="p">),</span>
     <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># use -1 to return all datasets</span>
     <span class="n">return_gdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>To download the PACE data, we can use the <code>download_pace</code> function:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">download_pace</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">download_pace</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="search-for-emit-data">Search for EMIT data<a class="headerlink" href="#search-for-emit-data" title="Permanent link">&para;</a></h2>
 <p>To search for EMIT data, we can use the <code>search_emit</code> function:</p>
@@ -3274,20 +3274,20 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">results</span><span class="p">,</span> <span class="n">gdf</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">search_emit</span><span class="p">(</span>
     <span class="n">bounding_box</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">83</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
-    <span class="n">temporal</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2024-04-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-05-16&quot;</span><span class="p">),</span>
+    <span class="n">temporal</span><span class="o">=</span><span class="p">(</span><span class="s2">"2024-04-01"</span><span class="p">,</span> <span class="s2">"2024-05-16"</span><span class="p">),</span>
     <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># use -1 to return all datasets</span>
     <span class="n">return_gdf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>To download the EMIT data, we can use the <code>download_emit</code> function:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">download_emit</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">download_emit</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="visualize-pace-data">Visualize PACE data<a class="headerlink" href="#visualize-pace-data" title="Permanent link">&para;</a></h2>
 <p>Load the dataset as a <code>xarray.Dataset</code> object:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">dataset</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_pace</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>Visualize selected bands of the dataset:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">viz_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">510</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="mi">530</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">viz_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">510</span><span class="p">,</span> <span class="mi">520</span><span class="p">,</span> <span class="mi">530</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s2">"default"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>Visualize the dataset on an interactive map:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
@@ -3297,11 +3297,11 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">m</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="s2">&quot;Hybrid&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="s2">"Hybrid"</span><span class="p">)</span>
 <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">450</span><span class="p">]</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;PACE&quot;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add_colormap</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Reflectance&quot;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;spectral&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_pace</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s2">"PACE"</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_colormap</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Reflectance"</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"spectral"</span><span class="p">)</span>
 <span class="n">m</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="visualize-emit-data">Visualize EMIT data<a class="headerlink" href="#visualize-emit-data" title="Permanent link">&para;</a></h2>
@@ -3314,9 +3314,9 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">m</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="s2">&quot;SATELLITE&quot;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add_emit</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;EMIT&quot;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;spectral&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="s2">"SATELLITE"</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_emit</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">layer_name</span><span class="o">=</span><span class="s2">"EMIT"</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"spectral"</span><span class="p">)</span>
 <span class="n">m</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="create-an-image-cube">Create an image cube<a class="headerlink" href="#create-an-image-cube" title="Permanent link">&para;</a></h2>
@@ -3337,12 +3337,12 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal"> 9</span>
 <span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">cube</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">image_cube</span><span class="p">(</span>
     <span class="n">ds</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">variable</span><span class="o">=</span><span class="s2">"reflectance"</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span>
     <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
     <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span>
     <span class="n">rgb_gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;EMIT Reflectance&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"EMIT Reflectance"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">cube</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -3366,15 +3366,15 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal">11</span>
 <span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">image_cube</span><span class="p">(</span>
     <span class="n">ds</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">variable</span><span class="o">=</span><span class="s2">"reflectance"</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span>
     <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
     <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span>
     <span class="n">rgb_gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;EMIT Reflectance&quot;</span><span class="p">,</span>
-    <span class="n">widget</span><span class="o">=</span><span class="s2">&quot;plane&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"EMIT Reflectance"</span><span class="p">,</span>
+    <span class="n">widget</span><span class="o">=</span><span class="s2">"plane"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s2">&quot;Band slicing&quot;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;upper_right&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s2">"Band slicing"</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"upper_right"</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
 <p>Interactive thresholding:</p>
@@ -3391,28 +3391,28 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal">11</span>
 <span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">image_cube</span><span class="p">(</span>
     <span class="n">ds</span><span class="p">,</span>
-    <span class="n">variable</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">variable</span><span class="o">=</span><span class="s2">"reflectance"</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span>
     <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
     <span class="n">rgb_wavelengths</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span>
     <span class="n">rgb_gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;EMIT Reflectance&quot;</span><span class="p">,</span>
-    <span class="n">widget</span><span class="o">=</span><span class="s2">&quot;threshold&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"EMIT Reflectance"</span><span class="p">,</span>
+    <span class="n">widget</span><span class="o">=</span><span class="s2">"threshold"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s2">&quot;Thresholding&quot;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;upper_right&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s2">"Thresholding"</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"upper_right"</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="visualizing-pace-chlorophyll-a-concentration-data">Visualizing PACE chlorophyll-a concentration data<a class="headerlink" href="#visualizing-pace-chlorophyll-a-concentration-data" title="Permanent link">&para;</a></h2>
 <p>Load all the data files in a directory as an <code>xarray.DataArray</code>:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">files</span> <span class="o">=</span> <span class="s2">&quot;data/*nc&quot;</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">files</span> <span class="o">=</span> <span class="s2">"data/*nc"</span>
 <span class="n">array</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">read_pace_chla</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>Select a date and visualize the chlorophyll-a concentration data with Matplotlib.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">viz_pace_chla</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s2">&quot;2024-06-01&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">viz_pace_chla</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s2">"2024-06-01"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>If the date is not specified, the data are averaged over the entire time range.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">viz_pace_chla</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">hypercoast</span><span class="o">.</span><span class="n">viz_pace_chla</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>Convert the data array to an image that can be displayed on an interactive map.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">single_image</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">pace_chla_to_image</span><span class="p">(</span><span class="n">single_array</span><span class="p">)</span>
@@ -3431,17 +3431,17 @@ count, so we'll get all granules that satisfy the constraints.</p>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">m</span> <span class="o">=</span> <span class="n">hypercoast</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">],</span> <span class="n">zoom</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="s2">&quot;Hybrid&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="s2">"Hybrid"</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">add_raster</span><span class="p">(</span>
     <span class="n">single_image</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">layer_name</span><span class="o">=</span><span class="s2">&quot;Chlorophyll a&quot;</span><span class="p">,</span>
+    <span class="n">layer_name</span><span class="o">=</span><span class="s2">"Chlorophyll a"</span><span class="p">,</span>
     <span class="n">zoom_to_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Chlorophyll Concentration [lg(lg(mg m^-3))]&quot;</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add_colormap</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+<span class="n">label</span> <span class="o">=</span> <span class="s2">"Chlorophyll Concentration [lg(lg(mg m^-3))]"</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add_colormap</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"jet"</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 <span class="n">m</span>
 </code></pre></div></td></tr></table></div>
 
@@ -3536,15 +3536,122 @@ count, so we'll get all granules that satisfy the constraints.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

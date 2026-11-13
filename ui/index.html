@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3137,7 +3137,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <details class="quote">
           <summary>Source code in <code>hypercoast/ui.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SpectralWidget</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">HBox</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    A widget for spectral data visualization on a map.</span>
 
 <span class="sd">    Attributes:</span>
@@ -3148,31 +3148,31 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 <span class="sd">        _on_map_interaction (function): Function to handle map interactions.</span>
 <span class="sd">        _spectral_widget (SpectralWidget): The spectral widget itself.</span>
 <span class="sd">        _spectral_control (ipyleaflet.WidgetControl): The control for the spectral widget.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"topright"</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Initializes a new instance of the SpectralWidget class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            host_map (Map): The map to host the widget.</span>
 <span class="sd">            stack (bool, optional): Whether to stack the plots. Defaults to True.</span>
-<span class="sd">            position (str, optional): The position of the widget on the map. Defaults to &quot;topright&quot;.</span>
+<span class="sd">            position (str, optional): The position of the widget on the map. Defaults to "topright".</span>
 <span class="sd">            xlim (tuple, optional): The x-axis limits. Defaults to None.</span>
 <span class="sd">            ylim (tuple, optional): The y-axis limits. Defaults to None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span> <span class="o">=</span> <span class="n">host_map</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_close</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="n">stack</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_plot</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="n">fig_margin</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
+        <span class="n">fig_margin</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"top"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"bottom"</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="s2">"left"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span>
             <span class="c1"># title=None,</span>
             <span class="n">fig_margin</span><span class="o">=</span><span class="n">fig_margin</span><span class="p">,</span>
-            <span class="n">layout</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;500px&quot;</span><span class="p">,</span> <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;300px&quot;</span><span class="p">},</span>
+            <span class="n">layout</span><span class="o">=</span><span class="p">{</span><span class="s2">"width"</span><span class="p">:</span> <span class="s2">"500px"</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">:</span> <span class="s2">"300px"</span><span class="p">},</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
@@ -3180,52 +3180,52 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
         <span class="n">layer_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">layers_widget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">layer_names</span><span class="p">)</span>
-        <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;18ex&quot;</span>
+        <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">"18ex"</span>
 
         <span class="n">close_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;times&quot;</span><span class="p">,</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Close the widget&quot;</span><span class="p">,</span>
-            <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+            <span class="n">icon</span><span class="o">=</span><span class="s2">"times"</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Close the widget"</span><span class="p">,</span>
+            <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="n">reset_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;trash&quot;</span><span class="p">,</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Remove all markers&quot;</span><span class="p">,</span>
-            <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+            <span class="n">icon</span><span class="o">=</span><span class="s2">"trash"</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Remove all markers"</span><span class="p">,</span>
+            <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="n">settings_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;gear&quot;</span><span class="p">,</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Change layer settings&quot;</span><span class="p">,</span>
-            <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+            <span class="n">icon</span><span class="o">=</span><span class="s2">"gear"</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Change layer settings"</span><span class="p">,</span>
+            <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="n">stack_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">ToggleButton</span><span class="p">(</span>
             <span class="n">value</span><span class="o">=</span><span class="n">stack</span><span class="p">,</span>
-            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;area-chart&quot;</span><span class="p">,</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Stack spectral signatures&quot;</span><span class="p">,</span>
-            <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+            <span class="n">icon</span><span class="o">=</span><span class="s2">"area-chart"</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Stack spectral signatures"</span><span class="p">,</span>
+            <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_add_layer_editor</span><span class="p">(</span>
-                <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span>
+                <span class="n">position</span><span class="o">=</span><span class="s2">"topright"</span><span class="p">,</span>
                 <span class="n">layer_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span><span class="p">],</span>
             <span class="p">)</span>
 
         <span class="n">settings_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">settings_btn_click</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_plot_marker_cluster"</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
 
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
@@ -3235,10 +3235,10 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="n">reset_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">reset_btn_click</span><span class="p">)</span>
 
         <span class="n">save_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;floppy-o&quot;</span><span class="p">,</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Save the data to a CSV&quot;</span><span class="p">,</span>
-            <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+            <span class="n">icon</span><span class="o">=</span><span class="s2">"floppy-o"</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Save the data to a CSV"</span><span class="p">,</span>
+            <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+            <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">chooser_callback</span><span class="p">(</span><span class="n">chooser</span><span class="p">):</span>
@@ -3246,32 +3246,32 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                 <span class="n">file_path</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">selected</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">spectral_to_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_file_chooser_control&quot;</span><span class="p">)</span>
+                    <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_file_chooser_control"</span><span class="p">)</span>
                     <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser_control</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">controls</span>
                 <span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">remove_control</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser_control</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">save_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
                 <span class="k">return</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
             <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">FileChooser</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;454px&quot;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"454px"</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">file_chooser</span><span class="o">.</span><span class="n">filter_pattern</span> <span class="o">=</span> <span class="s2">&quot;*.csv&quot;</span>
+            <span class="n">file_chooser</span><span class="o">.</span><span class="n">filter_pattern</span> <span class="o">=</span> <span class="s2">"*.csv"</span>
             <span class="n">file_chooser</span><span class="o">.</span><span class="n">use_dir_icons</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">file_chooser</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Save spectral data to a CSV file&quot;</span>
-            <span class="n">file_chooser</span><span class="o">.</span><span class="n">default_filename</span> <span class="o">=</span> <span class="s2">&quot;spectral_data.csv&quot;</span>
+            <span class="n">file_chooser</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">"Save spectral data to a CSV file"</span>
+            <span class="n">file_chooser</span><span class="o">.</span><span class="n">default_filename</span> <span class="o">=</span> <span class="s2">"spectral_data.csv"</span>
             <span class="n">file_chooser</span><span class="o">.</span><span class="n">show_hidden</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">file_chooser</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">chooser_callback</span><span class="p">)</span>
             <span class="n">file_chooser_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span>
-                <span class="n">widget</span><span class="o">=</span><span class="n">file_chooser</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span>
+                <span class="n">widget</span><span class="o">=</span><span class="n">file_chooser</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"topright"</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file_chooser_control</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_file_chooser&quot;</span><span class="p">,</span> <span class="n">file_chooser</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_file_chooser_control&quot;</span><span class="p">,</span> <span class="n">file_chooser_control</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_file_chooser"</span><span class="p">,</span> <span class="n">file_chooser</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_file_chooser_control"</span><span class="p">,</span> <span class="n">file_chooser_control</span><span class="p">)</span>
 
         <span class="n">save_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">save_btn_click</span><span class="p">)</span>
 
@@ -3285,23 +3285,23 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="p">)</span>
 
         <span class="n">output</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
-        <span class="n">output_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;bottomright&quot;</span><span class="p">)</span>
+        <span class="n">output_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"bottomright"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span> <span class="o">=</span> <span class="n">output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_control</span> <span class="o">=</span> <span class="n">output_control</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">output_control</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">handle_interaction</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-            <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinates&quot;</span><span class="p">)</span>
+            <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coordinates"</span><span class="p">)</span>
             <span class="n">lat</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">lon</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;click&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_layer_editor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"click"</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_layer_editor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">layer_name</span> <span class="o">=</span> <span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span>
 
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_markers&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_plot_markers"</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">markers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span>
                 <span class="n">marker_cluster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span>
@@ -3309,62 +3309,62 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                 <span class="n">marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="n">markers</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="o">=</span> <span class="n">marker_cluster</span>
 
-                <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span>
-                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Reflectance&quot;</span>
+                <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Wavelength (nm)"</span>
+                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">"Reflectance"</span>
 
-                <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"xds"</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"XARRAY"</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_spectral</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
-                    <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Band&quot;</span>
-                    <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Value&quot;</span>
+                    <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Band"</span>
+                    <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">"Value"</span>
 
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
-                    <span class="n">da</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span>
-                        <span class="s2">&quot;reflectance&quot;</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"EMIT"</span><span class="p">:</span>
+                    <span class="n">da</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)[</span>
+                        <span class="s2">"reflectance"</span>
                     <span class="p">]</span>
 
-                    <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                            <span class="s2">&quot;wavelength&quot;</span>
+                    <span class="k">if</span> <span class="s2">"wavelength"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                            <span class="s2">"wavelength"</span>
                         <span class="p">]</span><span class="o">.</span><span class="n">values</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;TANAGER&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"TANAGER"</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_tanager</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
-                    <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;TOA Radiance&quot;</span>
+                    <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">"TOA Radiance"</span>
 
-                    <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                            <span class="s2">&quot;wavelength&quot;</span>
+                    <span class="k">if</span> <span class="s2">"wavelength"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                            <span class="s2">"wavelength"</span>
                         <span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-                    <span class="c1"># da = da.swap_dims({&quot;band&quot;: &quot;wavelength&quot;})</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
+                    <span class="c1"># da = da.swap_dims({"band": "wavelength"})</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"PACE"</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">da</span> <span class="o">=</span> <span class="n">extract_pace</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                         <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-                            <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
-                            <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span>
-                            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]},</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
+                            <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">],</span>
+                            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">"wavelength"</span><span class="p">:</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]},</span>
                         <span class="p">)</span>
-                    <span class="k">if</span> <span class="s2">&quot;wavelengths&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                            <span class="s2">&quot;wavelength&quot;</span>
+                    <span class="k">if</span> <span class="s2">"wavelengths"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">"wavelengths"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                            <span class="s2">"wavelength"</span>
                         <span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"DESIS"</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_desis</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"NEON"</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_neon</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"AVIRIS"</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
                             <span class="nb">print</span><span class="p">(</span>
-                                <span class="s2">&quot;AVIRIS spectral extraction requires a local &quot;</span>
-                                <span class="s2">&quot;reflectance NetCDF dataset. Add the layer again &quot;</span>
-                                <span class="s2">&quot;with dataset=hypercoast.read_aviris(local_file).&quot;</span>
+                                <span class="s2">"AVIRIS spectral extraction requires a local "</span>
+                                <span class="s2">"reflectance NetCDF dataset. Add the layer again "</span>
+                                <span class="s2">"with dataset=hypercoast.read_aviris(local_file)."</span>
                             <span class="p">)</span>
                         <span class="k">return</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -3374,29 +3374,29 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                             <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
                         <span class="k">return</span>
 
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PRISMA&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"PRISMA"</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_prisma</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EnMAP&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"EnMAP"</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_enmap</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WYVERN&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"WYVERN"</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_wyvern</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lon</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lon</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"XARRAY"</span><span class="p">:</span>
                     <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                    <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">}</span>
+                    <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"label_offset"</span><span class="p">:</span> <span class="s2">"30px"</span><span class="p">}</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;tick_format&quot;</span><span class="p">:</span> <span class="s2">&quot;0d&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;num_ticks&quot;</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">],</span>
+                        <span class="s2">"label_offset"</span><span class="p">:</span> <span class="s2">"30px"</span><span class="p">,</span>
+                        <span class="s2">"tick_format"</span><span class="p">:</span> <span class="s2">"0d"</span><span class="p">,</span>
+                        <span class="s2">"num_ticks"</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">"band"</span><span class="p">],</span>
                     <span class="p">}</span>
                 <span class="n">axes_options</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x_axis_options</span><span class="p">,</span>
-                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;35px&quot;</span><span class="p">},</span>
+                    <span class="s2">"x"</span><span class="p">:</span> <span class="n">x_axis_options</span><span class="p">,</span>
+                    <span class="s2">"y"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"label_offset"</span><span class="p">:</span> <span class="s2">"35px"</span><span class="p">},</span>
                 <span class="p">}</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">stack_btn</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
@@ -3410,11 +3410,11 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                     <span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span>
                         <span class="mi">3</span><span class="p">,</span>
                     <span class="p">)</span>
-                    <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-                        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span>
-                        <span class="n">x_values</span> <span class="o">=</span> <span class="n">da</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+                    <span class="k">if</span> <span class="s2">"wavelength"</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Wavelength (nm)"</span>
+                        <span class="n">x_values</span> <span class="o">=</span> <span class="n">da</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Band&quot;</span>
+                        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Band"</span>
                         <span class="n">x_values</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 
                     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
@@ -3443,7 +3443,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_show_plot</span> <span class="o">=</span> <span class="kc">True</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="s2">&quot;crosshair&quot;</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"cursor"</span><span class="p">:</span> <span class="s2">"crosshair"</span><span class="p">}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">on_interaction</span><span class="p">(</span><span class="n">handle_interaction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_map_interaction</span> <span class="o">=</span> <span class="n">handle_interaction</span>
@@ -3455,9 +3455,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spectral_control</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes the widget from the map and performs cleanup.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Removes the widget from the map and performs cleanup."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"cursor"</span><span class="p">:</span> <span class="s2">"default"</span><span class="p">}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">on_interaction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_map_interaction</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_control</span><span class="p">:</span>
@@ -3475,14 +3475,14 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                     <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_widget</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_widget</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_plot_marker_cluster"</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
 
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_output_widget&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_output_widget"</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_close</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -3507,7 +3507,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
 
 <h3 id="hypercoast.ui.SpectralWidget.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s1">&#39;topright&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s1">'topright'</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -3565,28 +3565,28 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <details class="quote">
           <summary>Source code in <code>hypercoast/ui.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">host_map</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"topright"</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Initializes a new instance of the SpectralWidget class.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        host_map (Map): The map to host the widget.</span>
 <span class="sd">        stack (bool, optional): Whether to stack the plots. Defaults to True.</span>
-<span class="sd">        position (str, optional): The position of the widget on the map. Defaults to &quot;topright&quot;.</span>
+<span class="sd">        position (str, optional): The position of the widget on the map. Defaults to "topright".</span>
 <span class="sd">        xlim (tuple, optional): The x-axis limits. Defaults to None.</span>
 <span class="sd">        ylim (tuple, optional): The y-axis limits. Defaults to None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span> <span class="o">=</span> <span class="n">host_map</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">on_close</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="n">stack</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_show_plot</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="n">fig_margin</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
+    <span class="n">fig_margin</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"top"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"bottom"</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="s2">"left"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"right"</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span>
         <span class="c1"># title=None,</span>
         <span class="n">fig_margin</span><span class="o">=</span><span class="n">fig_margin</span><span class="p">,</span>
-        <span class="n">layout</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="s2">&quot;500px&quot;</span><span class="p">,</span> <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="s2">&quot;300px&quot;</span><span class="p">},</span>
+        <span class="n">layout</span><span class="o">=</span><span class="p">{</span><span class="s2">"width"</span><span class="p">:</span> <span class="s2">"500px"</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">:</span> <span class="s2">"300px"</span><span class="p">},</span>
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
@@ -3594,52 +3594,52 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
 
     <span class="n">layer_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">layers_widget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">layer_names</span><span class="p">)</span>
-    <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">&quot;18ex&quot;</span>
+    <span class="n">layers_widget</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s2">"18ex"</span>
 
     <span class="n">close_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;times&quot;</span><span class="p">,</span>
-        <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Close the widget&quot;</span><span class="p">,</span>
-        <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+        <span class="n">icon</span><span class="o">=</span><span class="s2">"times"</span><span class="p">,</span>
+        <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Close the widget"</span><span class="p">,</span>
+        <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">reset_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;trash&quot;</span><span class="p">,</span>
-        <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Remove all markers&quot;</span><span class="p">,</span>
-        <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+        <span class="n">icon</span><span class="o">=</span><span class="s2">"trash"</span><span class="p">,</span>
+        <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Remove all markers"</span><span class="p">,</span>
+        <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">settings_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;gear&quot;</span><span class="p">,</span>
-        <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Change layer settings&quot;</span><span class="p">,</span>
-        <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+        <span class="n">icon</span><span class="o">=</span><span class="s2">"gear"</span><span class="p">,</span>
+        <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Change layer settings"</span><span class="p">,</span>
+        <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">stack_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">ToggleButton</span><span class="p">(</span>
         <span class="n">value</span><span class="o">=</span><span class="n">stack</span><span class="p">,</span>
-        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;area-chart&quot;</span><span class="p">,</span>
-        <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Stack spectral signatures&quot;</span><span class="p">,</span>
-        <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+        <span class="n">icon</span><span class="o">=</span><span class="s2">"area-chart"</span><span class="p">,</span>
+        <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Stack spectral signatures"</span><span class="p">,</span>
+        <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">settings_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_add_layer_editor</span><span class="p">(</span>
-            <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">=</span><span class="s2">"topright"</span><span class="p">,</span>
             <span class="n">layer_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span><span class="p">],</span>
         <span class="p">)</span>
 
     <span class="n">settings_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">settings_btn_click</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">reset_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_plot_marker_cluster"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
@@ -3649,10 +3649,10 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
     <span class="n">reset_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">reset_btn_click</span><span class="p">)</span>
 
     <span class="n">save_btn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
-        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;floppy-o&quot;</span><span class="p">,</span>
-        <span class="n">tooltip</span><span class="o">=</span><span class="s2">&quot;Save the data to a CSV&quot;</span><span class="p">,</span>
-        <span class="n">button_style</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span><span class="p">,</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;32px&quot;</span><span class="p">),</span>
+        <span class="n">icon</span><span class="o">=</span><span class="s2">"floppy-o"</span><span class="p">,</span>
+        <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Save the data to a CSV"</span><span class="p">,</span>
+        <span class="n">button_style</span><span class="o">=</span><span class="s2">"primary"</span><span class="p">,</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"32px"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">chooser_callback</span><span class="p">(</span><span class="n">chooser</span><span class="p">):</span>
@@ -3660,32 +3660,32 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
             <span class="n">file_path</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">selected</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">spectral_to_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_file_chooser_control&quot;</span><span class="p">)</span>
+                <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_file_chooser_control"</span><span class="p">)</span>
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser_control</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">controls</span>
             <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">remove_control</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser_control</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_file_chooser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save_btn_click</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
         <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">FileChooser</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;454px&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">layout</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">"454px"</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">file_chooser</span><span class="o">.</span><span class="n">filter_pattern</span> <span class="o">=</span> <span class="s2">&quot;*.csv&quot;</span>
+        <span class="n">file_chooser</span><span class="o">.</span><span class="n">filter_pattern</span> <span class="o">=</span> <span class="s2">"*.csv"</span>
         <span class="n">file_chooser</span><span class="o">.</span><span class="n">use_dir_icons</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">file_chooser</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Save spectral data to a CSV file&quot;</span>
-        <span class="n">file_chooser</span><span class="o">.</span><span class="n">default_filename</span> <span class="o">=</span> <span class="s2">&quot;spectral_data.csv&quot;</span>
+        <span class="n">file_chooser</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">"Save spectral data to a CSV file"</span>
+        <span class="n">file_chooser</span><span class="o">.</span><span class="n">default_filename</span> <span class="o">=</span> <span class="s2">"spectral_data.csv"</span>
         <span class="n">file_chooser</span><span class="o">.</span><span class="n">show_hidden</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">file_chooser</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">chooser_callback</span><span class="p">)</span>
         <span class="n">file_chooser_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span>
-            <span class="n">widget</span><span class="o">=</span><span class="n">file_chooser</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;topright&quot;</span>
+            <span class="n">widget</span><span class="o">=</span><span class="n">file_chooser</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"topright"</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file_chooser_control</span><span class="p">)</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_file_chooser&quot;</span><span class="p">,</span> <span class="n">file_chooser</span><span class="p">)</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_file_chooser_control&quot;</span><span class="p">,</span> <span class="n">file_chooser_control</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_file_chooser"</span><span class="p">,</span> <span class="n">file_chooser</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_file_chooser_control"</span><span class="p">,</span> <span class="n">file_chooser_control</span><span class="p">)</span>
 
     <span class="n">save_btn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">save_btn_click</span><span class="p">)</span>
 
@@ -3699,23 +3699,23 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
     <span class="p">)</span>
 
     <span class="n">output</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
-    <span class="n">output_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;bottomright&quot;</span><span class="p">)</span>
+    <span class="n">output_control</span> <span class="o">=</span> <span class="n">ipyleaflet</span><span class="o">.</span><span class="n">WidgetControl</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">"bottomright"</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span> <span class="o">=</span> <span class="n">output</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_output_control</span> <span class="o">=</span> <span class="n">output_control</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">output_control</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">handle_interaction</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-        <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinates&quot;</span><span class="p">)</span>
+        <span class="n">latlon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coordinates"</span><span class="p">)</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">lon</span> <span class="o">=</span> <span class="n">latlon</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;click&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_layer_editor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"click"</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_layer_editor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">layer_name</span> <span class="o">=</span> <span class="n">layers_widget</span><span class="o">.</span><span class="n">value</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_markers&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_plot_markers"</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">markers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span>
             <span class="n">marker_cluster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span>
@@ -3723,62 +3723,62 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
             <span class="n">marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="n">markers</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span> <span class="o">=</span> <span class="n">marker_cluster</span>
 
-            <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span>
-            <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Reflectance&quot;</span>
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Wavelength (nm)"</span>
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">"Reflectance"</span>
 
-            <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;xds&quot;</span><span class="p">]</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"xds"</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"XARRAY"</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_spectral</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
-                <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Band&quot;</span>
-                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Value&quot;</span>
+                <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Band"</span>
+                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">"Value"</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EMIT&quot;</span><span class="p">:</span>
-                <span class="n">da</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span>
-                    <span class="s2">&quot;reflectance&quot;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"EMIT"</span><span class="p">:</span>
+                <span class="n">da</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)[</span>
+                    <span class="s2">"reflectance"</span>
                 <span class="p">]</span>
 
-                <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                        <span class="s2">&quot;wavelength&quot;</span>
+                <span class="k">if</span> <span class="s2">"wavelength"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                        <span class="s2">"wavelength"</span>
                     <span class="p">]</span><span class="o">.</span><span class="n">values</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;TANAGER&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"TANAGER"</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_tanager</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
-                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;TOA Radiance&quot;</span>
+                <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">"TOA Radiance"</span>
 
-                <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                        <span class="s2">&quot;wavelength&quot;</span>
+                <span class="k">if</span> <span class="s2">"wavelength"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                        <span class="s2">"wavelength"</span>
                     <span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-                <span class="c1"># da = da.swap_dims({&quot;band&quot;: &quot;wavelength&quot;})</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PACE&quot;</span><span class="p">:</span>
+                <span class="c1"># da = da.swap_dims({"band": "wavelength"})</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"PACE"</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">extract_pace</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-                        <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
-                        <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span>
-                        <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]},</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
+                        <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">],</span>
+                        <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">"wavelength"</span><span class="p">:</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]},</span>
                     <span class="p">)</span>
-                <span class="k">if</span> <span class="s2">&quot;wavelengths&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
-                        <span class="s2">&quot;wavelength&quot;</span>
+                <span class="k">if</span> <span class="s2">"wavelengths"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="s2">"wavelengths"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span>
+                        <span class="s2">"wavelength"</span>
                     <span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;DESIS&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"DESIS"</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_desis</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NEON&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"NEON"</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_neon</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AVIRIS&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"AVIRIS"</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span>
-                            <span class="s2">&quot;AVIRIS spectral extraction requires a local &quot;</span>
-                            <span class="s2">&quot;reflectance NetCDF dataset. Add the layer again &quot;</span>
-                            <span class="s2">&quot;with dataset=hypercoast.read_aviris(local_file).&quot;</span>
+                            <span class="s2">"AVIRIS spectral extraction requires a local "</span>
+                            <span class="s2">"reflectance NetCDF dataset. Add the layer again "</span>
+                            <span class="s2">"with dataset=hypercoast.read_aviris(local_file)."</span>
                         <span class="p">)</span>
                     <span class="k">return</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -3788,29 +3788,29 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                         <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
                     <span class="k">return</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PRISMA&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"PRISMA"</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_prisma</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EnMAP&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"EnMAP"</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_enmap</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WYVERN&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"WYVERN"</span><span class="p">:</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">extract_wyvern</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lon</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">lat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lon</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">&quot;hyper&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;XARRAY&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">cog_layer_dict</span><span class="p">[</span><span class="n">layer_name</span><span class="p">][</span><span class="s2">"hyper"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"XARRAY"</span><span class="p">:</span>
                 <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">}</span>
+                <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"label_offset"</span><span class="p">:</span> <span class="s2">"30px"</span><span class="p">}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">x_axis_options</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;30px&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;tick_format&quot;</span><span class="p">:</span> <span class="s2">&quot;0d&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;num_ticks&quot;</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">],</span>
+                    <span class="s2">"label_offset"</span><span class="p">:</span> <span class="s2">"30px"</span><span class="p">,</span>
+                    <span class="s2">"tick_format"</span><span class="p">:</span> <span class="s2">"0d"</span><span class="p">,</span>
+                    <span class="s2">"num_ticks"</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">"band"</span><span class="p">],</span>
                 <span class="p">}</span>
             <span class="n">axes_options</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x_axis_options</span><span class="p">,</span>
-                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;35px&quot;</span><span class="p">},</span>
+                <span class="s2">"x"</span><span class="p">:</span> <span class="n">x_axis_options</span><span class="p">,</span>
+                <span class="s2">"y"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"label_offset"</span><span class="p">:</span> <span class="s2">"35px"</span><span class="p">},</span>
             <span class="p">}</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">stack_btn</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
@@ -3824,11 +3824,11 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                 <span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span>
                     <span class="mi">3</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="s2">&quot;wavelength&quot;</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-                    <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Wavelength (nm)&quot;</span>
-                    <span class="n">x_values</span> <span class="o">=</span> <span class="n">da</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+                <span class="k">if</span> <span class="s2">"wavelength"</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                    <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Wavelength (nm)"</span>
+                    <span class="n">x_values</span> <span class="o">=</span> <span class="n">da</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Band&quot;</span>
+                    <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">"Band"</span>
                     <span class="n">x_values</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 
                 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
@@ -3857,7 +3857,7 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_show_plot</span> <span class="o">=</span> <span class="kc">True</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="s2">&quot;crosshair&quot;</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"cursor"</span><span class="p">:</span> <span class="s2">"crosshair"</span><span class="p">}</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">on_interaction</span><span class="p">(</span><span class="n">handle_interaction</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_on_map_interaction</span> <span class="o">=</span> <span class="n">handle_interaction</span>
@@ -3892,9 +3892,9 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
         <details class="quote">
           <summary>Source code in <code>hypercoast/ui.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes the widget from the map and performs cleanup.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Removes the widget from the map and performs cleanup."""</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">default_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"cursor"</span><span class="p">:</span> <span class="s2">"default"</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">on_interaction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_map_interaction</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_control</span><span class="p">:</span>
@@ -3912,14 +3912,14 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
                 <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_widget</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_widget</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_plot_marker_cluster&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_plot_marker_cluster"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_marker_cluster</span><span class="o">.</span><span class="n">markers</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_plot_markers</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">&quot;_spectral_data&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="p">,</span> <span class="s2">"_spectral_data"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_host_map</span><span class="o">.</span><span class="n">_spectral_data</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_output_widget&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_output_widget"</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_output_widget</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_close</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -4043,15 +4043,122 @@ SpectralWidget            (<span title="ipywidgets.widgets.widget_box.HBox">HBox
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

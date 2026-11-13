@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3147,7 +3147,7 @@ original authors.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/neon.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extract_neon</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Extracts NEON AOP data from a given xarray Dataset.</span>
 
 <span class="sd">    Args:</span>
@@ -3157,16 +3157,16 @@ original authors.</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.DataArray: The extracted data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">crs</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span>
+    <span class="n">crs</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"crs"</span><span class="p">]</span>
 
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">([[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]],</span> <span class="s2">&quot;epsg:4326&quot;</span><span class="p">,</span> <span class="n">crs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">convert_coords</span><span class="p">([[</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]],</span> <span class="s2">"epsg:4326"</span><span class="p">,</span> <span class="n">crs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">values</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"nearest"</span><span class="p">)[</span><span class="s2">"reflectance"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
     <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
-        <span class="n">values</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]}</span>
+        <span class="n">values</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">"wavelength"</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]}</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">da</span>
@@ -3221,16 +3221,16 @@ If False, prints the name of each dataset. Defaults to False.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/neon.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">list_neon_datasets</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">print_node</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Lists all the datasets in an HDF5 file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filepath (str): The path to the HDF5 file.</span>
 <span class="sd">        print_node (bool, optional): If True, prints the node object of each dataset.</span>
 <span class="sd">            If False, prints the name of each dataset. Defaults to False.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">print_node</span><span class="p">:</span>
 
@@ -3258,7 +3258,7 @@ If False, prints the name of each dataset. Defaults to False.</p></td>
 
 
 <h2 id="hypercoast.neon.neon_to_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">neon_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">neon_to_image</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.neon.neon_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3337,11 +3337,11 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">neon_to_image</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"nearest"</span><span class="p">,</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Converts an NEON dataset to an image.</span>
 
 <span class="sd">    Args:</span>
@@ -3350,7 +3350,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 <span class="sd">        wavelengths (np.ndarray, optional): The specific wavelengths to select. If None, all</span>
 <span class="sd">            wavelengths are selected. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for data interpolation.</span>
-<span class="sd">            Defaults to &quot;nearest&quot;.</span>
+<span class="sd">            Defaults to "nearest".</span>
 <span class="sd">        output (str, optional): The file path where the image will be saved. If</span>
 <span class="sd">            None, the image will be returned as a PIL Image object. Defaults to None.</span>
 <span class="sd">        **kwargs (Any): Additional keyword arguments to be passed to</span>
@@ -3360,7 +3360,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 <span class="sd">        Optional[rasterio.Dataset]: The image converted from the dataset. If</span>
 <span class="sd">            `output` is provided, the image will be saved to the specified file</span>
 <span class="sd">            and the function will return None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">leafmap</span><span class="w"> </span><span class="kn">import</span> <span class="n">array_to_image</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -3370,7 +3370,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">array_to_image</span><span class="p">(</span>
-        <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">],</span>
+        <span class="n">dataset</span><span class="p">[</span><span class="s2">"reflectance"</span><span class="p">],</span>
         <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
         <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
@@ -3389,7 +3389,7 @@ None, the image will be returned as a PIL Image object. Defaults to None.</p></t
 
 
 <h2 id="hypercoast.neon.read_neon" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_neon</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_neon</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.neon.read_neon" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3457,10 +3457,10 @@ all wavelengths are selected. Defaults to None.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_neon</span><span class="p">(</span>
     <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"nearest"</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Reads NEON AOP hyperspectral hdf5 files and returns an xarray dataset.</span>
 
 <span class="sd">    Args:</span>
@@ -3468,40 +3468,40 @@ all wavelengths are selected. Defaults to None.</p></td>
 <span class="sd">        wavelengths (List[float], optional): The wavelengths to select. If None,</span>
 <span class="sd">            all wavelengths are selected. Defaults to None.</span>
 <span class="sd">        method (str, optional): The method to use for selection. Defaults to</span>
-<span class="sd">            &quot;nearest&quot;.</span>
+<span class="sd">            "nearest".</span>
 <span class="sd">        **kwargs (Any): Additional arguments to pass to the selection method.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xr.Dataset: The dataset containing the reflectance data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="c1"># Extract site code dynamically from NEON HDF file metadata</span>
         <span class="c1"># At the root of `keys` NEON stores the site code, which is the `root` folder at the [0] index of object `keys`</span>
         <span class="n">site_code</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># Access the reflectance data using the site code</span>
-        <span class="n">site_refl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">site_code</span><span class="p">][</span><span class="s2">&quot;Reflectance&quot;</span><span class="p">]</span>
+        <span class="n">site_refl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">site_code</span><span class="p">][</span><span class="s2">"Reflectance"</span><span class="p">]</span>
 
         <span class="c1"># Extract wavelengths</span>
-        <span class="n">wavelengths_list</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Spectral_Data&quot;</span><span class="p">][</span><span class="s2">&quot;Wavelength&quot;</span><span class="p">][</span>
+        <span class="n">wavelengths_list</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">"Metadata"</span><span class="p">][</span><span class="s2">"Spectral_Data"</span><span class="p">][</span><span class="s2">"Wavelength"</span><span class="p">][</span>
             <span class="p">()</span>
         <span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">wavelengths_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">wavelengths_list</span><span class="p">]</span>
 
         <span class="c1"># Extract EPSG code</span>
-        <span class="n">epsg_code</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Coordinate_System&quot;</span><span class="p">][</span><span class="s2">&quot;EPSG Code&quot;</span><span class="p">][()]</span>
-        <span class="n">epsg_code_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epsg_code</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="n">epsg_code</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">"Metadata"</span><span class="p">][</span><span class="s2">"Coordinate_System"</span><span class="p">][</span><span class="s2">"EPSG Code"</span><span class="p">][()]</span>
+        <span class="n">epsg_code_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epsg_code</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span>
 
         <span class="c1"># Extract map info</span>
-        <span class="n">mapInfo_string</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Coordinate_System&quot;</span><span class="p">][</span><span class="s2">&quot;Map_Info&quot;</span><span class="p">][</span>
+        <span class="n">mapInfo_string</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">"Metadata"</span><span class="p">][</span><span class="s2">"Coordinate_System"</span><span class="p">][</span><span class="s2">"Map_Info"</span><span class="p">][</span>
             <span class="p">()</span>
-        <span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-        <span class="n">mapInfo_split</span> <span class="o">=</span> <span class="n">mapInfo_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+        <span class="n">mapInfo_split</span> <span class="o">=</span> <span class="n">mapInfo_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
 
         <span class="n">res</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">mapInfo_split</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
 
         <span class="c1"># Extract reflectance array and shape</span>
-        <span class="n">site_reflArray</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">&quot;Reflectance_Data&quot;</span><span class="p">]</span>
+        <span class="n">site_reflArray</span> <span class="o">=</span> <span class="n">site_refl</span><span class="p">[</span><span class="s2">"Reflectance_Data"</span><span class="p">]</span>
         <span class="n">refl_shape</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">shape</span>
 
         <span class="c1"># Calculate coordinates</span>
@@ -3512,8 +3512,8 @@ all wavelengths are selected. Defaults to None.</p></td>
         <span class="n">yMin</span> <span class="o">=</span> <span class="n">yMax</span> <span class="o">-</span> <span class="p">(</span><span class="n">refl_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="c1"># Handle scale factor and no-data value</span>
-        <span class="n">scaleFactor</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Scale_Factor&quot;</span><span class="p">]</span>
-        <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Data_Ignore_Value&quot;</span><span class="p">]</span>
+        <span class="n">scaleFactor</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"Scale_Factor"</span><span class="p">]</span>
+        <span class="n">noDataValue</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"Data_Ignore_Value"</span><span class="p">]</span>
 
         <span class="n">da</span> <span class="o">=</span> <span class="n">site_reflArray</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">da</span><span class="p">[</span><span class="n">da</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">noDataValue</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -3522,28 +3522,28 @@ all wavelengths are selected. Defaults to None.</p></td>
         <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="n">scaleFactor</span>
 
         <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">yMax</span><span class="p">,</span> <span class="n">yMin</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xMin</span><span class="p">,</span> <span class="n">xMax</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-            <span class="s2">&quot;wavelength&quot;</span><span class="p">:</span> <span class="n">wavelengths_list</span><span class="p">,</span>
+            <span class="s2">"y"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">yMax</span><span class="p">,</span> <span class="n">yMin</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">"x"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xMin</span><span class="p">,</span> <span class="n">xMax</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s2">"wavelength"</span><span class="p">:</span> <span class="n">wavelengths_list</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">xda</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
             <span class="n">da</span><span class="p">,</span>
             <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span>
-            <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">],</span>
+            <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">"y"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"wavelength"</span><span class="p">],</span>
             <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">&quot;scale_factor&quot;</span><span class="p">:</span> <span class="n">scaleFactor</span><span class="p">,</span>
-                <span class="s2">&quot;no_data_value&quot;</span><span class="p">:</span> <span class="n">noDataValue</span><span class="p">,</span>
-                <span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;EPSG:</span><span class="si">{</span><span class="n">epsg_code_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">xMin</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">yMax</span><span class="p">),</span>
+                <span class="s2">"scale_factor"</span><span class="p">:</span> <span class="n">scaleFactor</span><span class="p">,</span>
+                <span class="s2">"no_data_value"</span><span class="p">:</span> <span class="n">noDataValue</span><span class="p">,</span>
+                <span class="s2">"crs"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"EPSG:</span><span class="si">{</span><span class="n">epsg_code_number</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"transform"</span><span class="p">:</span> <span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">xMin</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">yMax</span><span class="p">),</span>
             <span class="p">},</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">xda</span> <span class="o">=</span> <span class="n">xda</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">xda</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;reflectance&quot;</span><span class="p">)</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">xda</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"reflectance"</span><span class="p">)</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">"reflectance"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
 
     <span class="k">return</span> <span class="n">dataset</span>
 </code></pre></div>
@@ -3654,15 +3654,122 @@ all wavelengths are selected. Defaults to None.</p></td>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

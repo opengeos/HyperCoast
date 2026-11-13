@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3091,7 +3091,7 @@ It includes support for various data formats and preprocessing techniques.</p>
 
 
 <h2 id="hypercoast.moe_vae.data_loading.load_real_data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">load_real_data</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">split_ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">&#39;TSS&#39;</span><span class="p">,</span> <span class="n">lower_quantile</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper_quantile</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">load_real_data</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">split_ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">'TSS'</span><span class="p">,</span> <span class="n">lower_quantile</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper_quantile</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.moe_vae.data_loading.load_real_data" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3212,12 +3212,12 @@ Defaults to 0.01.</p></td>
     <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
     <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">&quot;TSS&quot;</span><span class="p">,</span>
+    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">"TSS"</span><span class="p">,</span>
     <span class="n">lower_quantile</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
     <span class="n">upper_quantile</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
     <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and preprocess real data using MinMax scaling.</span>
+<span class="w">    </span><span class="sd">"""Load and preprocess real data using MinMax scaling.</span>
 
 <span class="sd">    This function loads remote sensing data from Excel files and applies</span>
 <span class="sd">    MinMax normalization with optional differencing operations. Each sample</span>
@@ -3233,7 +3233,7 @@ Defaults to 0.01.</p></td>
 <span class="sd">        diff_after_norm (bool, optional): Apply differencing after normalization.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        target_parameter (str, optional): Target parameter column name.</span>
-<span class="sd">            Defaults to &quot;TSS&quot;.</span>
+<span class="sd">            Defaults to "TSS".</span>
 <span class="sd">        lower_quantile (float, optional): Lower quantile for outlier removal.</span>
 <span class="sd">            Defaults to 0.0.</span>
 <span class="sd">        upper_quantile (float, optional): Upper quantile for outlier removal.</span>
@@ -3249,16 +3249,16 @@ Defaults to 0.01.</p></td>
 <span class="sd">            - output_dim (int): Output dimension</span>
 <span class="sd">            - train_ids (list): Training sample IDs</span>
 <span class="sd">            - test_ids (list): Test sample IDs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">rounded_bands</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">selected_bands</span><span class="p">]</span>
-    <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Rrs_</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">rounded_bands</span><span class="p">]</span>
-    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Rrs&quot;</span><span class="p">)</span>
-    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span>
-    <span class="n">df_rrs_selected</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[[</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">band_cols</span><span class="p">]</span>
-    <span class="n">df_param_selected</span> <span class="o">=</span> <span class="n">df_param</span><span class="p">[[</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">,</span> <span class="n">target_parameter</span><span class="p">]]</span>
+    <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"Rrs_</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">rounded_bands</span><span class="p">]</span>
+    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"Rrs"</span><span class="p">)</span>
+    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"parameter"</span><span class="p">)</span>
+    <span class="n">df_rrs_selected</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[[</span><span class="s2">"GLORIA_ID"</span><span class="p">]</span> <span class="o">+</span> <span class="n">band_cols</span><span class="p">]</span>
+    <span class="n">df_param_selected</span> <span class="o">=</span> <span class="n">df_param</span><span class="p">[[</span><span class="s2">"GLORIA_ID"</span><span class="p">,</span> <span class="n">target_parameter</span><span class="p">]]</span>
     <span class="n">df_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-        <span class="n">df_rrs_selected</span><span class="p">,</span> <span class="n">df_param_selected</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span>
+        <span class="n">df_rrs_selected</span><span class="p">,</span> <span class="n">df_param_selected</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"GLORIA_ID"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"inner"</span>
     <span class="p">)</span>
 
     <span class="c1"># === Filter valid samples ===</span>
@@ -3266,7 +3266,7 @@ Defaults to 0.01.</p></td>
     <span class="n">mask_target_valid</span> <span class="o">=</span> <span class="n">df_merged</span><span class="p">[</span><span class="n">target_parameter</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
     <span class="n">df_filtered</span> <span class="o">=</span> <span class="n">df_merged</span><span class="p">[</span><span class="n">mask_rrs_valid</span> <span class="o">&amp;</span> <span class="n">mask_target_valid</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;✅ Number of samples after filtering Rrs and </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"✅ Number of samples after filtering Rrs and </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 
     <span class="c1"># === Quantile clipping for target parameter ===</span>
@@ -3277,11 +3277,11 @@ Defaults to 0.01.</p></td>
         <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_filtered</span><span class="p">[</span><span class="n">target_parameter</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">)</span>
     <span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;✅ Number of samples after removing </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2"> quantiles [</span><span class="si">{</span><span class="n">lower_quantile</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper_quantile</span><span class="si">}</span><span class="s2">]: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"✅ Number of samples after removing </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2"> quantiles [</span><span class="si">{</span><span class="n">lower_quantile</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper_quantile</span><span class="si">}</span><span class="s2">]: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 
     <span class="c1"># === Extract sample IDs, Rrs, and target parameter ===</span>
-    <span class="n">all_sample_ids</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">all_sample_ids</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="s2">"GLORIA_ID"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="n">Rrs_array</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="n">band_cols</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
     <span class="n">param_array</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[[</span><span class="n">target_parameter</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 
@@ -3343,7 +3343,7 @@ Defaults to 0.01.</p></td>
 
 
 <h2 id="hypercoast.moe_vae.data_loading.load_real_data_Robust" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">load_real_data_Robust</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">&#39;TSS&#39;</span><span class="p">,</span> <span class="n">split_ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">use_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lower_quantile</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper_quantile</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">Rrs_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="n">target_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span></code>
+<code class="highlight language-python"><span class="n">load_real_data_Robust</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">'TSS'</span><span class="p">,</span> <span class="n">split_ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">use_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lower_quantile</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper_quantile</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">Rrs_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="n">target_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span></code>
 
 
 <a href="#hypercoast.moe_vae.data_loading.load_real_data_Robust" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3462,7 +3462,7 @@ Defaults to (-0.5, 0.5).</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_real_data_Robust</span><span class="p">(</span>
     <span class="n">excel_path</span><span class="p">,</span>
     <span class="n">selected_bands</span><span class="p">,</span>
-    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">&quot;TSS&quot;</span><span class="p">,</span>
+    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">"TSS"</span><span class="p">,</span>
     <span class="n">split_ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
     <span class="n">use_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -3471,7 +3471,7 @@ Defaults to (-0.5, 0.5).</p></td>
     <span class="n">Rrs_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span>
     <span class="n">target_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and preprocess real data using robust scaling methods.</span>
+<span class="w">    </span><span class="sd">"""Load and preprocess real data using robust scaling methods.</span>
 
 <span class="sd">    This function loads remote sensing reflectance (Rrs) and parameter data from</span>
 <span class="sd">    Excel files, applies robust preprocessing including quantile filtering,</span>
@@ -3481,7 +3481,7 @@ Defaults to (-0.5, 0.5).</p></td>
 <span class="sd">        excel_path (str): Path to Excel file containing Rrs and parameter data.</span>
 <span class="sd">        selected_bands (list): List of wavelength bands to extract from Rrs data.</span>
 <span class="sd">        target_parameter (str, optional): Name of target parameter column.</span>
-<span class="sd">            Defaults to &quot;TSS&quot;.</span>
+<span class="sd">            Defaults to "TSS".</span>
 <span class="sd">        split_ratio (float, optional): Train/test split ratio. Defaults to 0.7.</span>
 <span class="sd">        seed (int, optional): Random seed for reproducible splits. Defaults to 42.</span>
 <span class="sd">        use_diff (bool, optional): Whether to apply first difference to Rrs.</span>
@@ -3505,18 +3505,18 @@ Defaults to (-0.5, 0.5).</p></td>
 <span class="sd">            - test_ids (list): Test sample IDs</span>
 <span class="sd">            - scaler_Rrs: Fitted Rrs scaler object</span>
 <span class="sd">            - TSS_scalers_dict (dict): Dictionary of fitted target scalers</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">rounded_bands</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">selected_bands</span><span class="p">]</span>
-    <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Rrs_</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">rounded_bands</span><span class="p">]</span>
+    <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"Rrs_</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">rounded_bands</span><span class="p">]</span>
 
-    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Rrs&quot;</span><span class="p">)</span>
-    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span>
+    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"Rrs"</span><span class="p">)</span>
+    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"parameter"</span><span class="p">)</span>
 
-    <span class="n">df_rrs_selected</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[[</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">band_cols</span><span class="p">]</span>
-    <span class="n">df_param_selected</span> <span class="o">=</span> <span class="n">df_param</span><span class="p">[[</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">,</span> <span class="n">target_parameter</span><span class="p">]]</span>
+    <span class="n">df_rrs_selected</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[[</span><span class="s2">"GLORIA_ID"</span><span class="p">]</span> <span class="o">+</span> <span class="n">band_cols</span><span class="p">]</span>
+    <span class="n">df_param_selected</span> <span class="o">=</span> <span class="n">df_param</span><span class="p">[[</span><span class="s2">"GLORIA_ID"</span><span class="p">,</span> <span class="n">target_parameter</span><span class="p">]]</span>
     <span class="n">df_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-        <span class="n">df_rrs_selected</span><span class="p">,</span> <span class="n">df_param_selected</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span>
+        <span class="n">df_rrs_selected</span><span class="p">,</span> <span class="n">df_param_selected</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"GLORIA_ID"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"inner"</span>
     <span class="p">)</span>
 
     <span class="n">mask_rrs_valid</span> <span class="o">=</span> <span class="n">df_merged</span><span class="p">[</span><span class="n">band_cols</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -3524,7 +3524,7 @@ Defaults to (-0.5, 0.5).</p></td>
     <span class="n">df_filtered</span> <span class="o">=</span> <span class="n">df_merged</span><span class="p">[</span><span class="n">mask_rrs_valid</span> <span class="o">&amp;</span> <span class="n">mask_param_valid</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Number of samples after filtering Rrs and </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"Number of samples after filtering Rrs and </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 
     <span class="n">lower</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="n">target_parameter</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">lower_quantile</span><span class="p">)</span>
@@ -3535,10 +3535,10 @@ Defaults to (-0.5, 0.5).</p></td>
     <span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Number of samples after removing </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2"> quantiles [</span><span class="si">{</span><span class="n">lower_quantile</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper_quantile</span><span class="si">}</span><span class="s2">]: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"Number of samples after removing </span><span class="si">{</span><span class="n">target_parameter</span><span class="si">}</span><span class="s2"> quantiles [</span><span class="si">{</span><span class="n">lower_quantile</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper_quantile</span><span class="si">}</span><span class="s2">]: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 
-    <span class="n">all_sample_ids</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="s2">&quot;GLORIA_ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">all_sample_ids</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="s2">"GLORIA_ID"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="n">Rrs_array</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[</span><span class="n">band_cols</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
     <span class="n">param_array</span> <span class="o">=</span> <span class="n">df_filtered</span><span class="p">[[</span><span class="n">target_parameter</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 
@@ -3581,7 +3581,7 @@ Defaults to (-0.5, 0.5).</p></td>
 
     <span class="n">input_dim</span> <span class="o">=</span> <span class="n">Rrs_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">output_dim</span> <span class="o">=</span> <span class="n">param_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">TSS_scalers_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="n">log_scaler</span><span class="p">,</span> <span class="s2">&quot;robust&quot;</span><span class="p">:</span> <span class="n">param_scaler</span><span class="p">}</span>
+    <span class="n">TSS_scalers_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"log"</span><span class="p">:</span> <span class="n">log_scaler</span><span class="p">,</span> <span class="s2">"robust"</span><span class="p">:</span> <span class="n">param_scaler</span><span class="p">}</span>
 
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">train_dl</span><span class="p">,</span>
@@ -3606,7 +3606,7 @@ Defaults to (-0.5, 0.5).</p></td>
 
 
 <h2 id="hypercoast.moe_vae.data_loading.load_real_test" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">load_real_test</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">max_allowed_diff</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">&#39;TSS&#39;</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">load_real_test</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">max_allowed_diff</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">'TSS'</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.moe_vae.data_loading.load_real_test" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3721,10 +3721,10 @@ Defaults to 0.01.</p></td>
     <span class="n">max_allowed_diff</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
     <span class="n">diff_before_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">diff_after_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">&quot;TSS&quot;</span><span class="p">,</span>
+    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">"TSS"</span><span class="p">,</span>
     <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and preprocess real test data using MinMax scaling.</span>
+<span class="w">    </span><span class="sd">"""Load and preprocess real test data using MinMax scaling.</span>
 
 <span class="sd">    This function loads test data from Excel files, matches wavelength bands</span>
 <span class="sd">    to available bands, and applies MinMax normalization with optional</span>
@@ -3740,7 +3740,7 @@ Defaults to 0.01.</p></td>
 <span class="sd">        diff_after_norm (bool, optional): Apply differencing after normalization.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        target_parameter (str, optional): Target parameter column name.</span>
-<span class="sd">            Defaults to &quot;TSS&quot;.</span>
+<span class="sd">            Defaults to "TSS".</span>
 <span class="sd">        log_offset (float, optional): Offset for log transformation.</span>
 <span class="sd">            Defaults to 0.01.</span>
 
@@ -3753,20 +3753,20 @@ Defaults to 0.01.</p></td>
 <span class="sd">            - sample_dates (list): Sample dates</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If table row counts don&#39;t match or wavelengths can&#39;t be matched.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        ValueError: If table row counts don't match or wavelengths can't be matched.</span>
+<span class="sd">    """</span>
 
-    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Rrs&quot;</span><span class="p">)</span>
-    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span>
+    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"Rrs"</span><span class="p">)</span>
+    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"parameter"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df_param</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;❌ The number of rows in the Rrs table and parameter table do not match. Rrs: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, parameter: </span><span class="si">{</span><span class="n">df_param</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"❌ The number of rows in the Rrs table and parameter table do not match. Rrs: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, parameter: </span><span class="si">{</span><span class="n">df_param</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="c1"># === Extract IDs and dates ===</span>
-    <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">&quot;Site Label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">sample_dates</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">"Site Label"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">sample_dates</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
     <span class="c1"># === Match target bands ===</span>
     <span class="n">rrs_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3786,16 +3786,16 @@ Defaults to 0.01.</p></td>
         <span class="n">min_diff</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">min_diff</span> <span class="o">&gt;</span> <span class="n">max_allowed_diff</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Target wavelength </span><span class="si">{</span><span class="n">target_band</span><span class="si">}</span><span class="s2"> nm cannot be matched, error </span><span class="si">{</span><span class="n">min_diff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> nm exceeds the allowed range&quot;</span>
+                <span class="sa">f</span><span class="s2">"Target wavelength </span><span class="si">{</span><span class="n">target_band</span><span class="si">}</span><span class="s2"> nm cannot be matched, error </span><span class="si">{</span><span class="n">min_diff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> nm exceeds the allowed range"</span>
             <span class="p">)</span>
         <span class="n">best_idx</span> <span class="o">=</span> <span class="n">diffs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">min_diff</span><span class="p">)</span>
         <span class="n">band_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rrs_cols</span><span class="p">[</span><span class="n">best_idx</span><span class="p">])</span>
         <span class="n">matched_bands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rrs_wavelengths</span><span class="p">[</span><span class="n">best_idx</span><span class="p">])</span>
 
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✅ Band matching successful, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_bands</span><span class="p">)</span><span class="si">}</span><span class="s2"> target bands in total, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">band_cols</span><span class="p">)</span><span class="si">}</span><span class="s2"> columns actually extracted&quot;</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Band matching successful, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_bands</span><span class="p">)</span><span class="si">}</span><span class="s2"> target bands in total, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">band_cols</span><span class="p">)</span><span class="si">}</span><span class="s2"> columns actually extracted"</span>
     <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original number of test samples: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Original number of test samples: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># === Extract Rrs and target parameter (without differencing for now) ===</span>
     <span class="n">Rrs_array</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="n">band_cols</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
@@ -3806,11 +3806,11 @@ Defaults to 0.01.</p></td>
     <span class="n">mask_target_ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">target_array</span><span class="p">)</span>
     <span class="n">mask_ok</span> <span class="o">=</span> <span class="n">mask_inputs_ok</span> <span class="o">&amp;</span> <span class="n">mask_target_ok</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">mask_ok</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;❌ No valid samples (NaN/Inf found in input or target).&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"❌ No valid samples (NaN/Inf found in input or target)."</span><span class="p">)</span>
     <span class="n">dropped</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mask_ok</span><span class="p">)</span> <span class="o">-</span> <span class="n">mask_ok</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">dropped</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;⚠️ Dropped </span><span class="si">{</span><span class="n">dropped</span><span class="si">}</span><span class="s2"> invalid samples (containing NaN/Inf) before differencing&quot;</span>
+            <span class="sa">f</span><span class="s2">"⚠️ Dropped </span><span class="si">{</span><span class="n">dropped</span><span class="si">}</span><span class="s2"> invalid samples (containing NaN/Inf) before differencing"</span>
         <span class="p">)</span>
 
     <span class="n">Rrs_array</span> <span class="o">=</span> <span class="n">Rrs_array</span><span class="p">[</span><span class="n">mask_ok</span><span class="p">]</span>
@@ -3862,7 +3862,7 @@ Defaults to 0.01.</p></td>
 
 
 <h2 id="hypercoast.moe_vae.data_loading.load_real_test_Robust" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">load_real_test_Robust</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">max_allowed_diff</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">scaler_Rrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">&#39;SPM&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">load_real_test_Robust</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">selected_bands</span><span class="p">,</span> <span class="n">max_allowed_diff</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">scaler_Rrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">target_parameter</span><span class="o">=</span><span class="s1">'SPM'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.moe_vae.data_loading.load_real_test_Robust" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3977,9 +3977,9 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
     <span class="n">scaler_Rrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">use_diff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">&quot;SPM&quot;</span><span class="p">,</span>
+    <span class="n">target_parameter</span><span class="o">=</span><span class="s2">"SPM"</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and preprocess real test data using robust scaling methods.</span>
+<span class="w">    </span><span class="sd">"""Load and preprocess real test data using robust scaling methods.</span>
 
 <span class="sd">    This function loads test data from Excel files, matches wavelength bands</span>
 <span class="sd">    to the nearest available bands, and applies the same preprocessing</span>
@@ -3995,7 +3995,7 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
 <span class="sd">        use_diff (bool, optional): Whether to apply first difference.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        target_parameter (str, optional): Name of target parameter.</span>
-<span class="sd">            Defaults to &quot;SPM&quot;.</span>
+<span class="sd">            Defaults to "SPM".</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: A tuple containing:</span>
@@ -4006,20 +4006,20 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
 <span class="sd">            - sample_dates (list): Sample dates</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If number of rows in Rrs and parameter tables don&#39;t match,</span>
+<span class="sd">        ValueError: If number of rows in Rrs and parameter tables don't match,</span>
 <span class="sd">            or if target wavelengths cannot be matched within tolerance.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Rrs&quot;</span><span class="p">)</span>
-    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span>
+    <span class="n">df_rrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"Rrs"</span><span class="p">)</span>
+    <span class="n">df_param</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"parameter"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df_param</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;❌ The number of rows in the Rrs table and parameter table do not match. Rrs: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, parameter: </span><span class="si">{</span><span class="n">df_param</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"❌ The number of rows in the Rrs table and parameter table do not match. Rrs: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, parameter: </span><span class="si">{</span><span class="n">df_param</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
-    <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">&quot;Site Label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">sample_dates</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">"Site Label"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">sample_dates</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
     <span class="c1"># Match target bands</span>
     <span class="n">rrs_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
@@ -4038,13 +4038,13 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
         <span class="n">min_diff</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">min_diff</span> <span class="o">&gt;</span> <span class="n">max_allowed_diff</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Target wavelength </span><span class="si">{</span><span class="n">target_band</span><span class="si">}</span><span class="s2"> nm cannot be matched, error </span><span class="si">{</span><span class="n">min_diff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> nm exceeds the allowed range&quot;</span>
+                <span class="sa">f</span><span class="s2">"Target wavelength </span><span class="si">{</span><span class="n">target_band</span><span class="si">}</span><span class="s2"> nm cannot be matched, error </span><span class="si">{</span><span class="n">min_diff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> nm exceeds the allowed range"</span>
             <span class="p">)</span>
         <span class="n">best_idx</span> <span class="o">=</span> <span class="n">diffs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">min_diff</span><span class="p">)</span>
         <span class="n">band_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rrs_cols</span><span class="p">[</span><span class="n">best_idx</span><span class="p">])</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✅ Band matching successful, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_bands</span><span class="p">)</span><span class="si">}</span><span class="s2"> target bands in total&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final number of valid test samples: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Band matching successful, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_bands</span><span class="p">)</span><span class="si">}</span><span class="s2"> target bands in total"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Final number of valid test samples: </span><span class="si">{</span><span class="n">df_rrs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">Rrs_array</span> <span class="o">=</span> <span class="n">df_rrs</span><span class="p">[</span><span class="n">band_cols</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
     <span class="n">param_array</span> <span class="o">=</span> <span class="n">df_param</span><span class="p">[[</span><span class="n">target_parameter</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -4053,11 +4053,11 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
     <span class="n">mask_target_ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">param_array</span><span class="p">)</span>
     <span class="n">mask_ok</span> <span class="o">=</span> <span class="n">mask_inputs_ok</span> <span class="o">&amp;</span> <span class="n">mask_target_ok</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">mask_ok</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;❌ Valid samples = 0 (NaN/Inf found in input or target).&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"❌ Valid samples = 0 (NaN/Inf found in input or target)."</span><span class="p">)</span>
     <span class="n">dropped</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mask_ok</span><span class="p">)</span> <span class="o">-</span> <span class="n">mask_ok</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">dropped</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;⚠️ Dropped </span><span class="si">{</span><span class="n">dropped</span><span class="si">}</span><span class="s2"> invalid samples (containing NaN/Inf) before differencing&quot;</span>
+            <span class="sa">f</span><span class="s2">"⚠️ Dropped </span><span class="si">{</span><span class="n">dropped</span><span class="si">}</span><span class="s2"> invalid samples (containing NaN/Inf) before differencing"</span>
         <span class="p">)</span>
 
     <span class="n">Rrs_array</span> <span class="o">=</span> <span class="n">Rrs_array</span><span class="p">[</span><span class="n">mask_ok</span><span class="p">]</span>
@@ -4071,8 +4071,8 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
     <span class="n">Rrs_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Rrs_array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">Rrs_normalized</span> <span class="o">=</span> <span class="n">scaler_Rrs</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Rrs_tensor</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
-    <span class="n">log_scaler</span> <span class="o">=</span> <span class="n">scalers_dict</span><span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">]</span>
-    <span class="n">robust_scaler</span> <span class="o">=</span> <span class="n">scalers_dict</span><span class="p">[</span><span class="s2">&quot;robust&quot;</span><span class="p">]</span>
+    <span class="n">log_scaler</span> <span class="o">=</span> <span class="n">scalers_dict</span><span class="p">[</span><span class="s2">"log"</span><span class="p">]</span>
+    <span class="n">robust_scaler</span> <span class="o">=</span> <span class="n">scalers_dict</span><span class="p">[</span><span class="s2">"robust"</span><span class="p">]</span>
     <span class="n">param_log</span> <span class="o">=</span> <span class="n">log_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">param_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="p">)</span>
@@ -4196,15 +4196,122 @@ or if target wavelengths cannot be matched within tolerance.</p></td>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../../js/timeago.min.js"></script>
       
         <script src="../../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

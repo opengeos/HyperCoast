@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3424,7 +3424,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="n">fill_value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">,</span>
     <span class="n">GLT_NODATA_VALUE</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Applies the GLT array to a numpy array of either 2 or 3 dimensions to orthorectify the data.</span>
 
 <span class="sd">    Args:</span>
@@ -3435,7 +3435,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: A numpy array of orthorectified data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Build Output Dataset</span>
     <span class="k">if</span> <span class="n">ds_array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -3513,7 +3513,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">band_mask</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Unpacks the packed band mask to apply to the dataset. Can be used manually or as an input in the emit_xarray() function.</span>
 
 <span class="sd">    Args:</span>
@@ -3521,11 +3521,11 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: A numpy array that can be used with the emit_xarray function to apply a band mask.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Open Dataset</span>
-    <span class="n">mask_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;h5netcdf&quot;</span><span class="p">)</span>
+    <span class="n">mask_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">"h5netcdf"</span><span class="p">)</span>
     <span class="c1"># Open band_mask and convert to uint8</span>
-    <span class="n">bmask</span> <span class="o">=</span> <span class="n">mask_ds</span><span class="o">.</span><span class="n">band_mask</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+    <span class="n">bmask</span> <span class="o">=</span> <span class="n">mask_ds</span><span class="o">.</span><span class="n">band_mask</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"uint8"</span><span class="p">)</span>
     <span class="c1"># Print Flags used</span>
     <span class="n">unpacked_bmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span><span class="n">bmask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># Remove bands &gt; 285</span>
@@ -3559,17 +3559,17 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">coord_vects</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This function calculates the Lat and Lon Coordinate Vectors using the GLT and Metadata from an EMIT dataset read into xarray.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">    ds: an xarray.Dataset containing the root variable and metadata of an EMIT dataset</span>
-<span class="sd">    loc: an xarray.Dataset containing the &#39;location&#39; group of an EMIT dataset</span>
+<span class="sd">    loc: an xarray.Dataset containing the 'location' group of an EMIT dataset</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">    lon, lat (numpy.array): longitude and latitude array grid for the dataset</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Retrieve Geotransform from Metadata</span>
     <span class="n">GT</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">geotransform</span>
     <span class="c1"># Create Array for Lat and Lon and fill</span>
@@ -3598,7 +3598,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 
 <h2 id="hypercoast.emit.emit_to_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">emit_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">emit_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.emit.emit_to_image" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3670,29 +3670,29 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">emit_to_image</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"nearest"</span><span class="p">,</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Converts an EMIT dataset to an image.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data (xarray.Dataset or str): The dataset containing the EMIT data or the file path to the dataset.</span>
 <span class="sd">        wavelengths (array-like, optional): The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.</span>
-<span class="sd">        method (str, optional): The method to use for data selection. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        method (str, optional): The method to use for data selection. Defaults to "nearest".</span>
 <span class="sd">        output (str, optional): The file path where the image will be saved. If None, the image will be returned as a PIL Image object. Defaults to None.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to be passed to `leafmap.array_to_image`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        rasterio.Dataset or None: The image converted from the dataset. If `output` is provided, the image will be saved to the specified file and the function will return None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">leafmap</span><span class="w"> </span><span class="kn">import</span> <span class="n">array_to_image</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">read_emit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"reflectance"</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
@@ -3753,7 +3753,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">emit_to_netcdf</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Transposes an EMIT dataset and saves it as a NetCDF file.</span>
 
 <span class="sd">    Args:</span>
@@ -3761,11 +3761,11 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 <span class="sd">        output (str): The file path where the NetCDF file will be saved.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to be passed to `xarray.Dataset.to_netcdf`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">read_emit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">ds_geo</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">)</span>
+    <span class="n">ds_geo</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="s2">"wavelengths"</span><span class="p">,</span> <span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">)</span>
     <span class="n">ds_geo</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3780,7 +3780,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 
 <h2 id="hypercoast.emit.emit_xarray" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">emit_xarray</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">qmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unpacked_bmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">emit_xarray</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">qmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unpacked_bmask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.emit.emit_xarray" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -3861,9 +3861,9 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="n">qmask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">unpacked_bmask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"nearest"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Streamlines opening an EMIT dataset as an xarray.Dataset.</span>
 
 <span class="sd">    Args:</span>
@@ -3872,34 +3872,34 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 <span class="sd">        qmask (numpy.ndarray, optional): A numpy array output from the quality_mask function used to mask pixels based on quality flags selected in that function. Any non-orthorectified array with the proper crosstrack and downtrack dimensions can also be used. Defaults to None.</span>
 <span class="sd">        unpacked_bmask (numpy.ndarray, optional): A numpy array from the band_mask function that can be used to mask band-specific pixels that have been interpolated. Defaults to None.</span>
 <span class="sd">        wavelengths (array-like, optional): The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.</span>
-<span class="sd">        method (str, optional): The method to use for data selection. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        method (str, optional): The method to use for data selection. Defaults to "nearest".</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.Dataset: An xarray.Dataset constructed based on the parameters provided.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Grab granule filename to check product</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">fsspec.implementations.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPFile</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">s3fs.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3File</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">S3File</span><span class="p">):</span>
-        <span class="n">granule_id</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">info</span><span class="p">()[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">granule_id</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">info</span><span class="p">()[</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">HTTPFile</span><span class="p">):</span>
-        <span class="n">granule_id</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">granule_id</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">granule_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># Read in Data as Xarray Datasets</span>
-    <span class="n">engine</span><span class="p">,</span> <span class="n">wvl_group</span> <span class="o">=</span> <span class="s2">&quot;h5netcdf&quot;</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">engine</span><span class="p">,</span> <span class="n">wvl_group</span> <span class="o">=</span> <span class="s2">"h5netcdf"</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
-    <span class="n">loc</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;location&quot;</span><span class="p">)</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">"location"</span><span class="p">)</span>
 
     <span class="c1"># Check if mineral dataset and read in groups (only ds/loc for minunc)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;L2B_MIN_&quot;</span> <span class="ow">in</span> <span class="n">granule_id</span><span class="p">:</span>
-        <span class="n">wvl_group</span> <span class="o">=</span> <span class="s2">&quot;mineral_metadata&quot;</span>
-    <span class="k">elif</span> <span class="s2">&quot;L2B_MINUNC&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">granule_id</span><span class="p">:</span>
-        <span class="n">wvl_group</span> <span class="o">=</span> <span class="s2">&quot;sensor_band_parameters&quot;</span>
+    <span class="k">if</span> <span class="s2">"L2B_MIN_"</span> <span class="ow">in</span> <span class="n">granule_id</span><span class="p">:</span>
+        <span class="n">wvl_group</span> <span class="o">=</span> <span class="s2">"mineral_metadata"</span>
+    <span class="k">elif</span> <span class="s2">"L2B_MINUNC"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">granule_id</span><span class="p">:</span>
+        <span class="n">wvl_group</span> <span class="o">=</span> <span class="s2">"sensor_band_parameters"</span>
 
     <span class="n">wvl</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -3911,37 +3911,37 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
     <span class="c1"># Format xarray coordinates based upon emit product (no wvl for mineral uncertainty)</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;downtrack&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;downtrack&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">downtrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
-        <span class="s2">&quot;crosstrack&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;crosstrack&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">crosstrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+        <span class="s2">"downtrack"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"downtrack"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">downtrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+        <span class="s2">"crosstrack"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"crosstrack"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">crosstrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
         <span class="o">**</span><span class="n">loc</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="n">product_band_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;L2B_MIN_&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;L2A_MASK_&quot;</span><span class="p">:</span> <span class="s2">&quot;mask_bands&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;L1B_OBS_&quot;</span><span class="p">:</span> <span class="s2">&quot;observation_bands&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;L2A_RFL_&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;L1B_RAD_&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;L2A_RFLUNCERT_&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span>
+        <span class="s2">"L2B_MIN_"</span><span class="p">:</span> <span class="s2">"name"</span><span class="p">,</span>
+        <span class="s2">"L2A_MASK_"</span><span class="p">:</span> <span class="s2">"mask_bands"</span><span class="p">,</span>
+        <span class="s2">"L1B_OBS_"</span><span class="p">:</span> <span class="s2">"observation_bands"</span><span class="p">,</span>
+        <span class="s2">"L2A_RFL_"</span><span class="p">:</span> <span class="s2">"wavelengths"</span><span class="p">,</span>
+        <span class="s2">"L1B_RAD_"</span><span class="p">:</span> <span class="s2">"wavelengths"</span><span class="p">,</span>
+        <span class="s2">"L2A_RFLUNCERT_"</span><span class="p">:</span> <span class="s2">"wavelengths"</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="c1"># if band := product_band_map.get(next((k for k in product_band_map.keys() if k in granule_id), &#39;unknown&#39;), None):</span>
-    <span class="c1"># coords[&#39;bands&#39;] = wvl[band].data</span>
+    <span class="c1"># if band := product_band_map.get(next((k for k in product_band_map.keys() if k in granule_id), 'unknown'), None):</span>
+    <span class="c1"># coords['bands'] = wvl[band].data</span>
 
     <span class="k">if</span> <span class="n">wvl</span><span class="p">:</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">coords</span><span class="p">,</span> <span class="o">**</span><span class="n">wvl</span><span class="o">.</span><span class="n">variables</span><span class="p">}</span>
 
     <span class="n">out_xr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data_vars</span><span class="o">=</span><span class="n">data_vars</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
-    <span class="n">out_xr</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;granule_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">granule_id</span>
+    <span class="n">out_xr</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"granule_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">granule_id</span>
 
     <span class="k">if</span> <span class="n">band</span> <span class="o">:=</span> <span class="n">product_band_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="nb">next</span><span class="p">((</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">product_band_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">granule_id</span><span class="p">),</span> <span class="s2">&quot;unknown&quot;</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="nb">next</span><span class="p">((</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">product_band_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">granule_id</span><span class="p">),</span> <span class="s2">"unknown"</span><span class="p">),</span> <span class="kc">None</span>
     <span class="p">):</span>
-        <span class="k">if</span> <span class="s2">&quot;minerals&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">out_xr</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
-            <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">&quot;minerals&quot;</span><span class="p">:</span> <span class="n">band</span><span class="p">})</span>
-            <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">band</span><span class="p">:</span> <span class="s2">&quot;mineral_name&quot;</span><span class="p">})</span>
+        <span class="k">if</span> <span class="s2">"minerals"</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">out_xr</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
+            <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">"minerals"</span><span class="p">:</span> <span class="n">band</span><span class="p">})</span>
+            <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="n">band</span><span class="p">:</span> <span class="s2">"mineral_name"</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">&quot;bands&quot;</span><span class="p">:</span> <span class="n">band</span><span class="p">})</span>
+            <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">"bands"</span><span class="p">:</span> <span class="n">band</span><span class="p">})</span>
 
     <span class="c1"># Apply Quality and Band Masks, set fill values to NaN</span>
     <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">):</span>
@@ -3953,12 +3953,12 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
     <span class="k">if</span> <span class="n">ortho</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">out_xr</span> <span class="o">=</span> <span class="n">ortho_xr</span><span class="p">(</span><span class="n">out_xr</span><span class="p">)</span>
-        <span class="n">out_xr</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Orthorectified&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+        <span class="n">out_xr</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"Orthorectified"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"True"</span>
 
     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">})</span>
+    <span class="n">out_xr</span> <span class="o">=</span> <span class="n">out_xr</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">"wavelengths"</span><span class="p">:</span> <span class="s2">"wavelength"</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">out_xr</span>
 </code></pre></div>
         </details>
@@ -4019,7 +4019,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">envi_header</span><span class="p">(</span><span class="n">inputpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert a ENVI binary/header path to a header, handling extensions.</span>
 
 <span class="sd">    Args:</span>
@@ -4027,24 +4027,24 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The header file associated with the input reference. If the header file does not exist, it returns the expected header file path.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.img&quot;</span>
-        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.dat&quot;</span>
-        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.raw&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">".img"</span>
+        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">".dat"</span>
+        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">".raw"</span>
     <span class="p">):</span>
         <span class="c1"># headers could be at either filename.img.hdr or filename.hdr.  Check both, return the one that exists if it</span>
         <span class="c1"># does, if not return the latter (new file creation presumed).</span>
-        <span class="n">hdrfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.hdr&quot;</span>
+        <span class="n">hdrfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">".hdr"</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">hdrfile</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">hdrfile</span>
-        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">inputpath</span> <span class="o">+</span> <span class="s2">&quot;.hdr&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">inputpath</span> <span class="o">+</span> <span class="s2">&quot;.hdr&quot;</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">inputpath</span> <span class="o">+</span> <span class="s2">".hdr"</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">inputpath</span> <span class="o">+</span> <span class="s2">".hdr"</span>
         <span class="k">return</span> <span class="n">hdrfile</span>
-    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.hdr&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">inputpath</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">".hdr"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">inputpath</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">inputpath</span> <span class="o">+</span> <span class="s2">&quot;.hdr&quot;</span>
+        <span class="k">return</span> <span class="n">inputpath</span> <span class="o">+</span> <span class="s2">".hdr"</span>
 </code></pre></div>
         </details>
     </div>
@@ -4110,7 +4110,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_adjacent</span><span class="p">(</span><span class="n">scene</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">same_orbit</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Checks if the scene numbers from the same orbit are adjacent/sequential.</span>
 
 <span class="sd">    Args:</span>
@@ -4119,8 +4119,8 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if the scene numbers are adjacent/sequential, False otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">scene_nums</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">scene</span> <span class="ow">in</span> <span class="n">same_orbit</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">scene_nums</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">scene</span> <span class="ow">in</span> <span class="n">same_orbit</span><span class="p">]</span>
     <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">scene_nums</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">scene_nums</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
 </code></pre></div>
         </details>
@@ -4202,7 +4202,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">merge_emit</span><span class="p">(</span><span class="n">datasets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Merges xarray datasets formatted using emit_xarray. Note: GDF may only work with a single geometry.</span>
 
 <span class="sd">    Args:</span>
@@ -4214,7 +4214,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Raises:</span>
 <span class="sd">        Exception: If there are inconsistencies in the 1D variables across datasets.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rioxarray.merge</span><span class="w"> </span><span class="kn">import</span> <span class="n">merge_arrays</span>
 
     <span class="n">nested_data_arrays</span> <span class="o">=</span> <span class="p">{}</span>
@@ -4228,14 +4228,14 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <span class="c1"># Dictionary of variables to merge</span>
         <span class="n">data_arrays</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># Loop over variables in dataset including elevation</span>
-        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">datasets</span><span class="p">[</span><span class="n">dataset</span><span class="p">]</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;elev&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">datasets</span><span class="p">[</span><span class="n">dataset</span><span class="p">]</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"elev"</span><span class="p">]:</span>
             <span class="c1"># Get 1D for this variable and add to dictionary</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">one_d_arrays</span><span class="p">:</span>
                 <span class="c1"># These should be an array describing the others (wavelengths, mask_bands, etc.)</span>
                 <span class="n">one_dim</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="n">item</span>
                     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">datasets</span><span class="p">[</span><span class="n">dataset</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;spatial_ref&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">,</span> <span class="s2">"spatial_ref"</span><span class="p">]</span>
                     <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">[</span><span class="n">dataset</span><span class="p">][</span><span class="n">item</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
                 <span class="p">]</span>
                 <span class="c1"># print(one_dim)</span>
@@ -4243,17 +4243,17 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
                     <span class="n">one_d_arrays</span><span class="p">[</span><span class="n">od</span><span class="p">]</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="n">dataset</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">od</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
 
                 <span class="c1"># Update format for merging - This could probably be improved</span>
-            <span class="n">da</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="n">dataset</span><span class="p">][</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">reset_coords</span><span class="p">(</span><span class="s2">&quot;elev&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;x&quot;</span><span class="p">})</span>
+            <span class="n">da</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="n">dataset</span><span class="p">][</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">reset_coords</span><span class="p">(</span><span class="s2">"elev"</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">"latitude"</span><span class="p">:</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">:</span> <span class="s2">"x"</span><span class="p">})</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">item</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">one_dim</span><span class="p">):</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="n">one_dim</span><span class="p">)</span>
-                <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s2">&quot;elev&quot;</span><span class="p">)</span>
-                <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_array</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s2">"elev"</span><span class="p">)</span>
+                <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_array</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="s2">"variable"</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">da</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">da</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="c1"># print(da.dims)</span>
-            <span class="k">if</span> <span class="n">var</span> <span class="o">==</span> <span class="s2">&quot;elev&quot;</span><span class="p">:</span>
-                <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_array</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">var</span> <span class="o">==</span> <span class="s2">"elev"</span><span class="p">:</span>
+                <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_array</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="s2">"variable"</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">data_arrays</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span>
             <span class="n">nested_data_arrays</span><span class="p">[</span><span class="n">dataset</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_arrays</span>
 
@@ -4282,7 +4282,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="c1"># Create Merged Dataset</span>
     <span class="n">merged_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data_vars</span><span class="o">=</span><span class="n">merged</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">one_d_arrays</span><span class="p">)</span>
     <span class="c1"># Rename x and y to longitude and latitude</span>
-    <span class="n">merged_ds</span> <span class="o">=</span> <span class="n">merged_ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude&quot;</span><span class="p">})</span>
+    <span class="n">merged_ds</span> <span class="o">=</span> <span class="n">merged_ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">"y"</span><span class="p">:</span> <span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">:</span> <span class="s2">"longitude"</span><span class="p">})</span>
     <span class="k">del</span> <span class="n">transposed_dict</span><span class="p">,</span> <span class="n">merged</span>
     <span class="k">return</span> <span class="n">merged_ds</span>
 </code></pre></div>
@@ -4374,7 +4374,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="n">geotransform</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">white_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Use an EMIT GLT, geotransform, and spatial ref to orthorectify a browse image. (browse images are in native resolution)</span>
 
 <span class="sd">    Args:</span>
@@ -4386,7 +4386,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.DataArray: An orthorectified browse image in the form of an xarray DataArray.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">skimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">io</span>
 
     <span class="c1"># Read Data</span>
@@ -4398,13 +4398,13 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <span class="n">fill</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">ortho_data</span> <span class="o">=</span> <span class="n">apply_glt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">glt</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
+        <span class="s2">"y"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">[</span><span class="s2">"y"</span><span class="p">],</span>
             <span class="p">(</span><span class="n">geotransform</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">geotransform</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
             <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">glt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">geotransform</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
         <span class="p">),</span>
-        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span>
+        <span class="s2">"x"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">[</span><span class="s2">"x"</span><span class="p">],</span>
             <span class="p">(</span><span class="n">geotransform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">geotransform</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">glt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">geotransform</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
         <span class="p">),</span>
@@ -4412,7 +4412,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="n">ortho_data</span> <span class="o">=</span> <span class="n">ortho_data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">ortho_data</span><span class="p">[</span><span class="n">ortho_data</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c1"># Place in xarray.datarray</span>
-    <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">ortho_data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">ortho_data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">"band"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span>
     <span class="n">da</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="n">spatial_ref</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">da</span>
 </code></pre></div>
@@ -4490,7 +4490,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="n">GLT_NODATA_VALUE</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">fill_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Uses `apply_glt` to create an orthorectified xarray dataset.</span>
 
 <span class="sd">    Args:</span>
@@ -4500,19 +4500,19 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.Dataset: An orthocorrected xarray dataset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Build glt_ds</span>
 
     <span class="n">glt_ds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;glt_x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;glt_y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">nan</span><span class="o">=</span><span class="n">GLT_NODATA_VALUE</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">ds</span><span class="p">[</span><span class="s2">"glt_x"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"glt_y"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">nan</span><span class="o">=</span><span class="n">GLT_NODATA_VALUE</span>
     <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
     <span class="c1"># List Variables</span>
     <span class="n">var_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span>
 
     <span class="c1"># Remove flat field from data vars - the flat field is only useful with additional information before orthorectification</span>
-    <span class="k">if</span> <span class="s2">&quot;flat_field_update&quot;</span> <span class="ow">in</span> <span class="n">var_list</span><span class="p">:</span>
-        <span class="n">var_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;flat_field_update&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"flat_field_update"</span> <span class="ow">in</span> <span class="n">var_list</span><span class="p">:</span>
+        <span class="n">var_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"flat_field_update"</span><span class="p">)</span>
 
     <span class="c1"># Create empty dictionary for orthocorrected data vars</span>
     <span class="n">data_vars</span> <span class="o">=</span> <span class="p">{}</span>
@@ -4530,9 +4530,9 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <span class="c1"># Update variables - Only works for 2 or 3 dimensional arrays</span>
         <span class="k">if</span> <span class="n">raw_ds</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">out_ds</span> <span class="o">=</span> <span class="n">out_ds</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-            <span class="n">data_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">out_ds</span><span class="p">)</span>
+            <span class="n">data_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">],</span> <span class="n">out_ds</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">data_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">var_dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">out_ds</span><span class="p">)</span>
+            <span class="n">data_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">,</span> <span class="n">var_dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">out_ds</span><span class="p">)</span>
 
         <span class="k">del</span> <span class="n">raw_ds</span>
 
@@ -4542,7 +4542,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="p">)</span>  <span class="c1"># Reorder this function to make sense in case of multiple variables</span>
 
     <span class="c1"># Apply GLT to elevation</span>
-    <span class="n">elev_ds</span> <span class="o">=</span> <span class="n">apply_glt</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;elev&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">glt_ds</span><span class="p">)</span>
+    <span class="n">elev_ds</span> <span class="o">=</span> <span class="n">apply_glt</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">"elev"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">glt_ds</span><span class="p">)</span>
     <span class="n">elev_ds</span><span class="p">[</span><span class="n">elev_ds</span> <span class="o">==</span> <span class="n">fill_value</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="c1"># Delete glt_ds - no longer needed</span>
@@ -4550,17 +4550,17 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
     <span class="c1"># Create Coordinate Dictionary</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span> <span class="n">lat</span><span class="p">),</span>
-        <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">lon</span><span class="p">),</span>
+        <span class="s2">"latitude"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">],</span> <span class="n">lat</span><span class="p">),</span>
+        <span class="s2">"longitude"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"longitude"</span><span class="p">],</span> <span class="n">lon</span><span class="p">),</span>
         <span class="o">**</span><span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
     <span class="p">}</span>  <span class="c1"># unpack to add appropriate coordinates</span>
 
     <span class="c1"># Remove Unnecessary Coords</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;downtrack&quot;</span><span class="p">,</span> <span class="s2">&quot;crosstrack&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;glt_x&quot;</span><span class="p">,</span> <span class="s2">&quot;glt_y&quot;</span><span class="p">,</span> <span class="s2">&quot;elev&quot;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"downtrack"</span><span class="p">,</span> <span class="s2">"crosstrack"</span><span class="p">,</span> <span class="s2">"lat"</span><span class="p">,</span> <span class="s2">"lon"</span><span class="p">,</span> <span class="s2">"glt_x"</span><span class="p">,</span> <span class="s2">"glt_y"</span><span class="p">,</span> <span class="s2">"elev"</span><span class="p">]:</span>
         <span class="k">del</span> <span class="n">coords</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="c1"># Add Orthocorrected Elevation</span>
-    <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;elev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">elev_ds</span><span class="p">))</span>
+    <span class="n">coords</span><span class="p">[</span><span class="s2">"elev"</span><span class="p">]</span> <span class="o">=</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">elev_ds</span><span class="p">))</span>
 
     <span class="c1"># Build Output xarray Dataset and assign data_vars array attributes</span>
     <span class="n">out_xr</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data_vars</span><span class="o">=</span><span class="n">data_vars</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
@@ -4569,9 +4569,9 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="c1"># Assign Attributes from Original Datasets</span>
     <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">var_list</span><span class="p">:</span>
         <span class="n">out_xr</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
-    <span class="n">out_xr</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
-    <span class="n">out_xr</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
-    <span class="n">out_xr</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;elev&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;elev&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+    <span class="n">out_xr</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+    <span class="n">out_xr</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+    <span class="n">out_xr</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">"elev"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"elev"</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
 
     <span class="c1"># Add Spatial Reference in recognizable format</span>
     <span class="n">out_xr</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">spatial_ref</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -4590,7 +4590,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 
 <h2 id="hypercoast.emit.plot_emit" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">plot_emit</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downtrack</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crosstrack</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_nans</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;wavelengths&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">frame_height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">frame_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">plot_emit</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downtrack</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crosstrack</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_nans</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'wavelengths'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'reflectance'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">frame_height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">frame_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.emit.plot_emit" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -4732,18 +4732,18 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
     <span class="n">downtrack</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">crosstrack</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">remove_nans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">x</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;reflectance&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"wavelengths"</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"reflectance"</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"black"</span><span class="p">,</span>
     <span class="n">frame_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
     <span class="n">frame_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"nearest"</span><span class="p">,</span>
     <span class="n">ortho</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Plots a line graph of the reflectance data from a given dataset.</span>
 
 <span class="sd">    Args:</span>
@@ -4753,32 +4753,32 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 <span class="sd">        downtrack (int, optional): The downtrack coordinate to select for non-orthorectified data. Defaults to None.</span>
 <span class="sd">        crosstrack (int, optional): The crosstrack coordinate to select for non-orthorectified data. Defaults to None.</span>
 <span class="sd">        remove_nans (bool, optional): If True, replace non-good wavelengths with NaN. Defaults to True.</span>
-<span class="sd">        x (str, optional): The x-axis label. Defaults to &quot;wavelengths&quot;.</span>
-<span class="sd">        y (str, optional): The y-axis label. Defaults to &quot;reflectance&quot;.</span>
-<span class="sd">        color (str, optional): The color of the line. Defaults to &quot;black&quot;.</span>
+<span class="sd">        x (str, optional): The x-axis label. Defaults to "wavelengths".</span>
+<span class="sd">        y (str, optional): The y-axis label. Defaults to "reflectance".</span>
+<span class="sd">        color (str, optional): The color of the line. Defaults to "black".</span>
 <span class="sd">        frame_height (int, optional): The height of the frame. Defaults to 400.</span>
 <span class="sd">        frame_width (int, optional): The width of the frame. Defaults to 600.</span>
 <span class="sd">        title (str, optional): The title of the plot. If None, a default title will be generated. Defaults to None.</span>
-<span class="sd">        method (str, optional): The method to use for data selection. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        method (str, optional): The method to use for data selection. Defaults to "nearest".</span>
 <span class="sd">        ortho (bool, optional): If True, the function will use longitude and latitude for data selection. Defaults to True.</span>
 <span class="sd">        options (dict, optional): Additional options to be passed to `hvplot.line`. Defaults to {}.</span>
 <span class="sd">        **kwargs: Additional keyword arguments to be passed to `hvplot.line`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        hvplot.Plot: The line plot of the reflectance data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">hvplot.xarray</span>  <span class="c1"># noqa F401</span>
 
     <span class="k">if</span> <span class="n">ortho</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">longitude</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">latitude</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Longitude and Latitude must be provided for orthorectified data.&quot;</span>
+                <span class="s2">"Longitude and Latitude must be provided for orthorectified data."</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">downtrack</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">crosstrack</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Downtrack and Crosstrack must be provided for non-orthorectified data.&quot;</span>
+                <span class="s2">"Downtrack and Crosstrack must be provided for non-orthorectified data."</span>
             <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">longitude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">latitude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -4791,21 +4791,21 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <span class="n">ds</span> <span class="o">=</span> <span class="n">read_emit</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="n">ortho</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">remove_nans</span><span class="p">:</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;good_wavelengths&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s2">"reflectance"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"good_wavelengths"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="k">if</span> <span class="n">ortho</span><span class="p">:</span>
-        <span class="n">example</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+        <span class="n">example</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"reflectance"</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
             <span class="n">longitude</span><span class="o">=</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="n">latitude</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Reflectance at longitude=</span><span class="si">{</span><span class="n">longitude</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, latitude=</span><span class="si">{</span><span class="n">latitude</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Reflectance at longitude=</span><span class="si">{</span><span class="n">longitude</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, latitude=</span><span class="si">{</span><span class="n">latitude</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">example</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;reflectance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+        <span class="n">example</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">"reflectance"</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
             <span class="n">downtrack</span><span class="o">=</span><span class="n">downtrack</span><span class="p">,</span> <span class="n">crosstrack</span><span class="o">=</span><span class="n">crosstrack</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Reflectance at downtrack=</span><span class="si">{</span><span class="n">downtrack</span><span class="si">}</span><span class="s2">, crosstrack=</span><span class="si">{</span><span class="n">crosstrack</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Reflectance at downtrack=</span><span class="si">{</span><span class="n">downtrack</span><span class="si">}</span><span class="s2">, crosstrack=</span><span class="si">{</span><span class="n">crosstrack</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="n">line</span> <span class="o">=</span> <span class="n">example</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
         <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
@@ -4896,7 +4896,7 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">quality_mask</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quality_bands</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Builds a single layer mask to apply based on the bands selected from an EMIT L2A Mask file.</span>
 
 <span class="sd">    Args:</span>
@@ -4908,22 +4908,22 @@ Credits to the original authors, including Erik Bolch, Alex Leigh, and others.</
 
 <span class="sd">    Raises:</span>
 <span class="sd">        AttributeError: If the selected flags include a data band (5 or 6) not just flag bands.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Open Dataset</span>
-    <span class="n">mask_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;h5netcdf&quot;</span><span class="p">)</span>
+    <span class="n">mask_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">"h5netcdf"</span><span class="p">)</span>
     <span class="c1"># Open Sensor band Group</span>
     <span class="n">mask_parameters_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-        <span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;h5netcdf&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;sensor_band_parameters&quot;</span>
+        <span class="n">filepath</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">"h5netcdf"</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">"sensor_band_parameters"</span>
     <span class="p">)</span>
     <span class="c1"># Print Flags used</span>
-    <span class="n">flags_used</span> <span class="o">=</span> <span class="n">mask_parameters_ds</span><span class="p">[</span><span class="s2">&quot;mask_bands&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">quality_bands</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Flags used: </span><span class="si">{</span><span class="n">flags_used</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">flags_used</span> <span class="o">=</span> <span class="n">mask_parameters_ds</span><span class="p">[</span><span class="s2">"mask_bands"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">quality_bands</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Flags used: </span><span class="si">{</span><span class="n">flags_used</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="c1"># Check for data bands and build mask</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">quality_bands</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]):</span>
-        <span class="n">err_str</span> <span class="o">=</span> <span class="s2">&quot;Selected flags include a data band (5 or 6) not just flag bands&quot;</span>
+        <span class="n">err_str</span> <span class="o">=</span> <span class="s2">"Selected flags include a data band (5 or 6) not just flag bands"</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">err_str</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">qmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_ds</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">quality_bands</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">qmask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_ds</span><span class="p">[</span><span class="s2">"mask"</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">quality_bands</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">qmask</span><span class="p">[</span><span class="n">qmask</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">qmask</span>
 </code></pre></div>
@@ -4992,7 +4992,7 @@ used to orthorectify the data at a later point in a workflow.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/emit.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">raw_spatial_crop</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">gpd</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Use a polygon to clip the file GLT, then a bounding box to crop the spatially raw data. Regions clipped in the GLT are set to 0 so a mask will be applied when</span>
 <span class="sd">    used to orthorectify the data at a later point in a workflow.</span>
 
@@ -5002,18 +5002,18 @@ used to orthorectify the data at a later point in a workflow.</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.Dataset: A clipped GLT and raw spatial data clipped to a bounding box.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Reformat the GLT</span>
     <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">coord_vects</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
     <span class="n">data_vars</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;glt_x&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">glt_x</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
-        <span class="s2">&quot;glt_y&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">glt_y</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+        <span class="s2">"glt_x"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">glt_x</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+        <span class="s2">"glt_y"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">glt_y</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span> <span class="n">lat</span><span class="p">),</span>
-        <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">lon</span><span class="p">),</span>
-        <span class="s2">&quot;ortho_y&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">ortho_y</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
-        <span class="s2">&quot;ortho_x&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">ortho_x</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+        <span class="s2">"latitude"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">],</span> <span class="n">lat</span><span class="p">),</span>
+        <span class="s2">"longitude"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"longitude"</span><span class="p">],</span> <span class="n">lon</span><span class="p">),</span>
+        <span class="s2">"ortho_y"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"latitude"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">ortho_y</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+        <span class="s2">"ortho_x"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"longitude"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">ortho_x</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="n">glt_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data_vars</span><span class="o">=</span><span class="n">data_vars</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
     <span class="n">glt_ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="n">glt_ds</span><span class="o">.</span><span class="n">spatial_ref</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -5023,7 +5023,7 @@ used to orthorectify the data at a later point in a workflow.</p>
 
     <span class="c1"># Pull new geotransform from clipped glt</span>
     <span class="n">clipped_gt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">clipped</span><span class="p">[</span><span class="s2">&quot;spatial_ref&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">GeoTransform</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)]</span>
+        <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">clipped</span><span class="p">[</span><span class="s2">"spatial_ref"</span><span class="p">]</span><span class="o">.</span><span class="n">GeoTransform</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)]</span>
     <span class="p">)</span>  <span class="c1"># THIS GEOTRANSFORM IS OFF BY HALF A PIXEL</span>
 
     <span class="c1"># Create Crosstrack and Downtrack masks for spatially raw dataset -1 is to account for 1 based index. May be a more robust way to do this exists</span>
@@ -5037,28 +5037,28 @@ used to orthorectify the data at a later point in a workflow.</p>
     <span class="c1"># Mask Areas outside of crosstrack and downtrack covered by the shape</span>
     <span class="n">clipped_ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">crosstrack_mask</span> <span class="o">&amp;</span> <span class="n">downtrack_mask</span><span class="p">),</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># Replace Full dataset geotransform with clipped geotransform</span>
-    <span class="n">clipped_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;geotransform&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clipped_gt</span>
+    <span class="n">clipped_ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"geotransform"</span><span class="p">]</span> <span class="o">=</span> <span class="n">clipped_gt</span>
 
     <span class="c1"># Drop unnecessary vars from dataset</span>
-    <span class="n">clipped_ds</span> <span class="o">=</span> <span class="n">clipped_ds</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">([</span><span class="s2">&quot;glt_x&quot;</span><span class="p">,</span> <span class="s2">&quot;glt_y&quot;</span><span class="p">,</span> <span class="s2">&quot;downtrack&quot;</span><span class="p">,</span> <span class="s2">&quot;crosstrack&quot;</span><span class="p">])</span>
+    <span class="n">clipped_ds</span> <span class="o">=</span> <span class="n">clipped_ds</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">([</span><span class="s2">"glt_x"</span><span class="p">,</span> <span class="s2">"glt_y"</span><span class="p">,</span> <span class="s2">"downtrack"</span><span class="p">,</span> <span class="s2">"crosstrack"</span><span class="p">])</span>
 
     <span class="c1"># Re-index the GLT to the new array</span>
     <span class="n">glt_x_data</span> <span class="o">=</span> <span class="n">clipped</span><span class="o">.</span><span class="n">glt_x</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">clipped</span><span class="o">.</span><span class="n">glt_x</span><span class="p">)</span>
     <span class="n">glt_y_data</span> <span class="o">=</span> <span class="n">clipped</span><span class="o">.</span><span class="n">glt_y</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">clipped</span><span class="o">.</span><span class="n">glt_y</span><span class="p">)</span>
     <span class="n">clipped_ds</span> <span class="o">=</span> <span class="n">clipped_ds</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;glt_x&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;ortho_y&quot;</span><span class="p">,</span> <span class="s2">&quot;ortho_x&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">glt_x_data</span><span class="p">)),</span>
-            <span class="s2">&quot;glt_y&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;ortho_y&quot;</span><span class="p">,</span> <span class="s2">&quot;ortho_x&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">glt_y_data</span><span class="p">)),</span>
+            <span class="s2">"glt_x"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"ortho_y"</span><span class="p">,</span> <span class="s2">"ortho_x"</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">glt_x_data</span><span class="p">)),</span>
+            <span class="s2">"glt_y"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"ortho_y"</span><span class="p">,</span> <span class="s2">"ortho_x"</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">glt_y_data</span><span class="p">)),</span>
         <span class="p">}</span>
     <span class="p">)</span>
     <span class="n">clipped_ds</span> <span class="o">=</span> <span class="n">clipped_ds</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;downtrack&quot;</span><span class="p">:</span> <span class="p">(</span>
-                <span class="p">[</span><span class="s2">&quot;downtrack&quot;</span><span class="p">],</span>
+            <span class="s2">"downtrack"</span><span class="p">:</span> <span class="p">(</span>
+                <span class="p">[</span><span class="s2">"downtrack"</span><span class="p">],</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">clipped_ds</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="p">),</span>
-            <span class="s2">&quot;crosstrack&quot;</span><span class="p">:</span> <span class="p">(</span>
-                <span class="p">[</span><span class="s2">&quot;crosstrack&quot;</span><span class="p">],</span>
+            <span class="s2">"crosstrack"</span><span class="p">:</span> <span class="p">(</span>
+                <span class="p">[</span><span class="s2">"crosstrack"</span><span class="p">],</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">clipped_ds</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
             <span class="p">),</span>
         <span class="p">}</span>
@@ -5078,7 +5078,7 @@ used to orthorectify the data at a later point in a workflow.</p>
 
 
 <h2 id="hypercoast.emit.read_emit" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">read_emit</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">read_emit</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.emit.read_emit" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5151,23 +5151,23 @@ used to orthorectify the data at a later point in a workflow.</p>
     <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">ortho</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"nearest"</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Opens an EMIT dataset from a file path and assigns new coordinates to it.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filepath (str): The file path to the EMIT dataset.</span>
 <span class="sd">        ortho (bool, optional): If True, the function will return an orthorectified dataset. Defaults to True.</span>
 <span class="sd">        wavelengths (array-like, optional): The specific wavelengths to select. If None, all wavelengths are selected. Defaults to None.</span>
-<span class="sd">        method (str, optional): The method to use for data selection. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        method (str, optional): The method to use for data selection. Defaults to "nearest".</span>
 <span class="sd">        **kwargs: Additional keyword arguments to be passed to `xr.open_dataset`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        xarray.Dataset: The dataset with new coordinates assigned.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">ortho</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">emit_xarray</span><span class="p">(</span>
@@ -5175,24 +5175,24 @@ used to orthorectify the data at a later point in a workflow.</p>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">wvl</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;sensor_band_parameters&quot;</span><span class="p">)</span>
-        <span class="n">loc</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;location&quot;</span><span class="p">)</span>
+        <span class="n">wvl</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">"sensor_band_parameters"</span><span class="p">)</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">"location"</span><span class="p">)</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">&quot;downtrack&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;downtrack&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">downtrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
-                <span class="s2">&quot;crosstrack&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;crosstrack&quot;</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">crosstrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+                <span class="s2">"downtrack"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"downtrack"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">downtrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+                <span class="s2">"crosstrack"</span><span class="p">:</span> <span class="p">([</span><span class="s2">"crosstrack"</span><span class="p">],</span> <span class="n">ds</span><span class="o">.</span><span class="n">crosstrack</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
                 <span class="o">**</span><span class="n">wvl</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">loc</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">)</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">&quot;bands&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelengths&quot;</span><span class="p">})</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">"bands"</span><span class="p">:</span> <span class="s2">"wavelengths"</span><span class="p">})</span>
         <span class="k">del</span> <span class="n">wvl</span>
         <span class="k">del</span> <span class="n">loc</span>
 
         <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;wavelengths&quot;</span><span class="p">:</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">})</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">"wavelengths"</span><span class="p">:</span> <span class="s2">"wavelength"</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">ds</span>
 </code></pre></div>
         </details>
@@ -5207,7 +5207,7 @@ used to orthorectify the data at a later point in a workflow.</p>
 
 
 <h2 id="hypercoast.emit.viz_emit" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">viz_emit</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">frame_width</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="s1">&#39;ESRI&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">viz_emit</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis'</span><span class="p">,</span> <span class="n">frame_width</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">,</span> <span class="n">ortho</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">'equal'</span><span class="p">,</span> <span class="n">tiles</span><span class="o">=</span><span class="s1">'ESRI'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.emit.viz_emit" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5321,29 +5321,29 @@ used to orthorectify the data at a later point in a workflow.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">viz_emit</span><span class="p">(</span>
     <span class="n">ds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
-    <span class="n">cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"viridis"</span><span class="p">,</span>
     <span class="n">frame_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">720</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"nearest"</span><span class="p">,</span>
     <span class="n">ortho</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">aspect</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;equal&quot;</span><span class="p">,</span>
-    <span class="n">tiles</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ESRI&quot;</span><span class="p">,</span>
+    <span class="n">aspect</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"equal"</span><span class="p">,</span>
+    <span class="n">tiles</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"ESRI"</span><span class="p">,</span>
     <span class="n">alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
     <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Visualizes the reflectance data from a given dataset at specific wavelengths.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        ds (xarray.Dataset or str): The dataset containing the reflectance data or the file path to the dataset.</span>
 <span class="sd">        wavelengths (array-like): The specific wavelengths to visualize.</span>
-<span class="sd">        cmap (str, optional): The colormap to use. Defaults to &quot;viridis&quot;.</span>
+<span class="sd">        cmap (str, optional): The colormap to use. Defaults to "viridis".</span>
 <span class="sd">        frame_width (int, optional): The width of the frame. Defaults to 720.</span>
-<span class="sd">        method (str, optional): The method to use for data selection. Defaults to &quot;nearest&quot;.</span>
+<span class="sd">        method (str, optional): The method to use for data selection. Defaults to "nearest".</span>
 <span class="sd">        ortho (bool, optional): If True, the function will return an orthorectified image. Defaults to True.</span>
-<span class="sd">        aspect (str, optional): The aspect ratio of the plot. Defaults to &quot;equal&quot;.</span>
-<span class="sd">        tiles (str, optional): The tile source to use for the background map. Defaults to &quot;ESRI&quot;.</span>
+<span class="sd">        aspect (str, optional): The aspect ratio of the plot. Defaults to "equal".</span>
+<span class="sd">        tiles (str, optional): The tile source to use for the background map. Defaults to "ESRI".</span>
 <span class="sd">        alpha (float, optional): The alpha value for the image. Defaults to 0.8.</span>
 <span class="sd">        title (str, optional): The title of the plot. If None, a default title will be generated. Defaults to None.</span>
 <span class="sd">        options (dict, optional): Additional options to be passed to `hvplot.image`. Defaults to {}.</span>
@@ -5351,7 +5351,7 @@ used to orthorectify the data at a later point in a workflow.</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        hvplot.Plot: The image plot of the reflectance data at the specified wavelengths.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">hvplot.xarray</span>  <span class="c1"># noqa F401</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -5361,10 +5361,10 @@ used to orthorectify the data at a later point in a workflow.</p>
         <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">wavelengths</span><span class="p">]</span>
     <span class="n">example</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 
-    <span class="n">wavelengths</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">w</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">example</span><span class="p">[</span><span class="s2">&quot;wavelength&quot;</span><span class="p">]])</span>
+    <span class="n">wavelengths</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">w</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">example</span><span class="p">[</span><span class="s2">"wavelength"</span><span class="p">]])</span>
 
     <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Reflectance at </span><span class="si">{</span><span class="n">wavelengths</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">example</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Reflectance at </span><span class="si">{</span><span class="n">wavelengths</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">example</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="k">if</span> <span class="n">ortho</span><span class="p">:</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">example</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span>
@@ -5489,15 +5489,122 @@ used to orthorectify the data at a later point in a workflow.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

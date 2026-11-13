@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3398,12 +3398,12 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
           <summary>Source code in <code>hypercoast/chla.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">VAE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the VAE model with encoder and decoder layers.</span>
+<span class="w">        </span><span class="sd">"""Initializes the VAE model with encoder and decoder layers.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            input_dim (int): Dimension of the input features.</span>
 <span class="sd">            output_dim (int): Dimension of the output features.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="c1"># encoder</span>
@@ -3432,21 +3432,21 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encodes the input tensor into mean and log variance.</span>
+<span class="w">        </span><span class="sd">"""Encodes the input tensor into mean and log variance.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): Input tensor.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple[torch.Tensor, torch.Tensor]: Mean and log variance tensors.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">log_var</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Applies the reparameterization trick to sample from the latent space.</span>
+<span class="w">        </span><span class="sd">"""Applies the reparameterization trick to sample from the latent space.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            mu (torch.Tensor): Mean tensor.</span>
@@ -3454,27 +3454,27 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Sampled latent vector.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">std</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">log_var</span><span class="p">)</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">std</span>
         <span class="k">return</span> <span class="n">z</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decodes the latent vector back to the original space.</span>
+<span class="w">        </span><span class="sd">"""Decodes the latent vector back to the original space.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            z (torch.Tensor): Latent vector.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Reconstructed tensor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a forward pass through the VAE model.</span>
+<span class="w">        </span><span class="sd">"""Performs a forward pass through the VAE model.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): Input tensor.</span>
@@ -3482,7 +3482,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple[torch.Tensor, torch.Tensor, torch.Tensor]: Reconstructed tensor,</span>
 <span class="sd">                mean, and log variance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reparameterize</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">)</span>
         <span class="n">x_reconstructed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
@@ -3547,12 +3547,12 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <details class="quote">
           <summary>Source code in <code>hypercoast/chla.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes the VAE model with encoder and decoder layers.</span>
+<span class="w">    </span><span class="sd">"""Initializes the VAE model with encoder and decoder layers.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input_dim (int): Dimension of the input features.</span>
 <span class="sd">        output_dim (int): Dimension of the output features.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="c1"># encoder</span>
@@ -3638,14 +3638,14 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <details class="quote">
           <summary>Source code in <code>hypercoast/chla.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decodes the latent vector back to the original space.</span>
+<span class="w">    </span><span class="sd">"""Decodes the latent vector back to the original space.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        z (torch.Tensor): Latent vector.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Reconstructed tensor.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3706,14 +3706,14 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <details class="quote">
           <summary>Source code in <code>hypercoast/chla.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encodes the input tensor into mean and log variance.</span>
+<span class="w">    </span><span class="sd">"""Encodes the input tensor into mean and log variance.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        x (torch.Tensor): Input tensor.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[torch.Tensor, torch.Tensor]: Mean and log variance tensors.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -3780,7 +3780,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs a forward pass through the VAE model.</span>
+<span class="w">    </span><span class="sd">"""Performs a forward pass through the VAE model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        x (torch.Tensor): Input tensor.</span>
@@ -3788,7 +3788,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[torch.Tensor, torch.Tensor, torch.Tensor]: Reconstructed tensor,</span>
 <span class="sd">            mean, and log variance.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reparameterize</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">)</span>
     <span class="n">x_reconstructed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
@@ -3858,7 +3858,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <details class="quote">
           <summary>Source code in <code>hypercoast/chla.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">log_var</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies the reparameterization trick to sample from the latent space.</span>
+<span class="w">    </span><span class="sd">"""Applies the reparameterization trick to sample from the latent space.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        mu (torch.Tensor): Mean tensor.</span>
@@ -3866,7 +3866,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Sampled latent vector.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">std</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">log_var</span><span class="p">)</span>
     <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">std</span>
@@ -3955,7 +3955,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_metrics</span><span class="p">(</span>
     <span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">actuals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates epsilon, beta, and additional metrics (RMSE, RMSLE, MAPE, Bias, MAE).</span>
+<span class="w">    </span><span class="sd">"""Calculates epsilon, beta, and additional metrics (RMSE, RMSLE, MAPE, Bias, MAE).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        predictions (np.ndarray): Predicted values.</span>
@@ -3964,7 +3964,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[float, float, float, float, float, float, float]: epsilon, beta, rmse, rmsle, mape, bias, mae.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Apply the threshold to filter out predictions with large relative error</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">actuals</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">actuals</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">threshold</span>
     <span class="n">filtered_predictions</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
@@ -4060,23 +4060,23 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
     <span class="n">chla_data_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predicts chlorophyll-a concentration using a pre-trained VAE model.</span>
+<span class="w">    </span><span class="sd">"""Predicts chlorophyll-a concentration using a pre-trained VAE model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        pace_filepath (str): Path to the PACE dataset file.</span>
 <span class="sd">        best_model_path (str): Path to the pre-trained VAE model file.</span>
 <span class="sd">        chla_data_file (str, optional): Path to save the predicted chlorophyll-a data. Defaults to None.</span>
 <span class="sd">        device (torch.device, optional): Device to perform inference on. Defaults to None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">.pace</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_pace</span>
 
     <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
 
     <span class="c1"># Load PACE dataset and prepare data</span>
     <span class="n">PACE_dataset</span> <span class="o">=</span> <span class="n">read_pace</span><span class="p">(</span><span class="n">pace_filepath</span><span class="p">)</span>
-    <span class="n">da</span> <span class="o">=</span> <span class="n">PACE_dataset</span><span class="p">[</span><span class="s2">&quot;Rrs&quot;</span><span class="p">]</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">PACE_dataset</span><span class="p">[</span><span class="s2">"Rrs"</span><span class="p">]</span>
     <span class="n">wl</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">values</span>
     <span class="n">Rrs</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span>
     <span class="n">latitude</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span>
@@ -4162,7 +4162,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
     <span class="c1"># Save the final output including latitude and longitude</span>
     <span class="k">if</span> <span class="n">chla_data_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">chla_data_file</span> <span class="o">=</span> <span class="n">pace_filepath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.nc&quot;</span><span class="p">,</span> <span class="s2">&quot;.npy&quot;</span><span class="p">)</span>
+        <span class="n">chla_data_file</span> <span class="o">=</span> <span class="n">pace_filepath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".nc"</span><span class="p">,</span> <span class="s2">".npy"</span><span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">chla_data_file</span><span class="p">,</span> <span class="n">final_output</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -4177,7 +4177,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 
 <h2 id="hypercoast.chla.chla_viz" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">chla_viz</span><span class="p">(</span><span class="n">rgb_image_tif_file</span><span class="p">,</span> <span class="n">chla_data_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;PACE&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">chla_viz</span><span class="p">(</span><span class="n">rgb_image_tif_file</span><span class="p">,</span> <span class="n">chla_data_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'PACE'</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'jet'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.chla.chla_viz" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -4241,23 +4241,23 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
     <span class="n">rgb_image_tif_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">chla_data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PACE&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"PACE"</span><span class="p">,</span>
     <span class="n">figsize</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
-    <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;jet&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"jet"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualizes the chlorophyll-a concentration over an RGB image.</span>
+<span class="w">    </span><span class="sd">"""Visualizes the chlorophyll-a concentration over an RGB image.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        rgb_image_tif_file (str): Path to the RGB image file.</span>
 <span class="sd">        chla_data_file (str): Path to the chlorophyll-a data file.</span>
 <span class="sd">        output_file (str): Path to save the output visualization.</span>
-<span class="sd">        title (str, optional): Title of the plot. Defaults to &quot;PACE&quot;.</span>
+<span class="sd">        title (str, optional): Title of the plot. Defaults to "PACE".</span>
 <span class="sd">        figsize (tuple, optional): Figure size for the plot. Defaults to (12, 8).</span>
-<span class="sd">        cmap (str, optional): Colormap for the chlorophyll-a concentration. Defaults to &quot;jet&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        cmap (str, optional): Colormap for the chlorophyll-a concentration. Defaults to "jet".</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Read RGB Image</span>
-    <span class="c1"># rgb_image_tif_file = &quot;data/snapshot-2024-08-10T00_00_00Z.tif&quot;</span>
+    <span class="c1"># rgb_image_tif_file = "data/snapshot-2024-08-10T00_00_00Z.tif"</span>
 
     <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">rgb_image_tif_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">dataset</span><span class="p">:</span>
         <span class="c1"># Read R、G、B bands</span>
@@ -4305,7 +4305,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
     <span class="c1"># Resample the chlorophyll-a data to the size of the RGB image using interpolation.</span>
     <span class="n">chla_resampled</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">),</span> <span class="n">chla_values</span><span class="p">,</span> <span class="p">(</span><span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span>
+        <span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">),</span> <span class="n">chla_values</span><span class="p">,</span> <span class="p">(</span><span class="n">grid_lon</span><span class="p">,</span> <span class="n">grid_lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">"linear"</span>
     <span class="p">)</span>
 
     <span class="c1"># Keep NaN values as transparent regions.</span>
@@ -4313,7 +4313,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rgb_image</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rgb_image</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">"upper"</span><span class="p">)</span>
 
     <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">35</span>
     <span class="n">im</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
@@ -4321,21 +4321,21 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
         <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
         <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
-        <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span>
+        <span class="n">origin</span><span class="o">=</span><span class="s2">"upper"</span><span class="p">,</span>
         <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
         <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">)</span>
-    <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Chlorophyll-a Concentration (mg/m³)&quot;</span><span class="p">)</span>
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"horizontal"</span><span class="p">)</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">"Chlorophyll-a Concentration (mg/m³)"</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Latitude&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Longitude"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Latitude"</span><span class="p">)</span>
 
-    <span class="c1"># output_file = &quot;20241024-2.png&quot;</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved overlay image to </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># output_file = "20241024-2.png"</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saved overlay image to </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
@@ -4411,7 +4411,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">VAE</span><span class="p">,</span> <span class="n">test_dl</span><span class="p">:</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluates the VAE model.</span>
+<span class="w">    </span><span class="sd">"""Evaluates the VAE model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model (VAE): VAE model to be evaluated.</span>
@@ -4420,10 +4420,10 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[np.ndarray, np.ndarray]: Predictions and actual values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
 
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
@@ -4502,7 +4502,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_real_data</span><span class="p">(</span>
     <span class="n">aphy_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rrs_file_path</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">DataLoader</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Loads and preprocesses real data for training and testing.</span>
+<span class="w">    </span><span class="sd">"""Loads and preprocesses real data for training and testing.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        aphy_file_path (str): Path to the aphy file.</span>
@@ -4511,9 +4511,9 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[DataLoader, DataLoader, int, int]: Training DataLoader, testing</span>
 <span class="sd">            DataLoader, input dimension, output dimension.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">aphy_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">array2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">rrs_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">aphy_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">array2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">rrs_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="n">array1</span> <span class="o">=</span> <span class="n">array1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -4620,7 +4620,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_real_test</span><span class="p">(</span>
     <span class="n">aphy_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rrs_file_path</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">DataLoader</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Loads and preprocesses real data for testing.</span>
+<span class="w">    </span><span class="sd">"""Loads and preprocesses real data for testing.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        aphy_file_path (str): Path to the aphy file.</span>
@@ -4628,9 +4628,9 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[DataLoader, int, int]: Testing DataLoader, input dimension, output dimension.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">aphy_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">array2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">rrs_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">aphy_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">array2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">rrs_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="n">array1</span> <span class="o">=</span> <span class="n">array1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -4740,7 +4740,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss_function</span><span class="p">(</span>
     <span class="n">recon_x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">log_var</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the VAE loss function.</span>
+<span class="w">    </span><span class="sd">"""Computes the VAE loss function.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        recon_x (torch.Tensor): Reconstructed tensor.</span>
@@ -4750,9 +4750,9 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Computed loss.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">L1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">recon_x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
-    <span class="n">BCE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">recon_x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">L1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">recon_x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+    <span class="n">BCE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">recon_x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
     <span class="n">KLD</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">log_var</span> <span class="o">-</span> <span class="n">mu</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">log_var</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">L1</span>
 </code></pre></div>
@@ -4768,7 +4768,7 @@ VAE            (<span title="torch.nn.modules.module.Module">Module</span>)
 
 
 <h2 id="hypercoast.chla.npy_to_geotiff" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">npy_to_geotiff</span><span class="p">(</span><span class="n">npy_path</span><span class="p">,</span> <span class="n">out_tif</span><span class="p">,</span> <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">max_distance_m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">lat_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lon_col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">band_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;deflate&#39;</span><span class="p">,</span> <span class="n">bigtiff</span><span class="o">=</span><span class="s1">&#39;IF_SAFER&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">npy_to_geotiff</span><span class="p">(</span><span class="n">npy_path</span><span class="p">,</span> <span class="n">out_tif</span><span class="p">,</span> <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">max_distance_m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span> <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">lat_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lon_col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">band_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s1">'EPSG:4326'</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s1">'deflate'</span><span class="p">,</span> <span class="n">bigtiff</span><span class="o">=</span><span class="s1">'IF_SAFER'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.chla.npy_to_geotiff" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -4888,7 +4888,7 @@ edge/interpolation artifacts.</p></td>
     <span class="n">npy_path</span><span class="p">,</span>
     <span class="n">out_tif</span><span class="p">,</span>
     <span class="n">resolution_m</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>  <span class="c1"># meters per pixel (lat exact, lon adjusted by cos(lat))</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>  <span class="c1"># &#39;linear&#39; | &#39;nearest&#39; | &#39;cubic&#39;</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>  <span class="c1"># 'linear' | 'nearest' | 'cubic'</span>
     <span class="n">max_distance_m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Optional: mask pixels farther than this from nearest point</span>
     <span class="n">nodata_val</span><span class="o">=-</span><span class="mf">9999.0</span><span class="p">,</span>
     <span class="n">bbox_padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># degrees padding around bbox</span>
@@ -4896,19 +4896,19 @@ edge/interpolation artifacts.</p></td>
     <span class="n">lon_col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">band_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># None=use all columns after lat/lon; or list like [2,3,5,...]</span>
     <span class="n">band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Optional list of per-band descriptions, same length as output bands</span>
-    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Optional list; if given, will be used in descriptions like &quot;aphy_440&quot;</span>
-    <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span>
-    <span class="n">compress</span><span class="o">=</span><span class="s2">&quot;deflate&quot;</span><span class="p">,</span>
-    <span class="n">bigtiff</span><span class="o">=</span><span class="s2">&quot;IF_SAFER&quot;</span><span class="p">,</span>  <span class="c1"># &#39;YES&#39;|&#39;NO&#39;|&#39;IF_NEEDED&#39;|&#39;IF_SAFER&#39;</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Optional list; if given, will be used in descriptions like "aphy_440"</span>
+    <span class="n">crs</span><span class="o">=</span><span class="s2">"EPSG:4326"</span><span class="p">,</span>
+    <span class="n">compress</span><span class="o">=</span><span class="s2">"deflate"</span><span class="p">,</span>
+    <span class="n">bigtiff</span><span class="o">=</span><span class="s2">"IF_SAFER"</span><span class="p">,</span>  <span class="c1"># 'YES'|'NO'|'IF_NEEDED'|'IF_SAFER'</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert [lat, lon, band1, band2, ...] scattered points in .npy into a multi-band GeoTIFF (EPSG:4326).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        npy_path (str): Path to the .npy file.</span>
 <span class="sd">        out_tif (str): Path to the output GeoTIFF file.</span>
 <span class="sd">        resolution_m (int, optional): Resolution in meters per pixel. Defaults to 1000.</span>
-<span class="sd">        method (str, optional): Method for interpolation. Defaults to &quot;linear&quot;.</span>
+<span class="sd">        method (str, optional): Method for interpolation. Defaults to "linear".</span>
 <span class="sd">        max_distance_m (float, optional): If set, pixels farther than this</span>
 <span class="sd">            distance from the nearest input point are set to NaN to avoid</span>
 <span class="sd">            edge/interpolation artifacts.</span>
@@ -4919,15 +4919,15 @@ edge/interpolation artifacts.</p></td>
 <span class="sd">        band_cols (list, optional): Columns to rasterize as bands. Defaults to None.</span>
 <span class="sd">        band_names (list, optional): Band descriptions. Defaults to None.</span>
 <span class="sd">        wavelengths (list, optional): Wavelengths. Defaults to None.</span>
-<span class="sd">        crs (str, optional): Coordinate reference system. Defaults to &quot;EPSG:4326&quot;.</span>
-<span class="sd">        compress (str, optional): Compression method. Defaults to &quot;deflate&quot;.</span>
-<span class="sd">        bigtiff (str, optional): BigTIFF mode. Defaults to &quot;IF_SAFER&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        crs (str, optional): Coordinate reference system. Defaults to "EPSG:4326".</span>
+<span class="sd">        compress (str, optional): Compression method. Defaults to "deflate".</span>
+<span class="sd">        bigtiff (str, optional): BigTIFF mode. Defaults to "IF_SAFER".</span>
+<span class="sd">    """</span>
 
     <span class="c1"># 1) Load &amp; basic checks</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">npy_path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must be 2D with &gt;=3 columns.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Must be 2D with &gt;=3 columns."</span><span class="p">)</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="n">lat_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="n">lon_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
@@ -4938,7 +4938,7 @@ edge/interpolation artifacts.</p></td>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">band_cols</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
         <span class="n">band_cols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">band_cols</span><span class="p">)]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">band_cols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No value columns selected for bands.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No value columns selected for bands."</span><span class="p">)</span>
 
     <span class="c1"># 2) Bounds (+ padding)</span>
     <span class="n">lat_min</span><span class="p">,</span> <span class="n">lat_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
@@ -4992,7 +4992,7 @@ edge/interpolation artifacts.</p></td>
         <span class="c1"># Fill NaNs with nearest as a safety net</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="n">g_near</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span>
-                <span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
+                <span class="n">points</span><span class="o">=</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="o">=</span><span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s2">"nearest"</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">dist_grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">g_near</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dist_grid</span> <span class="o">&lt;=</span> <span class="n">max_distance_m</span><span class="p">,</span> <span class="n">g_near</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
@@ -5005,23 +5005,23 @@ edge/interpolation artifacts.</p></td>
 
     <span class="c1"># 6) Write GeoTIFF</span>
     <span class="n">profile</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;driver&quot;</span><span class="p">:</span> <span class="s2">&quot;GTiff&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-        <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
-        <span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="n">crs</span><span class="p">,</span>
-        <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="n">transform</span><span class="p">,</span>
-        <span class="s2">&quot;nodata&quot;</span><span class="p">:</span> <span class="n">nodata_val</span><span class="p">,</span>
-        <span class="s2">&quot;compress&quot;</span><span class="p">:</span> <span class="n">compress</span><span class="p">,</span>
-        <span class="s2">&quot;tiled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;blockxsize&quot;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
-        <span class="s2">&quot;blockysize&quot;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
-        <span class="s2">&quot;BIGTIFF&quot;</span><span class="p">:</span> <span class="n">bigtiff</span><span class="p">,</span>
+        <span class="s2">"driver"</span><span class="p">:</span> <span class="s2">"GTiff"</span><span class="p">,</span>
+        <span class="s2">"height"</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">"width"</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+        <span class="s2">"count"</span><span class="p">:</span> <span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">"dtype"</span><span class="p">:</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="s2">"crs"</span><span class="p">:</span> <span class="n">crs</span><span class="p">,</span>
+        <span class="s2">"transform"</span><span class="p">:</span> <span class="n">transform</span><span class="p">,</span>
+        <span class="s2">"nodata"</span><span class="p">:</span> <span class="n">nodata_val</span><span class="p">,</span>
+        <span class="s2">"compress"</span><span class="p">:</span> <span class="n">compress</span><span class="p">,</span>
+        <span class="s2">"tiled"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"blockxsize"</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+        <span class="s2">"blockysize"</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+        <span class="s2">"BIGTIFF"</span><span class="p">:</span> <span class="n">bigtiff</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">out_tif</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">out_tif</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">profile</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">out_tif</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"."</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">out_tif</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="o">**</span><span class="n">profile</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
         <span class="c1"># Write bands</span>
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data_stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">band</span> <span class="o">=</span> <span class="n">data_stack</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
@@ -5034,26 +5034,26 @@ edge/interpolation artifacts.</p></td>
         <span class="k">if</span> <span class="n">band_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">band_names</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_bands</span><span class="p">:</span>
             <span class="n">descriptions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">band_names</span><span class="p">))</span>
         <span class="k">elif</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_bands</span><span class="p">:</span>
-            <span class="c1"># e.g., &quot;aphy_440&quot;</span>
-            <span class="n">descriptions</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;aphy_</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">wl</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">]</span>
+            <span class="c1"># e.g., "aphy_440"</span>
+            <span class="n">descriptions</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"aphy_</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">wl</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">wl</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Fallback: use column indices</span>
-            <span class="n">descriptions</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;band_</span><span class="si">{</span><span class="n">band_cols</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bands</span><span class="p">)]</span>
+            <span class="n">descriptions</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"band_</span><span class="si">{</span><span class="n">band_cols</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bands</span><span class="p">)]</span>
 
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_bands</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">dst</span><span class="o">.</span><span class="n">set_band_description</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">descriptions</span><span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># 7) Log</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ GeoTIFF：</span><span class="si">{</span><span class="n">out_tif</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Size：</span><span class="si">{</span><span class="n">profile</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> x </span><span class="si">{</span><span class="n">profile</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> pixels&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Bands：</span><span class="si">{</span><span class="n">profile</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✅ GeoTIFF：</span><span class="si">{</span><span class="n">out_tif</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Size：</span><span class="si">{</span><span class="n">profile</span><span class="p">[</span><span class="s1">'width'</span><span class="p">]</span><span class="si">}</span><span class="s2"> x </span><span class="si">{</span><span class="n">profile</span><span class="p">[</span><span class="s1">'height'</span><span class="p">]</span><span class="si">}</span><span class="s2"> pixels"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Bands：</span><span class="si">{</span><span class="n">profile</span><span class="p">[</span><span class="s1">'count'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;   Resolution：</span><span class="si">{</span><span class="n">resolution_m</span><span class="si">}</span><span class="s2"> m/px (≈ </span><span class="si">{</span><span class="n">res_lon_deg</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">° × </span><span class="si">{</span><span class="n">res_lat_deg</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">° @ </span><span class="si">{</span><span class="n">lat_center</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">°)&quot;</span>
+        <span class="sa">f</span><span class="s2">"   Resolution：</span><span class="si">{</span><span class="n">resolution_m</span><span class="si">}</span><span class="s2"> m/px (≈ </span><span class="si">{</span><span class="n">res_lon_deg</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">° × </span><span class="si">{</span><span class="n">res_lat_deg</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">° @ </span><span class="si">{</span><span class="n">lat_center</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">°)"</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;   Extent：lon[</span><span class="si">{</span><span class="n">lon_min</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">lon_max</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">], lat[</span><span class="si">{</span><span class="n">lat_min</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">lat_max</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="sa">f</span><span class="s2">"   Extent：lon[</span><span class="si">{</span><span class="n">lon_min</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">lon_max</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">], lat[</span><span class="si">{</span><span class="n">lat_min</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">lat_max</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">]"</span>
     <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Descriptions：</span><span class="si">{</span><span class="n">descriptions</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Descriptions：</span><span class="si">{</span><span class="n">descriptions</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -5067,7 +5067,7 @@ edge/interpolation artifacts.</p></td>
 
 
 <h2 id="hypercoast.chla.plot_results" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">plot_results</span><span class="p">(</span><span class="n">predictions_rescaled</span><span class="p">,</span> <span class="n">actuals_rescaled</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">plot_results</span><span class="p">(</span><span class="n">predictions_rescaled</span><span class="p">,</span> <span class="n">actuals_rescaled</span><span class="p">,</span> <span class="n">save_dir</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'test'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.chla.plot_results" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5126,17 +5126,17 @@ edge/interpolation artifacts.</p></td>
     <span class="n">actuals_rescaled</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">save_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-    <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"test"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plots the results of the predictions against the actual values.</span>
+<span class="w">    </span><span class="sd">"""Plots the results of the predictions against the actual values.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        predictions_rescaled (np.ndarray): Rescaled predicted values.</span>
 <span class="sd">        actuals_rescaled (np.ndarray): Rescaled actual values.</span>
 <span class="sd">        save_dir (str): Directory to save the plot.</span>
 <span class="sd">        threshold (float, optional): Relative error threshold. Defaults to 0.5.</span>
-<span class="sd">        mode (str, optional): Mode of the plot (e.g., &quot;test&quot;). Defaults to &quot;test&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        mode (str, optional): Mode of the plot (e.g., "test"). Defaults to "test".</span>
+<span class="sd">    """</span>
 
     <span class="n">actuals</span> <span class="o">=</span> <span class="n">actuals_rescaled</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="n">predictions_rescaled</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -5168,9 +5168,9 @@ edge/interpolation artifacts.</p></td>
 
     <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
     <span class="n">lims</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lims</span><span class="p">,</span> <span class="n">lims</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lims</span><span class="p">,</span> <span class="n">lims</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 
     <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">log_actual</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">log_prediction</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
@@ -5178,22 +5178,22 @@ edge/interpolation artifacts.</p></td>
         <span class="n">x</span><span class="o">=</span><span class="n">filtered_log_actual</span><span class="p">,</span>
         <span class="n">y</span><span class="o">=</span><span class="n">filtered_log_prediction</span><span class="p">,</span>
         <span class="n">levels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
         <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Actual $Chla$ Values&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Predicted $Chla$ Values&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Actual $Chla$ Values"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Predicted $Chla$ Values"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">"both"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;MAE = </span><span class="si">{</span><span class="n">mae</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, RMSE = </span><span class="si">{</span><span class="n">rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, RMSLE = </span><span class="si">{</span><span class="n">rmsle</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Bias = </span><span class="si">{</span><span class="n">bias</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Slope = </span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;MAPE = </span><span class="si">{</span><span class="n">mape</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%, ε = </span><span class="si">{</span><span class="n">epsilon</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%, β = </span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span>
+            <span class="sa">f</span><span class="s2">"MAE = </span><span class="si">{</span><span class="n">mae</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, RMSE = </span><span class="si">{</span><span class="n">rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, RMSLE = </span><span class="si">{</span><span class="n">rmsle</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"Bias = </span><span class="si">{</span><span class="n">bias</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Slope = </span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"MAPE = </span><span class="si">{</span><span class="n">mape</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%, ε = </span><span class="si">{</span><span class="n">epsilon</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%, β = </span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span>
         <span class="p">),</span>
         <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
         <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
@@ -5203,7 +5203,7 @@ edge/interpolation artifacts.</p></td>
     <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">_plot.pdf&quot;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">_plot.pdf"</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
     <span class="c1"># plt.close()</span>
 </code></pre></div>
         </details>
@@ -5255,12 +5255,12 @@ edge/interpolation artifacts.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/chla.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">save_to_csv</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Saves data to a CSV file.</span>
+<span class="w">    </span><span class="sd">"""Saves data to a CSV file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data (np.ndarray): Data to be saved.</span>
 <span class="sd">        file_path (str): Path to the CSV file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
@@ -5276,7 +5276,7 @@ edge/interpolation artifacts.</p></td>
 
 
 <h2 id="hypercoast.chla.train" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="s1">&#39;model/vae_model_PACE.pth&#39;</span><span class="p">,</span> <span class="n">best_model_path</span><span class="o">=</span><span class="s1">&#39;model/vae_trans_model_best_Chl_PACE.pth&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="s1">'model/vae_model_PACE.pth'</span><span class="p">,</span> <span class="n">best_model_path</span><span class="o">=</span><span class="s1">'model/vae_trans_model_best_Chl_PACE.pth'</span><span class="p">)</span></code>
 
 
 <a href="#hypercoast.chla.train" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -5350,10 +5350,10 @@ to "model/vae_trans_model_best_Chl_PACE.pth"</p></td>
     <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">opt</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;model/vae_model_PACE.pth&quot;</span><span class="p">,</span>
-    <span class="n">best_model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;model/vae_trans_model_best_Chl_PACE.pth&quot;</span><span class="p">,</span>
+    <span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"model/vae_model_PACE.pth"</span><span class="p">,</span>
+    <span class="n">best_model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"model/vae_trans_model_best_Chl_PACE.pth"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Trains the VAE model.</span>
+<span class="w">    </span><span class="sd">"""Trains the VAE model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model (VAE): VAE model to be trained.</span>
@@ -5362,20 +5362,20 @@ to "model/vae_trans_model_best_Chl_PACE.pth"</p></td>
 <span class="sd">        device (torch.device, optional): Device to train on. Defaults to None.</span>
 <span class="sd">        opt (torch.optim.Optimizer, optional): Optimizer. Defaults to None.</span>
 <span class="sd">        model_path (str, optional): Path to save the model. Defaults to</span>
-<span class="sd">            &quot;model/vae_model_PACE.pth&quot;.</span>
+<span class="sd">            "model/vae_model_PACE.pth".</span>
 <span class="sd">        best_model_path (str, optional): Path to save the best model. Defaults</span>
-<span class="sd">            to &quot;model/vae_trans_model_best_Chl_PACE.pth&quot;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            to "model/vae_trans_model_best_Chl_PACE.pth"</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">opt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 
     <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
-    <span class="n">min_total_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+    <span class="n">min_total_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
     <span class="c1"># Save the optimal model</span>
 
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
@@ -5390,7 +5390,7 @@ to "model/vae_trans_model_best_Chl_PACE.pth"</p></td>
             <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
         <span class="n">avg_total_loss</span> <span class="o">=</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dl</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch = </span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, total_loss = </span><span class="si">{</span><span class="n">avg_total_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"epoch = </span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, total_loss = </span><span class="si">{</span><span class="n">avg_total_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">avg_total_loss</span> <span class="o">&lt;</span> <span class="n">min_total_loss</span><span class="p">:</span>
             <span class="n">min_total_loss</span> <span class="o">=</span> <span class="n">avg_total_loss</span>
@@ -5505,15 +5505,122 @@ to "model/vae_trans_model_best_Chl_PACE.pth"</p></td>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
         <script src="../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>

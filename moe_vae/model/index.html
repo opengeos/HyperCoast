@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3643,7 +3643,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MoE_VAE</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Call a Sparsely gated mixture of experts layer with 1-layer Feed-Forward networks as experts.</span>
+<span class="w">    </span><span class="sd">"""Call a Sparsely gated mixture of experts layer with 1-layer Feed-Forward networks as experts.</span>
 <span class="sd">    Args:</span>
 <span class="sd">    input_dim: integer - size of the input</span>
 <span class="sd">    output_dim: integer - size of the input</span>
@@ -3651,7 +3651,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">    hidden_dims: an integer - hidden_dims size of the experts</span>
 <span class="sd">    noisy_gating: a boolean</span>
 <span class="sd">    k: an integer - how many experts to use for each batch element</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3662,14 +3662,14 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
         <span class="n">decoder_hidden_dims</span><span class="p">,</span>
         <span class="n">num_experts</span><span class="p">,</span>
         <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-        <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;leakyrelu&quot;</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="s2">"leakyrelu"</span><span class="p">,</span>
         <span class="n">noisy_gating</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Initialize the MoE-VAE model.</span>
 
 <span class="sd">        Args:</span>
@@ -3682,13 +3682,13 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">            k (int, optional): Number of experts to use for each batch element.</span>
 <span class="sd">            activation (str, optional): Activation function name.</span>
 <span class="sd">            noisy_gating (bool, optional): Whether to use noisy gating.</span>
-<span class="sd">            use_norm (str or bool, optional): Normalization type. Can be &#39;batch&#39;,</span>
-<span class="sd">                &#39;layer&#39;, or False. Defaults to False.</span>
+<span class="sd">            use_norm (str or bool, optional): Normalization type. Can be 'batch',</span>
+<span class="sd">                'layer', or False. Defaults to False.</span>
 <span class="sd">            use_dropout (bool, optional): Whether to use dropout. Defaults to False.</span>
 <span class="sd">            use_softplus_output (bool, optional): Whether to apply softplus to output.</span>
 <span class="sd">                Defaults to False.</span>
 <span class="sd">            **kwargs: Additional keyword arguments.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MoE_VAE</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">noisy_gating</span> <span class="o">=</span> <span class="n">noisy_gating</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span> <span class="o">=</span> <span class="n">num_experts</span>
@@ -3731,14 +3731,14 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 
         <span class="bp">self</span><span class="o">.</span><span class="n">softplus</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">softmax</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"std"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Forward pass of the MoE-VAE model.</span>
 
 <span class="sd">        Args:</span>
@@ -3748,9 +3748,9 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Dictionary containing:</span>
-<span class="sd">                - &#39;pred_y&#39;: Predicted output tensor of shape [batch_size, output_dim].</span>
-<span class="sd">                - &#39;moe_loss&#39;: Load-balancing loss.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                - 'pred_y': Predicted output tensor of shape [batch_size, output_dim].</span>
+<span class="sd">                - 'moe_loss': Load-balancing loss.</span>
+<span class="sd">        """</span>
         <span class="n">gates</span><span class="p">,</span> <span class="n">load</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">noisy_top_k_gating</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span> <span class="o">=</span> <span class="n">gates</span>
         <span class="c1"># calculate importance loss</span>
@@ -3767,7 +3767,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span><span class="p">):</span>
             <span class="n">input_i</span> <span class="o">=</span> <span class="n">expert_inputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">input_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">input_i</span><span class="p">)[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">])</span>
+                <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">input_i</span><span class="p">)[</span><span class="s2">"pred_y"</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
@@ -3775,10 +3775,10 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
                     <span class="p">)</span>
                 <span class="p">)</span>
         <span class="n">pred_y</span> <span class="o">=</span> <span class="n">dispatcher</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">expert_outputs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"pred_y"</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Compute loss between model output and target.</span>
 
 <span class="sd">        Args:</span>
@@ -3787,33 +3787,33 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 
 <span class="sd">        Returns:</span>
 <span class="sd">            loss: Scalar tensor representing the loss</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+<span class="sd">        """</span>
+        <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span>
         <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
-        <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+        <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+        <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
         <span class="n">moe_loss</span> <span class="o">=</span> <span class="n">output_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s2">&quot;moe_loss&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="s2">"moe_loss"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">total_loss</span> <span class="o">=</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">moe_loss</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;total_loss&quot;</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
-            <span class="s2">&quot;mae_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
-            <span class="s2">&quot;mse_loss&quot;</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
-            <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
+            <span class="s2">"total_loss"</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
+            <span class="s2">"mae_loss"</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
+            <span class="s2">"mse_loss"</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
+            <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_batch_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the gating weights from the last forward pass.</span>
+<span class="w">        </span><span class="sd">"""Get the gating weights from the last forward pass.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Gating weights of shape [batch_size, num_experts].</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">cv_squared</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute squared coefficient of variation for load balancing.</span>
+<span class="w">        </span><span class="sd">"""Compute squared coefficient of variation for load balancing.</span>
 
 <span class="sd">        Calculates the squared coefficient of variation (variance/mean²) which</span>
 <span class="sd">        serves as a loss term to encourage uniform distribution across experts.</span>
@@ -3824,7 +3824,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Scalar tensor representing squared coefficient of variation.</span>
 <span class="sd">                Returns 0 for single-element tensors.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
         <span class="c1"># if only num_experts = 1</span>
 
@@ -3833,7 +3833,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
         <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">var</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_gates_to_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert gate weights to expert load counts.</span>
+<span class="w">        </span><span class="sd">"""Convert gate weights to expert load counts.</span>
 
 <span class="sd">        Computes the number of examples assigned to each expert (with gate &gt; 0).</span>
 
@@ -3842,13 +3842,13 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Load count per expert of shape [num_experts].</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">gates</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_prob_in_top_k</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">clean_values</span><span class="p">,</span> <span class="n">noisy_values</span><span class="p">,</span> <span class="n">noise_stddev</span><span class="p">,</span> <span class="n">noisy_top_values</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute probability of expert being in top-k selection.</span>
+<span class="w">        </span><span class="sd">"""Compute probability of expert being in top-k selection.</span>
 
 <span class="sd">        Helper function for noisy top-k gating that computes the probability</span>
 <span class="sd">        each expert would be selected given different noise realizations.</span>
@@ -3863,7 +3863,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Probability of each expert being in top-k,</span>
 <span class="sd">                shape [batch, num_experts].</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">batch</span> <span class="o">=</span> <span class="n">clean_values</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">noisy_top_values</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">top_values_flat</span> <span class="o">=</span> <span class="n">noisy_top_values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -3887,9 +3887,9 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
         <span class="k">return</span> <span class="n">prob</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">noisy_top_k_gating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">noise_epsilon</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Noisy top-k gating mechanism for expert selection.</span>
+<span class="w">        </span><span class="sd">"""Noisy top-k gating mechanism for expert selection.</span>
 
-<span class="sd">        Implements the noisy top-k gating from &quot;Outrageously Large Neural Networks&quot;</span>
+<span class="sd">        Implements the noisy top-k gating from "Outrageously Large Neural Networks"</span>
 <span class="sd">        (https://arxiv.org/abs/1701.06538). Adds controlled noise during training</span>
 <span class="sd">        to improve load balancing across experts.</span>
 
@@ -3903,7 +3903,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 <span class="sd">            tuple: A tuple containing:</span>
 <span class="sd">                - gates (torch.Tensor): Sparse gate weights [batch_size, num_experts]</span>
 <span class="sd">                - load (torch.Tensor): Expert load for balancing [num_experts]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">clean_logits</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gate</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">noisy_gating</span> <span class="ow">and</span> <span class="n">train</span><span class="p">:</span>
             <span class="n">raw_noise_stddev</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_noise</span>
@@ -3967,7 +3967,7 @@ MoE_VAE            (<span title="pytorch_lightning.core.module.LightningModule">
 
 
 <h3 id="hypercoast.moe_vae.model.MoE_VAE.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">encoder_hidden_dims</span><span class="p">,</span> <span class="n">decoder_hidden_dims</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;leakyrelu&#39;</span><span class="p">,</span> <span class="n">noisy_gating</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">encoder_hidden_dims</span><span class="p">,</span> <span class="n">decoder_hidden_dims</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'leakyrelu'</span><span class="p">,</span> <span class="n">noisy_gating</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -4083,14 +4083,14 @@ Defaults to False.</p></td>
     <span class="n">decoder_hidden_dims</span><span class="p">,</span>
     <span class="n">num_experts</span><span class="p">,</span>
     <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;leakyrelu&quot;</span><span class="p">,</span>
+    <span class="n">activation</span><span class="o">=</span><span class="s2">"leakyrelu"</span><span class="p">,</span>
     <span class="n">noisy_gating</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Initialize the MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
@@ -4103,13 +4103,13 @@ Defaults to False.</p></td>
 <span class="sd">        k (int, optional): Number of experts to use for each batch element.</span>
 <span class="sd">        activation (str, optional): Activation function name.</span>
 <span class="sd">        noisy_gating (bool, optional): Whether to use noisy gating.</span>
-<span class="sd">        use_norm (str or bool, optional): Normalization type. Can be &#39;batch&#39;,</span>
-<span class="sd">            &#39;layer&#39;, or False. Defaults to False.</span>
+<span class="sd">        use_norm (str or bool, optional): Normalization type. Can be 'batch',</span>
+<span class="sd">            'layer', or False. Defaults to False.</span>
 <span class="sd">        use_dropout (bool, optional): Whether to use dropout. Defaults to False.</span>
 <span class="sd">        use_softplus_output (bool, optional): Whether to apply softplus to output.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        **kwargs: Additional keyword arguments.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="nb">super</span><span class="p">(</span><span class="n">MoE_VAE</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">noisy_gating</span> <span class="o">=</span> <span class="n">noisy_gating</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span> <span class="o">=</span> <span class="n">num_experts</span>
@@ -4152,8 +4152,8 @@ Defaults to False.</p></td>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">softplus</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">softmax</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"std"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span>
@@ -4219,7 +4219,7 @@ serves as a loss term to encourage uniform distribution across experts.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cv_squared</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute squared coefficient of variation for load balancing.</span>
+<span class="w">    </span><span class="sd">"""Compute squared coefficient of variation for load balancing.</span>
 
 <span class="sd">    Calculates the squared coefficient of variation (variance/mean²) which</span>
 <span class="sd">    serves as a loss term to encourage uniform distribution across experts.</span>
@@ -4230,7 +4230,7 @@ serves as a loss term to encourage uniform distribution across experts.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Scalar tensor representing squared coefficient of variation.</span>
 <span class="sd">            Returns 0 for single-element tensors.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-10</span>
     <span class="c1"># if only num_experts = 1</span>
 
@@ -4305,7 +4305,7 @@ Defaults to 1e-2.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Forward pass of the MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
@@ -4315,9 +4315,9 @@ Defaults to 1e-2.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary containing:</span>
-<span class="sd">            - &#39;pred_y&#39;: Predicted output tensor of shape [batch_size, output_dim].</span>
-<span class="sd">            - &#39;moe_loss&#39;: Load-balancing loss.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            - 'pred_y': Predicted output tensor of shape [batch_size, output_dim].</span>
+<span class="sd">            - 'moe_loss': Load-balancing loss.</span>
+<span class="sd">    """</span>
     <span class="n">gates</span><span class="p">,</span> <span class="n">load</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">noisy_top_k_gating</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span> <span class="o">=</span> <span class="n">gates</span>
     <span class="c1"># calculate importance loss</span>
@@ -4334,7 +4334,7 @@ Defaults to 1e-2.</p></td>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span><span class="p">):</span>
         <span class="n">input_i</span> <span class="o">=</span> <span class="n">expert_inputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">input_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">input_i</span><span class="p">)[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">])</span>
+            <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">input_i</span><span class="p">)[</span><span class="s2">"pred_y"</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
@@ -4342,7 +4342,7 @@ Defaults to 1e-2.</p></td>
                 <span class="p">)</span>
             <span class="p">)</span>
     <span class="n">pred_y</span> <span class="o">=</span> <span class="n">dispatcher</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">expert_outputs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"pred_y"</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">}</span>
 </code></pre></div>
         </details>
     </div>
@@ -4383,11 +4383,11 @@ Defaults to 1e-2.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_batch_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the gating weights from the last forward pass.</span>
+<span class="w">    </span><span class="sd">"""Get the gating weights from the last forward pass.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Gating weights of shape [batch_size, num_experts].</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span>
 </code></pre></div>
         </details>
@@ -4454,7 +4454,7 @@ Defaults to 1e-2.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Compute loss between model output and target.</span>
 
 <span class="sd">    Args:</span>
@@ -4463,21 +4463,21 @@ Defaults to 1e-2.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        loss: Scalar tensor representing the loss</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span>
     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
-    <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+    <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+    <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
     <span class="n">moe_loss</span> <span class="o">=</span> <span class="n">output_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="s2">&quot;moe_loss&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="s2">"moe_loss"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">total_loss</span> <span class="o">=</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">moe_loss</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;total_loss&quot;</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
-        <span class="s2">&quot;mae_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
-        <span class="s2">&quot;mse_loss&quot;</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
-        <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
+        <span class="s2">"total_loss"</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
+        <span class="s2">"mae_loss"</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
+        <span class="s2">"mse_loss"</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
+        <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div>
         </details>
@@ -4556,9 +4556,9 @@ Defaults to 1e-2.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">noisy_top_k_gating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">noise_epsilon</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Noisy top-k gating mechanism for expert selection.</span>
+<span class="w">    </span><span class="sd">"""Noisy top-k gating mechanism for expert selection.</span>
 
-<span class="sd">    Implements the noisy top-k gating from &quot;Outrageously Large Neural Networks&quot;</span>
+<span class="sd">    Implements the noisy top-k gating from "Outrageously Large Neural Networks"</span>
 <span class="sd">    (https://arxiv.org/abs/1701.06538). Adds controlled noise during training</span>
 <span class="sd">    to improve load balancing across experts.</span>
 
@@ -4572,7 +4572,7 @@ Defaults to 1e-2.</p></td>
 <span class="sd">        tuple: A tuple containing:</span>
 <span class="sd">            - gates (torch.Tensor): Sparse gate weights [batch_size, num_experts]</span>
 <span class="sd">            - load (torch.Tensor): Expert load for balancing [num_experts]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">clean_logits</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_gate</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">noisy_gating</span> <span class="ow">and</span> <span class="n">train</span><span class="p">:</span>
         <span class="n">raw_noise_stddev</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_noise</span>
@@ -4752,7 +4752,7 @@ Defaults to False.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MoE_VAE_Token</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Token-wise Mixture of Experts VAE for spectral data analysis.</span>
+<span class="w">    </span><span class="sd">"""Token-wise Mixture of Experts VAE for spectral data analysis.</span>
 
 <span class="sd">    This variant of MoE-VAE divides the input spectral bands among different</span>
 <span class="sd">    experts, with each expert processing a specific spectral segment. This is</span>
@@ -4768,7 +4768,7 @@ Defaults to False.</p></td>
 <span class="sd">        num_experts (int): Number of expert VAE models (spectral segments).</span>
 <span class="sd">        k (int, optional): Kept for compatibility, unused in token-wise mode.</span>
 <span class="sd">            Defaults to 4.</span>
-<span class="sd">        activation (str, optional): Activation function name. Defaults to &#39;leakyrelu&#39;.</span>
+<span class="sd">        activation (str, optional): Activation function name. Defaults to 'leakyrelu'.</span>
 <span class="sd">        noisy_gating (bool, optional): Kept for compatibility, unused in token-wise mode.</span>
 <span class="sd">            Defaults to True.</span>
 <span class="sd">        use_norm (str or bool, optional): Normalization type. Defaults to False.</span>
@@ -4776,7 +4776,7 @@ Defaults to False.</p></td>
 <span class="sd">        use_softplus_output (bool, optional): Whether to apply softplus to output.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        **kwargs: Additional keyword arguments.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -4787,7 +4787,7 @@ Defaults to False.</p></td>
         <span class="n">decoder_hidden_dims</span><span class="p">,</span>
         <span class="n">num_experts</span><span class="p">,</span>
         <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-        <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;leakyrelu&quot;</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="s2">"leakyrelu"</span><span class="p">,</span>
         <span class="n">noisy_gating</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -4836,14 +4836,14 @@ Defaults to False.</p></td>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">softplus</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">softmax</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"std"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_gates</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Token-wise MoE forward pass:</span>
 <span class="sd">        Each expert processes a different spectral segment of the input.</span>
 
@@ -4853,56 +4853,56 @@ Defaults to False.</p></td>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A dict with:</span>
-<span class="sd">                &#39;pred_y&#39;: reconstructed tensor of shape [batch_size, input_dim]</span>
-<span class="sd">                &#39;moe_loss&#39;: dummy 0.0 (no gating loss in token-wise)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                'pred_y': reconstructed tensor of shape [batch_size, input_dim]</span>
+<span class="sd">                'moe_loss': dummy 0.0 (no gating loss in token-wise)</span>
+<span class="sd">        """</span>
         <span class="c1"># Split the input into band segments for each expert</span>
         <span class="n">x_chunks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_input_dims</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="n">expert_outputs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span><span class="p">):</span>
-            <span class="n">out_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x_chunks</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>
+            <span class="n">out_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x_chunks</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="s2">"pred_y"</span><span class="p">]</span>
             <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_i</span><span class="p">)</span>
 
         <span class="n">pred_y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">expert_outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span>
-            <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+            <span class="s2">"pred_y"</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span>
+            <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute loss for token-wise MoE-VAE model.</span>
+<span class="w">        </span><span class="sd">"""Compute loss for token-wise MoE-VAE model.</span>
 
 <span class="sd">        Computes reconstruction loss without MoE-specific penalties since</span>
 <span class="sd">        no gating mechanism is used in the token-wise approach.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            output_dict (dict): Dictionary containing model outputs and targets:</span>
-<span class="sd">                - &#39;pred_y&#39;: Model predictions</span>
-<span class="sd">                - &#39;y&#39;: Target values</span>
-<span class="sd">                - &#39;moe_loss&#39;: Always zero for token-wise model</span>
+<span class="sd">                - 'pred_y': Model predictions</span>
+<span class="sd">                - 'y': Target values</span>
+<span class="sd">                - 'moe_loss': Always zero for token-wise model</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Dictionary containing loss components:</span>
-<span class="sd">                - &#39;total_loss&#39;: MAE loss (no MoE penalty)</span>
-<span class="sd">                - &#39;mae_loss&#39;: Mean Absolute Error</span>
-<span class="sd">                - &#39;mse_loss&#39;: Mean Squared Error</span>
-<span class="sd">                - &#39;moe_loss&#39;: Zero tensor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+<span class="sd">                - 'total_loss': MAE loss (no MoE penalty)</span>
+<span class="sd">                - 'mae_loss': Mean Absolute Error</span>
+<span class="sd">                - 'mse_loss': Mean Squared Error</span>
+<span class="sd">                - 'moe_loss': Zero tensor</span>
+<span class="sd">        """</span>
+        <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span>
         <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
-        <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+        <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+        <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
         <span class="n">moe_loss</span> <span class="o">=</span> <span class="n">output_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s2">&quot;moe_loss&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="s2">"moe_loss"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">total_loss</span> <span class="o">=</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">moe_loss</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;total_loss&quot;</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
-            <span class="s2">&quot;mae_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
-            <span class="s2">&quot;mse_loss&quot;</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
-            <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
+            <span class="s2">"total_loss"</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
+            <span class="s2">"mae_loss"</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
+            <span class="s2">"mse_loss"</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
+            <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
         <span class="p">}</span>
 </code></pre></div>
         </details>
@@ -4979,7 +4979,7 @@ Each expert processes a different spectral segment of the input.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">moe_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Token-wise MoE forward pass:</span>
 <span class="sd">    Each expert processes a different spectral segment of the input.</span>
 
@@ -4989,21 +4989,21 @@ Each expert processes a different spectral segment of the input.</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A dict with:</span>
-<span class="sd">            &#39;pred_y&#39;: reconstructed tensor of shape [batch_size, input_dim]</span>
-<span class="sd">            &#39;moe_loss&#39;: dummy 0.0 (no gating loss in token-wise)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            'pred_y': reconstructed tensor of shape [batch_size, input_dim]</span>
+<span class="sd">            'moe_loss': dummy 0.0 (no gating loss in token-wise)</span>
+<span class="sd">    """</span>
     <span class="c1"># Split the input into band segments for each expert</span>
     <span class="n">x_chunks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_input_dims</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="n">expert_outputs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_experts</span><span class="p">):</span>
-        <span class="n">out_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x_chunks</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>
+        <span class="n">out_i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experts</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x_chunks</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="s2">"pred_y"</span><span class="p">]</span>
         <span class="n">expert_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_i</span><span class="p">)</span>
 
     <span class="n">pred_y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">expert_outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span>
-        <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="s2">"pred_y"</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span>
+        <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
     <span class="p">}</span>
 </code></pre></div>
         </details>
@@ -5073,38 +5073,38 @@ no gating mechanism is used in the token-wise approach.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute loss for token-wise MoE-VAE model.</span>
+<span class="w">    </span><span class="sd">"""Compute loss for token-wise MoE-VAE model.</span>
 
 <span class="sd">    Computes reconstruction loss without MoE-specific penalties since</span>
 <span class="sd">    no gating mechanism is used in the token-wise approach.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_dict (dict): Dictionary containing model outputs and targets:</span>
-<span class="sd">            - &#39;pred_y&#39;: Model predictions</span>
-<span class="sd">            - &#39;y&#39;: Target values</span>
-<span class="sd">            - &#39;moe_loss&#39;: Always zero for token-wise model</span>
+<span class="sd">            - 'pred_y': Model predictions</span>
+<span class="sd">            - 'y': Target values</span>
+<span class="sd">            - 'moe_loss': Always zero for token-wise model</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary containing loss components:</span>
-<span class="sd">            - &#39;total_loss&#39;: MAE loss (no MoE penalty)</span>
-<span class="sd">            - &#39;mae_loss&#39;: Mean Absolute Error</span>
-<span class="sd">            - &#39;mse_loss&#39;: Mean Squared Error</span>
-<span class="sd">            - &#39;moe_loss&#39;: Zero tensor</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+<span class="sd">            - 'total_loss': MAE loss (no MoE penalty)</span>
+<span class="sd">            - 'mae_loss': Mean Absolute Error</span>
+<span class="sd">            - 'mse_loss': Mean Squared Error</span>
+<span class="sd">            - 'moe_loss': Zero tensor</span>
+<span class="sd">    """</span>
+    <span class="n">pred_y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span>
     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
-    <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+    <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
+    <span class="n">mse_losss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
     <span class="n">moe_loss</span> <span class="o">=</span> <span class="n">output_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="s2">&quot;moe_loss&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="s2">"moe_loss"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pred_y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">total_loss</span> <span class="o">=</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">moe_loss</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;total_loss&quot;</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
-        <span class="s2">&quot;mae_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
-        <span class="s2">&quot;mse_loss&quot;</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
-        <span class="s2">&quot;moe_loss&quot;</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
+        <span class="s2">"total_loss"</span><span class="p">:</span> <span class="n">total_loss</span><span class="p">,</span>
+        <span class="s2">"mae_loss"</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
+        <span class="s2">"mse_loss"</span><span class="p">:</span> <span class="n">mse_losss</span><span class="p">,</span>
+        <span class="s2">"moe_loss"</span><span class="p">:</span> <span class="n">moe_loss</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div>
         </details>
@@ -5190,7 +5190,7 @@ and after combine operations.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SparseDispatcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper for implementing a mixture of experts with sparse gating.</span>
+<span class="w">    </span><span class="sd">"""Helper for implementing a mixture of experts with sparse gating.</span>
 
 <span class="sd">    This class handles the distribution of inputs to experts and combines their</span>
 <span class="sd">    outputs based on gating weights. It optimizes computation by only processing</span>
@@ -5217,15 +5217,15 @@ and after combine operations.</p>
 <span class="sd">        Input and output tensors are expected to be 2D [batch, depth]. Caller</span>
 <span class="sd">        is responsible for reshaping higher-dimensional tensors before dispatch</span>
 <span class="sd">        and after combine operations.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the SparseDispatcher.</span>
+<span class="w">        </span><span class="sd">"""Initialize the SparseDispatcher.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            num_experts (int): Number of expert models.</span>
 <span class="sd">            gates (torch.Tensor): Gating weights of shape [batch_size, num_experts].</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gates</span> <span class="o">=</span> <span class="n">gates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_experts</span> <span class="o">=</span> <span class="n">num_experts</span>
 
@@ -5270,7 +5270,7 @@ and after combine operations.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">_nonzero_gates</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nonzero_gates</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Distribute input tensor to experts based on gating weights.</span>
+<span class="w">        </span><span class="sd">"""Distribute input tensor to experts based on gating weights.</span>
 
 <span class="sd">        Creates separate input tensors for each expert containing only the</span>
 <span class="sd">        samples assigned to that expert (where gates[b, i] &gt; 0).</span>
@@ -5281,7 +5281,7 @@ and after combine operations.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of tensors, one for each expert. Each tensor contains</span>
 <span class="sd">                only the inputs assigned to that expert.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># assigns samples to experts whose gate is nonzero</span>
 
@@ -5290,7 +5290,7 @@ and after combine operations.</p>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inp_exp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_part_sizes</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expert_out</span><span class="p">,</span> <span class="n">multiply_by_gates</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Combine expert outputs weighted by gating values.</span>
+<span class="w">        </span><span class="sd">"""Combine expert outputs weighted by gating values.</span>
 
 <span class="sd">        Aggregates outputs from all experts for each batch element, weighted</span>
 <span class="sd">        by the corresponding gate values. The final output for batch element b</span>
@@ -5304,7 +5304,7 @@ and after combine operations.</p>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Combined output tensor of shape [batch_size, output_dim].</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># apply exp to expert outputs, so we are not longer in log space</span>
         <span class="n">stitched</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">expert_out</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
@@ -5321,12 +5321,12 @@ and after combine operations.</p>
         <span class="k">return</span> <span class="n">combined</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expert_to_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract gate values for each expert&#39;s assigned samples.</span>
+<span class="w">        </span><span class="sd">"""Extract gate values for each expert's assigned samples.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of 1D tensors, one for each expert, containing the</span>
 <span class="sd">                gate values for samples assigned to that expert.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># split nonzero gates for each expert</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nonzero_gates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_part_sizes</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
@@ -5389,12 +5389,12 @@ and after combine operations.</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_experts</span><span class="p">,</span> <span class="n">gates</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the SparseDispatcher.</span>
+<span class="w">    </span><span class="sd">"""Initialize the SparseDispatcher.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        num_experts (int): Number of expert models.</span>
 <span class="sd">        gates (torch.Tensor): Gating weights of shape [batch_size, num_experts].</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_gates</span> <span class="o">=</span> <span class="n">gates</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_num_experts</span> <span class="o">=</span> <span class="n">num_experts</span>
 
@@ -5507,7 +5507,7 @@ gate values. If False, outputs are simply summed. Defaults to True.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expert_out</span><span class="p">,</span> <span class="n">multiply_by_gates</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine expert outputs weighted by gating values.</span>
+<span class="w">    </span><span class="sd">"""Combine expert outputs weighted by gating values.</span>
 
 <span class="sd">    Aggregates outputs from all experts for each batch element, weighted</span>
 <span class="sd">    by the corresponding gate values. The final output for batch element b</span>
@@ -5521,7 +5521,7 @@ gate values. If False, outputs are simply summed. Defaults to True.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Combined output tensor of shape [batch_size, output_dim].</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># apply exp to expert outputs, so we are not longer in log space</span>
     <span class="n">stitched</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">expert_out</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
@@ -5598,7 +5598,7 @@ samples assigned to that expert (where gates[b, i] &gt; 0).</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inp</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Distribute input tensor to experts based on gating weights.</span>
+<span class="w">    </span><span class="sd">"""Distribute input tensor to experts based on gating weights.</span>
 
 <span class="sd">    Creates separate input tensors for each expert containing only the</span>
 <span class="sd">    samples assigned to that expert (where gates[b, i] &gt; 0).</span>
@@ -5609,7 +5609,7 @@ samples assigned to that expert (where gates[b, i] &gt; 0).</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        list: List of tensors, one for each expert. Each tensor contains</span>
 <span class="sd">            only the inputs assigned to that expert.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># assigns samples to experts whose gate is nonzero</span>
 
@@ -5657,12 +5657,12 @@ samples assigned to that expert (where gates[b, i] &gt; 0).</p>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expert_to_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract gate values for each expert&#39;s assigned samples.</span>
+<span class="w">    </span><span class="sd">"""Extract gate values for each expert's assigned samples.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: List of 1D tensors, one for each expert, containing the</span>
 <span class="sd">            gate values for samples assigned to that expert.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># split nonzero gates for each expert</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nonzero_gates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_part_sizes</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
@@ -5782,7 +5782,7 @@ Defaults to False.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">VAE</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Variational Autoencoder implementation using PyTorch Lightning.</span>
+<span class="w">    </span><span class="sd">"""Variational Autoencoder implementation using PyTorch Lightning.</span>
 
 <span class="sd">    A standard VAE architecture with configurable encoder/decoder networks,</span>
 <span class="sd">    support for various activation functions, normalization layers, and</span>
@@ -5794,15 +5794,15 @@ Defaults to False.</p></td>
 <span class="sd">        latent_dim (int): Dimension of latent space.</span>
 <span class="sd">        encoder_hidden_dims (list): List of hidden layer dimensions for encoder.</span>
 <span class="sd">        decoder_hidden_dims (list): List of hidden layer dimensions for decoder.</span>
-<span class="sd">        activation (str, optional): Activation function name. Supports &#39;relu&#39;,</span>
-<span class="sd">            &#39;tanh&#39;, &#39;sigmoid&#39;, &#39;leakyrelu&#39;. Defaults to &#39;leakyrelu&#39;.</span>
-<span class="sd">        use_norm (str or bool, optional): Normalization type. Can be &#39;batch&#39;,</span>
-<span class="sd">            &#39;layer&#39;, or False. Defaults to False.</span>
+<span class="sd">        activation (str, optional): Activation function name. Supports 'relu',</span>
+<span class="sd">            'tanh', 'sigmoid', 'leakyrelu'. Defaults to 'leakyrelu'.</span>
+<span class="sd">        use_norm (str or bool, optional): Normalization type. Can be 'batch',</span>
+<span class="sd">            'layer', or False. Defaults to False.</span>
 <span class="sd">        use_dropout (bool, optional): Whether to use dropout. Defaults to False.</span>
 <span class="sd">        use_softplus_output (bool, optional): Whether to apply softplus to output.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        **kwargs: Additional keyword arguments.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -5811,13 +5811,13 @@ Defaults to False.</p></td>
         <span class="n">latent_dim</span><span class="p">,</span>
         <span class="n">encoder_hidden_dims</span><span class="p">,</span>
         <span class="n">decoder_hidden_dims</span><span class="p">,</span>
-        <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;leakyrelu&quot;</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="s2">"leakyrelu"</span><span class="p">,</span>
         <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Initialize the VAE model.</span>
 
 <span class="sd">        Args:</span>
@@ -5826,28 +5826,28 @@ Defaults to False.</p></td>
 <span class="sd">            latent_dim (int): Dimension of latent space.</span>
 <span class="sd">            encoder_hidden_dims (list): List of hidden layer dimensions for encoder.</span>
 <span class="sd">            decoder_hidden_dims (list): List of hidden layer dimensions for decoder.</span>
-<span class="sd">            activation (str, optional): Activation function name. Supports &#39;relu&#39;,</span>
-<span class="sd">                &#39;tanh&#39;, &#39;sigmoid&#39;, &#39;leakyrelu&#39;. Defaults to &#39;leakyrelu&#39;.</span>
-<span class="sd">            use_norm (str or bool, optional): Normalization type. Can be &#39;batch&#39;,</span>
-<span class="sd">                &#39;layer&#39;, or False. Defaults to False.</span>
+<span class="sd">            activation (str, optional): Activation function name. Supports 'relu',</span>
+<span class="sd">                'tanh', 'sigmoid', 'leakyrelu'. Defaults to 'leakyrelu'.</span>
+<span class="sd">            use_norm (str or bool, optional): Normalization type. Can be 'batch',</span>
+<span class="sd">                'layer', or False. Defaults to False.</span>
 <span class="sd">            use_dropout (bool, optional): Whether to use dropout. Defaults to False.</span>
 <span class="sd">            use_softplus_output (bool, optional): Whether to apply softplus to output.</span>
 <span class="sd">                Defaults to False.</span>
 <span class="sd">            **kwargs: Additional keyword arguments.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="c1"># Define the activation function</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_softplus_output</span> <span class="o">=</span> <span class="n">use_softplus_output</span>
-        <span class="k">if</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;relu&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"relu"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;tanh&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"tanh"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;sigmoid&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"sigmoid"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;leakyrelu&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"leakyrelu"</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported activation function: </span><span class="si">{</span><span class="n">activation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported activation function: </span><span class="si">{</span><span class="n">activation</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="c1"># Encoder layers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_layers</span><span class="p">(</span>
@@ -5860,36 +5860,36 @@ Defaults to False.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_layers</span><span class="p">(</span>
             <span class="n">latent_dim</span><span class="p">,</span> <span class="n">decoder_hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span>
         <span class="p">)</span>
-        <span class="c1"># self.decoder_layers.add_module(&#39;softplus&#39;, nn.Softplus())</span>
+        <span class="c1"># self.decoder_layers.add_module('softplus', nn.Softplus())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span>
-            <span class="s2">&quot;output_layer&quot;</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">decoder_hidden_dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">output_dim</span><span class="p">)</span>
+            <span class="s2">"output_layer"</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">decoder_hidden_dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">output_dim</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_softplus_output</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s2">&quot;output_activation&quot;</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">())</span>
-        <span class="c1"># self.decoder_layers.add_module(&#39;output_activation&#39;, nn.Tanh())  # Assuming output is in range [-1, 1]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s2">"output_activation"</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">())</span>
+        <span class="c1"># self.decoder_layers.add_module('output_activation', nn.Tanh())  # Assuming output is in range [-1, 1]</span>
         <span class="c1"># with the classic robust preprocessing method it is -1 to 1, but for others it may not.</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">build_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build sequential neural network layers.</span>
+<span class="w">        </span><span class="sd">"""Build sequential neural network layers.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            input_dim (int): Input dimension for the first layer.</span>
 <span class="sd">            hidden_dims (list): List of hidden layer dimensions.</span>
-<span class="sd">            use_norm (str or bool): Normalization type (&#39;batch&#39;, &#39;layer&#39;, or False).</span>
+<span class="sd">            use_norm (str or bool): Normalization type ('batch', 'layer', or False).</span>
 <span class="sd">            use_dropout (bool, optional): Whether to include dropout layers.</span>
 <span class="sd">                Defaults to False.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            nn.Sequential: Sequential container of network layers.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">current_size</span> <span class="o">=</span> <span class="n">input_dim</span>
         <span class="k">for</span> <span class="n">hidden_dim</span> <span class="ow">in</span> <span class="n">hidden_dims</span><span class="p">:</span>
             <span class="n">next_size</span> <span class="o">=</span> <span class="n">hidden_dim</span>
             <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">current_size</span><span class="p">,</span> <span class="n">next_size</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">&quot;batch&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">"batch"</span><span class="p">:</span>
                 <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">"layer"</span><span class="p">:</span>
                 <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">))</span>
             <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">use_dropout</span><span class="p">:</span>
@@ -5898,7 +5898,7 @@ Defaults to False.</p></td>
         <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode input to latent space parameters.</span>
+<span class="w">        </span><span class="sd">"""Encode input to latent space parameters.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): Input tensor of shape (batch_size, input_dim).</span>
@@ -5907,14 +5907,14 @@ Defaults to False.</p></td>
 <span class="sd">            tuple: A tuple containing:</span>
 <span class="sd">                - mu (torch.Tensor): Mean of latent distribution.</span>
 <span class="sd">                - log_var (torch.Tensor): Log variance of latent distribution.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc_mu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc_log_var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reparameterization trick for sampling from latent distribution.</span>
+<span class="w">        </span><span class="sd">"""Reparameterization trick for sampling from latent distribution.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            mu (torch.Tensor): Mean of latent distribution.</span>
@@ -5922,42 +5922,42 @@ Defaults to False.</p></td>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Sampled latent vector.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">std</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">log_var</span><span class="p">)</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">std</span>
         <span class="k">return</span> <span class="n">z</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decode latent representation to output space.</span>
+<span class="w">        </span><span class="sd">"""Decode latent representation to output space.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            z (torch.Tensor): Latent representation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: Reconstructed output.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass through the VAE.</span>
+<span class="w">        </span><span class="sd">"""Forward pass through the VAE.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): Input tensor.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Dictionary containing:</span>
-<span class="sd">                - &#39;pred_y&#39;: Reconstructed output</span>
-<span class="sd">                - &#39;mu&#39;: Mean of latent distribution</span>
-<span class="sd">                - &#39;log_var&#39;: Log variance of latent distribution</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                - 'pred_y': Reconstructed output</span>
+<span class="sd">                - 'mu': Mean of latent distribution</span>
+<span class="sd">                - 'log_var': Log variance of latent distribution</span>
+<span class="sd">        """</span>
         <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reparameterize</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">)</span>
         <span class="n">pred_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">&quot;mu&quot;</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span> <span class="s2">&quot;log_var&quot;</span><span class="p">:</span> <span class="n">log_var</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"pred_y"</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">"mu"</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span> <span class="s2">"log_var"</span><span class="p">:</span> <span class="n">log_var</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">,</span> <span class="n">kld_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute VAE loss (reconstruction + KL divergence).</span>
+<span class="w">        </span><span class="sd">"""Compute VAE loss (reconstruction + KL divergence).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            output_dict (dict): Dictionary containing model outputs and targets.</span>
@@ -5966,29 +5966,29 @@ Defaults to False.</p></td>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Dictionary containing different loss components:</span>
-<span class="sd">                - &#39;total_loss&#39;: Combined loss (MAE + weighted KLD)</span>
-<span class="sd">                - &#39;mae_loss&#39;: Mean Absolute Error</span>
-<span class="sd">                - &#39;mse_loss&#39;: Mean Squared Error</span>
-<span class="sd">                - &#39;kld_loss&#39;: KL Divergence loss</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                - 'total_loss': Combined loss (MAE + weighted KLD)</span>
+<span class="sd">                - 'mae_loss': Mean Absolute Error</span>
+<span class="sd">                - 'mse_loss': Mean Squared Error</span>
+<span class="sd">                - 'kld_loss': KL Divergence loss</span>
+<span class="sd">        """</span>
         <span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">],</span>
-            <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
-            <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">],</span>
-            <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;log_var&quot;</span><span class="p">],</span>
+            <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">],</span>
+            <span class="n">output_dict</span><span class="p">[</span><span class="s2">"y"</span><span class="p">],</span>
+            <span class="n">output_dict</span><span class="p">[</span><span class="s2">"mu"</span><span class="p">],</span>
+            <span class="n">output_dict</span><span class="p">[</span><span class="s2">"log_var"</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+        <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
         <span class="c1"># Reconstruction loss (MSE)</span>
-        <span class="n">MSE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+        <span class="n">MSE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
         <span class="c1"># KL divergence</span>
         <span class="n">KLD</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">log_var</span> <span class="o">-</span> <span class="n">mu</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">log_var</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span> <span class="o">/</span> <span class="n">batch_size</span>
         <span class="c1"># Return combined loss</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;total_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">kld_weight</span> <span class="o">*</span> <span class="n">KLD</span><span class="p">,</span>
-            <span class="s2">&quot;mae_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
-            <span class="s2">&quot;mse_loss&quot;</span><span class="p">:</span> <span class="n">MSE</span><span class="p">,</span>
-            <span class="s2">&quot;kld_loss&quot;</span><span class="p">:</span> <span class="n">KLD</span><span class="p">,</span>
+            <span class="s2">"total_loss"</span><span class="p">:</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">kld_weight</span> <span class="o">*</span> <span class="n">KLD</span><span class="p">,</span>
+            <span class="s2">"mae_loss"</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
+            <span class="s2">"mse_loss"</span><span class="p">:</span> <span class="n">MSE</span><span class="p">,</span>
+            <span class="s2">"kld_loss"</span><span class="p">:</span> <span class="n">KLD</span><span class="p">,</span>
         <span class="p">}</span>
 </code></pre></div>
         </details>
@@ -6010,7 +6010,7 @@ Defaults to False.</p></td>
 
 
 <h3 id="hypercoast.moe_vae.model.VAE.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">encoder_hidden_dims</span><span class="p">,</span> <span class="n">decoder_hidden_dims</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;leakyrelu&#39;</span><span class="p">,</span> <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">encoder_hidden_dims</span><span class="p">,</span> <span class="n">decoder_hidden_dims</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'leakyrelu'</span><span class="p">,</span> <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -6107,13 +6107,13 @@ Defaults to False.</p></td>
     <span class="n">latent_dim</span><span class="p">,</span>
     <span class="n">encoder_hidden_dims</span><span class="p">,</span>
     <span class="n">decoder_hidden_dims</span><span class="p">,</span>
-    <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;leakyrelu&quot;</span><span class="p">,</span>
+    <span class="n">activation</span><span class="o">=</span><span class="s2">"leakyrelu"</span><span class="p">,</span>
     <span class="n">use_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">use_softplus_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Initialize the VAE model.</span>
 
 <span class="sd">    Args:</span>
@@ -6122,28 +6122,28 @@ Defaults to False.</p></td>
 <span class="sd">        latent_dim (int): Dimension of latent space.</span>
 <span class="sd">        encoder_hidden_dims (list): List of hidden layer dimensions for encoder.</span>
 <span class="sd">        decoder_hidden_dims (list): List of hidden layer dimensions for decoder.</span>
-<span class="sd">        activation (str, optional): Activation function name. Supports &#39;relu&#39;,</span>
-<span class="sd">            &#39;tanh&#39;, &#39;sigmoid&#39;, &#39;leakyrelu&#39;. Defaults to &#39;leakyrelu&#39;.</span>
-<span class="sd">        use_norm (str or bool, optional): Normalization type. Can be &#39;batch&#39;,</span>
-<span class="sd">            &#39;layer&#39;, or False. Defaults to False.</span>
+<span class="sd">        activation (str, optional): Activation function name. Supports 'relu',</span>
+<span class="sd">            'tanh', 'sigmoid', 'leakyrelu'. Defaults to 'leakyrelu'.</span>
+<span class="sd">        use_norm (str or bool, optional): Normalization type. Can be 'batch',</span>
+<span class="sd">            'layer', or False. Defaults to False.</span>
 <span class="sd">        use_dropout (bool, optional): Whether to use dropout. Defaults to False.</span>
 <span class="sd">        use_softplus_output (bool, optional): Whether to apply softplus to output.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        **kwargs: Additional keyword arguments.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="c1"># Define the activation function</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">use_softplus_output</span> <span class="o">=</span> <span class="n">use_softplus_output</span>
-    <span class="k">if</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;relu&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"relu"</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;tanh&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"tanh"</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;sigmoid&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"sigmoid"</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">&quot;leakyrelu&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">activation</span> <span class="o">==</span> <span class="s2">"leakyrelu"</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported activation function: </span><span class="si">{</span><span class="n">activation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported activation function: </span><span class="si">{</span><span class="n">activation</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># Encoder layers</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_layers</span><span class="p">(</span>
@@ -6156,13 +6156,13 @@ Defaults to False.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_layers</span><span class="p">(</span>
         <span class="n">latent_dim</span><span class="p">,</span> <span class="n">decoder_hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span>
     <span class="p">)</span>
-    <span class="c1"># self.decoder_layers.add_module(&#39;softplus&#39;, nn.Softplus())</span>
+    <span class="c1"># self.decoder_layers.add_module('softplus', nn.Softplus())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span>
-        <span class="s2">&quot;output_layer&quot;</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">decoder_hidden_dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">output_dim</span><span class="p">)</span>
+        <span class="s2">"output_layer"</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">decoder_hidden_dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">output_dim</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_softplus_output</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s2">&quot;output_activation&quot;</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">())</span>
-    <span class="c1"># self.decoder_layers.add_module(&#39;output_activation&#39;, nn.Tanh())  # Assuming output is in range [-1, 1]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s2">"output_activation"</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Softplus</span><span class="p">())</span>
+    <span class="c1"># self.decoder_layers.add_module('output_activation', nn.Tanh())  # Assuming output is in range [-1, 1]</span>
     <span class="c1"># with the classic robust preprocessing method it is -1 to 1, but for others it may not.</span>
 </code></pre></div>
         </details>
@@ -6242,26 +6242,26 @@ Defaults to False.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dims</span><span class="p">,</span> <span class="n">use_norm</span><span class="p">,</span> <span class="n">use_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build sequential neural network layers.</span>
+<span class="w">    </span><span class="sd">"""Build sequential neural network layers.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input_dim (int): Input dimension for the first layer.</span>
 <span class="sd">        hidden_dims (list): List of hidden layer dimensions.</span>
-<span class="sd">        use_norm (str or bool): Normalization type (&#39;batch&#39;, &#39;layer&#39;, or False).</span>
+<span class="sd">        use_norm (str or bool): Normalization type ('batch', 'layer', or False).</span>
 <span class="sd">        use_dropout (bool, optional): Whether to include dropout layers.</span>
 <span class="sd">            Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        nn.Sequential: Sequential container of network layers.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">current_size</span> <span class="o">=</span> <span class="n">input_dim</span>
     <span class="k">for</span> <span class="n">hidden_dim</span> <span class="ow">in</span> <span class="n">hidden_dims</span><span class="p">:</span>
         <span class="n">next_size</span> <span class="o">=</span> <span class="n">hidden_dim</span>
         <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">current_size</span><span class="p">,</span> <span class="n">next_size</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">&quot;batch&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">"batch"</span><span class="p">:</span>
             <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">use_norm</span> <span class="o">==</span> <span class="s2">"layer"</span><span class="p">:</span>
             <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">))</span>
         <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_dropout</span><span class="p">:</span>
@@ -6327,14 +6327,14 @@ Defaults to False.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode latent representation to output space.</span>
+<span class="w">    </span><span class="sd">"""Decode latent representation to output space.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        z (torch.Tensor): Latent representation.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Reconstructed output.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layers</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -6397,7 +6397,7 @@ Defaults to False.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode input to latent space parameters.</span>
+<span class="w">    </span><span class="sd">"""Encode input to latent space parameters.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        x (torch.Tensor): Input tensor of shape (batch_size, input_dim).</span>
@@ -6406,7 +6406,7 @@ Defaults to False.</p></td>
 <span class="sd">        tuple: A tuple containing:</span>
 <span class="sd">            - mu (torch.Tensor): Mean of latent distribution.</span>
 <span class="sd">            - log_var (torch.Tensor): Log variance of latent distribution.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc_mu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc_log_var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -6473,21 +6473,21 @@ Defaults to False.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Forward pass through the VAE.</span>
+<span class="w">    </span><span class="sd">"""Forward pass through the VAE.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        x (torch.Tensor): Input tensor.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary containing:</span>
-<span class="sd">            - &#39;pred_y&#39;: Reconstructed output</span>
-<span class="sd">            - &#39;mu&#39;: Mean of latent distribution</span>
-<span class="sd">            - &#39;log_var&#39;: Log variance of latent distribution</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            - 'pred_y': Reconstructed output</span>
+<span class="sd">            - 'mu': Mean of latent distribution</span>
+<span class="sd">            - 'log_var': Log variance of latent distribution</span>
+<span class="sd">    """</span>
     <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reparameterize</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">)</span>
     <span class="n">pred_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pred_y&quot;</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">&quot;mu&quot;</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span> <span class="s2">&quot;log_var&quot;</span><span class="p">:</span> <span class="n">log_var</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"pred_y"</span><span class="p">:</span> <span class="n">pred_y</span><span class="p">,</span> <span class="s2">"mu"</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span> <span class="s2">"log_var"</span><span class="p">:</span> <span class="n">log_var</span><span class="p">}</span>
 </code></pre></div>
         </details>
     </div>
@@ -6558,7 +6558,7 @@ Defaults to 0.0.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dict</span><span class="p">,</span> <span class="n">kld_weight</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute VAE loss (reconstruction + KL divergence).</span>
+<span class="w">    </span><span class="sd">"""Compute VAE loss (reconstruction + KL divergence).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_dict (dict): Dictionary containing model outputs and targets.</span>
@@ -6567,29 +6567,29 @@ Defaults to 0.0.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary containing different loss components:</span>
-<span class="sd">            - &#39;total_loss&#39;: Combined loss (MAE + weighted KLD)</span>
-<span class="sd">            - &#39;mae_loss&#39;: Mean Absolute Error</span>
-<span class="sd">            - &#39;mse_loss&#39;: Mean Squared Error</span>
-<span class="sd">            - &#39;kld_loss&#39;: KL Divergence loss</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            - 'total_loss': Combined loss (MAE + weighted KLD)</span>
+<span class="sd">            - 'mae_loss': Mean Absolute Error</span>
+<span class="sd">            - 'mse_loss': Mean Squared Error</span>
+<span class="sd">            - 'kld_loss': KL Divergence loss</span>
+<span class="sd">    """</span>
     <span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">],</span>
-        <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
-        <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">],</span>
-        <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;log_var&quot;</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="p">[</span><span class="s2">"y"</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="p">[</span><span class="s2">"mu"</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="p">[</span><span class="s2">"log_var"</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+    <span class="n">MAE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
     <span class="c1"># Reconstruction loss (MSE)</span>
-    <span class="n">MSE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+    <span class="n">MSE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">)</span>
     <span class="c1"># KL divergence</span>
     <span class="n">KLD</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">log_var</span> <span class="o">-</span> <span class="n">mu</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">log_var</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span> <span class="o">/</span> <span class="n">batch_size</span>
     <span class="c1"># Return combined loss</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;total_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">kld_weight</span> <span class="o">*</span> <span class="n">KLD</span><span class="p">,</span>
-        <span class="s2">&quot;mae_loss&quot;</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
-        <span class="s2">&quot;mse_loss&quot;</span><span class="p">:</span> <span class="n">MSE</span><span class="p">,</span>
-        <span class="s2">&quot;kld_loss&quot;</span><span class="p">:</span> <span class="n">KLD</span><span class="p">,</span>
+        <span class="s2">"total_loss"</span><span class="p">:</span> <span class="n">MAE</span> <span class="o">+</span> <span class="n">kld_weight</span> <span class="o">*</span> <span class="n">KLD</span><span class="p">,</span>
+        <span class="s2">"mae_loss"</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
+        <span class="s2">"mse_loss"</span><span class="p">:</span> <span class="n">MSE</span><span class="p">,</span>
+        <span class="s2">"kld_loss"</span><span class="p">:</span> <span class="n">KLD</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div>
         </details>
@@ -6656,7 +6656,7 @@ Defaults to 0.0.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reparameterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_var</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reparameterization trick for sampling from latent distribution.</span>
+<span class="w">    </span><span class="sd">"""Reparameterization trick for sampling from latent distribution.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        mu (torch.Tensor): Mean of latent distribution.</span>
@@ -6664,7 +6664,7 @@ Defaults to 0.0.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: Sampled latent vector.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">std</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">log_var</span><span class="p">)</span>
     <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">std</span>
@@ -6765,7 +6765,7 @@ Defaults to 0.0.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the MoE-VAE model.</span>
+<span class="w">    </span><span class="sd">"""Evaluate the MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model (torch.nn.Module): MoE-VAE model.</span>
@@ -6778,7 +6778,7 @@ Defaults to 0.0.</p></td>
 <span class="sd">        tuple: Tuple containing:</span>
 <span class="sd">            - predictions_inverse (numpy.ndarray): Inverse transformed predictions.</span>
 <span class="sd">            - actuals_inverse (numpy.ndarray): Inverse transformed actuals.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 
@@ -6786,7 +6786,7 @@ Defaults to 0.0.</p></td>
         <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">test_dl</span><span class="p">:</span>
             <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
             <span class="n">output_dict</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">]</span>
             <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_pred</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
             <span class="n">actuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
 
@@ -6795,8 +6795,8 @@ Defaults to 0.0.</p></td>
 
     <span class="c1"># === Inverse transformation ===</span>
     <span class="k">if</span> <span class="n">TSS_scalers_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">log_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">]</span>
-        <span class="n">robust_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">&quot;robust&quot;</span><span class="p">]</span>
+        <span class="n">log_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">"log"</span><span class="p">]</span>
+        <span class="n">robust_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">"robust"</span><span class="p">]</span>
 
         <span class="c1"># First reverse min-max, then reverse log</span>
         <span class="n">predictions_inverse</span> <span class="o">=</span> <span class="p">(</span>
@@ -6914,7 +6914,7 @@ Defaults to 0.0.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_token</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">TSS_scalers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_offset</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the token-wise MoE-VAE model.</span>
+<span class="w">    </span><span class="sd">"""Evaluate the token-wise MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model (torch.nn.Module): MoE-VAE model.</span>
@@ -6927,7 +6927,7 @@ Defaults to 0.0.</p></td>
 <span class="sd">        tuple: Tuple containing:</span>
 <span class="sd">            - predictions_inverse (numpy.ndarray): Inverse transformed predictions.</span>
 <span class="sd">            - actuals_inverse (numpy.ndarray): Inverse transformed actuals.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">predictions</span><span class="p">,</span> <span class="n">actuals</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 
@@ -6935,7 +6935,7 @@ Defaults to 0.0.</p></td>
         <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">test_dl</span><span class="p">:</span>
             <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
             <span class="n">output_dict</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;pred_y&quot;</span><span class="p">]</span>  <span class="c1"># [B, token_len]</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">output_dict</span><span class="p">[</span><span class="s2">"pred_y"</span><span class="p">]</span>  <span class="c1"># [B, token_len]</span>
 
             <span class="k">if</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># [B, 1]</span>
@@ -6948,8 +6948,8 @@ Defaults to 0.0.</p></td>
 
     <span class="c1"># === Inverse transformation ===</span>
     <span class="k">if</span> <span class="n">TSS_scalers_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">log_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">]</span>
-        <span class="n">robust_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">&quot;robust&quot;</span><span class="p">]</span>
+        <span class="n">log_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">"log"</span><span class="p">]</span>
+        <span class="n">robust_scaler</span> <span class="o">=</span> <span class="n">TSS_scalers_dict</span><span class="p">[</span><span class="s2">"robust"</span><span class="p">]</span>
 
         <span class="c1"># First reverse min-max, then reverse log</span>
         <span class="n">predictions_inverse</span> <span class="o">=</span> <span class="p">(</span>
@@ -7074,7 +7074,7 @@ Defaults to 0.0.</p></td>
         <details class="quote">
           <summary>Source code in <code>hypercoast/moe_vae/model.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the MoE-VAE model.</span>
+<span class="w">    </span><span class="sd">"""Train the MoE-VAE model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model (torch.nn.Module): MoE-VAE model.</span>
@@ -7086,13 +7086,13 @@ Defaults to 0.0.</p></td>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary containing training metrics:</span>
-<span class="sd">            - &#39;total_loss&#39;: List of total loss values per epoch.</span>
-<span class="sd">            - &#39;l1_loss&#39;: List of L1 loss values per epoch.</span>
-<span class="sd">            - &#39;best_loss&#39;: Minimum total loss value.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            - 'total_loss': List of total loss values per epoch.</span>
+<span class="sd">            - 'l1_loss': List of L1 loss values per epoch.</span>
+<span class="sd">            - 'best_loss': Minimum total loss value.</span>
+<span class="sd">    """</span>
     <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-    <span class="n">min_total_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-    <span class="n">best_model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;best_model_minloss.pth&quot;</span><span class="p">)</span>
+    <span class="n">min_total_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+    <span class="n">best_model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">"best_model_minloss.pth"</span><span class="p">)</span>
 
     <span class="n">total_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">l1_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -7105,12 +7105,12 @@ Defaults to 0.0.</p></td>
             <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
             <span class="n">output_dict</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">output_dict</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">output_dict</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
 
             <span class="n">loss_dict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">loss_fn</span><span class="p">(</span><span class="n">output_dict</span><span class="p">)</span>
 
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s2">&quot;total_loss&quot;</span><span class="p">]</span>
-            <span class="n">l1</span> <span class="o">=</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s2">&quot;mae_loss&quot;</span><span class="p">]</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s2">"total_loss"</span><span class="p">]</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">loss_dict</span><span class="p">[</span><span class="s2">"mae_loss"</span><span class="p">]</span>
 
             <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
             <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -7122,7 +7122,7 @@ Defaults to 0.0.</p></td>
         <span class="n">avg_total_loss</span> <span class="o">=</span> <span class="n">total_loss_epoch</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dl</span><span class="p">)</span>
         <span class="n">avg_l1</span> <span class="o">=</span> <span class="n">l1_epoch</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dl</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">] Total: </span><span class="si">{</span><span class="n">avg_total_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | L1: </span><span class="si">{</span><span class="n">avg_l1</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">] Total: </span><span class="si">{</span><span class="n">avg_total_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | L1: </span><span class="si">{</span><span class="n">avg_l1</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">total_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_total_loss</span><span class="p">)</span>
         <span class="n">l1_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_l1</span><span class="p">)</span>
 
@@ -7130,7 +7130,7 @@ Defaults to 0.0.</p></td>
             <span class="n">min_total_loss</span> <span class="o">=</span> <span class="n">avg_total_loss</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">best_model_path</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;total_loss&quot;</span><span class="p">:</span> <span class="n">total_list</span><span class="p">,</span> <span class="s2">&quot;l1_loss&quot;</span><span class="p">:</span> <span class="n">l1_list</span><span class="p">,</span> <span class="s2">&quot;best_loss&quot;</span><span class="p">:</span> <span class="n">min_total_loss</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"total_loss"</span><span class="p">:</span> <span class="n">total_list</span><span class="p">,</span> <span class="s2">"l1_loss"</span><span class="p">:</span> <span class="n">l1_list</span><span class="p">,</span> <span class="s2">"best_loss"</span><span class="p">:</span> <span class="n">min_total_loss</span><span class="p">}</span>
 </code></pre></div>
         </details>
     </div>
@@ -7239,15 +7239,122 @@ Defaults to 0.0.</p></td>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../../js/timeago.min.js"></script>
       
         <script src="../../js/timeago_mkdocs_material.js"></script>
       
     
-  </body>
+  <script data-mkdocs-jupyter-mathjax="{&quot;url&quot;: &quot;https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js&quot;, &quot;version&quot;: 4}">
+/* Shared by full pages and Material's instant navigation. */
+(() => {
+  const config = JSON.parse(document.currentScript.dataset.mkdocsJupyterMathjax);
+  if (window.mkdocsJupyterMathJax) return;
+
+  let loading;
+  let queue = Promise.resolve();
+  let previous = [];
+
+  const ready = async () => {
+    if (!loading) {
+      loading = (async () => {
+        let math = window.MathJax;
+        if (!math?.typesetPromise) {
+          const url = new URL(config.url, document.baseURI).href;
+          const existing = Array.from(document.scripts).find(script =>
+            script.src && (script.src === url || script.id === 'MathJax-script' ||
+              (/mathjax/i.test(script.src) &&
+               /\/(?:MathJax|latest|(?:tex|mml)(?:-mml)?-(?:chtml|svg))\.js(?:[?#]|$)/i.test(script.src))));
+          if (existing) {
+            if (!math?.startup?.promise) {
+              await new Promise((resolve, reject) => {
+                existing.addEventListener('load', resolve, { once: true });
+                existing.addEventListener('error', reject, { once: true });
+              });
+            }
+          } else {
+            // Keep site macros, delimiters and startup hooks when supplied.
+            const options = math || {};
+            window.MathJax = {
+              ...options,
+              loader: {
+                ...options.loader,
+                load: Array.from(new Set(['ui/safe', ...(options.loader?.load || [])]))
+              },
+              startup: { typeset: false, ...options.startup },
+              tex: {
+                tags: 'ams',
+                useLabelIds: true,
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                ...options.tex
+              }
+            };
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = config.url;
+              script.id = 'MathJax-script';
+              script.async = true;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+        }
+        math = window.MathJax;
+        await math.startup.promise;
+        return math;
+      })();
+    }
+    const math = await loading;
+    // A site owner can extend the v3 queue again on each navigation.
+    await math.startup.promise;
+    return math;
+  };
+
+  const unrendered = node => {
+    if (node.matches('mjx-container')) return [];
+    if (!node.querySelector('mjx-container')) return [node];
+    // In v3, scanning generated assistive MathML again produces nested output.
+    return Array.from(node.children).flatMap(unrendered);
+  };
+
+  const refresh = () => {
+    // A separate chain also serializes v3, without changing v4's startup promise.
+    queue = queue.then(async () => {
+      const notebooks = Array.from(document.querySelectorAll('.jupyter-wrapper'));
+      if (!notebooks.length && !previous.length) return;
+      if (notebooks.length === previous.length &&
+          notebooks.every((node, index) => node === previous[index])) return;
+      const math = await ready();
+      if (previous.length) {
+        math.typesetClear(previous);
+        math.texReset();
+      }
+      previous = notebooks.filter(node => node.isConnected);
+      const pending = previous.flatMap(unrendered);
+      if (pending.length) await math.typesetPromise(pending);
+    }).catch(error => console.error('mkdocs-jupyter: MathJax rendering failed', error));
+    return queue;
+  };
+
+  window.mkdocsJupyterMathJax = { refresh };
+  const start = () => {
+    if (typeof document$ !== 'undefined') document$.subscribe(refresh);
+    else refresh();
+  };
+  // Theme bundles and user-provided MathJax scripts can follow notebook content.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else start();
+})();
+
+</script>
+</body>
 </html>
