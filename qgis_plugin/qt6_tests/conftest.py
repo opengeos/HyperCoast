@@ -13,12 +13,37 @@ from unittest.mock import MagicMock
 
 import pytest
 
-pytest.importorskip("PyQt6.QtWidgets")
+# ``exc_type=ImportError`` also skips when PyQt6 is installed but its native
+# Qt runtime is not (e.g. ``libEGL.so.1`` missing on a headless runner).
+# pytest 9 only catches ``ModuleNotFoundError`` by default.
+pytest.importorskip("PyQt6.QtWidgets", exc_type=ImportError)
 
 import PyQt6.QtCore  # noqa: E402
 import PyQt6.QtGui  # noqa: E402
 import PyQt6.QtNetwork  # noqa: E402
 import PyQt6.QtWidgets  # noqa: E402
+
+
+class _QgisStubMock(MagicMock):
+    """MagicMock whose attributes can be monkeypatched and restored.
+
+    Since pytest 9.2, ``monkeypatch.setattr`` records the previous value from
+    the target's instance ``__dict__``. MagicMock keeps auto-created child
+    attributes in ``_mock_children`` instead, so on undo pytest calls
+    ``delattr``, which a plain MagicMock records as a permanent deletion. Every
+    later test touching that attribute (e.g. ``QgsProject.instance``) then
+    fails with ``AttributeError``. Here, deleting an attribute only drops it,
+    so the next access auto-creates a fresh child as before the patch.
+    """
+
+    def __delattr__(self, name: str) -> None:
+        """Delete an attribute without marking it as permanently deleted.
+
+        Args:
+            name: Attribute name.
+        """
+        super().__delattr__(name)
+        self._mock_children.pop(name, None)
 
 
 def _install_qgis_stub() -> None:
@@ -57,7 +82,7 @@ def _install_qgis_stub() -> None:
         setattr(qgis_pyqt, submodule, alias)
 
     for name in ("core", "gui", "utils"):
-        stub = MagicMock()
+        stub = _QgisStubMock()
         stub.__spec__ = None
         sys.modules[f"qgis.{name}"] = stub
         setattr(qgis, name, stub)
