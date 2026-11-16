@@ -30,7 +30,7 @@ pytest
 pytest-cov
 pytest-runner
 pyvista
-reuse>=6.2.0
+reuse>=6.3.0
 ruff
 scikit-learn
 seaborn
